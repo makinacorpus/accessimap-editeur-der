@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc overview
- * @name angularleafletApp
+ * @name accessimapEditeurDerApp
  * @description
- * # angularleafletApp
+ * # accessimapEditeurDerApp
  *
  * Main module of the application.
  */
 angular
-  .module('angularleafletApp', [
+  .module('accessimapEditeurDerApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',

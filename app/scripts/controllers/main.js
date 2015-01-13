@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name angularleafletApp.controller:MainCtrl
+ * @name accessimapEditeurDer.controller:MainCtrl
  * @description
  * # MainCtrl
- * Controller of the angularleafletApp
+ * Controller of the accessimapEditeurDer
  */
-angular.module('angularleafletApp')
+angular.module('accessimapEditeurDerApp')
   .controller('MainCtrl', function ($scope) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
