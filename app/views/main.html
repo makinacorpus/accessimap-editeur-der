@@ -1,1 +1,9 @@
+<form class="form-inline">
+  <select class="form-control" ng-options="item.name for item in values" ng-model="selected"></select>
+  <button class="btn btn-default" ng-click="downloadSidewalks()" type="button">Ajouter à la carte</button>
+</form>
+
+
 <div id="map"></div>
+
+<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>

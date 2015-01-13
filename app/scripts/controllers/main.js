@@ -8,85 +8,48 @@
  * Controller of the accessimapEditeurDer
  */
 angular.module('accessimapEditeurDerApp')
-  .controller('MainCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+  .controller('MainCtrl', ['$scope', '$http', 'usSpinnerService', 'settings', function ($scope, $http, usSpinnerService, settings) {
 
-    $scope.geojson = [
-        {"name": "poly",
-        "geojson":
-            {
-              "type": "FeatureCollection",
-              "features": [
-                {
-                  "type": "Feature",
-                  "properties": {},
-                  "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [
-                      [
-                        [
-                          1.4335441589355469,
-                          43.5979220538866
-                        ],
-                        [
-                          1.4400672912597654,
-                          43.60985526701817
-                        ],
-                        [
-                          1.4544868469238281,
-                          43.606996483663224
-                        ],
-                        [
-                          1.4510536193847656,
-                          43.597300467515375
-                        ],
-                        [
-                          1.4335441589355469,
-                          43.5979220538866
-                        ]
-                      ]
-                    ]
-                  }
-                }
-              ]
-            }
-        },
-        {"name": "point",
-        "geojson":
-            {
-              "type": "FeatureCollection",
-              "features": [
-                {
-                  "type": "Feature",
-                  "properties": {},
-                  "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                      1.4218711853027344,
-                      43.60177574606796
-                    ]
-                  }
-                }
-              ]
-            }
-        }
-    ];
-
-    var map = L.map('map', {center: [43.6, 1.44], zoom: 13});
+    var map = L.map('map', {
+      center: settings.leaflet.GLOBAL_MAP_CENTER,
+      zoom: settings.leaflet.GLOBAL_MAP_DEFAULT_ZOOM
+    });
 
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: 'OpenStreetMap'
     }).addTo(map);
 
-    $scope.geojson2 = {};
-    angular.forEach($scope.geojson, function(data) {
-        $scope.geojson2[data.name] = L.geoJson(data.geojson).addTo(map);
-        //L.geoJson(geojson).addTo(map);
-    });
-    console.log($scope.geojson2);
+    $scope.geojson = {};
 
-  });
+    $scope.values = [{
+      id: 1,
+      name: 'trottoirs',
+      query: '["footway"="sidewalk"]'
+    }, {
+      id: 2,
+      name: 'rues',
+      query: '["highway"]["footway"!="sidewalk"]["area"!="yes"]'
+    }];
+    $scope.selected = $scope.values[0];
+
+    function downloadSidewalks() {
+      usSpinnerService.spin('spinner-1');
+      var mapBounds = map.getBounds(),
+          mapS = mapBounds.getSouth(),
+          mapW = mapBounds.getWest(),
+          mapN = mapBounds.getNorth(),
+          mapE = mapBounds.getEast();
+      $http.get(settings.XAPI_URL + '[out:json];(way'+ $scope.selected.query + '(' + mapS + ',' + mapW + ',' + mapN + ',' + mapE + '););out body;>;out skel qt;').
+        success(function(data, status, headers, config) {
+          var geojson = osmtogeojson(data);
+          $scope.geojson["trottoirs"] = L.geoJson(geojson).addTo(map);
+          usSpinnerService.stop('spinner-1');
+        }).
+        error(function(data, status, headers, config) {
+          usSpinnerService.stop('spinner-1');
+        });
+    }
+
+    $scope.downloadSidewalks = downloadSidewalks;
+
+  }]);
