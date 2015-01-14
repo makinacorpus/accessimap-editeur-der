@@ -19,18 +19,10 @@ angular.module('accessimapEditeurDerApp')
       attribution: 'OpenStreetMap'
     }).addTo(map);
 
-    $scope.geojson = {};
+    $scope.geojson = [];
 
-    $scope.values = [{
-      id: 1,
-      name: 'trottoirs',
-      query: '["footway"="sidewalk"]'
-    }, {
-      id: 2,
-      name: 'rues',
-      query: '["highway"]["footway"!="sidewalk"]["area"!="yes"]'
-    }];
-    $scope.selected = $scope.values[0];
+    $scope.queryChoices = settings.QUERY_LIST;
+    $scope.queryChosen = $scope.queryChoices[0];
 
     function downloadSidewalks() {
       usSpinnerService.spin('spinner-1');
@@ -39,11 +31,17 @@ angular.module('accessimapEditeurDerApp')
           mapW = mapBounds.getWest(),
           mapN = mapBounds.getNorth(),
           mapE = mapBounds.getEast();
-      $http.get(settings.XAPI_URL + '[out:json];(way'+ $scope.selected.query + '(' + mapS + ',' + mapW + ',' + mapN + ',' + mapE + '););out body;>;out skel qt;').
+      $http.get(settings.XAPI_URL + '[out:json];(way'+ $scope.queryChosen.query + '(' + mapS + ',' + mapW + ',' + mapN + ',' + mapE + '););out body;>;out skel qt;').
         success(function(data, status, headers, config) {
-          var geojson = osmtogeojson(data);
-          $scope.geojson["trottoirs"] = L.geoJson(geojson).addTo(map);
+          var osmGeojson = osmtogeojson(data);
+          var layerGeojson = L.geoJson(osmGeojson).addTo(map);
+          $scope.geojson.push({
+            name: $scope.queryChosen.name,
+            layer: layerGeojson
+            }
+          );
           usSpinnerService.stop('spinner-1');
+          console.log($scope.geojson);
         }).
         error(function(data, status, headers, config) {
           usSpinnerService.stop('spinner-1');

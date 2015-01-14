@@ -15,10 +15,19 @@ angular.module('accessimapEditeurDerApp')
         GLOBAL_MAP_DEFAULT_ZOOM: 13,
     };
 
-    var QUERY_LIST = {
-          name: 'trottoirs',
-          query: '"footway"="sidewalk"'
-    };
+    var QUERY_LIST = [{
+      id: 1,
+      name: 'trottoirs',
+      query: '["footway"="sidewalk"]'
+    }, {
+      id: 2,
+      name: 'routes principales',
+      query: '["highway"~"motorway|trunk|primary|secondary"]'
+    }, {
+      id: 3,
+      name: 'rues',
+      query: '["highway"]["footway"!="sidewalk"]["area"!="yes"]'
+    }];
 
     var XAPI_URL = 'http://overpass-api.de/api/interpreter?data=';
 
