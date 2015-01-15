@@ -11,7 +11,7 @@ angular.module('accessimapEditeurDerApp')
   .factory('settings', function () {
 
     var leaflet_conf = {
-        GLOBAL_MAP_CENTER: [43.6, 1.44],
+        GLOBAL_MAP_CENTER: [1.44, 43.6], // [lon, lat]
         GLOBAL_MAP_DEFAULT_ZOOM: 13,
     };
 

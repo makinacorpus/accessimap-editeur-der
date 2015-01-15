@@ -91,6 +91,9 @@ body {
   }
 }
 
-#map {
-  height: 400px;
+path {
+  fill: none;
+  stroke: red;
+  stroke-linejoin: round;
+  stroke-width: 1.5px;
 }
