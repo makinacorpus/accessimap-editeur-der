@@ -39,8 +39,6 @@ angular.module('accessimapEditeurDerApp')
   var raster = svg.append("g")
       .attr("class", "tiles");
 
-  var vector = svg.append("path");
-
   svg.call(zoom);
   zoomed();
 
@@ -49,8 +47,13 @@ angular.module('accessimapEditeurDerApp')
         .scale(zoom.scale())
         .translate(zoom.translate())
         ();
-    vector
-        .attr("d", path);
+    console.log($scope.geojson);
+
+    angular.forEach($scope.geojson, function(geojson) {
+      d3.select("#" + geojson.name)
+          .attr("d", path);
+    });
+
     projection
         .scale(zoom.scale() / 2 / Math.PI)
         .translate(zoom.translate());
@@ -76,10 +79,8 @@ angular.module('accessimapEditeurDerApp')
   $scope.queryChoices = settings.QUERY_LIST;
   $scope.queryChosen = $scope.queryChoices[0];
 
-  function downloadSidewalks() {
+  function downloadData() {
     usSpinnerService.spin('spinner-1');
-
-    console.log(mapService);
 
     var boundsNW = mapService.formatLocation(projection.invert([0, 0]), zoom.scale());
     var boundsSE = mapService.formatLocation(projection.invert([width, height]), zoom.scale());
@@ -91,18 +92,24 @@ angular.module('accessimapEditeurDerApp')
       success(function(data, status, headers, config) {
         var osmGeojson = osmtogeojson(data);
 
-        var path = d3.geo.path()
-            .projection(projection);
+        svg.append("path")
+          .attr("class", "vector")
+          .attr("id", $scope.queryChosen.name)
+          .attr("d", path);
 
         svg.call(zoom);
-        vector.datum({type: "FeatureCollection", features: osmGeojson.features});
-        zoomed();
+
+        d3.select("#" + $scope.queryChosen.name)
+          .datum({type: "FeatureCollection", features: osmGeojson.features});
 
         $scope.geojson.push({
           name: $scope.queryChosen.name,
           layer: osmGeojson
           }
         );
+
+        zoomed();
+
         usSpinnerService.stop('spinner-1');
       }).
       error(function(data, status, headers, config) {
@@ -110,6 +117,6 @@ angular.module('accessimapEditeurDerApp')
       });
   }
 
-  $scope.downloadSidewalks = downloadSidewalks;
+  $scope.downloadData = downloadData;
 
   }]);

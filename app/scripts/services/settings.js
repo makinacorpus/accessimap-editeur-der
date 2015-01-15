@@ -21,7 +21,7 @@ angular.module('accessimapEditeurDerApp')
       query: '["footway"="sidewalk"]'
     }, {
       id: 2,
-      name: 'routes principales',
+      name: 'principales',
       query: '["highway"~"motorway|trunk|primary|secondary"]'
     }, {
       id: 3,
