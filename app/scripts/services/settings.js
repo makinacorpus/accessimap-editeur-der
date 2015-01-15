@@ -16,17 +16,42 @@ angular.module('accessimapEditeurDerApp')
     };
 
     var QUERY_LIST = [{
-      id: 1,
-      name: 'trottoirs',
+      id: 'trottoirs',
+      name: 'Trottoirs',
       query: '["footway"="sidewalk"]'
     }, {
-      id: 2,
-      name: 'principales',
+      id: 'principales',
+      name: 'Routes principales',
       query: '["highway"~"motorway|trunk|primary|secondary"]'
     }, {
-      id: 3,
-      name: 'rues',
+      id: 'rues',
+      name: 'Toutes les rues',
       query: '["highway"]["footway"!="sidewalk"]["area"!="yes"]'
+    }];
+
+    var STYLES = [{
+      id: 'wide',
+      name: 'Large',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '4'
+      }]
+    },{
+      id: 'dashed',
+      name: 'Tirets',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '3'
+      }, {
+        'k': 'stroke-dasharray',
+        'v': '5, 5'
+      }]
     }];
 
     var XAPI_URL = 'http://overpass-api.de/api/interpreter?data=';
@@ -35,6 +60,7 @@ angular.module('accessimapEditeurDerApp')
     return {
       XAPI_URL: XAPI_URL,
       QUERY_LIST: QUERY_LIST,
+      STYLES: STYLES,
       leaflet: leaflet_conf
     };
   });

@@ -11,7 +11,7 @@ angular.module('accessimapEditeurDerApp')
   .controller('MainCtrl', ['$scope', '$http', 'usSpinnerService', 'mapService', 'settings',
     function ($scope, $http, usSpinnerService, mapService, settings) {
 
-  var width = Math.max(960, window.innerWidth),
+  var width = d3.select(".container")[0][0].offsetWidth,
       height = Math.max(500, window.innerHeight);
 
   var tile = d3.geo.tile()
@@ -47,10 +47,9 @@ angular.module('accessimapEditeurDerApp')
         .scale(zoom.scale())
         .translate(zoom.translate())
         ();
-    console.log($scope.geojson);
 
     angular.forEach($scope.geojson, function(geojson) {
-      d3.select("#" + geojson.name)
+      d3.select("#" + geojson.id)
           .attr("d", path);
     });
 
@@ -79,6 +78,14 @@ angular.module('accessimapEditeurDerApp')
   $scope.queryChoices = settings.QUERY_LIST;
   $scope.queryChosen = $scope.queryChoices[0];
 
+  $scope.styleChoices = settings.STYLES;
+  $scope.styleChosen = $scope.styleChoices[0];
+
+  function mapExport() {
+    d3.select(".tiles").selectAll("*").remove();
+    exportSvg();
+  }
+
   function downloadData() {
     usSpinnerService.spin('spinner-1');
 
@@ -94,15 +101,21 @@ angular.module('accessimapEditeurDerApp')
 
         svg.append("path")
           .attr("class", "vector")
-          .attr("id", $scope.queryChosen.name)
+          .attr("id", $scope.queryChosen.id)
           .attr("d", path);
+
+        angular.forEach($scope.styleChosen.style, function(attribute) {
+          d3.select("#" + $scope.queryChosen.id)
+              .attr(attribute.k, attribute.v);
+        });
 
         svg.call(zoom);
 
-        d3.select("#" + $scope.queryChosen.name)
+        d3.select("#" + $scope.queryChosen.id)
           .datum({type: "FeatureCollection", features: osmGeojson.features});
 
         $scope.geojson.push({
+          id: $scope.queryChosen.id,
           name: $scope.queryChosen.name,
           layer: osmGeojson
           }
@@ -118,5 +131,6 @@ angular.module('accessimapEditeurDerApp')
   }
 
   $scope.downloadData = downloadData;
+  $scope.mapExport = mapExport;
 
   }]);
