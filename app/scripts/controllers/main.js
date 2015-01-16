@@ -12,7 +12,9 @@ angular.module('accessimapEditeurDerApp')
     function ($scope, $http, usSpinnerService, mapService, settings) {
 
   var width = d3.select("#map")[0][0].clientWidth,
-      height = 500;
+      legendWidth = 400,
+      height = 500,
+      margin = 10;
 
   var tile = d3.geo.tile()
       .size([width, height]);
@@ -37,10 +39,75 @@ angular.module('accessimapEditeurDerApp')
       .attr("width", width)
       .attr("height", height);
 
-  var raster = svg.append("g")
+  var map = svg.append("g")
+      .attr("width", function() {
+          return width - legendWidth;
+      })
+      .attr("height", height);
+
+  var raster = map.append("g")
       .attr("class", "tiles");
 
-  svg.call(zoom);
+  var legendContainter = svg.append("g");
+
+  var legend = legendContainter.append("rect")
+      .attr("x", function() {
+          return width - legendWidth;
+      })
+      .attr("y", "0px")
+      .attr("width", function() {
+          return legendWidth;
+      })
+      .attr("height", height)
+      .attr("fill", "white");
+
+  legendContainter.append("text")
+      .attr("x", function() {
+          return width - legendWidth + margin;
+      })
+      .attr("y", "30px")
+      .attr("class", "braille")
+      .attr("font-size", "20px")
+      .text(function() {
+          return "Légende";
+      });
+
+
+  function addToLegend(name, style, position) {
+      var line = legendContainter.append("line")
+          .attr("x1", function() {
+              return width - legendWidth + margin;
+          })
+          .attr("y1", function() {
+              return position * 30 + 40;
+          })
+          .attr("x2", function() {
+              return width - legendWidth + margin + 40;
+          })
+          .attr("y2", function() {
+              return position * 30 + 40;
+          })
+          .attr("fill", "red");
+
+      angular.forEach(style, function(attribute) {
+        line.attr(attribute.k, attribute.v);
+      });
+
+      legendContainter.append("text")
+          .attr("x", function() {
+              return width - legendWidth + margin + 50;
+          })
+          .attr("y", function() {
+              return position * 30 + margin + 40;
+          })
+          .attr("font-size", "20px")
+          .attr("class", "braille")
+          .text(function(d) {
+              return name;
+          });
+  };
+
+  map.call(zoom);
   zoomed();
 
   function zoomed() {
@@ -82,6 +149,8 @@ angular.module('accessimapEditeurDerApp')
   $scope.styleChoices = settings.STYLES;
   $scope.styleChosen = $scope.styleChoices[0];
 
+  $scope.legendLine = 1;
+
   function mapExport() {
     d3.select(".tiles").selectAll("*").remove();
     exportSvg();
@@ -100,7 +169,7 @@ angular.module('accessimapEditeurDerApp')
       success(function(data, status, headers, config) {
         var osmGeojson = osmtogeojson(data);
 
-        svg.append("path")
+        map.append("path")
           .attr("class", "vector")
           .attr("id", $scope.queryChosen.id)
           .attr("d", path);
@@ -110,7 +179,7 @@ angular.module('accessimapEditeurDerApp')
               .attr(attribute.k, attribute.v);
         });
 
-        svg.call(zoom);
+        map.call(zoom);
 
         d3.select("#" + $scope.queryChosen.id)
           .datum({type: "FeatureCollection", features: osmGeojson.features});
@@ -121,6 +190,9 @@ angular.module('accessimapEditeurDerApp')
           layer: osmGeojson
           }
         );
+
+        addToLegend($scope.queryChosen.name, $scope.styleChosen.style, $scope.legendLine);
+        $scope.legendLine += 1;
 
         zoomed();
 
