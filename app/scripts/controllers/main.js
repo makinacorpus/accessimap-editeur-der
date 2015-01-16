@@ -11,8 +11,8 @@ angular.module('accessimapEditeurDerApp')
   .controller('MainCtrl', ['$scope', '$http', 'usSpinnerService', 'mapService', 'settings',
     function ($scope, $http, usSpinnerService, mapService, settings) {
 
-  var width = d3.select(".container")[0][0].offsetWidth,
-      height = Math.max(500, window.innerHeight);
+  var width = d3.select("#map")[0][0].clientWidth,
+      height = 500;
 
   var tile = d3.geo.tile()
       .size([width, height]);
@@ -28,9 +28,10 @@ angular.module('accessimapEditeurDerApp')
 
   var zoom = d3.behavior.zoom()
       .scale(projection.scale() * 2 * Math.PI)
-      .scaleExtent([1 << 11, 1 << 26])
+      .scaleExtent([1 << 11, 1 << 27])
       .translate([width - center[0], height - center[1]])
-      .on("zoom", zoomed);
+      .on("zoom", zoomed)
+      .on("zoomend", zoomed);
 
   var svg = d3.select("#map").append("svg")
       .attr("width", width)

@@ -20,13 +20,17 @@ angular.module('accessimapEditeurDerApp')
       name: 'Trottoirs',
       query: '["footway"="sidewalk"]'
     }, {
+      id: 'ppietons',
+      name: 'Passages piétons',
+      query: '["footway"="crossing"]'
+    }, {
       id: 'principales',
       name: 'Routes principales',
       query: '["highway"~"motorway|trunk|primary|secondary"]'
     }, {
       id: 'rues',
       name: 'Toutes les rues',
-      query: '["highway"]["footway"!="sidewalk"]["area"!="yes"]'
+      query: '["highway"]["footway"!="sidewalk"]["footway"!="crossing"]["area"!="yes"]'
     }];
 
     var STYLES = [{
@@ -40,8 +44,8 @@ angular.module('accessimapEditeurDerApp')
         'v': '4'
       }]
     },{
-      id: 'dashed',
-      name: 'Tirets',
+      id: 'dashed55',
+      name: 'Tirets 5 5',
       style: [{
         'k': 'stroke',
         'v': 'black'
@@ -51,6 +55,32 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-dasharray',
         'v': '5, 5'
+      }]
+    },{
+      id: 'dashed33',
+      name: 'Tirets 2 2',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '3'
+      }, {
+        'k': 'stroke-dasharray',
+        'v': '2, 2'
+      }]
+    },{
+      id: 'dashed1010',
+      name: 'Tirets 10 10',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '3'
+      }, {
+        'k': 'stroke-dasharray',
+        'v': '10,10'
       }]
     }];
 
