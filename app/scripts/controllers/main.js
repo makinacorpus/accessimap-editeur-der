@@ -149,8 +149,6 @@ angular.module('accessimapEditeurDerApp')
   $scope.styleChoices = settings.STYLES;
   $scope.styleChosen = $scope.styleChoices[0];
 
-  $scope.legendLine = 1;
-
   function mapExport() {
     d3.select(".tiles").selectAll("*").remove();
     exportSvg();
@@ -191,8 +189,7 @@ angular.module('accessimapEditeurDerApp')
           }
         );
 
-        addToLegend($scope.queryChosen.name, $scope.styleChosen.style, $scope.legendLine);
-        $scope.legendLine += 1;
+        addToLegend($scope.queryChosen.name, $scope.styleChosen.style, $scope.geojson.length);
 
         zoomed();
 
