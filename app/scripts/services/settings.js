@@ -82,7 +82,24 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-dasharray',
         'v': '10,10'
       }]
+    },{
+      id: 'dotted',
+      name: 'Ronds',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '10'
+      }, {
+        'k': 'stroke-linecap',
+        'v': 'round'
+      }, {
+        'k': 'stroke-dasharray',
+        'v': '1, 15'
+      }]
     }];
+
 
     var XAPI_URL = 'http://overpass-api.de/api/interpreter?data=';
 
