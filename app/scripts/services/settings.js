@@ -18,23 +18,33 @@ angular.module('accessimapEditeurDerApp')
     var QUERY_LIST = [{
       id: 'trottoirs',
       name: 'Trottoirs',
-      query: '["footway"="sidewalk"]'
+      type: 'line',
+      query: 'way["footway"="sidewalk"]'
     }, {
       id: 'ppietons',
       name: 'Passages piétons',
-      query: '["footway"="crossing"]'
+      type: 'line',
+      query: 'way["footway"="crossing"]'
     }, {
       id: 'principales',
       name: 'Routes principales',
-      query: '["highway"~"motorway|trunk|primary|secondary"]'
+      type: 'line',
+      query: 'way["highway"~"motorway|trunk|primary|secondary"]'
     }, {
       id: 'places',
       name: 'Places',
-      query: '["highway"="pedestrian"]["area"="yes"]'
+      type: 'polygon',
+      query: 'way["highway"="pedestrian"]["area"="yes"]'
+    }, {
+      id: 'trafficSignals',
+      name: 'Feux tricolores',
+      type: 'point',
+      query: 'node["highway"="traffic_signals"]'
     }, {
       id: 'rues',
       name: 'Toutes les rues',
-      query: '["highway"]["footway"!="sidewalk"]["footway"!="crossing"]["area"!="yes"]'
+      type: 'line',
+      query: 'way["highway"]["footway"!="sidewalk"]["footway"!="crossing"]["area"!="yes"]'
     }];
 
     var STYLES = [{

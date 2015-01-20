@@ -163,7 +163,7 @@ angular.module('accessimapEditeurDerApp')
         mapW = boundsNW.lon,
         mapN = boundsNW.lat,
         mapE = boundsSE.lon;
-    $http.get(settings.XAPI_URL + '[out:json];(way'+ $scope.queryChosen.query + '(' + mapS + ',' + mapW + ',' + mapN + ',' + mapE + '););out body;>;out skel qt;').
+    $http.get(settings.XAPI_URL + '[out:json];('+ $scope.queryChosen.query + '(' + mapS + ',' + mapW + ',' + mapN + ',' + mapE + '););out body;>;out skel qt;').
       success(function(data, status, headers, config) {
         var osmGeojson = osmtogeojson(data);
 
