@@ -8,8 +8,8 @@
  * Controller of the accessimapEditeurDer
  */
 angular.module('accessimapEditeurDerApp')
-  .controller('MainCtrl', ['$scope', '$http', 'usSpinnerService', 'mapService', 'settings',
-    function ($scope, $http, usSpinnerService, mapService, settings) {
+  .controller('MainCtrl', ['$scope', '$http', 'usSpinnerService', 'mapService', 'settings', 'exportService',
+    function ($scope, $http, usSpinnerService, mapService, settings, exportService) {
 
   var width = d3.select("#map")[0][0].clientWidth,
       legendWidth = 400,
@@ -149,11 +149,6 @@ angular.module('accessimapEditeurDerApp')
         .attr("y", function(d) { return d[1]; });
   }
 
-  function mapExport() {
-    d3.select(".tiles").selectAll("*").remove();
-    exportSvg();
-  }
-
   function downloadData() {
     usSpinnerService.spin('spinner-1');
 
@@ -210,6 +205,6 @@ angular.module('accessimapEditeurDerApp')
   }
 
   $scope.downloadData = downloadData;
-  $scope.mapExport = mapExport;
+  $scope.mapExport = exportService.mapExport;
 
   }]);
