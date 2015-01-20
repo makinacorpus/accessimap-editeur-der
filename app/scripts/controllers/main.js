@@ -72,6 +72,14 @@ angular.module('accessimapEditeurDerApp')
           return "Légende";
       });
 
+  $scope.geojson = [];
+
+  $scope.queryChoices = settings.QUERY_LIST;
+  $scope.queryChosen = $scope.queryChoices[0];
+
+  $scope.styleChoices = settings.STYLES;
+  $scope.styleChosen = $scope.styleChoices[0];
+
 
   function addToLegend(name, style, position) {
       var line = legendContainter.append("line")
@@ -117,7 +125,7 @@ angular.module('accessimapEditeurDerApp')
         ();
 
     angular.forEach($scope.geojson, function(geojson) {
-      d3.select("#" + geojson.id)
+      d3.selectAll("path." + geojson.id)
           .attr("d", path);
     });
 
@@ -141,14 +149,6 @@ angular.module('accessimapEditeurDerApp')
         .attr("y", function(d) { return d[1]; });
   }
 
-  $scope.geojson = [];
-
-  $scope.queryChoices = settings.QUERY_LIST;
-  $scope.queryChosen = $scope.queryChoices[0];
-
-  $scope.styleChoices = settings.STYLES;
-  $scope.styleChosen = $scope.styleChoices[0];
-
   function mapExport() {
     d3.select(".tiles").selectAll("*").remove();
     exportSvg();
@@ -167,9 +167,21 @@ angular.module('accessimapEditeurDerApp')
       success(function(data, status, headers, config) {
         var osmGeojson = osmtogeojson(data);
 
-        map.append("path")
+        // osmtogeojson writes polygon coordinates in anticlockwise order, not fitting the geojson specs.
+        // Polygon coordinates need therefore to be reversed
+        osmGeojson.features.forEach(function(feature) {
+          if (feature.geometry.type == "Polygon") {
+            feature.geometry.coordinates[0].reverse();
+          };
+        });
+
+        map.append("g")
           .attr("class", "vector")
           .attr("id", $scope.queryChosen.id)
+          .selectAll("path")
+          .data(osmGeojson.features)
+          .enter().append("path")
+          .attr("class", $scope.queryChosen.id)
           .attr("d", path);
 
         angular.forEach($scope.styleChosen.style, function(attribute) {
@@ -178,9 +190,6 @@ angular.module('accessimapEditeurDerApp')
         });
 
         map.call(zoom);
-
-        d3.select("#" + $scope.queryChosen.id)
-          .datum({type: "FeatureCollection", features: osmGeojson.features});
 
         $scope.geojson.push({
           id: $scope.queryChosen.id,

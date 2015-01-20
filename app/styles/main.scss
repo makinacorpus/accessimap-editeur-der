@@ -91,13 +91,12 @@ body {
   }
 }
 
-path {
-  fill: none;
-  stroke-linejoin: round;
+
+@font-face {
+  font-family: braille;
+  src: url('simbrl.ttf');
 }
 
-
-@font-face { font-family: braille; src: url('simbrl.ttf'); } 
 .braille {
   font-family: braille;
 }

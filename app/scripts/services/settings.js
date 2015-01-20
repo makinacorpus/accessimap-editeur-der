@@ -28,20 +28,27 @@ angular.module('accessimapEditeurDerApp')
       name: 'Routes principales',
       query: '["highway"~"motorway|trunk|primary|secondary"]'
     }, {
+      id: 'places',
+      name: 'Places',
+      query: '["highway"="pedestrian"]["area"="yes"]'
+    }, {
       id: 'rues',
       name: 'Toutes les rues',
       query: '["highway"]["footway"!="sidewalk"]["footway"!="crossing"]["area"!="yes"]'
     }];
 
     var STYLES = [{
-      id: 'wide',
-      name: 'Large',
+      id: 'straight',
+      name: 'Trait',
       style: [{
         'k': 'stroke',
         'v': 'black'
       }, {
         'k': 'stroke-width',
         'v': '4'
+      }, {
+        'k': 'fill',
+        'v': 'none'
       }]
     },{
       id: 'dashed55',
@@ -52,6 +59,9 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-width',
         'v': '3'
+      }, {
+        'k': 'fill',
+        'v': 'none'
       }, {
         'k': 'stroke-dasharray',
         'v': '5, 5'
@@ -66,6 +76,9 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-width',
         'v': '3'
       }, {
+        'k': 'fill',
+        'v': 'none'
+      }, {
         'k': 'stroke-dasharray',
         'v': '2, 2'
       }]
@@ -78,6 +91,9 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-width',
         'v': '3'
+      }, {
+        'k': 'fill',
+        'v': 'none'
       }, {
         'k': 'stroke-dasharray',
         'v': '10,10'
@@ -95,8 +111,18 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-linecap',
         'v': 'round'
       }, {
+        'k': 'fill',
+        'v': 'none'
+      }, {
         'k': 'stroke-dasharray',
         'v': '1, 15'
+      }]
+    },{
+      id: 'filled',
+      name: 'Rempli',
+      style: [ {
+        'k': 'fill',
+        'v': 'grey'
       }]
     }];
 
