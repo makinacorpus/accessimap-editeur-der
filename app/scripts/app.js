@@ -32,6 +32,10 @@ angular
         templateUrl: 'views/localmap.html',
         controller: 'LocalmapCtrl'
       })
+      .when('/globalmap', {
+        templateUrl: 'views/globalmap.html',
+        controller: 'GlobalmapCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
