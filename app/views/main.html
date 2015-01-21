@@ -1,14 +1,4 @@
-<form class="form-inline">
-  <select class="form-control" ng-options="item.name for item in queryChoices" ng-model="queryChosen"></select>
-  <select class="form-control" ng-options="item.name for item in styleChoices" ng-model="styleChosen"></select>
-  <button class="btn btn-primary" ng-click="downloadData()" type="button">
-    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Ajouter à la carte
-  </button>
-  <button class="btn btn-success" ng-click="mapExport()" type="button">
-    <span class="glyphicon glyphicon-download" aria-hidden="true"></span> Exporter
-  </button>
-</form>
-
-<div id="map"></div>
-
-<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
+<p>
+  <button type="button" class="btn btn-default btn-lg" ng-click="go('/localmap')">Carte locale</button>
+  <button type="button" class="btn btn-default btn-lg">Partir d'un SVG</button>
+</p>
