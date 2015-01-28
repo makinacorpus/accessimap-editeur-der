@@ -1,4 +1,11 @@
 <form class="form-inline">
+
+  <div class="btn-group">
+    <a ng-click="mode = 'default'" ng-class="{ 'active' : mode == 'default' }" class="btn btn-primary active">Consulter</a>
+    <a ng-click="mode = 'delete'" ng-class="{ 'active' : mode == 'delete' }" class="btn btn-primary">
+    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Supprimer un élément</a>
+  </div>
+
   <button class="btn btn-success" ng-click="mapExport()" type="button">
     <span class="glyphicon glyphicon-download" aria-hidden="true"></span> Exporter
   </button>

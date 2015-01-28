@@ -20,6 +20,22 @@ angular.module('accessimapEditeurDerApp')
           .node()
           .appendChild($scope.data);
       });
-      
+
+      $scope.mode = 'default';
+
+      $scope.$watch('mode', function() {
+        if ($scope.mode == 'default') {
+          d3.selectAll("path")
+            .on("click", function(d,i) {
+            });
+        };
+        if ($scope.mode == 'delete') {
+          d3.selectAll("path")
+            .on("click", function(d,i) {
+              this.remove();
+            });
+        };
+      });
+
       $scope.mapExport = exportService.mapExport;
   }]);
