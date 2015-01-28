@@ -8,8 +8,8 @@
  * Controller of the accessimapEditeurDerApp
  */
 angular.module('accessimapEditeurDerApp')
-  .controller('GlobalmapCtrl', ['$scope', '$http', 'usSpinnerService', 'initSvg', 'mapService', 'settings', 'exportService',
-    function ($scope, $http, usSpinnerService, initSvg, mapService, settings, exportService) {
+  .controller('GlobalmapCtrl', ['$scope', '$rootScope', '$http', '$location', 'usSpinnerService', 'initSvg', 'mapService', 'settings', 'exportService', 'shareSvg',
+    function ($scope, $rootScope, $http, $location, usSpinnerService, initSvg, mapService, settings, exportService, shareSvg) {
 
       $scope.mapCategories = [{
         id: 'world',
@@ -33,12 +33,10 @@ angular.module('accessimapEditeurDerApp')
       function appendSvg(path) {
         $scope.accordionStyle = {display: "none"};
         var svg = d3.xml(path, function(xml) {
-          d3.select("#map")
-            .selectAll("svg")
-            .remove();
-          d3.select("#map")
-            .node()
-            .appendChild(xml.documentElement);
+          shareSvg.addSvg(xml.documentElement)
+          .then(function() {
+            $location.path('/commonmap');
+          });
         });
       }
 

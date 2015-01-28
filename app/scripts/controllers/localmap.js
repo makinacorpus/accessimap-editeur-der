@@ -8,8 +8,8 @@
  * Controller of the accessimapEditeurDerApp
  */
 angular.module('accessimapEditeurDerApp')
-  .controller('LocalmapCtrl', ['$scope', '$http', 'usSpinnerService', 'initSvg', 'mapService', 'settings', 'exportService',
-    function ($scope, $http, usSpinnerService, initSvg, mapService, settings, exportService) {
+  .controller('LocalmapCtrl', ['$rootScope', '$scope', '$http', '$location', 'usSpinnerService', 'initSvg', 'mapService', 'settings', 'exportService', 'shareSvg',
+    function ($rootScope, $scope, $http, $location, usSpinnerService, initSvg, mapService, settings, exportService, shareSvg) {
 
       var width = 1000,
           legendWidth = 300,
@@ -147,6 +147,15 @@ angular.module('accessimapEditeurDerApp')
             .attr("y", function(d) { return d[1]; });
       }
 
+      function mapCommon() {
+        d3.select(".tiles").selectAll("*").remove();
+        var svg = d3.select("svg").node();
+        shareSvg.addSvg(svg)
+        .then(function() {
+          $location.path('/commonmap');
+        });
+      };
+
       function downloadData() {
         usSpinnerService.spin('spinner-1');
 
@@ -203,6 +212,6 @@ angular.module('accessimapEditeurDerApp')
       }
 
       $scope.downloadData = downloadData;
-      $scope.mapExport = exportService.mapExport;
+      $scope.mapCommon = mapCommon;
 
 }]);
