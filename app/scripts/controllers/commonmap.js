@@ -44,6 +44,10 @@ angular.module('accessimapEditeurDerApp')
             .on("click", function(d,i) {
               this.remove();
             });
+          d3.selectAll("text")
+            .on("click", function(d,i) {
+              this.remove();
+            });
         };
         if ($scope.mode == 'addpoint') {
           resetActions();
@@ -93,6 +97,31 @@ angular.module('accessimapEditeurDerApp')
               };
               d3.select(".edition").classed('edition', false)
             });
+        };
+        if ($scope.mode == 'addtext') {
+          resetActions();
+          d3.select("svg")
+            .on("click", function(d,i) {
+              // the previously edited text should not be edited anymore
+              d3.select(".braille.edition").classed('edition', false);
+              var coordinates = d3.mouse(this);
+              d3.select("svg")
+                .append("text")
+                .attr("x", coordinates[0])
+                .attr("y", coordinates[1])
+                .attr("font-size", "20px")
+                .attr({"class": "braille edition"})
+                .text("");
+              d3.select("body")
+                .on("keydown", function() {
+                  window.onkeydown = function(e) { 
+                    return !(e.keyCode == 32);
+                  };
+                  var newChar = String.fromCharCode(d3.event.keyCode).toLowerCase();
+                  var newText = d3.select(".braille.edition").text() + newChar;
+                  d3.select(".braille.edition").text(newText);
+              });
+           });
         };
       });
 
