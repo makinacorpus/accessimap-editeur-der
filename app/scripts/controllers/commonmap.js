@@ -32,6 +32,9 @@ angular.module('accessimapEditeurDerApp')
         d3.selectAll("svg")
           .on("click", function(d,i) {
           });
+        d3.select("body")
+          .on("keydown", function() {
+          });
       }
 
       $scope.$watch('mode', function() {
