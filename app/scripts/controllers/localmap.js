@@ -148,7 +148,7 @@ angular.module('accessimapEditeurDerApp')
       }
 
       function mapCommon() {
-        d3.select(".tiles").selectAll("*").remove();
+        d3.select(".tiles").node().remove();
         var svg = d3.select("svg").node();
         shareSvg.addSvg(svg)
         .then(function() {
