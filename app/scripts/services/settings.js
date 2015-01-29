@@ -131,6 +131,12 @@ angular.module('accessimapEditeurDerApp')
       id: 'filled',
       name: 'Rempli',
       style: [ {
+        'k': 'stroke',
+        'v': 'grey'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
         'k': 'fill',
         'v': 'grey'
       }]

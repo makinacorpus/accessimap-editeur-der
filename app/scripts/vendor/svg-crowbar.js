@@ -140,12 +140,6 @@ function exportSvg() {
     var svgInfo = [],
         svgs = doc.querySelectorAll("svg");
 
-
-    d3.selectAll("path").attr("fill", "none");
-    d3.selectAll("path").attr("stroke", "#000");
-    d3.selectAll("line").attr("fill", "none");
-    d3.selectAll("line").attr("stroke", "#000");
-
     styles = (styles === undefined) ? "" : styles;
 
     [].forEach.call(svgs, function (svg) {
