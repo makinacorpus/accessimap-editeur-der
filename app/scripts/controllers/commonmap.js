@@ -8,17 +8,21 @@
  * Controller of the accessimapEditeurDerApp
  */
 angular.module('accessimapEditeurDerApp')
-  .controller('CommonmapCtrl', ['$rootScope', '$scope', 'settings', 'exportService', 'shareSvg', 'editSvg',
-    function ($rootScope, $scope, settings, exportService, shareSvg, editSvg) {
+  .controller('CommonmapCtrl', ['$rootScope', '$scope', '$location', 'settings', 'exportService', 'shareSvg', 'editSvg',
+    function ($rootScope, $scope, $location, settings, exportService, shareSvg, editSvg) {
       d3.select("#der")
         .selectAll("svg")
         .remove();
       shareSvg.getSvg()
       .then(function(data) {
-        $scope.data = data;
-        d3.select("#der")
-          .node()
-          .appendChild($scope.data);
+        if (data) {
+          $scope.data = data;
+          d3.select("#der")
+            .node()
+            .appendChild($scope.data);
+        } else{
+          $location.path('/')
+        };
       });
 
       $scope.mode = 'default';
@@ -93,7 +97,6 @@ angular.module('accessimapEditeurDerApp')
               };
               var coordinates = d3.mouse(this);
               lastPoint = coordinates;
-              console.log(lastPoint);
               lineEdit.push(coordinates);
               path.attr({
                 d: lineFunction(lineEdit)
