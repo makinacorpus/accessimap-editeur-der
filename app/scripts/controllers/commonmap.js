@@ -35,6 +35,8 @@ angular.module('accessimapEditeurDerApp')
         d3.select("body")
           .on("keydown", function() {
           });
+        $('#der').css('cursor','auto');
+        d3.select(".ongoing").remove();
       }
 
       $scope.$watch('mode', function() {
@@ -43,6 +45,7 @@ angular.module('accessimapEditeurDerApp')
         };
         if ($scope.mode == 'delete') {
           resetActions();
+          $('#der').css('cursor','crosshair');
           d3.selectAll("path")
             .on("click", function(d,i) {
               this.remove();
@@ -54,6 +57,7 @@ angular.module('accessimapEditeurDerApp')
         };
         if ($scope.mode == 'addpoint') {
           resetActions();
+          $('#der').css('cursor','crosshair');
           d3.select("svg")
             .on("click", function(d,i) {
               var coordinates = d3.mouse(this);
@@ -66,7 +70,9 @@ angular.module('accessimapEditeurDerApp')
         };
         if ($scope.mode == 'addline' || $scope.mode == 'addpolygon') {
           resetActions();
+          $('#der').css('cursor','crosshair');
           var lineEdit = [];
+          var lastPoint = null;
           var lineFunction = d3.svg.line()
                          .x(function(d) { return d[0]; })
                          .y(function(d) { return d[1]; })
@@ -86,6 +92,8 @@ angular.module('accessimapEditeurDerApp')
                 });
               };
               var coordinates = d3.mouse(this);
+              lastPoint = coordinates;
+              console.log(lastPoint);
               lineEdit.push(coordinates);
               path.attr({
                 d: lineFunction(lineEdit)
@@ -99,10 +107,33 @@ angular.module('accessimapEditeurDerApp')
                 });
               };
               d3.select(".edition").classed('edition', false)
+              d3.select(".ongoing").remove();
+              lastPoint = null;
+            })
+            .on("mousemove", function(d,i) {
+              if(lastPoint) {
+                var line;
+                if (d3.select(".ongoing")[0][0]) {
+                  line = d3.select(".ongoing")
+                } else{
+                  line = d3.select("svg")
+                    .append("line")
+                    .attr({"class": "ongoing"});
+                  angular.forEach($scope.styleChosen.style, function(attribute) {
+                    line.attr(attribute.k, attribute.v);
+                  });
+                };
+                var coordinates = d3.mouse(this);
+                line.attr("x1", lastPoint[0])
+                  .attr("y1", lastPoint[1])
+                  .attr("x2", coordinates[0])
+                  .attr("y2", coordinates[1]);
+              };
             });
         };
         if ($scope.mode == 'addtext') {
           resetActions();
+          $('#der').css('cursor','crosshair');
           d3.select("svg")
             .on("click", function(d,i) {
               // the previously edited text should not be edited anymore
