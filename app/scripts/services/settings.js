@@ -8,7 +8,8 @@
  * Factory in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
-  .factory('settings', function () {
+  .factory('settings', ['editSvg',
+    function (editSvg) {
 
     var leaflet_conf = {
         GLOBAL_MAP_CENTER: [1.44, 43.6], // [lon, lat]
@@ -142,6 +143,37 @@ angular.module('accessimapEditeurDerApp')
         'k': 'fill',
         'v': 'grey'
       }]
+    }],
+    'point': [{
+      id: 'smallcircle',
+      name:'Petit cercle',
+      path: editSvg.circlePath,
+      radius: 5,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': 'black'
+      }]
+    },{
+      id: 'bigcircle',
+      name:'Grand cercle',
+      path: editSvg.circlePath,
+      radius: 15,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': 'black'
+      }]
     }]};
 
 
@@ -154,4 +186,4 @@ angular.module('accessimapEditeurDerApp')
       STYLES: STYLES,
       leaflet: leaflet_conf
     };
-  });
+  }]);

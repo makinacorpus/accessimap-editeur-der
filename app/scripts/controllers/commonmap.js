@@ -71,7 +71,7 @@ angular.module('accessimapEditeurDerApp')
               .append("path")
               .style("stroke", "gray")
               .style("fill", "black")
-              .attr("d", editSvg.circlePath(coordinates[0], coordinates[1], 5));
+              .attr("d", $scope.styleChosen.path(coordinates[0], coordinates[1], $scope.styleChosen.radius));
            });
         };
         if ($scope.mode == 'line' || $scope.mode == 'polygon') {

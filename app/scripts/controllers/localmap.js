@@ -8,8 +8,8 @@
  * Controller of the accessimapEditeurDerApp
  */
 angular.module('accessimapEditeurDerApp')
-  .controller('LocalmapCtrl', ['$rootScope', '$scope', '$http', '$location', 'usSpinnerService', 'initSvg', 'mapService', 'settings', 'exportService', 'shareSvg',
-    function ($rootScope, $scope, $http, $location, usSpinnerService, initSvg, mapService, settings, exportService, shareSvg) {
+  .controller('LocalmapCtrl', ['$rootScope', '$scope', '$http', '$location', 'usSpinnerService', 'initSvg', 'mapService', 'settings', 'exportService', 'shareSvg', 'editSvg',
+    function ($rootScope, $scope, $http, $location, usSpinnerService, initSvg, mapService, settings, exportService, shareSvg, editSvg) {
 
       var width = 1000,
           legendWidth = 300,
@@ -128,7 +128,14 @@ angular.module('accessimapEditeurDerApp')
 
         angular.forEach($scope.geojson, function(geojson) {
           d3.selectAll("path." + geojson.id)
+              .filter(function(d, i) {
+                return d.geometry.type != 'Point' })
               .attr("d", path);
+          d3.selectAll("path." + geojson.id)
+              .filter(function(d, i) {
+                return d.geometry.type == 'Point' })
+              .attr("d", function(d) {
+                return editSvg.circlePath(projection(d.geometry.coordinates)[0], projection(d.geometry.coordinates)[1], geojson.style.width)});
         });
 
         projection
@@ -185,14 +192,21 @@ angular.module('accessimapEditeurDerApp')
               .attr("class", "vector")
               .attr("id", $scope.queryChosen.id)
               .selectAll("path")
-              .data(osmGeojson.features)
+              .data(osmGeojson.features.filter(function(d, i) {
+                return d.geometry.type != 'Point' }))
               .enter().append("path")
               .attr("class", $scope.queryChosen.id)
-              .attr("d", path);
+              .attr("d", path)
+              .data(osmGeojson.features.filter(function(d, i) {
+                return d.geometry.type == 'Point' }))
+              .enter().append("path")
+              .attr("class", $scope.queryChosen.id)
+              .attr("d", function(d) {
+                return editSvg.circlePath(projection(d.geometry.coordinates)[0], projection(d.geometry.coordinates)[1], $scope.styleChosen.radius)});
 
             angular.forEach($scope.styleChosen.style, function(attribute) {
               d3.select("#" + $scope.queryChosen.id)
-                  .attr(attribute.k, attribute.v);
+                .attr(attribute.k, attribute.v);
             });
 
             map.call(zoom);
@@ -200,9 +214,11 @@ angular.module('accessimapEditeurDerApp')
             $scope.geojson.push({
               id: $scope.queryChosen.id,
               name: $scope.queryChosen.name,
-              layer: osmGeojson
+              layer: osmGeojson,
+              style: {
+                width: $scope.styleChosen.radius
               }
-            );
+            });
 
             addToLegend($scope.queryChosen.name, $scope.styleChosen.style, $scope.geojson.length);
 
