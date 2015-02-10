@@ -11,7 +11,7 @@ angular.module('accessimapEditeurDerApp')
   .factory('settings', ['editSvg',
     function (editSvg) {
 
-    var leaflet_conf = {
+    var leafletConf = {
         GLOBAL_MAP_CENTER: [1.44, 43.6], // [lon, lat]
         GLOBAL_MAP_DEFAULT_ZOOM: 13,
     };
@@ -184,6 +184,6 @@ angular.module('accessimapEditeurDerApp')
       XAPI_URL: XAPI_URL,
       QUERY_LIST: QUERY_LIST,
       STYLES: STYLES,
-      leaflet: leaflet_conf
+      leaflet: leafletConf
     };
   }]);

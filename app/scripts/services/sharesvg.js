@@ -18,7 +18,7 @@ angular.module('accessimapEditeurDerApp')
       deferred.resolve();
 
       return deferred.promise;
-    }
+    };
 
     var getSvg = function(){
       var deferred = $q.defer();
@@ -26,7 +26,7 @@ angular.module('accessimapEditeurDerApp')
       deferred.resolve(svg);
 
       return deferred.promise;
-    }
+    };
 
     return {
       addSvg: addSvg,

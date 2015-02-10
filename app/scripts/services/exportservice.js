@@ -11,8 +11,8 @@ angular.module('accessimapEditeurDerApp')
   .service('exportService', function () {
 
     this.mapExport = function() {
-      d3.select(".tiles").selectAll("*").remove();
+      d3.select('.tiles').selectAll('*').remove();
       exportSvg();
-    }
+    };
 
   });

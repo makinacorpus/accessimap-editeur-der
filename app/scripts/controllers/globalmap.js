@@ -25,14 +25,9 @@ angular.module('accessimapEditeurDerApp')
         }]
       }];
 
-      var width = 1000,
-          legendWidth = 300,
-          height = width / Math.sqrt(2),
-          margin = 10;
-
       function appendSvg(path) {
-        $scope.accordionStyle = {display: "none"};
-        var svg = d3.xml(path, function(xml) {
+        $scope.accordionStyle = {display: 'none'};
+        d3.xml(path, function(xml) {
           shareSvg.addSvg(xml.documentElement)
           .then(function() {
             $location.path('/commonmap');
