@@ -1,5 +1,5 @@
 <form class="form-inline">
-  <select class="form-control" ng-options="item.name for item in queryChoices" ng-model="queryChosen"></select>
+  <select class="form-control" ng-options="item.name for item in queryChoices" ng-model="queryChosen" ng-change="changeStyle(queryChosen)"></select>
   <select class="form-control" ng-options="item.name for item in styleChoices" ng-model="styleChosen"></select>
   <button class="btn btn-primary" ng-click="downloadData()" type="button">
     <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Ajouter à la carte

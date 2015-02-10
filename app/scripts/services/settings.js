@@ -47,7 +47,8 @@ angular.module('accessimapEditeurDerApp')
       query: 'way["highway"]["footway"!="sidewalk"]["footway"!="crossing"]["area"!="yes"]'
     }];
 
-    var STYLES = [{
+    var STYLES = {
+    'line': [{
       id: 'straight',
       name: 'Trait',
       style: [{
@@ -127,10 +128,11 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-dasharray',
         'v': '1, 15'
       }]
-    },{
+    }],
+    'polygon': [{
       id: 'filled',
       name: 'Rempli',
-      style: [ {
+      style: [{
         'k': 'stroke',
         'v': 'grey'
       }, {
@@ -140,7 +142,7 @@ angular.module('accessimapEditeurDerApp')
         'k': 'fill',
         'v': 'grey'
       }]
-    }];
+    }]};
 
 
     var XAPI_URL = 'http://overpass-api.de/api/interpreter?data=';

@@ -75,9 +75,13 @@ angular.module('accessimapEditeurDerApp')
       $scope.queryChoices = settings.QUERY_LIST;
       $scope.queryChosen = $scope.queryChoices[0];
 
-      $scope.styleChoices = settings.STYLES;
+      $scope.styleChoices = settings.STYLES[$scope.queryChosen.type];
       $scope.styleChosen = $scope.styleChoices[0];
 
+      $scope.changeStyle = function (query) {
+        $scope.styleChoices = settings.STYLES[$scope.queryChosen.type];
+        $scope.styleChosen = $scope.styleChoices[0]
+      }
 
       function addToLegend(name, style, position) {
           var line = legendContainter.append("line")

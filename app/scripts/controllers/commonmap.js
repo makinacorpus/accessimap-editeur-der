@@ -59,9 +59,11 @@ angular.module('accessimapEditeurDerApp')
               this.remove();
             });
         };
-        if ($scope.mode == 'addpoint') {
+        if ($scope.mode == 'point') {
           resetActions();
           $('#der').css('cursor','crosshair');
+          $scope.styleChoices = settings.STYLES[$scope.mode];
+          $scope.styleChosen = $scope.styleChoices[0]
           d3.select("svg")
             .on("click", function(d,i) {
               var coordinates = d3.mouse(this);
@@ -72,9 +74,11 @@ angular.module('accessimapEditeurDerApp')
               .attr("d", editSvg.circlePath(coordinates[0], coordinates[1], 5));
            });
         };
-        if ($scope.mode == 'addline' || $scope.mode == 'addpolygon') {
+        if ($scope.mode == 'line' || $scope.mode == 'polygon') {
           resetActions();
           $('#der').css('cursor','crosshair');
+          $scope.styleChoices = settings.STYLES[$scope.mode];
+          $scope.styleChosen = $scope.styleChoices[0]
           var lineEdit = [];
           var lastPoint = null;
           var lineFunction = d3.svg.line()
@@ -103,7 +107,7 @@ angular.module('accessimapEditeurDerApp')
               });
             })
             .on("dblclick", function(d,i) {
-              if ($scope.mode == 'addpolygon') {
+              if ($scope.mode == 'polygon') {
                 var a = d3.select(".edition").attr("d");
                 d3.select(".edition").attr({
                   d: a + 'Z'
