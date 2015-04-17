@@ -37,6 +37,11 @@ angular.module('accessimapEditeurDerApp')
 
       var svg = initSvg.createSvg(width, height);
 
+      // Load polygon fill styles, defined in settings
+      angular.forEach(settings.POLYGON_STYLES, function(key, value) {
+          svg.call(key);
+      });
+      
       var map = svg.append('g')
           .attr('width', function() {
               return width - legendWidth;
@@ -205,6 +210,7 @@ angular.module('accessimapEditeurDerApp')
                 return editSvg.circlePath(projection(d.geometry.coordinates)[0], projection(d.geometry.coordinates)[1], $scope.styleChosen.radius);});
 
             angular.forEach($scope.styleChosen.style, function(attribute) {
+              console.log(attribute)
               d3.select('#' + $scope.queryChosen.id)
                 .attr(attribute.k, attribute.v);
             });

@@ -48,6 +48,14 @@ angular.module('accessimapEditeurDerApp')
       query: 'way["highway"]["footway"!="sidewalk"]["footway"!="crossing"]["area"!="yes"]'
     }];
 
+    var POLYGON_STYLES = {
+      'bighash': textures.lines().orientation('vertical').thicker(),
+      'smallhash': textures.lines().orientation('vertical'),
+      'waves': textures.paths().d('waves').thicker(),
+      'smalldots': textures.circles(),
+      'bigdots': textures.circles().heavier()
+    };
+
     var STYLES = {
     'line': [{
       id: 'straight',
@@ -131,22 +139,74 @@ angular.module('accessimapEditeurDerApp')
       }]
     }],
     'polygon': [{
-      id: 'filled',
-      name: 'Rempli',
+      id: 'bighash',
+      name: 'Hachures',
       style: [{
         'k': 'stroke',
-        'v': 'grey'
+        'v': 'black'
       }, {
         'k': 'stroke-width',
         'v': '2'
       },{
         'k': 'fill',
-        'v': 'grey'
+        'v': POLYGON_STYLES.bighash.url()
+      }]
+    },{
+      id: 'smallhash',
+      name: 'Petites hachures',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smallhash.url()
+      }]
+    },{
+      id: 'waves',
+      name: 'Vagues',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.waves.url()
+      }]
+    },{
+      id: 'bigdots',
+      name: 'Points',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.bigdots.url()
+      }]
+    },{
+      id: 'smalldots',
+      name: 'Petits points',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smalldots.url()
       }]
     }],
     'point': [{
       id: 'smallcircle',
-      name:'Petit cercle',
+      name: 'Petit cercle',
       path: editSvg.circlePath,
       radius: 5,
       style: [{
@@ -161,7 +221,7 @@ angular.module('accessimapEditeurDerApp')
       }]
     },{
       id: 'bigcircle',
-      name:'Grand cercle',
+      name: 'Grand cercle',
       path: editSvg.circlePath,
       radius: 15,
       style: [{
@@ -183,6 +243,7 @@ angular.module('accessimapEditeurDerApp')
     return {
       XAPI_URL: XAPI_URL,
       QUERY_LIST: QUERY_LIST,
+      POLYGON_STYLES: POLYGON_STYLES,
       STYLES: STYLES,
       leaflet: leafletConf
     };
