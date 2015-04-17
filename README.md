@@ -10,3 +10,6 @@ This project is generated using Yeoman (http://yeoman.io/)
 - `bower install`
 - `grunt serve`
 - look your browser
+
+### Publish on gh-pages
+   git subtree push --prefix dist origin gh-pages
