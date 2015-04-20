@@ -58,21 +58,60 @@ angular.module('accessimapEditeurDerApp')
 
     var STYLES = {
     'line': [{
-      id: 'straight',
-      name: 'Trait',
+      id: 'straight_1',
+      name: 'Trait 1',
       style: [{
         'k': 'stroke',
         'v': 'black'
       }, {
         'k': 'stroke-width',
-        'v': '4'
+        'v': '1'
       }, {
         'k': 'fill',
         'v': 'none'
       }]
     },{
-      id: 'dashed55',
-      name: 'Tirets 5 5',
+      id: 'straight_2',
+      name: 'Trait 2',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }]
+    },{
+      id: 'straight_3',
+      name: 'Trait 3',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '3'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }]
+    },{
+      id: 'straight_5',
+      name: 'Trait 5',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '5'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }]
+    },{
+      id: 'dashed21_3',
+      name: 'Tirets 21_3',
       style: [{
         'k': 'stroke',
         'v': 'black'
@@ -84,11 +123,27 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }, {
         'k': 'stroke-dasharray',
-        'v': '5, 5'
+        'v': '4, 2'
       }]
     },{
-      id: 'dashed33',
-      name: 'Tirets 2 2',
+      id: 'dashed21_5',
+      name: 'Tirets 21_5',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '5'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }, {
+        'k': 'stroke-dasharray',
+        'v': '4, 2'
+      }]
+    },{
+      id: 'dashed61_3',
+      name: 'Tirets 61_3',
       style: [{
         'k': 'stroke',
         'v': 'black'
@@ -100,11 +155,27 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }, {
         'k': 'stroke-dasharray',
-        'v': '2, 2'
+        'v': '12, 2'
       }]
     },{
-      id: 'dashed1010',
-      name: 'Tirets 10 10',
+      id: 'dashed61_5',
+      name: 'Tirets 61_5',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '5'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }, {
+        'k': 'stroke-dasharray',
+        'v': '12, 2'
+      }]
+    },{
+      id: 'dashed22_3',
+      name: 'Tirets 22_3',
       style: [{
         'k': 'stroke',
         'v': 'black'
@@ -116,26 +187,103 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }, {
         'k': 'stroke-dasharray',
-        'v': '10,10'
+        'v': '4, 4'
       }]
     },{
-      id: 'dotted',
-      name: 'Ronds',
+      id: 'dashed22_5',
+      name: 'Tirets 22_5',
       style: [{
         'k': 'stroke',
         'v': 'black'
       }, {
         'k': 'stroke-width',
-        'v': '10'
-      }, {
-        'k': 'stroke-linecap',
-        'v': 'round'
+        'v': '5'
       }, {
         'k': 'fill',
         'v': 'none'
       }, {
         'k': 'stroke-dasharray',
-        'v': '1, 15'
+        'v': '4, 4'
+      }]
+    },{
+      id: 'dashed42_2',
+      name: 'Tirets 42_2',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }, {
+        'k': 'stroke-dasharray',
+        'v': '8, 4'
+      }]
+    },{
+      id: 'dashed42_3',
+      name: 'Tirets 42_3',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '3'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }, {
+        'k': 'stroke-dasharray',
+        'v': '8, 4'
+      }]
+    },{
+      id: 'dashed42_5',
+      name: 'Tirets 42_5',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '5'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }, {
+        'k': 'stroke-dasharray',
+        'v': '8, 4'
+      }]
+    },{
+      id: 'dashed4212_3',
+      name: 'Tirets 4212_3',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '3'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }, {
+        'k': 'stroke-dasharray',
+        'v': '8, 4, 2, 4'
+      }]
+    },{
+      id: 'dashed4212_5',
+      name: 'Tirets 4212_5',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '5'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }, {
+        'k': 'stroke-dasharray',
+        'v': '8, 4, 2, 4'
       }]
     }],
     'polygon': [{
