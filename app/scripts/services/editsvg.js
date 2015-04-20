@@ -35,9 +35,9 @@ angular.module('accessimapEditeurDerApp')
 
     this.ovalPath = function(cx, cy, r) {
       var d = 'M ' + cx + ' ' + cy;
-          d += ' m -' + r/2 + ', 0';
-          d += ' a ' + r/2 + ',' + r + ' 0 1,0 ' + r + ',0';
-          d += ' a ' + r/2 + ',' + r + ' 0 1,0 -' + r + ',0';
+          d += ' m -' + r / 2 + ', 0';
+          d += ' a ' + r / 2 + ',' + r + ' 0 1,0 ' + r + ',0';
+          d += ' a ' + r / 2 + ',' + r + ' 0 1,0 -' + r + ',0';
       return d;
     };
 
@@ -105,6 +105,30 @@ angular.module('accessimapEditeurDerApp')
     this.verticalRectPath = function(cx, cy, r) {
       var d = 'M ' + cx + ' ' + (cy - r / 2);
           d += ' v' + r;
+          d += ' Z';
+      return d;
+    };
+
+    this.horizontalArrowPath = function(cx, cy, r) {
+      var d = 'M ' + (cx - r / 2) + ' ' + (cy + 2);
+          d += ' h' + (2 * r / 3);
+          d += ' v 2';
+          d += ' L ' + (cx + r / 2) + ' ' + cy;
+          d += ' L ' + (cx + r / 6) + ' ' + (cy - 4);
+          d += ' v 2';
+          d += ' h ' + (-2 * r / 3);
+          d += ' Z';
+      return d;
+    };
+
+    this.verticalArrowPath = function(cx, cy, r) {
+      var d = 'M ' + (cx + 2) + ' ' + (cy + r / 2);
+          d += ' v' + (-2 * r / 3);
+          d += ' h 2';
+          d += ' L ' + cx + ' ' + (cy - r / 2);
+          d += ' L ' + (cx - 4) + ' ' + (cy - r / 6);
+          d += ' h 2';
+          d += ' v ' + (2 * r / 3);
           d += ' Z';
       return d;
     };

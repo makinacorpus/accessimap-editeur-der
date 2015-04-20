@@ -532,8 +532,37 @@ angular.module('accessimapEditeurDerApp')
         'k': 'fill',
         'v': 'black'
       }]
+    },{
+      id: 'horizontalArrow',
+      name: 'horizontalArrow',
+      path: editSvg.horizontalArrowPath,
+      radius: 15,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '4'
+      },{
+        'k': 'fill',
+        'v': 'black'
+      }]
+    },{
+      id: 'verticalArrow',
+      name: 'verticalArrow',
+      path: editSvg.verticalArrowPath,
+      radius: 15,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '4'
+      },{
+        'k': 'fill',
+        'v': 'black'
+      }]
     }]};
-
 
 
     var XAPI_URL = 'http://overpass-api.de/api/interpreter?data=';
