@@ -17,6 +17,30 @@ angular.module('accessimapEditeurDerApp')
       return d;
     };
 
+    this.circleCrossPath = function(cx, cy, r) {
+      var d = 'M ' + cx + ' ' + cy;
+          d += ' m -' + r + ', 0';
+          d += ' a ' + r + ',' + r + ' 0 1,0 ' + r * 2 + ',0';
+          d += ' a ' + r + ',' + r + ' 0 1,0 -' + r * 2 + ',0';
+          d += ' Z';
+          r = r / Math.cos(45 * Math.PI / 180);
+          d += ' M ' + (cx - r / 2) + ' ' + (cy - r / 2);
+          d += ' L ' + (cx + r / 2) + ' ' + (cy + r / 2);
+          d += ' Z';
+          d += ' M ' + (cx - r / 2) + ' ' + (cy + r / 2);
+          d += ' L ' + (cx + r / 2) + ' ' + (cy - r / 2);
+          d += ' Z';
+      return d;
+    };
+
+    this.ovalPath = function(cx, cy, r) {
+      var d = 'M ' + cx + ' ' + cy;
+          d += ' m -' + r/2 + ', 0';
+          d += ' a ' + r/2 + ',' + r + ' 0 1,0 ' + r + ',0';
+          d += ' a ' + r/2 + ',' + r + ' 0 1,0 -' + r + ',0';
+      return d;
+    };
+
     this.trianglePath = function(cx, cy, r) {
       var d = 'M ' + (cx - r / 2) + ' ' + cy;
           d += ' L' + cx + ' ' + (cy - Math.sqrt(3 * r * r / 4));

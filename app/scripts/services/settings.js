@@ -9,7 +9,7 @@
  */
 angular.module('accessimapEditeurDerApp')
   .factory('settings', ['editSvg',
-    function (editSvg) {
+    function(editSvg) {
 
     var leafletConf = {
         GLOBAL_MAP_CENTER: [1.44, 43.6], // [lon, lat]
@@ -354,7 +354,22 @@ angular.module('accessimapEditeurDerApp')
     }],
     'point': [{
       id: 'smallcircle',
-      name: 'Petit cercle',
+      name: 'Petit cercle vide',
+      path: editSvg.circlePath,
+      radius: 5,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': 'none'
+      }]
+    },{
+      id: 'smallcircle',
+      name: 'Petit cercle plein',
       path: editSvg.circlePath,
       radius: 5,
       style: [{
@@ -371,7 +386,7 @@ angular.module('accessimapEditeurDerApp')
       id: 'bigcircle',
       name: 'Grand cercle',
       path: editSvg.circlePath,
-      radius: 15,
+      radius: 10,
       style: [{
         'k': 'stroke',
         'v': 'black'
@@ -381,6 +396,36 @@ angular.module('accessimapEditeurDerApp')
       },{
         'k': 'fill',
         'v': 'black'
+      }]
+    },{
+      id: 'circleCross',
+      name: 'Cercle croix',
+      path: editSvg.circleCrossPath,
+      radius: 10,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': 'none'
+      }]
+    },{
+      id: 'oval',
+      name: 'Ovale',
+      path: editSvg.ovalPath,
+      radius: 10,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': 'none'
       }]
     },{
       id: 'triangle',
