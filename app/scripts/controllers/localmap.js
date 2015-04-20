@@ -88,24 +88,49 @@ angular.module('accessimapEditeurDerApp')
         $scope.styleChosen = $scope.styleChoices[0];
       };
 
-      function addToLegend(name, style, position) {
-          var line = legendContainter.append('line')
-              .attr('x1', function() {
-                  return width - legendWidth + margin;
-              })
-              .attr('y1', function() {
-                  return position * 30 + 40;
-              })
-              .attr('x2', function() {
-                  return width - legendWidth + margin + 40;
-              })
-              .attr('y2', function() {
-                  return position * 30 + 40;
-              })
-              .attr('fill', 'red');
+      function addToLegend(type, name, style, position) {
+        if (type === 'line') {
+            var symbol = legendContainter.append('line')
+                .attr('x1', function() {
+                    return width - legendWidth + margin;
+                })
+                .attr('y1', function() {
+                    return position * 30 + 40;
+                })
+                .attr('x2', function() {
+                    return width - legendWidth + margin + 40;
+                })
+                .attr('y2', function() {
+                    return position * 30 + 40;
+                })
+                .attr('fill', 'red');
+        }
+        if (type === 'point') {
+            var symbol = legendContainter.append('path')
+                .attr('d', function() {
+                    return style.path(width - legendWidth + margin + 20, position * 30 + 40 + style.radius / 2, style.radius);
+                })
+                .attr('fill', 'red');
+        }
+        if (type === 'polygon') {
+            var symbol = legendContainter.append('rect')
+                .attr('x', function() {
+                    return width - legendWidth + margin;
+                })
+                .attr('y', function() {
+                    return position * 30 + 40;
+                })
+                .attr('width', function() {
+                    return 40;
+                })
+                .attr('height', function() {
+                    return 15;
+                })
+                .attr('fill', 'red');
+        }
 
-          angular.forEach(style, function(attribute) {
-            line.attr(attribute.k, attribute.v);
+          angular.forEach(style.style, function(attribute) {
+            symbol.attr(attribute.k, attribute.v);
           });
 
           legendContainter.append('text')
@@ -226,7 +251,7 @@ angular.module('accessimapEditeurDerApp')
               }
             });
 
-            addToLegend($scope.queryChosen.name, $scope.styleChosen.style, $scope.geojson.length);
+            addToLegend($scope.queryChosen.type, $scope.queryChosen.name, $scope.styleChosen, $scope.geojson.length);
 
             zoomed();
 
