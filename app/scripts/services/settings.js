@@ -397,7 +397,98 @@ angular.module('accessimapEditeurDerApp')
         'k': 'fill',
         'v': 'black'
       }]
+    },{
+      id: 'square',
+      name: 'Carré',
+      path: editSvg.squarePath,
+      radius: 15,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '3'
+      },{
+        'k': 'fill',
+        'v': 'none'
+      }]
+    },{
+      id: 'squareDiag',
+      name: 'Carré Diag',
+      path: editSvg.squareDiagPath,
+      radius: 15,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '3'
+      },{
+        'k': 'fill',
+        'v': 'none'
+      }]
+    },{
+      id: 'squareCross',
+      name: 'Carré croix',
+      path: editSvg.squareCrossPath,
+      radius: 15,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '3'
+      },{
+        'k': 'fill',
+        'v': 'none'
+      }]
+    },{
+      id: 'cross',
+      name: 'Croix',
+      path: editSvg.crossPath,
+      radius: 15,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '3'
+      },{
+        'k': 'fill',
+        'v': 'black'
+      }]
+    },{
+      id: 'horizontalRect',
+      name: 'horizontalRect',
+      path: editSvg.horizontalRectPath,
+      radius: 15,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '4'
+      },{
+        'k': 'fill',
+        'v': 'black'
+      }]
+    },{
+      id: 'verticalRect',
+      name: 'verticalRect',
+      path: editSvg.verticalRectPath,
+      radius: 15,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '4'
+      },{
+        'k': 'fill',
+        'v': 'black'
+      }]
     }]};
+
 
 
     var XAPI_URL = 'http://overpass-api.de/api/interpreter?data=';
