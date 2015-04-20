@@ -137,7 +137,7 @@ angular.module('accessimapEditeurDerApp')
               .filter(function(d) {
                 return d.geometry.type === 'Point'; })
               .attr('d', function(d) {
-                return editSvg.circlePath(projection(d.geometry.coordinates)[0], projection(d.geometry.coordinates)[1], geojson.style.width);});
+                return geojson.style.path(projection(d.geometry.coordinates)[0], projection(d.geometry.coordinates)[1], geojson.style.width);});
         });
 
         projection
@@ -207,10 +207,9 @@ angular.module('accessimapEditeurDerApp')
               .enter().append('path')
               .attr('class', $scope.queryChosen.id)
               .attr('d', function(d) {
-                return editSvg.circlePath(projection(d.geometry.coordinates)[0], projection(d.geometry.coordinates)[1], $scope.styleChosen.radius);});
+                return $scope.styleChosen.path(projection(d.geometry.coordinates)[0], projection(d.geometry.coordinates)[1], $scope.styleChosen.radius);});
 
             angular.forEach($scope.styleChosen.style, function(attribute) {
-              console.log(attribute)
               d3.select('#' + $scope.queryChosen.id)
                 .attr(attribute.k, attribute.v);
             });
@@ -222,6 +221,7 @@ angular.module('accessimapEditeurDerApp')
               name: $scope.queryChosen.name,
               layer: osmGeojson,
               style: {
+                path: $scope.styleChosen.path,
                 width: $scope.styleChosen.radius
               }
             });

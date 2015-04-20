@@ -234,6 +234,21 @@ angular.module('accessimapEditeurDerApp')
         'k': 'fill',
         'v': 'black'
       }]
+    },{
+      id: 'triangle',
+      name: 'Triangle',
+      path: editSvg.trianglePath,
+      radius: 15,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': 'black'
+      }]
     }]};
 
 
