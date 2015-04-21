@@ -30,6 +30,11 @@ angular.module('accessimapEditeurDerApp')
       function appendSvg(path) {
         $scope.accordionStyle = {display: 'none'};
         d3.xml(path, function(xml) {
+          var svg = d3.select(xml.documentElement);
+          // Load polygon fill styles taht will be used on common map
+          angular.forEach(settings.POLYGON_STYLES, function(key, value) {
+              svg.call(key);
+          });
           shareSvg.addSvg(xml.documentElement)
           .then(function() {
             $location.path('/commonmap');
