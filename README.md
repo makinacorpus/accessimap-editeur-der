@@ -12,4 +12,7 @@ This project is generated using Yeoman (http://yeoman.io/)
 - look your browser
 
 ### Publish on gh-pages
-   git subtree push --prefix dist origin gh-pages
+``` sh
+grunt build
+git subtree push --prefix dist origin gh-pages
+```
