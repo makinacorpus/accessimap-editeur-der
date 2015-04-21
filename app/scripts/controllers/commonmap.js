@@ -69,11 +69,12 @@ angular.module('accessimapEditeurDerApp')
           d3.select('svg')
             .on('click', function() {
               var coordinates = d3.mouse(this);
-              d3.select('svg')
+              var feature = d3.select('svg')
               .append('path')
-              .style('stroke', 'gray')
-              .style('fill', 'black')
               .attr('d', $scope.styleChosen.path(coordinates[0], coordinates[1], $scope.styleChosen.radius));
+              angular.forEach($scope.styleChosen.style, function(attribute) {
+                feature.attr(attribute.k, attribute.v);
+              });
            });
         }
         if ($scope.mode === 'line' || $scope.mode === 'polygon') {
@@ -106,6 +107,9 @@ angular.module('accessimapEditeurDerApp')
               lineEdit.push(coordinates);
               path.attr({
                 d: lineFunction(lineEdit)
+              });
+              angular.forEach($scope.styleChosen.style, function(attribute) {
+                path.attr(attribute.k, attribute.v);
               });
             })
             .on('dblclick', function() {
