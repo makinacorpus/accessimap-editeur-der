@@ -8,8 +8,8 @@
  * Controller of the accessimapEditeurDerApp
  */
 angular.module('accessimapEditeurDerApp')
-  .controller('CommonmapCtrl', ['$rootScope', '$scope', '$location', 'settings', 'exportService', 'shareSvg',
-    function ($rootScope, $scope, $location, settings, exportService, shareSvg) {
+  .controller('CommonmapCtrl', ['$rootScope', '$scope', '$location', 'settings', 'exportService', 'shareSvg', 'svgicon',
+    function ($rootScope, $scope, $location, settings, exportService, shareSvg, svgicon) {
       d3.select('#der')
         .selectAll('svg')
         .remove();
@@ -26,8 +26,10 @@ angular.module('accessimapEditeurDerApp')
       });
 
       $scope.mode = 'default';
-      $scope.styleChoices = settings.STYLES;
+      $scope.styleChoices = [];
       $scope.styleChosen = $scope.styleChoices[0];
+
+      $scope.featureIcon = svgicon.featureIcon;
 
       function resetActions() {
         d3.selectAll('path')

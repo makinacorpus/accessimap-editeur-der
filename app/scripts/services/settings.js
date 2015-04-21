@@ -49,8 +49,8 @@ angular.module('accessimapEditeurDerApp')
     }];
 
     var POLYGON_STYLES = {
-      'bighash': textures.lines().orientation('vertical').thicker(),
-      'smallhash': textures.lines().orientation('vertical'),
+      'bighash': textures.lines().orientation('vertical'),
+      'smallhash': textures.lines().orientation('vertical').thicker(),
       'waves': textures.paths().d('waves').thicker(),
       'smalldots': textures.circles(),
       'bigdots': textures.circles().heavier()
@@ -123,7 +123,7 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }, {
         'k': 'stroke-dasharray',
-        'v': '4, 2'
+        'v': '6, 3'
       }]
     },{
       id: 'dashed21_5',
@@ -139,7 +139,7 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }, {
         'k': 'stroke-dasharray',
-        'v': '4, 2'
+        'v': '10, 5'
       }]
     },{
       id: 'dashed61_3',
@@ -155,7 +155,7 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }, {
         'k': 'stroke-dasharray',
-        'v': '12, 2'
+        'v': '18, 3'
       }]
     },{
       id: 'dashed61_5',
@@ -171,7 +171,7 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }, {
         'k': 'stroke-dasharray',
-        'v': '12, 2'
+        'v': '30, 5'
       }]
     },{
       id: 'dashed22_3',
@@ -187,7 +187,7 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }, {
         'k': 'stroke-dasharray',
-        'v': '4, 4'
+        'v': '6, 6'
       }]
     },{
       id: 'dashed22_5',
@@ -203,7 +203,7 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }, {
         'k': 'stroke-dasharray',
-        'v': '4, 4'
+        'v': '10, 10'
       }]
     },{
       id: 'dashed42_2',
@@ -235,7 +235,7 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }, {
         'k': 'stroke-dasharray',
-        'v': '8, 4'
+        'v': '12, 6'
       }]
     },{
       id: 'dashed42_5',
@@ -251,7 +251,7 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }, {
         'k': 'stroke-dasharray',
-        'v': '8, 4'
+        'v': '20, 10'
       }]
     },{
       id: 'dashed4212_3',
@@ -267,7 +267,7 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }, {
         'k': 'stroke-dasharray',
-        'v': '8, 4, 2, 4'
+        'v': '12, 6, 3, 6'
       }]
     },{
       id: 'dashed4212_5',
@@ -283,7 +283,7 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }, {
         'k': 'stroke-dasharray',
-        'v': '8, 4, 2, 4'
+        'v': '20, 10, 5, 10'
       }]
     }],
     'polygon': [{
