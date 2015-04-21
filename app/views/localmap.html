@@ -1,7 +1,7 @@
 <form class="form-inline">
   <select class="form-control" ng-options="item.name for item in queryChoices" ng-model="queryChosen" ng-change="changeStyle(queryChosen)"></select>
 
-  <ui-select ng-model="$parent.styleChosen" ng-disabled="disabled" theme="select2" class="form-control" style="width: 300px;">
+  <ui-select ng-model="$parent.styleChosen" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
     <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
     <ui-select-choices repeat="item in styleChoices | filter: $select.search">
       <div ng-bind-html="item.name | highlight: $select.search"></div>

@@ -13,3 +13,13 @@
   width: 256px;
   height: 256px;
 }
+
+.style-selector {
+  padding: 0;
+  border: 0;
+  .ui-select-match {
+    .form-control {
+      width: 100%;
+    }
+  }
+}
