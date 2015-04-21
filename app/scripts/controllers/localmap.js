@@ -83,9 +83,60 @@ angular.module('accessimapEditeurDerApp')
       $scope.styleChoices = settings.STYLES[$scope.queryChosen.type];
       $scope.styleChosen = $scope.styleChoices[0];
 
-      $scope.changeStyle = function (query) {
+      $scope.changeStyle = function(query) {
         $scope.styleChoices = settings.STYLES[$scope.queryChosen.type];
         $scope.styleChosen = $scope.styleChoices[0];
+      };
+
+      $scope.featureIcon = function(item) {
+        var iconSvg = document.createElement('svg');
+        var iconContainer = d3.select(iconSvg).attr('height', 30).append('g');
+        var type = $scope.queryChosen.type;
+        if (type === 'line') {
+          var symbol = iconContainer.append('line')
+            .attr('x1', function() {
+                return 0;
+            })
+            .attr('y1', function() {
+                return 15;
+            })
+            .attr('x2', function() {
+                return 250;
+            })
+            .attr('y2', function() {
+                return 15;
+            })
+            .attr('fill', 'red');
+        }
+        if (type === 'point') {
+          var symbol = iconContainer.append('path')
+              .attr('d', function() {
+                  return item.path(15, 15, item.radius);
+              })
+              .attr('fill', 'red');
+        }
+        if (type === 'polygon') {
+          var symbol = iconContainer.append('rect')
+                .attr('x', function() {
+                    return 0;
+                })
+                .attr('y', function() {
+                    return 0;
+                })
+                .attr('width', function() {
+                    return 250;
+                })
+                .attr('height', function() {
+                    return 30;
+                })
+                .attr('fill', 'red');
+        }
+
+        angular.forEach(item.style, function(attribute) {
+          symbol.attr(attribute.k, attribute.v);
+        });
+
+        return (new XMLSerializer).serializeToString(iconSvg);
       };
 
       function addToLegend(type, name, style, position) {

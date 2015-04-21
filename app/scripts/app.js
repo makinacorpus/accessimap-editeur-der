@@ -16,7 +16,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'angularSpinner'
+    'angularSpinner',
+    'ui.select'
   ])
   .config(function ($routeProvider) {
     $routeProvider
