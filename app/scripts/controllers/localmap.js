@@ -43,12 +43,14 @@ angular.module('accessimapEditeurDerApp')
       angular.forEach(settings.POLYGON_STYLES, function(key, value) {
           svg.call(key);
       });
+      $scope.rotationAngle = 0;
 
       var map = svg.append('g')
           .attr('width', function() {
               return width - legendWidth;
           })
-          .attr('height', height);
+          .attr('height', height)
+          .attr('transform', 'rotate(' + $scope.rotationAngle + ')');
 
       var raster = map.append('g')
           .attr('class', 'tiles');
@@ -86,8 +88,12 @@ angular.module('accessimapEditeurDerApp')
       $scope.styleChosen = $scope.styleChoices[0];
 
       $scope.changeStyle = function(query) {
-        $scope.styleChoices = settings.STYLES[$scope.queryChosen.type];
-        $scope.styleChosen = $scope.styleChoices[0];
+          $scope.styleChoices = settings.STYLES[$scope.queryChosen.type];
+          $scope.styleChosen = $scope.styleChoices[0];
+      };
+
+      $scope.rotateMap = function() {
+          map.attr('transform', 'rotate(' + $scope.rotationAngle + ' 350 350)');
       };
 
       $scope.featureIcon = svgicon.featureIcon;
