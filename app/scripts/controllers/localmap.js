@@ -185,7 +185,9 @@ angular.module('accessimapEditeurDerApp')
 
         image.enter().append('image')
             .attr('xlink:href', function(d) {
-              return 'http://' + ['a', 'b', 'c'][Math.random() * 3 | 0] + '.tile.osm.org/' + d[2] + '/' + d[0] + '/' + d[1] + '.png';
+                var url = 'http://' + ['a', 'b', 'c'][Math.random() * 3 | 0];
+                url += '.tile.osm.org/' + d[2] + '/' + d[0] + '/' + d[1] + '.png';
+              return url;
             })
             .attr('width', 1)
             .attr('height', 1)
@@ -216,7 +218,9 @@ angular.module('accessimapEditeurDerApp')
             mapW = boundsNW.lon,
             mapN = boundsNW.lat,
             mapE = boundsSE.lon;
-        $http.get(settings.XAPI_URL + '[out:json];('+ $scope.queryChosen.query + '(' + mapS + ',' + mapW + ',' + mapN + ',' + mapE + '););out body;>;out skel qt;').
+        var url = settings.XAPI_URL + '[out:json];(' + $scope.queryChosen.query;
+        url += '(' + mapS + ',' + mapW + ',' + mapN + ',' + mapE + '););out body;>;out skel qt;';
+        $http.get(url).
           success(function(data) {
             var osmGeojson = osmtogeojson(data);
 
