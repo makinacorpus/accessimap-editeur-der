@@ -199,9 +199,11 @@ angular.module('accessimapEditeurDerApp')
       function mapCommon() {
         //d3.select('.tiles').node().remove();
         var svg = d3.select('svg').node();
+        zoom.on('zoom', null)
+            .on('zoomend', null);
         shareSvg.addSvg(svg)
         .then(function() {
-          $location.path('/commonmap');
+            $location.path('/commonmap');
         });
       }
 
