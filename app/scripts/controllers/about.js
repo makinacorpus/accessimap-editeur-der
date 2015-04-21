@@ -8,7 +8,7 @@
  * Controller of the accessimapEditeurDerApp
  */
 angular.module('accessimapEditeurDerApp')
-  .controller('AboutCtrl', function ($scope) {
+  .controller('AboutCtrl', function($scope) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',

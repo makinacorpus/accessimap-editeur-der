@@ -8,8 +8,10 @@
  * Controller of the accessimapEditeurDerApp
  */
 angular.module('accessimapEditeurDerApp')
-  .controller('LocalmapCtrl', ['$rootScope', '$scope', '$http', '$location', 'usSpinnerService', 'initSvg', 'mapService', 'settings', 'exportService', 'shareSvg', 'editSvg', 'svgicon',
-    function ($rootScope, $scope, $http, $location, usSpinnerService, initSvg, mapService, settings, exportService, shareSvg, editSvg, svgicon) {
+  .controller('LocalmapCtrl', ['$rootScope', '$scope', '$http', '$location', 'usSpinnerService', 'initSvg',
+    'mapService', 'settings', 'exportService', 'shareSvg', 'editSvg', 'svgicon',
+    function($rootScope, $scope, $http, $location, usSpinnerService, initSvg,
+      mapService, settings, exportService, shareSvg, editSvg, svgicon) {
 
       var width = 1000,
           legendWidth = 300,
@@ -41,7 +43,7 @@ angular.module('accessimapEditeurDerApp')
       angular.forEach(settings.POLYGON_STYLES, function(key, value) {
           svg.call(key);
       });
-      
+
       var map = svg.append('g')
           .attr('width', function() {
               return width - legendWidth;
@@ -110,7 +112,9 @@ angular.module('accessimapEditeurDerApp')
         if (type === 'point') {
             var symbol = legendContainter.append('path')
                 .attr('d', function() {
-                    return style.path(width - legendWidth + margin + 20, position * 30 + 40 + style.radius / 2, style.radius);
+                    var cx = width - legendWidth + margin + 20,
+                        cy = position * 30 + 40 + style.radius / 2;
+                    return style.path(cx, cy, style.radius);
                 })
                 .attr('fill', 'red');
         }
@@ -152,8 +156,7 @@ angular.module('accessimapEditeurDerApp')
       function zoomed() {
         var tiles = tile
             .scale(zoom.scale())
-            .translate(zoom.translate())
-            ();
+            .translate(zoom.translate())();
 
         angular.forEach($scope.geojson, function(geojson) {
           d3.selectAll('path.' + geojson.id)
@@ -164,7 +167,8 @@ angular.module('accessimapEditeurDerApp')
               .filter(function(d) {
                 return d.geometry.type === 'Point'; })
               .attr('d', function(d) {
-                return geojson.style.path(projection(d.geometry.coordinates)[0], projection(d.geometry.coordinates)[1], geojson.style.width);});
+                var coords = projection(d.geometry.coordinates);
+                return geojson.style.path(coords[0], coords[1], geojson.style.width);});
         });
 
         projection
@@ -180,7 +184,9 @@ angular.module('accessimapEditeurDerApp')
             .remove();
 
         image.enter().append('image')
-            .attr('xlink:href', function(d) { return 'http://' + ['a', 'b', 'c'][Math.random() * 3 | 0] + '.tile.osm.org/' + d[2] + '/' + d[0] + '/' + d[1] + '.png'; })
+            .attr('xlink:href', function(d) {
+              return 'http://' + ['a', 'b', 'c'][Math.random() * 3 | 0] + '.tile.osm.org/' + d[2] + '/' + d[0] + '/' + d[1] + '.png';
+            })
             .attr('width', 1)
             .attr('height', 1)
             .attr('x', function(d) { return d[0]; })
@@ -234,7 +240,8 @@ angular.module('accessimapEditeurDerApp')
               .enter().append('path')
               .attr('class', $scope.queryChosen.id)
               .attr('d', function(d) {
-                return $scope.styleChosen.path(projection(d.geometry.coordinates)[0], projection(d.geometry.coordinates)[1], $scope.styleChosen.radius);});
+                var coords = projection(d.geometry.coordinates);
+                return $scope.styleChosen.path(coords[0], coords[1], $scope.styleChosen.radius);});
 
             angular.forEach($scope.styleChosen.style, function(attribute) {
               d3.select('#' + $scope.queryChosen.id)

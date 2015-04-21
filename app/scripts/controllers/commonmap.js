@@ -9,7 +9,7 @@
  */
 angular.module('accessimapEditeurDerApp')
   .controller('CommonmapCtrl', ['$rootScope', '$scope', '$location', 'settings', 'exportService', 'shareSvg', 'svgicon',
-    function ($rootScope, $scope, $location, settings, exportService, shareSvg, svgicon) {
+    function($rootScope, $scope, $location, settings, exportService, shareSvg, svgicon) {
       d3.select('#der')
         .selectAll('svg')
         .remove();
@@ -20,7 +20,7 @@ angular.module('accessimapEditeurDerApp')
           d3.select('#der')
             .node()
             .appendChild($scope.data);
-        } else{
+        } else {
           $location.path('/');
         }
       });
@@ -41,7 +41,7 @@ angular.module('accessimapEditeurDerApp')
         d3.select('body')
           .on('keydown', function() {
           });
-        $('#der').css('cursor','auto');
+        $('#der').css('cursor', 'auto');
         d3.select('.ongoing').remove();
       }
 
@@ -51,7 +51,7 @@ angular.module('accessimapEditeurDerApp')
         }
         if ($scope.mode === 'delete') {
           resetActions();
-          $('#der').css('cursor','crosshair');
+          $('#der').css('cursor', 'crosshair');
           d3.selectAll('path')
             .on('click', function() {
               this.remove();
@@ -63,7 +63,7 @@ angular.module('accessimapEditeurDerApp')
         }
         if ($scope.mode === 'point') {
           resetActions();
-          $('#der').css('cursor','crosshair');
+          $('#der').css('cursor', 'crosshair');
           $scope.styleChoices = settings.STYLES[$scope.mode];
           $scope.styleChosen = $scope.styleChoices[0];
           d3.select('svg')
@@ -78,7 +78,7 @@ angular.module('accessimapEditeurDerApp')
         }
         if ($scope.mode === 'line' || $scope.mode === 'polygon') {
           resetActions();
-          $('#der').css('cursor','crosshair');
+          $('#der').css('cursor', 'crosshair');
           $scope.styleChoices = settings.STYLES[$scope.mode];
           $scope.styleChosen = $scope.styleChoices[0];
           var lineEdit = [];
@@ -92,7 +92,7 @@ angular.module('accessimapEditeurDerApp')
               var path;
               if (d3.select('.edition')[0][0]) {
                 path = d3.select('.edition');
-              } else{
+              } else {
                 lineEdit = [];
                 path = d3.select('svg')
                 .append('path')
@@ -120,11 +120,11 @@ angular.module('accessimapEditeurDerApp')
               lastPoint = null;
             })
             .on('mousemove', function() {
-              if(lastPoint) {
+              if (lastPoint) {
                 var line;
                 if (d3.select('.ongoing')[0][0]) {
                   line = d3.select('.ongoing');
-                } else{
+                } else {
                   line = d3.select('svg')
                     .append('line')
                     .attr({'class': 'ongoing'});
@@ -142,7 +142,7 @@ angular.module('accessimapEditeurDerApp')
         }
         if ($scope.mode === 'addtext') {
           resetActions();
-          $('#der').css('cursor','crosshair');
+          $('#der').css('cursor', 'crosshair');
           d3.select('svg')
             .on('click', function() {
               // the previously edited text should not be edited anymore
@@ -157,7 +157,7 @@ angular.module('accessimapEditeurDerApp')
                 .text('');
               d3.select('body')
                 .on('keydown', function() {
-                  window.onkeydown = function(e) { 
+                  window.onkeydown = function(e) {
                     return (e.keyCode !== 32);
                   };
                   var newChar = String.fromCharCode(d3.event.keyCode).toLowerCase();

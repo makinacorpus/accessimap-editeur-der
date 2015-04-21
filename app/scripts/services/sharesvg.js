@@ -8,7 +8,7 @@
  * Service in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
-  .service('shareSvg', ['$q', function ($q) {
+  .service('shareSvg', ['$q', function($q) {
     var svg;
 
     var addSvg = function(newSvg) {
@@ -20,7 +20,7 @@ angular.module('accessimapEditeurDerApp')
       return deferred.promise;
     };
 
-    var getSvg = function(){
+    var getSvg = function() {
       var deferred = $q.defer();
 
       deferred.resolve(svg);

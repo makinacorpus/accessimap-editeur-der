@@ -8,7 +8,7 @@
  * Service in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
-  .service('exportService', function () {
+  .service('exportService', function() {
 
     this.mapExport = function() {
       d3.select('.tiles').selectAll('*').remove();

@@ -8,8 +8,10 @@
  * Controller of the accessimapEditeurDerApp
  */
 angular.module('accessimapEditeurDerApp')
-  .controller('GlobalmapCtrl', ['$scope', '$rootScope', '$http', '$location', 'usSpinnerService', 'initSvg', 'mapService', 'settings', 'exportService', 'shareSvg',
-    function ($scope, $rootScope, $http, $location, usSpinnerService, initSvg, mapService, settings, exportService, shareSvg) {
+  .controller('GlobalmapCtrl', ['$scope', '$rootScope', '$http', '$location', 'usSpinnerService',
+    'initSvg', 'mapService', 'settings', 'exportService', 'shareSvg',
+    function($scope, $rootScope, $http, $location, usSpinnerService,
+      initSvg, mapService, settings, exportService, shareSvg) {
 
       $scope.mapCategories = [{
         id: 'world',
