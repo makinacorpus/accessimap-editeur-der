@@ -35,7 +35,7 @@ angular.module('accessimapEditeurDerApp')
           angular.forEach(settings.POLYGON_STYLES, function(key, value) {
               svg.call(key);
           });
-          shareSvg.addSvg(xml.documentElement)
+          shareSvg.addMap(xml.documentElement)
           .then(function() {
             $location.path('/commonmap');
           });

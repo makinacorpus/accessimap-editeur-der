@@ -13,11 +13,26 @@ angular.module('accessimapEditeurDerApp')
     function($rootScope, $scope, $http, $location, usSpinnerService, initSvg,
       mapService, settings, exportService, shareSvg, editSvg, svgicon) {
 
+      var mapFormat = $location.search().mapFormat;
+      var legendFormat = $location.search().legendFormat;
+
       var width = 1000,
           legendWidth = width,
           height = width / Math.sqrt(2),
           legendHeight = height,
           margin = 10;
+
+      if (mapFormat === 'portrait') {
+          var tmpWidth = width;
+          width = height;
+          height = tmpWidth;
+      }
+      
+      if (legendFormat === 'portrait') {
+          var tmpWidth = legendWidth;
+          legendWidth = legendHeight;
+          legendHeight = tmpWidth;
+      }
 
       var tile = d3.geo.tile()
           .size([width, height]);
