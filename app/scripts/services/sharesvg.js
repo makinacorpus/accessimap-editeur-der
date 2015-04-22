@@ -9,27 +9,47 @@
  */
 angular.module('accessimapEditeurDerApp')
   .service('shareSvg', ['$q', function($q) {
-    var svg;
+    var map,
+        legend;
 
-    var addSvg = function(newSvg) {
+    var addMap = function(newMap) {
       var deferred = $q.defer();
-      svg = newSvg;
+      map = newMap;
 
       deferred.resolve();
 
       return deferred.promise;
     };
 
-    var getSvg = function() {
+    var getMap = function() {
       var deferred = $q.defer();
 
-      deferred.resolve(svg);
+      deferred.resolve(map);
+
+      return deferred.promise;
+    };
+
+    var addLegend = function(newLegend) {
+      var deferred = $q.defer();
+      legend = newLegend;
+
+      deferred.resolve();
+
+      return deferred.promise;
+    };
+
+    var getLegend = function() {
+      var deferred = $q.defer();
+
+      deferred.resolve(legend);
 
       return deferred.promise;
     };
 
     return {
-      addSvg: addSvg,
-      getSvg: getSvg
+      addMap: addMap,
+      getMap: getMap,
+      addLegend: addLegend,
+      getLegend: getLegend
     };
   }]);

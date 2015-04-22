@@ -14,8 +14,9 @@ angular.module('accessimapEditeurDerApp')
       mapService, settings, exportService, shareSvg, editSvg, svgicon) {
 
       var width = 1000,
-          legendWidth = 300,
+          legendWidth = width,
           height = width / Math.sqrt(2),
+          legendHeight = height,
           margin = 10;
 
       var tile = d3.geo.tile()
@@ -37,40 +38,42 @@ angular.module('accessimapEditeurDerApp')
           .on('zoom', zoomed)
           .on('zoomend', zoomed);
 
-      var svg = initSvg.createSvg(width, height);
+      var mapsvg = initSvg.createMap(width, height);
+      var legendsvg = initSvg.createLegend(width, height);
 
       // Load polygon fill styles, defined in settings
       angular.forEach(settings.POLYGON_STYLES, function(key, value) {
-          svg.call(key);
+          mapsvg.call(key);
+          legendsvg.call(key);
       });
       $scope.rotationAngle = 0;
 
-      var map = svg.append('g')
-          .attr('width', function() {
-              return width - legendWidth;
-          })
+      var map = mapsvg.append('g')
+          .attr('width', width)
           .attr('height', height)
           .attr('transform', 'rotate(' + $scope.rotationAngle + ')');
 
       var raster = map.append('g')
           .attr('class', 'tiles');
 
-      var legendContainter = svg.append('g');
+      var legendContainter = legendsvg.append('g')
+          .attr('width', legendWidth)
+          .attr('height', legendHeight);
 
       var legend = legendContainter.append('rect')
           .attr('x', function() {
-              return width - legendWidth;
+              return margin;
           })
           .attr('y', '0px')
           .attr('width', function() {
-              return legendWidth;
+              return legendWidth - margin;
           })
-          .attr('height', height)
+          .attr('height', legendHeight)
           .attr('fill', 'white');
 
       legendContainter.append('text')
           .attr('x', function() {
-              return width - legendWidth + margin;
+              return margin;
           })
           .attr('y', '30px')
           .attr('class', 'braille')
@@ -93,7 +96,7 @@ angular.module('accessimapEditeurDerApp')
       };
 
       $scope.rotateMap = function() {
-          map.attr('transform', 'rotate(' + $scope.rotationAngle + ' 350 350)');
+          map.attr('transform', 'rotate(' + $scope.rotationAngle + ' ' + width / 2 + ' ' + height / 2 + ')');
       };
 
       $scope.featureIcon = svgicon.featureIcon;
@@ -102,13 +105,13 @@ angular.module('accessimapEditeurDerApp')
         if (type === 'line') {
             var symbol = legendContainter.append('line')
                 .attr('x1', function() {
-                    return width - legendWidth + margin;
+                    return margin;
                 })
                 .attr('y1', function() {
                     return position * 30 + 40;
                 })
                 .attr('x2', function() {
-                    return width - legendWidth + margin + 40;
+                    return margin + 40;
                 })
                 .attr('y2', function() {
                     return position * 30 + 40;
@@ -118,7 +121,7 @@ angular.module('accessimapEditeurDerApp')
         if (type === 'point') {
             var symbol = legendContainter.append('path')
                 .attr('d', function() {
-                    var cx = width - legendWidth + margin + 20,
+                    var cx = margin + 20,
                         cy = position * 30 + 40 + style.radius / 2;
                     return style.path(cx, cy, style.radius);
                 })
@@ -127,7 +130,7 @@ angular.module('accessimapEditeurDerApp')
         if (type === 'polygon') {
             var symbol = legendContainter.append('rect')
                 .attr('x', function() {
-                    return width - legendWidth + margin;
+                    return margin;
                 })
                 .attr('y', function() {
                     return position * 30 + 40;
@@ -147,7 +150,7 @@ angular.module('accessimapEditeurDerApp')
 
           legendContainter.append('text')
               .attr('x', function() {
-                  return width - legendWidth + margin + 50;
+                  return margin + 50;
               })
               .attr('y', function() {
                   return position * 30 + margin + 40;
@@ -206,12 +209,16 @@ angular.module('accessimapEditeurDerApp')
 
       function mapCommon() {
         //d3.select('.tiles').node().remove();
-        var svg = d3.select('svg').node();
+        var svg = d3.select('#map').select('svg').node(),
+            legend = d3.select('#legend').select('svg').node();
         zoom.on('zoom', null)
             .on('zoomend', null);
-        shareSvg.addSvg(svg)
+        shareSvg.addMap(svg)
         .then(function() {
-            $location.path('/commonmap');
+          shareSvg.addLegend(legend)
+          .then(function() {
+              $location.path('/commonmap');
+          });
         });
       }
 

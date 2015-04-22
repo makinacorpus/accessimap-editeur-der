@@ -12,7 +12,11 @@ angular.module('accessimapEditeurDerApp')
 
     this.mapExport = function() {
       d3.select('.tiles').selectAll('*').remove();
-      exportSvg();
+      var zip = new JSZip();
+      zip.file('map.svg', (new XMLSerializer).serializeToString(d3.select('#der').selectAll('svg').node()));
+      zip.file('legend.svg', (new XMLSerializer).serializeToString(d3.select('#der-legend').selectAll('svg').node()));
+      var content = zip.generate({type: 'blob'});
+      saveAs(content, 'map.zip');
     };
 
   });

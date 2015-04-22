@@ -13,7 +13,7 @@ angular.module('accessimapEditeurDerApp')
       d3.select('#der')
         .selectAll('svg')
         .remove();
-      shareSvg.getSvg()
+      shareSvg.getMap()
       .then(function(data) {
         if (data) {
           $scope.data = data;
@@ -22,6 +22,15 @@ angular.module('accessimapEditeurDerApp')
             .appendChild($scope.data);
         } else {
           $location.path('/');
+        }
+      });
+
+      shareSvg.getLegend()
+      .then(function(data) {
+        if (data) {
+          d3.select('#der-legend')
+            .node()
+            .appendChild(data);
         }
       });
 
