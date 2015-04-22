@@ -8,7 +8,7 @@
  * Service in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
-  .service('initSvg', function () {
+  .service('initSvg', function() {
     this.createSvg = function(width, height) {
       return d3.select('#map').append('svg')
                .attr('width', width)
