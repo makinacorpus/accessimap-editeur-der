@@ -15,7 +15,6 @@ angular.module('accessimapEditeurDerApp')
         .remove();
       shareSvg.getMap()
       .then(function(data) {
-        console.log(data);
         if (data) {
           $scope.data = data;
           d3.select('#der')
@@ -28,7 +27,6 @@ angular.module('accessimapEditeurDerApp')
 
       shareSvg.getLegend()
       .then(function(data) {
-        console.log(data);
         if (data) {
           d3.select('#der-legend')
             .node()
