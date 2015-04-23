@@ -27,7 +27,7 @@ angular.module('accessimapEditeurDerApp')
           width = height;
           height = tmpWidth;
       }
-      
+
       if (legendFormat === 'portrait') {
           var tmpWidth = legendWidth;
           legendWidth = legendHeight;
@@ -92,6 +92,7 @@ angular.module('accessimapEditeurDerApp')
           })
           .attr('y', '30px')
           .attr('class', 'braille')
+          .attr('font-family', 'braille')
           .attr('font-size', '20px')
           .text(function() {
               return 'legende';
@@ -170,6 +171,7 @@ angular.module('accessimapEditeurDerApp')
               .attr('y', function() {
                   return position * 30 + margin + 40;
               })
+              .attr('font-family', 'braille')
               .attr('font-size', '20px')
               .attr('class', 'braille')
               .text(function() {
