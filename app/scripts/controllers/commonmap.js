@@ -165,6 +165,7 @@ angular.module('accessimapEditeurDerApp')
                 .append('text')
                 .attr('x', coordinates[0])
                 .attr('y', coordinates[1])
+                .attr('font-family', 'braille')
                 .attr('font-size', '20px')
                 .attr({'class': 'braille edition'})
                 .text('');
