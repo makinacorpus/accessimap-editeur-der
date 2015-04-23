@@ -135,15 +135,17 @@ angular.module('accessimapEditeurDerApp')
                 .attr('y2', function() {
                     return position * 30 + 40;
                 })
+                .attr('class', 'symbol')
                 .attr('fill', 'red');
         }
         if (query.type === 'point') {
             var symbol = legendGroup.append('path')
+                .attr('cx', margin + 20)
+                .attr('cy', position * 30 + 40 + style.radius / 2)
                 .attr('d', function() {
-                    var cx = margin + 20,
-                        cy = position * 30 + 40 + style.radius / 2;
-                    return style.path(cx, cy, style.radius);
+                    return style.path(d3.select(this).attr('cx'), d3.select(this).attr('cy'), style.radius);
                 })
+                .attr('class', 'symbol')
                 .attr('fill', 'red');
         }
         if (query.type === 'polygon') {
@@ -160,6 +162,7 @@ angular.module('accessimapEditeurDerApp')
                 .attr('height', function() {
                     return 15;
                 })
+                .attr('class', 'symbol')
                 .attr('fill', 'red');
         }
 
@@ -195,9 +198,15 @@ angular.module('accessimapEditeurDerApp')
           d3.selectAll('path.' + geojson.id)
               .filter(function(d) {
                 return d.geometry.type === 'Point'; })
+              .attr('cx', function(d) {
+                return projection(d.geometry.coordinates)[0];
+              })
+              .attr('cy', function(d) {
+                return projection(d.geometry.coordinates)[1];
+              })
               .attr('d', function(d) {
                 var coords = projection(d.geometry.coordinates);
-                return geojson.style.path(coords[0], coords[1], geojson.style.width);});
+                return geojson.style.path(coords[0], coords[1], geojson.style.radius);});
         });
 
         projection
@@ -243,7 +252,10 @@ angular.module('accessimapEditeurDerApp')
 
       function removeFeature(id) {
         // Remove object from $scope.geojson
-        var index = $scope.geojson.indexOf(id);
+        var result = $scope.geojson.filter(function(obj) {
+          return obj.id == id;
+        });
+        var index = $scope.geojson.indexOf(result[0]);
         $scope.geojson.splice(index, 1);
 
         // Remove object from map
@@ -251,6 +263,31 @@ angular.module('accessimapEditeurDerApp')
 
         // Remove object from legend
         d3.select('.legend#' + id).remove();
+      }
+
+      function updateFeature(id, style) {
+        angular.forEach(style.style, function(attribute) {
+          d3.select('#' + id)
+            .attr(attribute.k, attribute.v);
+        });
+        if (style.path) {
+          var result = $scope.geojson.filter(function(obj) {
+            return obj.id == id;
+          });
+          var index = $scope.geojson.indexOf(result[0]);
+          $scope.geojson[index].style.path = style.path;
+          zoomed();
+        }
+
+        var symbol = d3.select('.legend#' + id).select('.symbol');
+        angular.forEach(style.style, function(attribute) {
+          symbol.attr(attribute.k, attribute.v);
+        });
+        if (style.path) {
+          symbol.attr('d', function() {
+              return style.path(symbol.attr('cx'), symbol.attr('cy'), style.radius);
+          });
+        }
       }
 
       function downloadData() {
@@ -289,6 +326,12 @@ angular.module('accessimapEditeurDerApp')
                 return d.geometry.type === 'Point';}))
               .enter().append('path')
               .attr('class', $scope.queryChosen.id)
+              .attr('cx', function(d) {
+                return projection(d.geometry.coordinates)[0];
+              })
+              .attr('cy', function(d) {
+                return projection(d.geometry.coordinates)[1];
+              })
               .attr('d', function(d) {
                 var coords = projection(d.geometry.coordinates);
                 return $scope.styleChosen.path(coords[0], coords[1], $scope.styleChosen.radius);});
@@ -304,10 +347,7 @@ angular.module('accessimapEditeurDerApp')
               id: $scope.queryChosen.id,
               name: $scope.queryChosen.name,
               layer: osmGeojson,
-              style: {
-                path: $scope.styleChosen.path,
-                width: $scope.styleChosen.radius
-              }
+              style: $scope.styleChosen
             });
 
             addToLegend($scope.queryChosen, $scope.styleChosen, $scope.geojson.length);
@@ -323,6 +363,7 @@ angular.module('accessimapEditeurDerApp')
 
       $scope.downloadData = downloadData;
       $scope.removeFeature = removeFeature;
+      $scope.updateFeature = updateFeature;
       $scope.mapCommon = mapCommon;
 
 }]);
