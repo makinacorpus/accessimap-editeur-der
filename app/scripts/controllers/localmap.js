@@ -117,9 +117,12 @@ angular.module('accessimapEditeurDerApp')
 
       $scope.featureIcon = svgicon.featureIcon;
 
-      function addToLegend(type, name, style, position) {
-        if (type === 'line') {
-            var symbol = legendContainter.append('line')
+      function addToLegend(query, style, position) {
+        var legendGroup = legendContainter.append('g')
+            .attr('class', 'legend')
+            .attr('id', query.id);
+        if (query.type === 'line') {
+            var symbol = legendGroup.append('line')
                 .attr('x1', function() {
                     return margin;
                 })
@@ -134,8 +137,8 @@ angular.module('accessimapEditeurDerApp')
                 })
                 .attr('fill', 'red');
         }
-        if (type === 'point') {
-            var symbol = legendContainter.append('path')
+        if (query.type === 'point') {
+            var symbol = legendGroup.append('path')
                 .attr('d', function() {
                     var cx = margin + 20,
                         cy = position * 30 + 40 + style.radius / 2;
@@ -143,8 +146,8 @@ angular.module('accessimapEditeurDerApp')
                 })
                 .attr('fill', 'red');
         }
-        if (type === 'polygon') {
-            var symbol = legendContainter.append('rect')
+        if (query.type === 'polygon') {
+            var symbol = legendGroup.append('rect')
                 .attr('x', function() {
                     return margin;
                 })
@@ -164,7 +167,7 @@ angular.module('accessimapEditeurDerApp')
             symbol.attr(attribute.k, attribute.v);
           });
 
-          legendContainter.append('text')
+          legendGroup.append('text')
               .attr('x', function() {
                   return margin + 50;
               })
@@ -175,7 +178,7 @@ angular.module('accessimapEditeurDerApp')
               .attr('font-size', '20px')
               .attr('class', 'braille')
               .text(function() {
-                  return name;
+                  return query.name;
               });
       }
 
@@ -225,7 +228,6 @@ angular.module('accessimapEditeurDerApp')
       zoomed();
 
       function mapCommon() {
-        //d3.select('.tiles').node().remove();
         var svg = d3.select('#map').select('svg').node(),
             legend = d3.select('#legend').select('svg').node();
         zoom.on('zoom', null)
@@ -237,6 +239,18 @@ angular.module('accessimapEditeurDerApp')
               $location.path('/commonmap');
           });
         });
+      }
+
+      function removeFeature(id) {
+        // Remove object from $scope.geojson
+        var index = $scope.geojson.indexOf(id);
+        $scope.geojson.splice(index, 1);
+
+        // Remove object from map
+        d3.select('.vector#' + id).remove();
+
+        // Remove object from legend
+        d3.select('.legend#' + id).remove();
       }
 
       function downloadData() {
@@ -296,7 +310,7 @@ angular.module('accessimapEditeurDerApp')
               }
             });
 
-            addToLegend($scope.queryChosen.type, $scope.queryChosen.name, $scope.styleChosen, $scope.geojson.length);
+            addToLegend($scope.queryChosen, $scope.styleChosen, $scope.geojson.length);
 
             zoomed();
 
@@ -308,6 +322,7 @@ angular.module('accessimapEditeurDerApp')
       }
 
       $scope.downloadData = downloadData;
+      $scope.removeFeature = removeFeature;
       $scope.mapCommon = mapCommon;
 
 }]);
