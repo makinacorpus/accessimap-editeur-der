@@ -294,7 +294,7 @@ angular.module('accessimapEditeurDerApp')
         //if (feature.simplification > 0) {
           d3.select('.vector#' + feature.id).remove();
           var data = $.extend(true, {}, feature.originallayer);
-          geojsonToSvg(data, feature.simplification / 10000, feature.id);
+          geojsonToSvg(data, feature.simplification / 100000, feature.id);
         //}
       }
 
