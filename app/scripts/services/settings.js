@@ -32,11 +32,6 @@ angular.module('accessimapEditeurDerApp')
       type: 'line',
       query: 'way["highway"~"motorway|trunk|primary|secondary"]'
     }, {
-      id: 'places',
-      name: 'Places',
-      type: 'polygon',
-      query: 'way["highway"="pedestrian"]["area"="yes"]'
-    }, {
       id: 'trafficSignals',
       name: 'Feux tricolores',
       type: 'point',
@@ -46,6 +41,16 @@ angular.module('accessimapEditeurDerApp')
       name: 'Toutes les rues',
       type: 'line',
       query: 'way["highway"]["footway"!="sidewalk"]["footway"!="crossing"]["area"!="yes"]'
+    }, {
+      id: 'places',
+      name: 'Places',
+      type: 'polygon',
+      query: 'way["highway"="pedestrian"]["area"="yes"]'
+    }, {
+      id: 'batiments',
+      name: 'Batiments',
+      type: 'polygon',
+      query: 'way["building"]["building"!="no"]'
     }];
 
     var POLYGON_STYLES = {
