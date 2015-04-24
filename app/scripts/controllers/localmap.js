@@ -291,73 +291,75 @@ angular.module('accessimapEditeurDerApp')
       }
 
       function simplifyFeatures(feature) {
-        console.log(feature.simplification);
-        if (feature.simplification > 0) {
+        //if (feature.simplification > 0) {
           d3.select('.vector#' + feature.id).remove();
           var data = $.extend(true, {}, feature.originallayer);
-          geojsonToSvg(data, feature.simplification / 10000);
-        }
+          geojsonToSvg(data, feature.simplification / 10000, feature.id);
+        //}
       }
 
-      function geojsonToSvg(data, simplification) {
-        var result = $scope.geojson.filter(function(obj) {
-          return obj.id == $scope.queryChosen.id;
-        });
-        console.log(result.length);
+      function geojsonToSvg(data, simplification, id, osm) {
         if (data) {
+          console.log(data);
           // osmtogeojson writes polygon coordinates in anticlockwise order, not fitting the geojson specs.
           // Polygon coordinates need therefore to be reversed
           data.features.forEach(function(feature, index) {
-            if (feature.geometry.type === 'Polygon') {
-              feature.geometry.coordinates[0].reverse();
-            }
             if (simplification) {
               data.features[index] = turf.simplify(feature, simplification, false);
             }
           });
 
-          map.append('g')
-            .attr('class', 'vector')
-            .attr('id', $scope.queryChosen.id)
-            .selectAll('path')
-            .data(data.features.filter(function(d) {
-              return d.geometry.type !== 'Point';}))
-            .enter().append('path')
-            .attr('class', $scope.queryChosen.id)
-            .attr('d', path)
-            .data(data.features.filter(function(d) {
-              return d.geometry.type === 'Point';}))
-            .enter().append('path')
-            .attr('class', $scope.queryChosen.id)
-            .attr('cx', function(d) {
-              return projection(d.geometry.coordinates)[0];
-            })
-            .attr('cy', function(d) {
-              return projection(d.geometry.coordinates)[1];
-            })
-            .attr('d', function(d) {
-              var coords = projection(d.geometry.coordinates);
-              return $scope.styleChosen.path(coords[0], coords[1], $scope.styleChosen.radius);});
-
-          angular.forEach($scope.styleChosen.style, function(attribute) {
-            d3.select('#' + $scope.queryChosen.id)
-              .attr(attribute.k, attribute.v);
-          });
-
-          map.call(zoom);
-
-          if (simplification) {
+          if (id) {
+            var featureExists = $scope.geojson.filter(function(obj) {
+              return obj.id == id;
+            });
           } else {
+            var featureExists = $scope.geojson.filter(function(obj) {
+              return obj.id == $scope.queryChosen.id;
+            });
+          }
+
+          if (featureExists.length === 0) {
             $scope.geojson.push({
               id: $scope.queryChosen.id,
               name: $scope.queryChosen.name,
               layer: $.extend(true, {}, data), //deep copy,
               originallayer: $.extend(true, {}, data), //deep copy
-              style: $scope.styleChosen
+              style: $scope.styleChosen,
+              styleChoices: $scope.styleChoices
             });
             addToLegend($scope.queryChosen, $scope.styleChosen, $scope.geojson.length);
+          } else {
+            map.append('g')
+              .attr('class', 'vector')
+              .attr('id', featureExists[0].id)
+              .selectAll('path')
+              .data(data.features.filter(function(d) {
+                return d.geometry.type !== 'Point';}))
+              .enter().append('path')
+              .attr('class', featureExists[0].id)
+              .attr('d', path)
+              .data(data.features.filter(function(d) {
+                return d.geometry.type === 'Point';}))
+              .enter().append('path')
+              .attr('class', featureExists[0].id)
+              .attr('cx', function(d) {
+                return projection(d.geometry.coordinates)[0];
+              })
+              .attr('cy', function(d) {
+                return projection(d.geometry.coordinates)[1];
+              })
+              .attr('d', function(d) {
+                var coords = projection(d.geometry.coordinates);
+                return featureExists[0].style.path(coords[0], coords[1], featureExists[0].style.radius);
+              });
+            angular.forEach(featureExists[0].style.style, function(attribute) {
+              d3.select('#' + featureExists[0].id)
+                .attr(attribute.k, attribute.v);
+            });
           }
 
+          map.call(zoom);
           zoomed();
         }
       }
@@ -376,7 +378,16 @@ angular.module('accessimapEditeurDerApp')
         $http.get(url).
           success(function(data) {
             var osmGeojson = osmtogeojson(data);
-            geojsonToSvg(osmGeojson);
+
+            // osmtogeojson writes polygon coordinates in anticlockwise order, not fitting the geojson specs.
+            // Polygon coordinates need therefore to be reversed
+            osmGeojson.features.forEach(function(feature) {
+              if (feature.geometry.type === 'Polygon') {
+                feature.geometry.coordinates[0].reverse();
+              }
+            });
+
+            geojsonToSvg(osmGeojson, undefined, undefined, true);
 
             usSpinnerService.stop('spinner-1');
           }).

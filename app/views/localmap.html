@@ -32,7 +32,7 @@
     <slider class="form-control" ng-model="feature.simplification" ng-change="simplifyFeatures(feature)" min="0" max="5"></slider>
     <ui-select ng-model="feature.style" ng-disabled="disabled" ng-change="updateFeature(feature.id, feature.style)" theme="bootstrap" class="form-control style-selector" style="width: 150px;">
       <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
-      <ui-select-choices repeat="item in styleChoices | filter: $select.search">
+      <ui-select-choices repeat="item in feature.styleChoices | filter: $select.search">
         <div ng-bind-html="item.name | highlight: $select.search"></div>
         <div ng-bind-html="featureIcon(item, queryChosen.type)"></div>
       </ui-select-choices>
