@@ -300,9 +300,6 @@ angular.module('accessimapEditeurDerApp')
 
       function geojsonToSvg(data, simplification, id, osm) {
         if (data) {
-          console.log(data);
-          // osmtogeojson writes polygon coordinates in anticlockwise order, not fitting the geojson specs.
-          // Polygon coordinates need therefore to be reversed
           data.features.forEach(function(feature, index) {
             if (simplification) {
               data.features[index] = turf.simplify(feature, simplification, false);
