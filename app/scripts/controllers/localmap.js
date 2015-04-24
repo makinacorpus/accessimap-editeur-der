@@ -224,7 +224,7 @@ angular.module('accessimapEditeurDerApp')
         image.enter().append('image')
             .attr('xlink:href', function(d) {
                 var url = 'http://' + ['a', 'b', 'c'][Math.random() * 3 | 0];
-                url += '.tile.osm.org/' + d[2] + '/' + d[0] + '/' + d[1] + '.png';
+                url += '.tile.openstreetmap.org/' + d[2] + '/' + d[0] + '/' + d[1] + '.png';
               return url;
             })
             .attr('width', 1)
@@ -290,6 +290,78 @@ angular.module('accessimapEditeurDerApp')
         }
       }
 
+      function simplifyFeatures(feature) {
+        console.log(feature.simplification);
+        if (feature.simplification > 0) {
+          d3.select('.vector#' + feature.id).remove();
+          var data = $.extend(true, {}, feature.originallayer);
+          geojsonToSvg(data, feature.simplification / 10000);
+        }
+      }
+
+      function geojsonToSvg(data, simplification) {
+        var result = $scope.geojson.filter(function(obj) {
+          return obj.id == $scope.queryChosen.id;
+        });
+        console.log(result.length);
+        if (data) {
+          // osmtogeojson writes polygon coordinates in anticlockwise order, not fitting the geojson specs.
+          // Polygon coordinates need therefore to be reversed
+          data.features.forEach(function(feature, index) {
+            if (feature.geometry.type === 'Polygon') {
+              feature.geometry.coordinates[0].reverse();
+            }
+            if (simplification) {
+              data.features[index] = turf.simplify(feature, simplification, false);
+            }
+          });
+
+          map.append('g')
+            .attr('class', 'vector')
+            .attr('id', $scope.queryChosen.id)
+            .selectAll('path')
+            .data(data.features.filter(function(d) {
+              return d.geometry.type !== 'Point';}))
+            .enter().append('path')
+            .attr('class', $scope.queryChosen.id)
+            .attr('d', path)
+            .data(data.features.filter(function(d) {
+              return d.geometry.type === 'Point';}))
+            .enter().append('path')
+            .attr('class', $scope.queryChosen.id)
+            .attr('cx', function(d) {
+              return projection(d.geometry.coordinates)[0];
+            })
+            .attr('cy', function(d) {
+              return projection(d.geometry.coordinates)[1];
+            })
+            .attr('d', function(d) {
+              var coords = projection(d.geometry.coordinates);
+              return $scope.styleChosen.path(coords[0], coords[1], $scope.styleChosen.radius);});
+
+          angular.forEach($scope.styleChosen.style, function(attribute) {
+            d3.select('#' + $scope.queryChosen.id)
+              .attr(attribute.k, attribute.v);
+          });
+
+          map.call(zoom);
+
+          if (simplification) {
+          } else {
+            $scope.geojson.push({
+              id: $scope.queryChosen.id,
+              name: $scope.queryChosen.name,
+              layer: $.extend(true, {}, data), //deep copy,
+              originallayer: $.extend(true, {}, data), //deep copy
+              style: $scope.styleChosen
+            });
+            addToLegend($scope.queryChosen, $scope.styleChosen, $scope.geojson.length);
+          }
+
+          zoomed();
+        }
+      }
+
       function downloadData() {
         usSpinnerService.spin('spinner-1');
 
@@ -304,55 +376,7 @@ angular.module('accessimapEditeurDerApp')
         $http.get(url).
           success(function(data) {
             var osmGeojson = osmtogeojson(data);
-
-            // osmtogeojson writes polygon coordinates in anticlockwise order, not fitting the geojson specs.
-            // Polygon coordinates need therefore to be reversed
-            osmGeojson.features.forEach(function(feature) {
-              if (feature.geometry.type === 'Polygon') {
-                feature.geometry.coordinates[0].reverse();
-              }
-            });
-
-            map.append('g')
-              .attr('class', 'vector')
-              .attr('id', $scope.queryChosen.id)
-              .selectAll('path')
-              .data(osmGeojson.features.filter(function(d) {
-                return d.geometry.type !== 'Point';}))
-              .enter().append('path')
-              .attr('class', $scope.queryChosen.id)
-              .attr('d', path)
-              .data(osmGeojson.features.filter(function(d) {
-                return d.geometry.type === 'Point';}))
-              .enter().append('path')
-              .attr('class', $scope.queryChosen.id)
-              .attr('cx', function(d) {
-                return projection(d.geometry.coordinates)[0];
-              })
-              .attr('cy', function(d) {
-                return projection(d.geometry.coordinates)[1];
-              })
-              .attr('d', function(d) {
-                var coords = projection(d.geometry.coordinates);
-                return $scope.styleChosen.path(coords[0], coords[1], $scope.styleChosen.radius);});
-
-            angular.forEach($scope.styleChosen.style, function(attribute) {
-              d3.select('#' + $scope.queryChosen.id)
-                .attr(attribute.k, attribute.v);
-            });
-
-            map.call(zoom);
-
-            $scope.geojson.push({
-              id: $scope.queryChosen.id,
-              name: $scope.queryChosen.name,
-              layer: osmGeojson,
-              style: $scope.styleChosen
-            });
-
-            addToLegend($scope.queryChosen, $scope.styleChosen, $scope.geojson.length);
-
-            zoomed();
+            geojsonToSvg(osmGeojson);
 
             usSpinnerService.stop('spinner-1');
           }).
@@ -364,6 +388,7 @@ angular.module('accessimapEditeurDerApp')
       $scope.downloadData = downloadData;
       $scope.removeFeature = removeFeature;
       $scope.updateFeature = updateFeature;
+      $scope.simplifyFeatures = simplifyFeatures;
       $scope.mapCommon = mapCommon;
 
 }]);

@@ -29,7 +29,7 @@
 <ul>
   <li ng-repeat="feature in geojson" class="form-inline">
     {{feature.name}}
-    <slider class="form-control" ng-model="simplify" min="0" max="5"></slider>
+    <slider class="form-control" ng-model="feature.simplification" ng-change="simplifyFeatures(feature)" min="0" max="5"></slider>
     <ui-select ng-model="feature.style" ng-disabled="disabled" ng-change="updateFeature(feature.id, feature.style)" theme="bootstrap" class="form-control style-selector" style="width: 150px;">
       <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
       <ui-select-choices repeat="item in styleChoices | filter: $select.search">
