@@ -323,6 +323,7 @@ angular.module('accessimapEditeurDerApp')
             $scope.geojson.push({
               id: $scope.queryChosen.id,
               name: $scope.queryChosen.name,
+              geometryType: $scope.queryChosen.type,
               layer: $.extend(true, {}, data), //deep copy,
               originallayer: $.extend(true, {}, data), //deep copy
               style: $scope.styleChosen,
