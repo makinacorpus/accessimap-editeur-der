@@ -9,9 +9,19 @@
  */
 angular.module('accessimapEditeurDerApp')
   .controller('GlobalmapCtrl', ['$scope', '$rootScope', '$http', '$location', 'usSpinnerService',
-    'initSvg', 'mapService', 'settings', 'exportService', 'shareSvg',
+    'initSvg', 'mapService', 'settings', 'shareSvg',
     function($scope, $rootScope, $http, $location, usSpinnerService,
-      initSvg, mapService, settings, exportService, shareSvg) {
+      initSvg, mapService, settings, shareSvg) {
+
+
+      $scope.uploadSvg = function(element, $scope) {
+        var svgFile = element.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(svgFile); //readAsDataURL
+        reader.onload = function(e) {
+          appendSvg(e.target.result);
+        };
+      };
 
       $scope.mapCategories = [{
         id: 'world',
@@ -42,7 +52,6 @@ angular.module('accessimapEditeurDerApp')
         });
       }
 
-      $scope.mapExport = exportService.mapExport;
       $scope.appendSvg = appendSvg;
 
 }]);

@@ -1,3 +1,10 @@
+<form class="form">
+  <div class="form-group">
+    <input ng-model="photo" onchange="angular.element(this).scope().uploadSvg(this)" class="btn btn-success" type="file" accept="image/*" />Télécharger un fichier SVG
+    </input>
+  </div>
+</form>
+
 <div class="panel-group" id="accordion" ng-style="accordionStyle">
   <div class="panel panel-default" ng-repeat="mapCategory in mapCategories">
     <div class="panel-heading">
