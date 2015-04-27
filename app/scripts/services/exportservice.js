@@ -14,7 +14,9 @@ angular.module('accessimapEditeurDerApp')
       d3.select('.tiles').selectAll('*').remove();
       var zip = new JSZip();
       zip.file('map.svg', (new XMLSerializer).serializeToString(d3.select('#der').selectAll('svg').node()));
-      zip.file('legend.svg', (new XMLSerializer).serializeToString(d3.select('#der-legend').selectAll('svg').node()));
+      if (d3.select('#der-legend').selectAll('svg').node()) {
+        zip.file('legend.svg', (new XMLSerializer).serializeToString(d3.select('#der-legend').selectAll('svg').node()));
+      }
       zip.file('comments.txt', $('#comment').val());
       var content = zip.generate({type: 'blob'});
       saveAs(content, 'map.zip');
