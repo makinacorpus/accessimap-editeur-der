@@ -1,0 +1,47 @@
+=========
+CHANGELOG
+=========
+
+0.2
+-------------------
+
+**New features**
+
+* Polygon styles (textures.js)
+* POI styles
+* Preview feature style in dropdown list
+* Local map rotation
+* Map and legend are now on 2 separate SVG files
+* Download map, legend and comment in a single zip file
+* Map and legend orientation (portrait or landscape)
+* Local map layers edition : change the style and remove a feature
+* Local map: feature geometric simplification
+* Upload a custom SVG file
+
+**Bug fixes**
+
+* Prevent map panning on common map
+
+**Minor changes**
+
+* More line styles
+* Add a polygon query: buildings
+* OSM attribution
+* Add a comment
+* Keep OSM tiles on common map view
+
+**Internal features**
+* New svgicon service
+* Setup tests
+
+0.1 (2015-03-26)
+-------------------
+
+**New features**
+
+* Local map: download pre-configured data from OSM and display it
+* Local map: dynamically drawn legend
+* Global map: load a SVG file
+* Common map: draw, write and delete features on the drawing
+* Common map: export the drawing as SVG
+
