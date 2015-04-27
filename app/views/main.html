@@ -1,18 +1,20 @@
 <form name="map-format-input" class="form-inline">
   <div class="form-group">
     <label >Carte</label>
-    <input type="radio" ng-model="mapFormat" value="landscape">Paysage</input>
-    <input type="radio" ng-model="mapFormat" value="portrait">Portrait</input>
-  </div>
-</form>
-<form name="map-format-input" class="form-inline">
-  <div class="form-group">
+    <select ng-model="mapFormat" class="form-control">
+      <option value="landscape">Paysage</option>
+      <option value="portrait">Portrait</option>
+    </select>
     <label >Légende</label>
-    <input type="radio" ng-model="legendFormat" value="landscape">Paysage</input>
-    <input type="radio" ng-model="legendFormat" value="portrait">Portrait</input>
+    <select ng-model="legendFormat" class="form-control">
+      <option value="landscape">Paysage</option>
+      <option value="portrait">Portrait</option>
+    </select>
   </div>
 </form>
-<p>
-  <button type="button" class="btn btn-default btn-lg" ng-click="go('/localmap')">Carte locale</button>
-  <button type="button" class="btn btn-default btn-lg" ng-click="go('/globalmap')">Partir d'un SVG</button>
-</p>
+<form class="form-inline">
+  <div class="form-group">
+    <button type="button" class="btn btn-default btn-lg" ng-click="go('/localmap')">Carte locale</button>
+    <button type="button" class="btn btn-default btn-lg" ng-click="go('/globalmap')">Partir d'un SVG</button>
+  </div>
+</form>
