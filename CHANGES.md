@@ -33,6 +33,7 @@ CHANGELOG
 **Internal features**
 * New svgicon service
 * Setup tests
+* Move fonts to proper folder
 
 0.1 (2015-03-26)
 -------------------
