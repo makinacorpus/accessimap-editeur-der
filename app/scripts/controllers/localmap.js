@@ -335,14 +335,22 @@ angular.module('accessimapEditeurDerApp')
               .attr('id', featureExists[0].id)
               .selectAll('path')
               .data(data.features.filter(function(d) {
-                return d.geometry.type !== 'Point';}))
+                return d.geometry.type !== 'Point';
+              }))
               .enter().append('path')
               .attr('class', featureExists[0].id)
+              .attr('name', function(d) {
+                return d.properties.tags.name;
+              })
               .attr('d', path)
               .data(data.features.filter(function(d) {
-                return d.geometry.type === 'Point';}))
+                return d.geometry.type === 'Point';
+              }))
               .enter().append('path')
               .attr('class', featureExists[0].id)
+              .attr('name', function(d) {
+                return d.properties.tags.name;
+              })
               .attr('cx', function(d) {
                 return projection(d.geometry.coordinates)[0];
               })
