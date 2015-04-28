@@ -17,6 +17,7 @@ CHANGELOG
 * Local map layers edition : change the style and remove a feature
 * Local map: feature geometric simplification
 * Upload a custom SVG file
+* Add custom tags with feature properties in the svg file
 
 **Bug fixes**
 
