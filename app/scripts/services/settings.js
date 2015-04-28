@@ -363,6 +363,19 @@ angular.module('accessimapEditeurDerApp')
         'k': 'fill',
         'v': POLYGON_STYLES.smalldots.url()
       }]
+    },{
+      id: 'redfill',
+      name: 'Fond rouge',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': 'red'
+      }]
     }],
     'point': [{
       id: 'smallcircle',
