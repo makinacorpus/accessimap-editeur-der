@@ -20,37 +20,44 @@ angular.module('accessimapEditeurDerApp')
       id: 'trottoirs',
       name: 'Trottoirs',
       type: 'line',
-      query: 'way["footway"="sidewalk"]'
+      query: 'way["footway"="sidewalk"]',
+      icon: 'road'
     }, {
       id: 'ppietons',
       name: 'Passages piétons',
       type: 'line',
-      query: 'way["footway"="crossing"]'
+      query: 'way["footway"="crossing"]',
+      icon: 'road'
     }, {
       id: 'principales',
       name: 'Routes principales',
       type: 'line',
-      query: 'way["highway"~"motorway|trunk|primary|secondary"]'
-    }, {
-      id: 'trafficSignals',
-      name: 'Feux tricolores',
-      type: 'point',
-      query: 'node["highway"="traffic_signals"]'
+      query: 'way["highway"~"motorway|trunk|primary|secondary"]',
+      icon: 'road'
     }, {
       id: 'rues',
       name: 'Toutes les rues',
       type: 'line',
-      query: 'way["highway"]["footway"!="sidewalk"]["footway"!="crossing"]["area"!="yes"]'
+      query: 'way["highway"]["footway"!="sidewalk"]["footway"!="crossing"]["area"!="yes"]',
+      icon: 'road'
+    }, {
+      id: 'trafficSignals',
+      name: 'Feux tricolores',
+      type: 'point',
+      query: 'node["highway"="traffic_signals"]',
+      icon: 'street-view'
     }, {
       id: 'places',
       name: 'Places',
       type: 'polygon',
-      query: 'way["highway"="pedestrian"]["area"="yes"]'
+      query: 'way["highway"="pedestrian"]["area"="yes"]',
+      icon: 'square-o'
     }, {
       id: 'batiments',
       name: 'Batiments',
       type: 'polygon',
-      query: 'way["building"]["building"!="no"]'
+      query: 'way["building"]["building"!="no"]',
+      icon: 'building-o'
     }];
 
     var POLYGON_STYLES = {

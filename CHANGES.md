@@ -21,6 +21,7 @@ CHANGELOG
 **Bug fixes**
 
 * Prevent map panning on common map
+* An already selected layer cannot be added again to the local map
 
 **Minor changes**
 
@@ -29,6 +30,7 @@ CHANGELOG
 * OSM attribution
 * Add a comment
 * Keep OSM tiles on common map view
+* Add icons in the features list
 
 **Internal features**
 * New svgicon service
