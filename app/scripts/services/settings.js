@@ -59,6 +59,18 @@ angular.module('accessimapEditeurDerApp')
       type: 'polygon',
       query: 'way["building"]["building"!="no"]',
       icon: 'building-o'
+    }, {
+      id: 'eau',
+      name: 'Eau',
+      type: 'polygon',
+      query: 'relation["type"="multipolygon"]["natural"="water"]',
+      icon: 'leaf'
+    }, {
+      id: 'parc',
+      name: 'Parc',
+      type: 'polygon',
+      query: 'way["leisure"="park"]',
+      icon: 'leaf'
     }];
 
     var POLYGON_STYLES = {

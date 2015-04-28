@@ -150,7 +150,7 @@ angular.module('accessimapEditeurDerApp')
       $scope.geojson = [];
 
       $scope.queryChoices = settings.QUERY_LIST;
-      $scope.queryChosen = $scope.queryChoices[0];
+      $scope.queryChosen = $scope.queryChoices[7];
 
       $scope.styleChoices = settings.STYLES[$scope.queryChosen.type];
       $scope.styleChosen = $scope.styleChoices[0];
@@ -381,17 +381,53 @@ angular.module('accessimapEditeurDerApp')
             mapW = boundsNW.lon,
             mapN = boundsNW.lat,
             mapE = boundsSE.lon;
-        var url = settings.XAPI_URL + '[out:json];(' + $scope.queryChosen.query;
+        var url = settings.XAPI_URL + '[out:xml];(' + $scope.queryChosen.query;
         url += '(' + mapS + ',' + mapW + ',' + mapN + ',' + mapE + '););out body;>;out skel qt;';
         $http.get(url).
           success(function(data) {
-            var osmGeojson = osmtogeojson(data);
+            var osmGeojson = osmtogeojson(new DOMParser().parseFromString(data, 'text/xml'));
 
             // osmtogeojson writes polygon coordinates in anticlockwise order, not fitting the geojson specs.
             // Polygon coordinates need therefore to be reversed
-            osmGeojson.features.forEach(function(feature) {
+
+            osmGeojson.features.forEach(function(feature, index) {
+              var isClockwise = function(ring) {
+                var sum = 0;
+                var i = 1;
+                var len = ring.length;
+                var prev, cur;
+                while (i < len) {
+                  prev = cur || ring[0];
+                  cur = ring[i];
+                  sum += ((cur[0] - prev[0]) * (cur[1] + prev[1]));
+                  i++;
+                }
+                return sum > 0;
+              };
+
               if (feature.geometry.type === 'Polygon') {
+                var n = feature.geometry.coordinates.length;
                 feature.geometry.coordinates[0].reverse();
+                if (n > 1) {
+                  for (var i = 1; i < n; i++) {
+                    osmGeojson.features[index].geometry.coordinates[i] = feature.geometry.coordinates[i].slice().reverse();
+                  }
+                }
+              }
+
+              if (feature.geometry.type === 'MultiPolygon') {
+                // Split it in simple polygons
+                feature.geometry.coordinates.forEach(function(coords) {
+                  var n = coords.length;
+                  coords[0].reverse();
+                  if (n > 1) {
+                    for (var i = 1; i < n; i++) {
+                      coords[i] = coords[i].slice().reverse();
+                    }
+                  }
+                   osmGeojson.features.push({'type':'Feature','properties':osmGeojson.features[index].properties,'geometry':{'type':'Polygon','coordinates':coords}});
+                   }
+                );
               }
             });
 
