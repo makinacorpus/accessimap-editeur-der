@@ -85,7 +85,7 @@ angular.module('accessimapEditeurDerApp')
 
         image.enter().append('image')
             .attr('xlink:href', function(d) {
-                var url = 'http://' + ['a', 'b', 'c'][Math.trunc(Math.random() * 3)];
+                var url = 'http://' + ['a', 'b', 'c'][Math.floor(Math.random() * 3)];
                 url += '.tile.openstreetmap.org/' + d[2] + '/' + d[0] + '/' + d[1] + '.png';
               return url;
             })
