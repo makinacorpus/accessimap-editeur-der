@@ -3,12 +3,11 @@
   <slider class="form-control" ng-model="rotationAngle" ng-change="rotateMap()" min="0" max="360"></slider>
 
   <button class="btn btn-success" ng-click="mapCommon()" type="button">
-    <span class="glyphicon glyphicon-download" aria-hidden="true"></span> Next
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Édition
   </button>
 </form>
 
 <form class="form-inline">
-
   <ui-select ng-model="$parent.queryChosen" ng-disabled="disabled" ng-change="changeStyle(queryChosen)" theme="bootstrap" class="form-control style-selector" style="width: 200px;">
     <ui-select-match placeholder="Sélectionnez un élément">{{$select.selected.name}}</ui-select-match>
     <ui-select-choices repeat="item in queryChoices | filter: $select.search">
@@ -27,7 +26,6 @@
   <button class="btn btn-primary" ng-click="downloadData()" type="button">
     <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Ajouter à la carte
   </button>
-
 </form>
 
 <ul>
