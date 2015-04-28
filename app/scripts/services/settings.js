@@ -35,6 +35,12 @@ angular.module('accessimapEditeurDerApp')
       query: 'way["highway"~"motorway|trunk|primary|secondary"]',
       icon: 'road'
     }, {
+      id: 'places',
+      name: 'Places',
+      type: 'polygon',
+      query: 'way["highway"="pedestrian"]["area"="yes"]',
+      icon: 'road'
+    }, {
       id: 'rues',
       name: 'Toutes les rues',
       type: 'line',
@@ -46,12 +52,6 @@ angular.module('accessimapEditeurDerApp')
       type: 'point',
       query: 'node["highway"="traffic_signals"]',
       icon: 'street-view'
-    }, {
-      id: 'places',
-      name: 'Places',
-      type: 'polygon',
-      query: 'way["highway"="pedestrian"]["area"="yes"]',
-      icon: 'square-o'
     }, {
       id: 'batiments',
       name: 'Batiments',
