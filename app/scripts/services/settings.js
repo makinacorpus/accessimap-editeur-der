@@ -1,4 +1,5 @@
 'use strict';
+/*global textures */
 
 /**
  * @ngdoc service

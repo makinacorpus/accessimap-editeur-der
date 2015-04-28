@@ -12,8 +12,9 @@ angular.module('accessimapEditeurDerApp')
     var featureIcon = function(item, type) {
       var iconSvg = document.createElement('svg');
       var iconContainer = d3.select(iconSvg).attr('height', 30).append('g');
+      var symbol;
       if (type === 'line') {
-        var symbol = iconContainer.append('line')
+        symbol = iconContainer.append('line')
           .attr('x1', function() {
               return 0;
           })
@@ -29,14 +30,14 @@ angular.module('accessimapEditeurDerApp')
           .attr('fill', 'red');
       }
       if (type === 'point') {
-        var symbol = iconContainer.append('path')
+        symbol = iconContainer.append('path')
             .attr('d', function() {
                 return item.path(15, 15, item.radius);
             })
             .attr('fill', 'red');
       }
       if (type === 'polygon') {
-        var symbol = iconContainer.append('rect')
+        symbol = iconContainer.append('rect')
               .attr('x', function() {
                   return 0;
               })
@@ -56,7 +57,7 @@ angular.module('accessimapEditeurDerApp')
         symbol.attr(attribute.k, attribute.v);
       });
 
-      return (new XMLSerializer).serializeToString(iconSvg);
+      return (new XMLSerializer()).serializeToString(iconSvg);
     };
 
     return {

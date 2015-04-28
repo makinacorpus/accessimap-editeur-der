@@ -1,4 +1,5 @@
 'use strict';
+/*global JSZip, saveAs */
 
 /**
  * @ngdoc service
@@ -13,9 +14,11 @@ angular.module('accessimapEditeurDerApp')
     this.mapExport = function() {
       d3.select('.tiles').selectAll('*').remove();
       var zip = new JSZip();
-      zip.file('map.svg', (new XMLSerializer).serializeToString(d3.select('#der').selectAll('svg').node()));
+      var mapNode = d3.select('#der').selectAll('svg').node();
+      zip.file('map.svg', (new XMLSerializer()).serializeToString(mapNode));
       if (d3.select('#der-legend').selectAll('svg').node()) {
-        zip.file('legend.svg', (new XMLSerializer).serializeToString(d3.select('#der-legend').selectAll('svg').node()));
+        var legendNode = d3.select('#der-legend').selectAll('svg').node();
+        zip.file('legend.svg', (new XMLSerializer()).serializeToString(legendNode));
       }
       zip.file('comments.txt', $('#comment').val());
       var content = zip.generate({type: 'blob'});

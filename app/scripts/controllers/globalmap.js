@@ -14,7 +14,7 @@ angular.module('accessimapEditeurDerApp')
       initSvg, mapService, settings, shareSvg) {
 
 
-      $scope.uploadSvg = function(element, $scope) {
+      $scope.uploadSvg = function(element) {
         var svgFile = element.files[0];
         var reader = new FileReader();
         reader.readAsDataURL(svgFile); //readAsDataURL
@@ -42,7 +42,7 @@ angular.module('accessimapEditeurDerApp')
         d3.xml(path, function(xml) {
           var svg = d3.select(xml.documentElement);
           // Load polygon fill styles taht will be used on common map
-          angular.forEach(settings.POLYGON_STYLES, function(key, value) {
+          angular.forEach(settings.POLYGON_STYLES, function(key) {
               svg.call(key);
           });
           shareSvg.addMap(xml.documentElement)

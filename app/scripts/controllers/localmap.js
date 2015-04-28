@@ -1,4 +1,5 @@
 'use strict';
+/*global turf, osmtogeojson */
 
 /**
  * @ngdoc function
@@ -23,167 +24,28 @@ angular.module('accessimapEditeurDerApp')
           margin = 10;
 
       if (mapFormat === 'portrait') {
-          var tmpWidth = width;
+          var tmpMapWidth = width;
           width = height;
-          height = tmpWidth;
+          height = tmpMapWidth;
       }
 
       if (legendFormat === 'portrait') {
-          var tmpWidth = legendWidth;
+          var tmpLegendWidth = legendWidth;
           legendWidth = legendHeight;
-          legendHeight = tmpWidth;
+          legendHeight = tmpLegendWidth;
       }
 
       var tile = d3.geo.tile()
           .size([width, height]);
 
       var projection = d3.geo.mercator()
-          .scale((1 << 22) / 2 / Math.PI)
+          .scale(Math.pow(2, 22) / 2 / Math.PI)
           .translate([width / 2, height / 2]);
 
       var center = projection(settings.leaflet.GLOBAL_MAP_CENTER);
 
       var path = d3.geo.path()
           .projection(projection);
-
-      var zoom = d3.behavior.zoom()
-          .scale(projection.scale() * 2 * Math.PI)
-          .scaleExtent([1 << 11, 1 << 27])
-          .translate([width - center[0], height - center[1]])
-          .on('zoom', zoomed)
-          .on('zoomend', zoomed);
-
-      var mapsvg = initSvg.createMap(width, height);
-      var legendsvg = initSvg.createLegend(width, height);
-
-      // Load polygon fill styles, defined in settings
-      angular.forEach(settings.POLYGON_STYLES, function(key, value) {
-          mapsvg.call(key);
-          legendsvg.call(key);
-      });
-      $scope.rotationAngle = 0;
-
-      var map = mapsvg.append('g')
-          .attr('width', width)
-          .attr('height', height)
-          .attr('transform', 'rotate(' + $scope.rotationAngle + ')');
-
-      var raster = map.append('g')
-          .attr('class', 'tiles');
-
-      var legendContainter = legendsvg.append('g')
-          .attr('width', legendWidth)
-          .attr('height', legendHeight);
-
-      var legend = legendContainter.append('rect')
-          .attr('x', function() {
-              return margin;
-          })
-          .attr('y', '0px')
-          .attr('width', function() {
-              return legendWidth - margin;
-          })
-          .attr('height', legendHeight)
-          .attr('fill', 'white');
-
-      legendContainter.append('text')
-          .attr('x', function() {
-              return margin;
-          })
-          .attr('y', '30px')
-          .attr('class', 'braille')
-          .attr('font-family', 'braille')
-          .attr('font-size', '20px')
-          .text(function() {
-              return 'legende';
-          });
-
-      $scope.geojson = [];
-
-      $scope.queryChoices = settings.QUERY_LIST;
-      $scope.queryChosen = $scope.queryChoices[0];
-
-      $scope.styleChoices = settings.STYLES[$scope.queryChosen.type];
-      $scope.styleChosen = $scope.styleChoices[0];
-
-      $scope.changeStyle = function(query) {
-          $scope.styleChoices = settings.STYLES[$scope.queryChosen.type];
-          $scope.styleChosen = $scope.styleChoices[0];
-      };
-
-      $scope.rotateMap = function() {
-          map.attr('transform', 'rotate(' + $scope.rotationAngle + ' ' + width / 2 + ' ' + height / 2 + ')');
-      };
-
-      $scope.featureIcon = svgicon.featureIcon;
-
-      function addToLegend(query, style, position) {
-        var legendGroup = legendContainter.append('g')
-            .attr('class', 'legend')
-            .attr('id', query.id);
-        if (query.type === 'line') {
-            var symbol = legendGroup.append('line')
-                .attr('x1', function() {
-                    return margin;
-                })
-                .attr('y1', function() {
-                    return position * 30 + 40;
-                })
-                .attr('x2', function() {
-                    return margin + 40;
-                })
-                .attr('y2', function() {
-                    return position * 30 + 40;
-                })
-                .attr('class', 'symbol')
-                .attr('fill', 'red');
-        }
-        if (query.type === 'point') {
-            var symbol = legendGroup.append('path')
-                .attr('cx', margin + 20)
-                .attr('cy', position * 30 + 40 + style.radius / 2)
-                .attr('d', function() {
-                    return style.path(d3.select(this).attr('cx'), d3.select(this).attr('cy'), style.radius);
-                })
-                .attr('class', 'symbol')
-                .attr('fill', 'red');
-        }
-        if (query.type === 'polygon') {
-            var symbol = legendGroup.append('rect')
-                .attr('x', function() {
-                    return margin;
-                })
-                .attr('y', function() {
-                    return position * 30 + 40;
-                })
-                .attr('width', function() {
-                    return 40;
-                })
-                .attr('height', function() {
-                    return 15;
-                })
-                .attr('class', 'symbol')
-                .attr('fill', 'red');
-        }
-
-          angular.forEach(style.style, function(attribute) {
-            symbol.attr(attribute.k, attribute.v);
-          });
-
-          legendGroup.append('text')
-              .attr('x', function() {
-                  return margin + 50;
-              })
-              .attr('y', function() {
-                  return position * 30 + margin + 40;
-              })
-              .attr('font-family', 'braille')
-              .attr('font-size', '20px')
-              .attr('class', 'braille')
-              .text(function() {
-                  return query.name;
-              });
-      }
 
       function zoomed() {
         var tiles = tile
@@ -223,7 +85,7 @@ angular.module('accessimapEditeurDerApp')
 
         image.enter().append('image')
             .attr('xlink:href', function(d) {
-                var url = 'http://' + ['a', 'b', 'c'][Math.random() * 3 | 0];
+                var url = 'http://' + ['a', 'b', 'c'][Math.trunc(Math.random() * 3)];
                 url += '.tile.openstreetmap.org/' + d[2] + '/' + d[0] + '/' + d[1] + '.png';
               return url;
             })
@@ -231,6 +93,146 @@ angular.module('accessimapEditeurDerApp')
             .attr('height', 1)
             .attr('x', function(d) { return d[0]; })
             .attr('y', function(d) { return d[1]; });
+      }
+
+      var zoom = d3.behavior.zoom()
+          .scale(projection.scale() * 2 * Math.PI)
+          .scaleExtent([Math.pow(2, 11), Math.pow(2, 27)])
+          .translate([width - center[0], height - center[1]])
+          .on('zoom', zoomed)
+          .on('zoomend', zoomed);
+
+      var mapsvg = initSvg.createMap(width, height);
+      var legendsvg = initSvg.createLegend(width, height);
+
+      // Load polygon fill styles, defined in settings
+      angular.forEach(settings.POLYGON_STYLES, function(key) {
+          mapsvg.call(key);
+          legendsvg.call(key);
+      });
+      $scope.rotationAngle = 0;
+
+      var map = mapsvg.append('g')
+          .attr('width', width)
+          .attr('height', height)
+          .attr('transform', 'rotate(' + $scope.rotationAngle + ')');
+
+      var raster = map.append('g')
+          .attr('class', 'tiles');
+
+      var legendContainter = legendsvg.append('g')
+          .attr('width', legendWidth)
+          .attr('height', legendHeight);
+
+      legendContainter.append('rect')
+          .attr('x', function() {
+              return margin;
+          })
+          .attr('y', '0px')
+          .attr('width', function() {
+              return legendWidth - margin;
+          })
+          .attr('height', legendHeight)
+          .attr('fill', 'white');
+
+      legendContainter.append('text')
+          .attr('x', function() {
+              return margin;
+          })
+          .attr('y', '30px')
+          .attr('class', 'braille')
+          .attr('font-family', 'braille')
+          .attr('font-size', '20px')
+          .text(function() {
+              return 'legende';
+          });
+
+      $scope.geojson = [];
+
+      $scope.queryChoices = settings.QUERY_LIST;
+      $scope.queryChosen = $scope.queryChoices[0];
+
+      $scope.styleChoices = settings.STYLES[$scope.queryChosen.type];
+      $scope.styleChosen = $scope.styleChoices[0];
+
+      $scope.changeStyle = function() {
+          $scope.styleChoices = settings.STYLES[$scope.queryChosen.type];
+          $scope.styleChosen = $scope.styleChoices[0];
+      };
+
+      $scope.rotateMap = function() {
+          map.attr('transform', 'rotate(' + $scope.rotationAngle + ' ' + width / 2 + ' ' + height / 2 + ')');
+      };
+
+      $scope.featureIcon = svgicon.featureIcon;
+
+      function addToLegend(query, style, position) {
+        var legendGroup = legendContainter.append('g')
+            .attr('class', 'legend')
+            .attr('id', query.id);
+        var symbol;
+        if (query.type === 'line') {
+            symbol = legendGroup.append('line')
+                .attr('x1', function() {
+                    return margin;
+                })
+                .attr('y1', function() {
+                    return position * 30 + 40;
+                })
+                .attr('x2', function() {
+                    return margin + 40;
+                })
+                .attr('y2', function() {
+                    return position * 30 + 40;
+                })
+                .attr('class', 'symbol')
+                .attr('fill', 'red');
+        }
+        if (query.type === 'point') {
+            symbol = legendGroup.append('path')
+                .attr('cx', margin + 20)
+                .attr('cy', position * 30 + 40 + style.radius / 2)
+                .attr('d', function() {
+                    return style.path(d3.select(this).attr('cx'), d3.select(this).attr('cy'), style.radius);
+                })
+                .attr('class', 'symbol')
+                .attr('fill', 'red');
+        }
+        if (query.type === 'polygon') {
+            symbol = legendGroup.append('rect')
+                .attr('x', function() {
+                    return margin;
+                })
+                .attr('y', function() {
+                    return position * 30 + 40;
+                })
+                .attr('width', function() {
+                    return 40;
+                })
+                .attr('height', function() {
+                    return 15;
+                })
+                .attr('class', 'symbol')
+                .attr('fill', 'red');
+        }
+
+          angular.forEach(style.style, function(attribute) {
+            symbol.attr(attribute.k, attribute.v);
+          });
+
+          legendGroup.append('text')
+              .attr('x', function() {
+                  return margin + 50;
+              })
+              .attr('y', function() {
+                  return position * 30 + margin + 40;
+              })
+              .attr('font-family', 'braille')
+              .attr('font-size', '20px')
+              .attr('class', 'braille')
+              .text(function() {
+                  return query.name;
+              });
       }
 
       map.call(zoom);
@@ -253,7 +255,7 @@ angular.module('accessimapEditeurDerApp')
       function removeFeature(id) {
         // Remove object from $scope.geojson
         var result = $scope.geojson.filter(function(obj) {
-          return obj.id == id;
+          return obj.id === id;
         });
         var index = $scope.geojson.indexOf(result[0]);
         $scope.geojson.splice(index, 1);
@@ -272,7 +274,7 @@ angular.module('accessimapEditeurDerApp')
         });
         if (style.path) {
           var result = $scope.geojson.filter(function(obj) {
-            return obj.id == id;
+            return obj.id === id;
           });
           var index = $scope.geojson.indexOf(result[0]);
           $scope.geojson[index].style.path = style.path;
@@ -298,21 +300,21 @@ angular.module('accessimapEditeurDerApp')
         //}
       }
 
-      function geojsonToSvg(data, simplification, id, osm) {
+      function geojsonToSvg(data, simplification, id) {
         if (data) {
           data.features.forEach(function(feature, index) {
             if (simplification) {
               data.features[index] = turf.simplify(feature, simplification, false);
             }
           });
-
+          var featureExists;
           if (id) {
-            var featureExists = $scope.geojson.filter(function(obj) {
-              return obj.id == id;
+            featureExists = $scope.geojson.filter(function(obj) {
+              return obj.id === id;
             });
           } else {
-            var featureExists = $scope.geojson.filter(function(obj) {
-              return obj.id == $scope.queryChosen.id;
+            featureExists = $scope.geojson.filter(function(obj) {
+              return obj.id === $scope.queryChosen.id;
             });
           }
 
@@ -385,7 +387,7 @@ angular.module('accessimapEditeurDerApp')
               }
             });
 
-            geojsonToSvg(osmGeojson, undefined, undefined, true);
+            geojsonToSvg(osmGeojson, undefined, undefined);
 
             usSpinnerService.stop('spinner-1');
           }).
