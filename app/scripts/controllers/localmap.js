@@ -150,7 +150,7 @@ angular.module('accessimapEditeurDerApp')
       $scope.geojson = [];
 
       $scope.queryChoices = settings.QUERY_LIST;
-      $scope.queryChosen = $scope.queryChoices[7];
+      $scope.queryChosen = $scope.queryChoices[0];
 
       $scope.styleChoices = settings.STYLES[$scope.queryChosen.type];
       $scope.styleChosen = $scope.styleChoices[0];
