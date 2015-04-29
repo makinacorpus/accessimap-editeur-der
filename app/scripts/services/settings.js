@@ -30,6 +30,12 @@ angular.module('accessimapEditeurDerApp')
       query: 'way["footway"="crossing"]',
       icon: 'road'
     }, {
+      id: 'ppietonsp',
+      name: 'Passages piétons',
+      type: 'point',
+      query: 'node["highway"="crossing"]',
+      icon: 'road'
+    }, {
       id: 'principales',
       name: 'Routes principales',
       type: 'line',

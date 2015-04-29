@@ -2,6 +2,13 @@
 CHANGELOG
 =========
 
+0.3
+-------------------
+
+**Minor changes**
+
+* Add zebra crossings from OSM as points
+
 0.2
 -------------------
 
