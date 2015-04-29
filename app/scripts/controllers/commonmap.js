@@ -86,6 +86,43 @@ angular.module('accessimapEditeurDerApp')
               });
            });
         }
+        if ($scope.mode === 'circle') {
+          resetActions();
+          $('#der').css('cursor', 'crosshair');
+          $scope.styleChoices = settings.STYLES.polygon;
+          $scope.styleChosen = $scope.styleChoices[0];
+          d3.select('svg')
+            .on('click', function() {
+              var coordinates = d3.mouse(this);
+              if (d3.select('.edition')[0][0]) {
+                var feature = d3.select('.edition');
+                var xOffset = coordinates[0] - feature.attr('cx');
+                var yOffset = coordinates[1] - feature.attr('cy');
+                var r = Math.sqrt(Math.pow(xOffset, 2) + Math.pow(yOffset, 2));
+                feature.attr('r', r);
+                feature.classed('edition', false);
+              } else {
+                var feature = d3.select('svg')
+                .append('circle')
+                .attr('cx', coordinates[0])
+                .attr('cy', coordinates[1])
+                .attr({'class': 'edition'});
+                angular.forEach($scope.styleChosen.style, function(attribute) {
+                  feature.attr(attribute.k, attribute.v);
+                });
+              }
+           })
+           .on('mousemove', function() {
+              var feature = d3.select('.edition');
+              if (feature[0][0]) {
+                var coordinates = d3.mouse(this);
+                var xOffset = coordinates[0] - feature.attr('cx');
+                var yOffset = coordinates[1] - feature.attr('cy');
+                var r = Math.sqrt(Math.pow(xOffset, 2) + Math.pow(yOffset, 2));
+                feature.attr('r', r);
+              }
+           });
+        }
         if ($scope.mode === 'line' || $scope.mode === 'polygon') {
           resetActions();
           $('#der').css('cursor', 'crosshair');

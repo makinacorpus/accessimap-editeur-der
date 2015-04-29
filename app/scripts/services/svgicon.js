@@ -36,7 +36,7 @@ angular.module('accessimapEditeurDerApp')
             })
             .attr('fill', 'red');
       }
-      if (type === 'polygon') {
+      if (type === 'polygon' || type === 'circle') {
         symbol = iconContainer.append('rect')
               .attr('x', function() {
                   return 0;

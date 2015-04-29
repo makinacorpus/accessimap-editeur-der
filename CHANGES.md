@@ -5,6 +5,10 @@ CHANGELOG
 0.3
 -------------------
 
+**New features**
+
+* Circle drawing
+
 **Minor changes**
 
 * Add zebra crossings from OSM as points
