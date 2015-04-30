@@ -18,64 +18,70 @@ angular.module('accessimapEditeurDerApp')
     };
 
     var QUERY_LIST = [{
+      id: 'poi',
+      name: 'Point d\'intérêt',
+      type: 'point',
+      query: ['node["amenity"]', 'node["shop"]'],
+      icon: 'road'
+    },{
       id: 'trottoirs',
       name: 'Trottoirs',
       type: 'line',
-      query: 'way["footway"="sidewalk"]',
+      query: ['way["footway"="sidewalk"]'],
       icon: 'road'
     }, {
       id: 'ppietons',
       name: 'Passages piétons',
       type: 'line',
-      query: 'way["footway"="crossing"]',
+      query: ['way["footway"="crossing"]'],
       icon: 'road'
     }, {
       id: 'ppietonsp',
       name: 'Passages piétons',
       type: 'point',
-      query: 'node["highway"="crossing"]',
+      query: ['node["highway"="crossing"]'],
       icon: 'road'
     }, {
       id: 'principales',
       name: 'Routes principales',
       type: 'line',
-      query: 'way["highway"~"motorway|trunk|primary|secondary"]',
+      query: ['way["highway"~"motorway|trunk|primary|secondary"]'],
       icon: 'road'
     }, {
       id: 'places',
       name: 'Places',
       type: 'polygon',
-      query: 'way["highway"="pedestrian"]["area"="yes"]',
+      query: ['way["highway"="pedestrian"]["area"="yes"]'],
       icon: 'road'
     }, {
       id: 'rues',
       name: 'Toutes les rues',
       type: 'line',
-      query: 'way["highway"]["footway"!="sidewalk"]["footway"!="crossing"]["area"!="yes"]',
+      query: ['way["highway"]["footway"!="sidewalk"]["footway"!="crossing"]["area"!="yes"]'],
       icon: 'road'
     }, {
       id: 'trafficSignals',
       name: 'Feux tricolores',
       type: 'point',
-      query: 'node["highway"="traffic_signals"]',
+      query: ['node["highway"="traffic_signals"]'],
       icon: 'street-view'
     }, {
       id: 'batiments',
       name: 'Batiments',
       type: 'polygon',
-      query: 'way["building"]["building"!="no"]',
+      query: ['way["building"]["building"!="no"]'],
       icon: 'building-o'
     }, {
       id: 'eau',
       name: 'Eau',
       type: 'polygon',
-      query: 'relation["type"="multipolygon"]["natural"="water"]',
+      query: ['relation["type"="multipolygon"]["natural"="water"]'],
       icon: 'leaf'
     }, {
       id: 'parc',
       name: 'Parc',
       type: 'polygon',
-      query: 'way["leisure"="park"]',
+      query: ['way["leisure"="park"]'],
       icon: 'leaf'
     }];
 

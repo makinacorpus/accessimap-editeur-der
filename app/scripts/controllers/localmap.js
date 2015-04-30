@@ -193,7 +193,9 @@ angular.module('accessimapEditeurDerApp')
                 .attr('cx', margin + 20)
                 .attr('cy', position * 30 + 40 + style.radius / 2)
                 .attr('d', function() {
-                    return style.path(d3.select(this).attr('cx'), d3.select(this).attr('cy'), style.radius);
+                    var x = parseFloat(d3.select(this).attr('cx')),
+                        y = parseFloat(d3.select(this).attr('cy'));
+                    return style.path(x, y, style.radius);
                 })
                 .attr('class', 'symbol')
                 .attr('fill', 'red');
@@ -300,7 +302,7 @@ angular.module('accessimapEditeurDerApp')
         //}
       }
 
-      function geojsonToSvg(data, simplification, id) {
+      function geojsonToSvg(data, simplification, id, poi) {
         if (data) {
           data.features.forEach(function(feature, index) {
             if (simplification) {
@@ -319,16 +321,30 @@ angular.module('accessimapEditeurDerApp')
           }
 
           if (featureExists.length === 0) {
-            $scope.geojson.push({
-              id: $scope.queryChosen.id,
-              name: $scope.queryChosen.name,
-              geometryType: $scope.queryChosen.type,
-              layer: $.extend(true, {}, data), //deep copy,
-              originallayer: $.extend(true, {}, data), //deep copy
-              style: $scope.styleChosen,
-              styleChoices: $scope.styleChoices
-            });
-            addToLegend($scope.queryChosen, $scope.styleChosen, $scope.geojson.length);
+            if (poi) {
+              var name = data.features[0].properties.tags.name || data.features[0].properties.tags.amenity || data.features[0].properties.tags.shop || 'POI';
+              $scope.geojson.push({
+                id: id,
+                name: name,
+                geometryType: $scope.queryChosen.type,
+                layer: $.extend(true, {}, data), //deep copy,
+                originallayer: $.extend(true, {}, data), //deep copy
+                style: $scope.styleChosen,
+                styleChoices: $scope.styleChoices
+              });
+              addToLegend({'type': 'point', 'name': name, 'id': id}, $scope.styleChosen, $scope.geojson.length);
+            } else {
+              $scope.geojson.push({
+                id: $scope.queryChosen.id,
+                name: $scope.queryChosen.name,
+                geometryType: $scope.queryChosen.type,
+                layer: $.extend(true, {}, data), //deep copy,
+                originallayer: $.extend(true, {}, data), //deep copy
+                style: $scope.styleChosen,
+                styleChoices: $scope.styleChoices
+              });
+              addToLegend($scope.queryChosen, $scope.styleChosen, $scope.geojson.length);
+            };
           } else {
             map.append('g')
               .attr('class', 'vector')
@@ -372,17 +388,38 @@ angular.module('accessimapEditeurDerApp')
         }
       }
 
-      function downloadData() {
-        usSpinnerService.spin('spinner-1');
+      function downloadPoi() {
+        $('#map').css('cursor', 'crosshair');
+        d3.select('svg')
+          .on('click', function() {
+            var coordinates = d3.mouse(this);
+            var point = mapService.formatLocation(projection.invert(coordinates), zoom.scale());
+            downloadData(point);
+          });
+      }
 
-        var boundsNW = mapService.formatLocation(projection.invert([0, 0]), zoom.scale());
-        var boundsSE = mapService.formatLocation(projection.invert([width, height]), zoom.scale());
-        var mapS = boundsSE.lat,
-            mapW = boundsNW.lon,
-            mapN = boundsNW.lat,
-            mapE = boundsSE.lon;
-        var url = settings.XAPI_URL + '[out:xml];(' + $scope.queryChosen.query;
-        url += '(' + mapS + ',' + mapW + ',' + mapN + ',' + mapE + '););out body;>;out skel qt;';
+      function downloadData(point) {
+        usSpinnerService.spin('spinner-1');
+        if (point) {
+          var mapS = parseFloat(point.lat) - 0.00005,
+              mapW = parseFloat(point.lon) - 0.00005,
+              mapN = parseFloat(point.lat) + 0.00005,
+              mapE = parseFloat(point.lon) + 0.00005;
+        } else {
+          $('#map').css('cursor', 'auto');
+          var boundsNW = mapService.formatLocation(projection.invert([0, 0]), zoom.scale());
+          var boundsSE = mapService.formatLocation(projection.invert([width, height]), zoom.scale());
+          var mapS = boundsSE.lat,
+              mapW = boundsNW.lon,
+              mapN = boundsNW.lat,
+              mapE = boundsSE.lon;
+        }
+        var url = settings.XAPI_URL + '[out:xml];(';
+        for (var i = 0; i < $scope.queryChosen.query.length; i++) {
+          url += $scope.queryChosen.query[i];
+          url += '(' + mapS + ',' + mapW + ',' + mapN + ',' + mapE + ');';
+        };
+        url += ');out body;>;out skel qt;';
         $http.get(url).
           success(function(data) {
             var osmGeojson = osmtogeojson(new DOMParser().parseFromString(data, 'text/xml'));
@@ -431,7 +468,16 @@ angular.module('accessimapEditeurDerApp')
               }
             });
 
-            geojsonToSvg(osmGeojson, undefined, undefined);
+            if ($scope.queryChosen.id === 'poi') {
+              osmGeojson.features = [osmGeojson.features[0]];
+              if (osmGeojson.features[0]) {
+                geojsonToSvg(osmGeojson, undefined, 'node_' + osmGeojson.features[0].properties.id, true);
+              }
+            } else {
+              geojsonToSvg(osmGeojson, undefined, undefined);
+            }
+
+
 
             usSpinnerService.stop('spinner-1');
           }).
@@ -441,6 +487,7 @@ angular.module('accessimapEditeurDerApp')
       }
 
       $scope.downloadData = downloadData;
+      $scope.downloadPoi = downloadPoi;
       $scope.removeFeature = removeFeature;
       $scope.updateFeature = updateFeature;
       $scope.simplifyFeatures = simplifyFeatures;

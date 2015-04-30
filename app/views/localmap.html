@@ -27,8 +27,12 @@
     </ui-select-choices>
   </ui-select>
 
-  <button class="btn btn-primary" ng-click="downloadData()" type="button">
+  <button ng-if="queryChosen.id !== 'poi'" class="btn btn-primary" ng-click="downloadData()" type="button">
     <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Ajouter à la carte
+  </button>
+
+  <button ng-if="queryChosen.id === 'poi'" class="btn btn-success" ng-click="downloadPoi()" type="button">
+    <span class="glyphicon glyphicon-download" aria-hidden="true"></span> Ajouter POI
   </button>
 </form>
 
