@@ -106,6 +106,13 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'fill',
         'v': 'none'
+      }],
+      style_inner: [{
+        'k': 'stroke-width',
+        'v': '0'
+      }, {
+        'k': 'fill',
+        'v': 'none'
       }]
     },{
       id: 'straight_2',
@@ -116,6 +123,13 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-width',
         'v': '2'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }],
+      style_inner: [{
+        'k': 'stroke-width',
+        'v': '0'
       }, {
         'k': 'fill',
         'v': 'none'
@@ -132,6 +146,13 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'fill',
         'v': 'none'
+      }],
+      style_inner: [{
+        'k': 'stroke-width',
+        'v': '0'
+      }, {
+        'k': 'fill',
+        'v': 'none'
       }]
     },{
       id: 'straight_5',
@@ -142,6 +163,42 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-width',
         'v': '5'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }],
+      style_inner: [{
+        'k': 'stroke-width',
+        'v': '0'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }]
+    },{
+      id: 'straight_8',
+      name: 'Traits parallèles',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '8'
+      }, {
+        'k': 'stroke-linecap',
+        'v': 'round'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }],
+      style_inner: [{
+        'k': 'stroke',
+        'v': 'white'
+      }, {
+        'k': 'stroke-width',
+        'v': '4'
+      }, {
+        'k': 'stroke-linecap',
+        'v': 'round'
       }, {
         'k': 'fill',
         'v': 'none'
@@ -161,6 +218,13 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-dasharray',
         'v': '6, 3'
+      }],
+      style_inner: [{
+        'k': 'stroke-width',
+        'v': '0'
+      }, {
+        'k': 'fill',
+        'v': 'none'
       }]
     },{
       id: 'dashed21_5',
@@ -177,6 +241,13 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-dasharray',
         'v': '10, 5'
+      }],
+      style_inner: [{
+        'k': 'stroke-width',
+        'v': '0'
+      }, {
+        'k': 'fill',
+        'v': 'none'
       }]
     },{
       id: 'dashed61_3',
@@ -193,6 +264,13 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-dasharray',
         'v': '18, 3'
+      }],
+      style_inner: [{
+        'k': 'stroke-width',
+        'v': '0'
+      }, {
+        'k': 'fill',
+        'v': 'none'
       }]
     },{
       id: 'dashed61_5',
@@ -209,6 +287,13 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-dasharray',
         'v': '30, 5'
+      }],
+      style_inner: [{
+        'k': 'stroke-width',
+        'v': '0'
+      }, {
+        'k': 'fill',
+        'v': 'none'
       }]
     },{
       id: 'dashed22_3',
@@ -225,6 +310,13 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-dasharray',
         'v': '6, 6'
+      }],
+      style_inner: [{
+        'k': 'stroke-width',
+        'v': '0'
+      }, {
+        'k': 'fill',
+        'v': 'none'
       }]
     },{
       id: 'dashed22_5',
@@ -241,6 +333,13 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-dasharray',
         'v': '10, 10'
+      }],
+      style_inner: [{
+        'k': 'stroke-width',
+        'v': '0'
+      }, {
+        'k': 'fill',
+        'v': 'none'
       }]
     },{
       id: 'dashed42_2',
@@ -257,6 +356,13 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-dasharray',
         'v': '8, 4'
+      }],
+      style_inner: [{
+        'k': 'stroke-width',
+        'v': '0'
+      }, {
+        'k': 'fill',
+        'v': 'none'
       }]
     },{
       id: 'dashed42_3',
@@ -273,6 +379,13 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-dasharray',
         'v': '12, 6'
+      }],
+      style_inner: [{
+        'k': 'stroke-width',
+        'v': '0'
+      }, {
+        'k': 'fill',
+        'v': 'none'
       }]
     },{
       id: 'dashed42_5',
@@ -289,6 +402,13 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-dasharray',
         'v': '20, 10'
+      }],
+      style_inner: [{
+        'k': 'stroke-width',
+        'v': '0'
+      }, {
+        'k': 'fill',
+        'v': 'none'
       }]
     },{
       id: 'dashed4212_3',
@@ -305,6 +425,13 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-dasharray',
         'v': '12, 6, 3, 6'
+      }],
+      style_inner: [{
+        'k': 'stroke-width',
+        'v': '0'
+      }, {
+        'k': 'fill',
+        'v': 'none'
       }]
     },{
       id: 'dashed4212_5',
@@ -321,6 +448,13 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-dasharray',
         'v': '20, 10, 5, 10'
+      }],
+      style_inner: [{
+        'k': 'stroke-width',
+        'v': '0'
+      }, {
+        'k': 'fill',
+        'v': 'none'
       }]
     }],
     'polygon': [{

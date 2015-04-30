@@ -57,6 +57,10 @@ angular.module('accessimapEditeurDerApp')
               .filter(function(d) {
                 return d.geometry.type !== 'Point'; })
               .attr('d', path);
+          d3.selectAll('path.inner.' + geojson.id)
+              .filter(function(d) {
+                return d.geometry.type !== 'Point'; })
+              .attr('d', path);
           d3.selectAll('path.' + geojson.id)
               .filter(function(d) {
                 return d.geometry.type === 'Point'; })
@@ -187,6 +191,25 @@ angular.module('accessimapEditeurDerApp')
                 })
                 .attr('class', 'symbol')
                 .attr('fill', 'red');
+            var symbolInner = legendGroup.append('line')
+                .attr('x1', function() {
+                    return margin;
+                })
+                .attr('y1', function() {
+                    return position * 30 + 40;
+                })
+                .attr('x2', function() {
+                    return margin + 40;
+                })
+                .attr('y2', function() {
+                    return position * 30 + 40;
+                })
+                .attr('class', 'symbol')
+                .attr('class', 'inner')
+                .attr('fill', 'red');
+            angular.forEach(style.style_inner, function(attribute) {
+              symbolInner.attr(attribute.k, attribute.v);
+            });
         }
         if (query.type === 'point') {
             symbol = legendGroup.append('path')
@@ -264,6 +287,9 @@ angular.module('accessimapEditeurDerApp')
 
         // Remove object from map
         d3.select('.vector#' + id).remove();
+        if (d3.select('.vector.inner#' + id)) {
+          d3.select('.vector.inner#' + id).remove();
+        }
 
         // Remove object from legend
         d3.select('.legend#' + id).remove();
@@ -274,6 +300,12 @@ angular.module('accessimapEditeurDerApp')
           d3.select('#' + id)
             .attr(attribute.k, attribute.v);
         });
+        if (style.style_inner) {
+          angular.forEach(style.style_inner, function(attribute) {
+            d3.select('.inner#' + id)
+              .attr(attribute.k, attribute.v);
+          });
+        }
         if (style.path) {
           var result = $scope.geojson.filter(function(obj) {
             return obj.id === id;
@@ -287,6 +319,13 @@ angular.module('accessimapEditeurDerApp')
         angular.forEach(style.style, function(attribute) {
           symbol.attr(attribute.k, attribute.v);
         });
+        if (style.style_inner) {
+          var symbolInner = d3.select('.legend#' + id).select('.inner');
+          console.log(symbolInner);
+          angular.forEach(style.style_inner, function(attribute) {
+            symbolInner.attr(attribute.k, attribute.v);
+          });
+        }
         if (style.path) {
           symbol.attr('d', function() {
               return style.path(symbol.attr('cx'), symbol.attr('cy'), style.radius);
@@ -300,6 +339,64 @@ angular.module('accessimapEditeurDerApp')
           var data = $.extend(true, {}, feature.originallayer);
           geojsonToSvg(data, feature.simplification / 100000, feature.id);
         //}
+      }
+
+      function drawFeature(data, feature, optionalClass) {
+        map.append('g')
+          .attr('class', function() {
+            if (optionalClass) {
+              return 'vector ' + optionalClass;
+            } else {
+              return 'vector'
+            }
+          })
+          .attr('id', feature[0].id)
+          .selectAll('path')
+          .data(data.features.filter(function(d) {
+            return d.geometry.type !== 'Point';
+          }))
+          .enter().append('path')
+          .attr('class', function() {
+            if (optionalClass) {
+              return feature[0].id + ' ' + optionalClass;
+            } else {
+              return feature[0].id
+            }
+          })
+          .attr('name', function(d) {
+            return d.properties.tags.name;
+          })
+          .attr('d', path)
+          .data(data.features.filter(function(d) {
+            return d.geometry.type === 'Point';
+          }))
+          .enter().append('path')
+          .attr('class', feature[0].id)
+          .attr('name', function(d) {
+            return d.properties.tags.name;
+          })
+          .attr('cx', function(d) {
+            return projection(d.geometry.coordinates)[0];
+          })
+          .attr('cy', function(d) {
+            return projection(d.geometry.coordinates)[1];
+          })
+          .attr('d', function(d) {
+            var coords = projection(d.geometry.coordinates);
+            return feature[0].style.path(coords[0], coords[1], feature[0].style.radius);
+          });
+
+        angular.forEach(feature[0].style.style, function(attribute) {
+          d3.select('#' + feature[0].id)
+            .attr(attribute.k, attribute.v);
+        });
+
+        if (optionalClass) {
+          angular.forEach(feature[0].style['style_' + optionalClass], function(attribute) {
+            d3.select('.' + optionalClass + '#' + feature[0].id)
+              .attr(attribute.k, attribute.v);
+          });
+        }
       }
 
       function geojsonToSvg(data, simplification, id, poi) {
@@ -344,43 +441,12 @@ angular.module('accessimapEditeurDerApp')
                 styleChoices: $scope.styleChoices
               });
               addToLegend($scope.queryChosen, $scope.styleChosen, $scope.geojson.length);
-            };
+            }
           } else {
-            map.append('g')
-              .attr('class', 'vector')
-              .attr('id', featureExists[0].id)
-              .selectAll('path')
-              .data(data.features.filter(function(d) {
-                return d.geometry.type !== 'Point';
-              }))
-              .enter().append('path')
-              .attr('class', featureExists[0].id)
-              .attr('name', function(d) {
-                return d.properties.tags.name;
-              })
-              .attr('d', path)
-              .data(data.features.filter(function(d) {
-                return d.geometry.type === 'Point';
-              }))
-              .enter().append('path')
-              .attr('class', featureExists[0].id)
-              .attr('name', function(d) {
-                return d.properties.tags.name;
-              })
-              .attr('cx', function(d) {
-                return projection(d.geometry.coordinates)[0];
-              })
-              .attr('cy', function(d) {
-                return projection(d.geometry.coordinates)[1];
-              })
-              .attr('d', function(d) {
-                var coords = projection(d.geometry.coordinates);
-                return featureExists[0].style.path(coords[0], coords[1], featureExists[0].style.radius);
-              });
-            angular.forEach(featureExists[0].style.style, function(attribute) {
-              d3.select('#' + featureExists[0].id)
-                .attr(attribute.k, attribute.v);
-            });
+            drawFeature(data, featureExists);
+            if ($scope.styleChosen.style_inner) {
+              drawFeature(data, featureExists, 'inner');
+            }
           }
 
           map.call(zoom);

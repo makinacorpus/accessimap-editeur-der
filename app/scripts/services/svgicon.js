@@ -28,6 +28,23 @@ angular.module('accessimapEditeurDerApp')
               return 15;
           })
           .attr('fill', 'red');
+          var symbolInner = iconContainer.append('line')
+            .attr('x1', function() {
+                return 0;
+            })
+            .attr('y1', function() {
+                return 15;
+            })
+            .attr('x2', function() {
+                return 250;
+            })
+            .attr('y2', function() {
+                return 15;
+            })
+            .attr('fill', 'red');
+          angular.forEach(item.style_inner, function(attribute) {
+            symbolInner.attr(attribute.k, attribute.v);
+          });
       }
       if (type === 'point') {
         symbol = iconContainer.append('path')

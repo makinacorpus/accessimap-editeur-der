@@ -137,8 +137,10 @@ angular.module('accessimapEditeurDerApp')
           d3.select('svg')
             .on('click', function() {
               var path;
+              var pathInner;
               if (d3.select('.edition')[0][0]) {
                 path = d3.select('.edition');
+                pathInner = d3.select('.edition.inner');
               } else {
                 lineEdit = [];
                 path = d3.select('svg')
@@ -147,6 +149,12 @@ angular.module('accessimapEditeurDerApp')
                 angular.forEach($scope.styleChosen.style, function(attribute) {
                   path.attr(attribute.k, attribute.v);
                 });
+                pathInner = d3.select('svg')
+                .append('path')
+                .attr({'class': 'edition inner'});
+                angular.forEach($scope.styleChosen.style_inner, function(attribute) {
+                  pathInner.attr(attribute.k, attribute.v);
+                });
               }
               var coordinates = d3.mouse(this);
               lastPoint = coordinates;
@@ -154,8 +162,14 @@ angular.module('accessimapEditeurDerApp')
               path.attr({
                 d: lineFunction(lineEdit)
               });
+              pathInner.attr({
+                d: lineFunction(lineEdit)
+              });
               angular.forEach($scope.styleChosen.style, function(attribute) {
                 path.attr(attribute.k, attribute.v);
+              });
+              angular.forEach($scope.styleChosen.style_inner, function(attribute) {
+                pathInner.attr(attribute.k, attribute.v);
               });
             })
             .on('dblclick', function() {
@@ -166,6 +180,7 @@ angular.module('accessimapEditeurDerApp')
                 });
               }
               d3.select('.edition').classed('edition', false);
+              d3.select('.edition.inner').classed('edition', false);
               d3.select('.ongoing').remove();
               lastPoint = null;
             })
