@@ -8,10 +8,12 @@ CHANGELOG
 **New features**
 
 * Circle drawing
+* Parallel ways drawing
 
 **Minor changes**
 
 * Add zebra crossings from OSM as points
+* Add partners logos tothe footer
 
 0.2
 -------------------
