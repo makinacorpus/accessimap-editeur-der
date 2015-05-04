@@ -8,8 +8,8 @@
  * Controller of the accessimapEditeurDerApp
  */
 angular.module('accessimapEditeurDerApp')
-  .controller('CommonmapCtrl', ['$rootScope', '$scope', '$location', 'settings', 'exportService', 'shareSvg', 'svgicon',
-    function($rootScope, $scope, $location, settings, exportService, shareSvg, svgicon) {
+  .controller('CommonmapCtrl', ['$rootScope', '$scope', '$location', 'settings', 'exportService', 'shareSvg', 'svgicon', 'geometryutils',
+    function($rootScope, $scope, $location, settings, exportService, shareSvg, svgicon, geometryutils) {
       d3.select('#der')
         .selectAll('svg')
         .remove();
@@ -40,6 +40,20 @@ angular.module('accessimapEditeurDerApp')
 
       $scope.featureIcon = svgicon.featureIcon;
 
+      d3.select('svg').append("defs")
+          .append("marker")
+          .attr("id", "midmarker")
+          .attr("refX", 2)
+          .attr("refY", 2)
+          .attr("markerWidth", 4)
+          .attr("markerHeight", 4)
+          .attr("orient", "auto")
+        .append("circle")
+          .attr("cx", "2")
+          .attr("cy", "2")
+          .attr("r", "2");
+
+
       function resetActions() {
         d3.selectAll('path')
           .on('click', function() {
@@ -50,6 +64,8 @@ angular.module('accessimapEditeurDerApp')
         d3.select('body')
           .on('keydown', function() {
           });
+        d3.selectAll('path')
+          .attr("marker-mid", null);
         $('#der').css('cursor', 'auto');
         d3.select('.ongoing').remove();
       }
@@ -70,6 +86,29 @@ angular.module('accessimapEditeurDerApp')
               this.remove();
             });
         }
+        if ($scope.mode === 'move') {
+          resetActions();
+          d3.selectAll('path')
+            .attr("marker-mid", function(d) { return "url(#midmarker)"; })
+            .on('click', function() {
+              var _pathSegList = this.pathSegList;
+              d3.select('svg')
+                .on('click', function() {
+                  var features = [];
+                  angular.forEach(_pathSegList, function(point, index) {
+                      if (point.x && point.y) {
+                        features.push([point.x, point.y, index]);
+                      }
+                    });
+                  var clickPoint = [d3.mouse(this)[0], d3.mouse(this)[1]];
+                  
+                  var nearest = geometryutils.nearest(clickPoint, features);
+
+                  _pathSegList[nearest[2]].x = clickPoint[0];
+                  _pathSegList[nearest[2]].y = clickPoint[1];
+                });
+            });
+        }
         if ($scope.mode === 'point') {
           resetActions();
           $('#der').css('cursor', 'crosshair');
@@ -84,7 +123,7 @@ angular.module('accessimapEditeurDerApp')
               angular.forEach($scope.styleChosen.style, function(attribute) {
                 feature.attr(attribute.k, attribute.v);
               });
-           });
+           })
         }
         if ($scope.mode === 'circle') {
           resetActions();
@@ -140,7 +179,9 @@ angular.module('accessimapEditeurDerApp')
               var pathInner;
               if (d3.select('.edition')[0][0]) {
                 path = d3.select('.edition');
-                pathInner = d3.select('.edition.inner');
+                if ($scope.mode === 'line'){
+                  pathInner = d3.select('.edition.inner');
+                }
               } else {
                 lineEdit = [];
                 path = d3.select('svg')
@@ -149,12 +190,14 @@ angular.module('accessimapEditeurDerApp')
                 angular.forEach($scope.styleChosen.style, function(attribute) {
                   path.attr(attribute.k, attribute.v);
                 });
-                pathInner = d3.select('svg')
-                .append('path')
-                .attr({'class': 'edition inner'});
-                angular.forEach($scope.styleChosen.style_inner, function(attribute) {
-                  pathInner.attr(attribute.k, attribute.v);
-                });
+                if ($scope.mode === 'line'){
+                  pathInner = d3.select('svg')
+                  .append('path')
+                  .attr({'class': 'edition inner'});
+                  angular.forEach($scope.styleChosen.style_inner, function(attribute) {
+                    pathInner.attr(attribute.k, attribute.v);
+                  });
+                }
               }
               var coordinates = d3.mouse(this);
               lastPoint = coordinates;
@@ -162,25 +205,35 @@ angular.module('accessimapEditeurDerApp')
               path.attr({
                 d: lineFunction(lineEdit)
               });
-              pathInner.attr({
-                d: lineFunction(lineEdit)
-              });
+
+              if ($scope.mode === 'line'){
+                pathInner.attr({
+                  d: lineFunction(lineEdit)
+                });
+              } 
               angular.forEach($scope.styleChosen.style, function(attribute) {
                 path.attr(attribute.k, attribute.v);
               });
-              angular.forEach($scope.styleChosen.style_inner, function(attribute) {
-                pathInner.attr(attribute.k, attribute.v);
-              });
+
+              if ($scope.mode === 'line'){
+                angular.forEach($scope.styleChosen.style_inner, function(attribute) {
+                  pathInner.attr(attribute.k, attribute.v);
+                });
+              }
             })
             .on('dblclick', function() {
               if ($scope.mode === 'polygon') {
                 var a = d3.select('.edition').attr('d');
+                a = a.replace(a.substr(a.lastIndexOf('L')), '')
                 d3.select('.edition').attr({
                   d: a + 'Z'
                 });
               }
               d3.select('.edition').classed('edition', false);
-              d3.select('.edition.inner').classed('edition', false);
+
+              if ($scope.mode === 'line'){
+                d3.select('.edition.inner').classed('edition', false);
+              }
               d3.select('.ongoing').remove();
               lastPoint = null;
             })
