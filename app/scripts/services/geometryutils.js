@@ -18,12 +18,11 @@ angular.module('accessimapEditeurDerApp')
         var nearestPoint;
         var _this = this;
         points.forEach(function(pt) {
+          var dist = _this.distance(targetPoint, pt);
           if(!nearestPoint) {
             nearestPoint = pt;
-            var dist = _this.distance(targetPoint, pt);
             nearestPoint[3] = dist;
           } else {
-            var dist = _this.distance(targetPoint, pt);
             if(dist < nearestPoint[3]) {
               nearestPoint = pt;
               nearestPoint[3] = dist;

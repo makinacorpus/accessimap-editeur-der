@@ -87,34 +87,34 @@ angular.module('accessimapEditeurDerApp')
 
     var POLYGON_STYLES = {
       'bighash': textures.lines().orientation('vertical'),
+      'bighashm45': textures.lines().orientation('6/8'),
+      'bighash45': textures.lines().orientation('2/8'),
       'smallhash': textures.lines().orientation('vertical').thicker(),
-      'waves': textures.paths().d('waves').thicker(),
-      'smalldots': textures.circles(),
-      'bigdots': textures.circles().heavier()
+      'smallhashm45': textures.lines().orientation('6/8').thicker(),
+      'smallhash45': textures.lines().orientation('2/8').thicker(),
+      'wavest': textures.paths().d('waves').thicker(),
+      'waves': textures.paths().d('waves'),
+      'wavestg': textures.paths().d('waves').stroke("grey").thicker(),
+      'wavesg': textures.paths().d('waves').stroke("grey"),
+      'smalldots': textures.circles().complement(),
+      'smalldotsthicker': textures.circles().lighter().thicker().complement(),
+      'bigdots': textures.circles().heavier().complement(),
+      'bigdotsg': textures.circles().fill("grey").heavier().complement(),
+      'bigdotsempty': textures.circles().heavier().fill("transparent").strokeWidth(2).radius(7).complement().thinner(),
+      'smalldotsempty': textures.circles().heavier().fill("transparent").strokeWidth(2).radius(4).complement(),
+      'squares45': textures.lines().orientation("2/8", "6/8").size(20).strokeWidth(1),
+      'squares': textures.lines().orientation('vertical', 'horizontal').size(20).strokeWidth(1),
+      'hexagons': textures.paths().d("hexagons").size(10).strokeWidth(2),
+      'crosses': textures.paths().d("crosses"),
+      'caps': textures.paths().d("caps"),
+      'woven': textures.paths().d("woven"),
     };
+
+
+
 
     var STYLES = {
     'line': [{
-      id: 'straight_1',
-      name: 'Trait 1',
-      style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '1'
-      }, {
-        'k': 'fill',
-        'v': 'none'
-      }],
-      style_inner: [{
-        'k': 'stroke-width',
-        'v': '0'
-      }, {
-        'k': 'fill',
-        'v': 'none'
-      }]
-    },{
       id: 'straight_2',
       name: 'Trait 2',
       style: [{
@@ -204,29 +204,6 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }]
     },{
-      id: 'dashed21_3',
-      name: 'Tirets 21_3',
-      style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '3'
-      }, {
-        'k': 'fill',
-        'v': 'none'
-      }, {
-        'k': 'stroke-dasharray',
-        'v': '6, 3'
-      }],
-      style_inner: [{
-        'k': 'stroke-width',
-        'v': '0'
-      }, {
-        'k': 'fill',
-        'v': 'none'
-      }]
-    },{
       id: 'dashed21_5',
       name: 'Tirets 21_5',
       style: [{
@@ -241,52 +218,6 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-dasharray',
         'v': '10, 5'
-      }],
-      style_inner: [{
-        'k': 'stroke-width',
-        'v': '0'
-      }, {
-        'k': 'fill',
-        'v': 'none'
-      }]
-    },{
-      id: 'dashed61_3',
-      name: 'Tirets 61_3',
-      style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '3'
-      }, {
-        'k': 'fill',
-        'v': 'none'
-      }, {
-        'k': 'stroke-dasharray',
-        'v': '18, 3'
-      }],
-      style_inner: [{
-        'k': 'stroke-width',
-        'v': '0'
-      }, {
-        'k': 'fill',
-        'v': 'none'
-      }]
-    },{
-      id: 'dashed61_5',
-      name: 'Tirets 61_5',
-      style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '5'
-      }, {
-        'k': 'fill',
-        'v': 'none'
-      }, {
-        'k': 'stroke-dasharray',
-        'v': '30, 5'
       }],
       style_inner: [{
         'k': 'stroke-width',
@@ -342,29 +273,6 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }]
     },{
-      id: 'dashed42_2',
-      name: 'Tirets 42_2',
-      style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      }, {
-        'k': 'fill',
-        'v': 'none'
-      }, {
-        'k': 'stroke-dasharray',
-        'v': '8, 4'
-      }],
-      style_inner: [{
-        'k': 'stroke-width',
-        'v': '0'
-      }, {
-        'k': 'fill',
-        'v': 'none'
-      }]
-    },{
       id: 'dashed42_3',
       name: 'Tirets 42_3',
       style: [{
@@ -402,6 +310,29 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-dasharray',
         'v': '20, 10'
+      }],
+      style_inner: [{
+        'k': 'stroke-width',
+        'v': '0'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }]
+    },{
+      id: 'dashed42_5',
+      name: 'Tirets 62_5',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '5'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }, {
+        'k': 'stroke-dasharray',
+        'v': '30, 10'
       }],
       style_inner: [{
         'k': 'stroke-width',
@@ -471,6 +402,32 @@ angular.module('accessimapEditeurDerApp')
         'v': POLYGON_STYLES.bighash.url()
       }]
     },{
+      id: 'bighash-45',
+      name: 'Hachures -45',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.bighashm45.url()
+      }]
+    },{
+      id: 'bighash45',
+      name: 'Hachures 45',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.bighash45.url()
+      }]
+    },{
       id: 'smallhash',
       name: 'Petites hachures',
       style: [{
@@ -482,6 +439,45 @@ angular.module('accessimapEditeurDerApp')
       },{
         'k': 'fill',
         'v': POLYGON_STYLES.smallhash.url()
+      }]
+    },{
+      id: 'smallhashm45',
+      name: 'Petites hachures -45',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smallhashm45.url()
+      }]
+    },{
+      id: 'smallhash45',
+      name: 'Petites hachures 45',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smallhash45.url()
+      }]
+    },{
+      id: 'wavest',
+      name: 'Vaguest',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.wavest.url()
       }]
     },{
       id: 'waves',
@@ -497,6 +493,32 @@ angular.module('accessimapEditeurDerApp')
         'v': POLYGON_STYLES.waves.url()
       }]
     },{
+      id: 'wavestg',
+      name: 'Vaguestg',
+      style: [{
+        'k': 'stroke',
+        'v': 'grey'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.wavestg.url()
+      }]
+    },{
+      id: 'wavesg',
+      name: 'Vaguesg',
+      style: [{
+        'k': 'stroke',
+        'v': 'grey'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.wavesg.url()
+      }]
+    },{
       id: 'bigdots',
       name: 'Points',
       style: [{
@@ -508,6 +530,32 @@ angular.module('accessimapEditeurDerApp')
       },{
         'k': 'fill',
         'v': POLYGON_STYLES.bigdots.url()
+      }]
+    },{
+      id: 'bigdotsg',
+      name: 'Pointsg',
+      style: [{
+        'k': 'stroke',
+        'v': 'grey'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.bigdotsg.url()
+      }]
+    },{
+      id: 'bigdotsempty',
+      name: 'Points vides',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.bigdotsempty.url()
       }]
     },{
       id: 'smalldots',
@@ -523,6 +571,58 @@ angular.module('accessimapEditeurDerApp')
         'v': POLYGON_STYLES.smalldots.url()
       }]
     },{
+      id: 'smalldotsthicker',
+      name: 'Petits points rapprochés',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smalldotsthicker.url()
+      }]
+    },{
+      id: 'smalldotsempty',
+      name: 'Petits points vides',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smalldotsempty.url()
+      }]
+    },{
+      id: 'squares',
+      name: 'Quadrillage',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '1'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.squares.url()
+      }]
+    },{
+      id: 'squares45',
+      name: 'Quadrillage 45',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '1'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.squares45.url()
+      }]
+    },{
       id: 'redfill',
       name: 'Fond rouge',
       style: [{
@@ -535,12 +635,79 @@ angular.module('accessimapEditeurDerApp')
         'k': 'fill',
         'v': 'red'
       }]
+    },{
+      id: 'hexagons',
+      name: 'hexagons',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.hexagons.url()
+      }]
+    },{
+      id: 'crosses',
+      name: 'crosses',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.crosses.url()
+      }]
+    },{
+      id: 'caps',
+      name: 'caps',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.caps.url()
+      }]
+    },{
+      id: 'woven',
+      name: 'woven',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.woven.url()
+      }]
     }],
     'point': [{
-      id: 'smallcircle',
+      id: 'smallcircleempty',
       name: 'Petit cercle vide',
       path: editSvg.circlePath,
-      radius: 5,
+      radius: 10,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': 'none'
+      }]
+    },{
+      id: 'bigcircleempty',
+      name: 'Grand cercle vide',
+      path: editSvg.circlePath,
+      radius: 18,
       style: [{
         'k': 'stroke',
         'v': 'black'
@@ -555,22 +722,37 @@ angular.module('accessimapEditeurDerApp')
       id: 'smallcircle',
       name: 'Petit cercle plein',
       path: editSvg.circlePath,
-      radius: 5,
+      radius: 10,
       style: [{
         'k': 'stroke',
-        'v': 'black'
+        'v': 'grey'
       }, {
         'k': 'stroke-width',
         'v': '2'
       },{
         'k': 'fill',
-        'v': 'black'
+        'v': 'grey'
       }]
     },{
       id: 'bigcircle',
       name: 'Grand cercle',
       path: editSvg.circlePath,
-      radius: 10,
+      radius: 18,
+      style: [{
+        'k': 'stroke',
+        'v': 'grey'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': 'grey'
+      }]
+    },{
+      id: 'circleCross',
+      name: 'Cercle croix',
+      path: editSvg.circleCrossPath,
+      radius: 18,
       style: [{
         'k': 'stroke',
         'v': 'black'
@@ -579,13 +761,13 @@ angular.module('accessimapEditeurDerApp')
         'v': '2'
       },{
         'k': 'fill',
-        'v': 'black'
+        'v': 'none'
       }]
     },{
-      id: 'circleCross',
-      name: 'Cercle croix',
-      path: editSvg.circleCrossPath,
-      radius: 10,
+      id: 'ovalempty',
+      name: 'Ovale vide',
+      path: editSvg.ovalPath,
+      radius: 18,
       style: [{
         'k': 'stroke',
         'v': 'black'
@@ -600,37 +782,22 @@ angular.module('accessimapEditeurDerApp')
       id: 'oval',
       name: 'Ovale',
       path: editSvg.ovalPath,
-      radius: 10,
+      radius: 18,
       style: [{
         'k': 'stroke',
-        'v': 'black'
+        'v': 'grey'
       }, {
         'k': 'stroke-width',
         'v': '2'
       },{
         'k': 'fill',
-        'v': 'none'
+        'v': 'grey'
       }]
     },{
-      id: 'triangle',
-      name: 'Triangle',
+      id: 'triangleempty',
+      name: 'Triangle vide',
       path: editSvg.trianglePath,
-      radius: 15,
-      style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': 'black'
-      }]
-    },{
-      id: 'square',
-      name: 'Carré',
-      path: editSvg.squarePath,
-      radius: 15,
+      radius: 20,
       style: [{
         'k': 'stroke',
         'v': 'black'
@@ -642,10 +809,55 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }]
     },{
+      id: 'triangle',
+      name: 'Triangle',
+      path: editSvg.trianglePath,
+      radius: 20,
+      style: [{
+        'k': 'stroke',
+        'v': 'grey'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': 'grey'
+      }]
+    },{
+      id: 'squareempty',
+      name: 'Carré vide',
+      path: editSvg.squarePath,
+      radius: 20,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '3'
+      },{
+        'k': 'fill',
+        'v': 'none'
+      }]
+    },{
+      id: 'square',
+      name: 'Carré',
+      path: editSvg.squarePath,
+      radius: 20,
+      style: [{
+        'k': 'stroke',
+        'v': 'grey'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': 'grey'
+      }]
+    },{
       id: 'squareDiag',
       name: 'Carré Diag',
       path: editSvg.squareDiagPath,
-      radius: 15,
+      radius: 20,
       style: [{
         'k': 'stroke',
         'v': 'black'
@@ -660,7 +872,7 @@ angular.module('accessimapEditeurDerApp')
       id: 'squareCross',
       name: 'Carré croix',
       path: editSvg.squareCrossPath,
-      radius: 15,
+      radius: 20,
       style: [{
         'k': 'stroke',
         'v': 'black'
@@ -675,7 +887,7 @@ angular.module('accessimapEditeurDerApp')
       id: 'cross',
       name: 'Croix',
       path: editSvg.crossPath,
-      radius: 15,
+      radius: 20,
       style: [{
         'k': 'stroke',
         'v': 'black'
@@ -690,13 +902,13 @@ angular.module('accessimapEditeurDerApp')
       id: 'horizontalRect',
       name: 'horizontalRect',
       path: editSvg.horizontalRectPath,
-      radius: 15,
+      radius: 20,
       style: [{
         'k': 'stroke',
         'v': 'black'
       }, {
         'k': 'stroke-width',
-        'v': '4'
+        'v': '10'
       },{
         'k': 'fill',
         'v': 'black'
@@ -705,13 +917,13 @@ angular.module('accessimapEditeurDerApp')
       id: 'verticalRect',
       name: 'verticalRect',
       path: editSvg.verticalRectPath,
-      radius: 15,
+      radius: 20,
       style: [{
         'k': 'stroke',
         'v': 'black'
       }, {
         'k': 'stroke-width',
-        'v': '4'
+        'v': '10'
       },{
         'k': 'fill',
         'v': 'black'
@@ -720,7 +932,7 @@ angular.module('accessimapEditeurDerApp')
       id: 'horizontalArrow',
       name: 'horizontalArrow',
       path: editSvg.horizontalArrowPath,
-      radius: 15,
+      radius: 100,
       style: [{
         'k': 'stroke',
         'v': 'black'
@@ -735,7 +947,7 @@ angular.module('accessimapEditeurDerApp')
       id: 'verticalArrow',
       name: 'verticalArrow',
       path: editSvg.verticalArrowPath,
-      radius: 15,
+      radius: 100,
       style: [{
         'k': 'stroke',
         'v': 'black'
