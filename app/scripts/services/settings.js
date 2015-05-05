@@ -204,6 +204,64 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }]
     },{
+      id: 'straight_12',
+      name: 'Traits parallèles 2',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '12'
+      }, {
+        'k': 'stroke-linecap',
+        'v': 'round'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }],
+      style_inner: [{
+        'k': 'stroke',
+        'v': 'white'
+      }, {
+        'k': 'stroke-width',
+        'v': '8'
+      }, {
+        'k': 'stroke-linecap',
+        'v': 'round'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }]
+    },{
+      id: 'straight_16',
+      name: 'Traits parallèles 3',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '16'
+      }, {
+        'k': 'stroke-linecap',
+        'v': 'round'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }],
+      style_inner: [{
+        'k': 'stroke',
+        'v': 'white'
+      }, {
+        'k': 'stroke-width',
+        'v': '12'
+      }, {
+        'k': 'stroke-linecap',
+        'v': 'round'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }]
+    },{
       id: 'dashed21_5',
       name: 'Tirets 21_5',
       style: [{
