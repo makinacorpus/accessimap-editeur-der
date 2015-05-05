@@ -276,7 +276,7 @@ angular.module('accessimapEditeurDerApp')
                 .attr('x', coordinates[0])
                 .attr('y', coordinates[1])
                 .attr('font-family', 'braille')
-                .attr('font-size', '20px')
+                .attr('font-size', '35px')
                 .attr({'class': 'braille edition'})
                 .text('');
               d3.select('body')

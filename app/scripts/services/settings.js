@@ -94,7 +94,8 @@ angular.module('accessimapEditeurDerApp')
       'smallhash45': textures.lines().orientation('2/8').thicker(),
       'waves': textures.paths().d('waves'),
       'smalldots': textures.circles().complement(),
-      'smalldotsthicker': textures.circles().lighter().thicker().complement().strokeWidth(1.3),
+      'smalldotsthicker': textures.circles().lighter().thicker().complement().strokeWidth(1.1),
+      'smalldotsthicker2': textures.circles().lighter().thicker().complement().strokeWidth(1.3),
       'bigdots': textures.circles().fill("grey").heavier().complement(),
       'squares45': textures.lines().orientation("2/8", "6/8").size(20).strokeWidth(1),
       'caps': textures.paths().d("caps"),
@@ -568,6 +569,19 @@ angular.module('accessimapEditeurDerApp')
         'v': POLYGON_STYLES.smalldotsthicker.url()
       }]
     },{
+      id: 'smalldotsthicker2',
+      name: 'Petits points rapprochés 2',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smalldotsthicker2.url()
+      }]
+    },{
       id: 'squares45',
       name: 'Quadrillage 45',
       style: [{
@@ -579,19 +593,6 @@ angular.module('accessimapEditeurDerApp')
       },{
         'k': 'fill',
         'v': POLYGON_STYLES.squares45.url()
-      }]
-    },{
-      id: 'redfill',
-      name: 'Fond rouge',
-      style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': 'red'
       }]
     },{
       id: 'caps',
@@ -618,6 +619,19 @@ angular.module('accessimapEditeurDerApp')
       },{
         'k': 'fill',
         'v': POLYGON_STYLES.woven.url()
+      }]
+    },{
+      id: 'redfill',
+      name: 'Fond rouge',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': 'red'
       }]
     }],
     'point': [{
@@ -826,6 +840,36 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'stroke-width',
         'v': '3'
+      },{
+        'k': 'fill',
+        'v': 'black'
+      }]
+    },{
+      id: 'cross2',
+      name: 'Croix2',
+      path: editSvg.crossPath,
+      radius: 25,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '5'
+      },{
+        'k': 'fill',
+        'v': 'black'
+      }]
+    },{
+      id: 'cross3',
+      name: 'Croix3',
+      path: editSvg.crossPath,
+      radius: 30,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '5'
       },{
         'k': 'fill',
         'v': 'black'
