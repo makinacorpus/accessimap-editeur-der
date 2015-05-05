@@ -148,7 +148,7 @@ angular.module('accessimapEditeurDerApp')
           .attr('font-family', 'braille')
           .attr('font-size', '20px')
           .text(function() {
-              return 'legende';
+              return 'Légende';
           });
 
       $scope.geojson = [];

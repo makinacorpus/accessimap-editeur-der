@@ -123,6 +123,11 @@ angular.module('accessimapEditeurDerApp')
               angular.forEach($scope.styleChosen.style, function(attribute) {
                 feature.attr(attribute.k, attribute.v);
               });
+              console.log(feature)
+              feature.append('actions')
+              .append('action')
+              .attr('id', '1');
+              console.log(feature)
            })
         }
         if ($scope.mode === 'circle') {
