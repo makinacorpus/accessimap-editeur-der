@@ -920,10 +920,70 @@ angular.module('accessimapEditeurDerApp')
         'v': 'black'
       }]
     },{
+      id: 'horizontalArrowMedium',
+      name: 'horizontalArrowMedium',
+      path: editSvg.horizontalArrowPath,
+      radius: 60,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '4'
+      },{
+        'k': 'fill',
+        'v': 'black'
+      }]
+    },{
+      id: 'horizontalArrowSmall',
+      name: 'horizontalArrowSmall',
+      path: editSvg.horizontalSmallArrowPath,
+      radius: 30,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '4'
+      },{
+        'k': 'fill',
+        'v': 'black'
+      }]
+    },{
       id: 'verticalArrow',
       name: 'verticalArrow',
       path: editSvg.verticalArrowPath,
       radius: 100,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '4'
+      },{
+        'k': 'fill',
+        'v': 'black'
+      }]
+    },{
+      id: 'verticalArrowMedium',
+      name: 'verticalArrowMedium',
+      path: editSvg.verticalArrowPath,
+      radius: 60,
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '4'
+      },{
+        'k': 'fill',
+        'v': 'black'
+      }]
+    },{
+      id: 'verticalArrowSmall',
+      name: 'verticalArrowSmall',
+      path: editSvg.verticalSmallArrowPath,
+      radius: 30,
       style: [{
         'k': 'stroke',
         'v': 'black'

@@ -110,25 +110,49 @@ angular.module('accessimapEditeurDerApp')
     };
 
     this.horizontalArrowPath = function(cx, cy, r) {
-      var d = 'M ' + (cx - r / 2) + ' ' + (cy + 2);
-          d += ' h' + (2 * r / 3);
-          d += ' v 2';
-          d += ' L ' + (cx + r / 2) + ' ' + cy;
-          d += ' L ' + (cx + r / 6) + ' ' + (cy - 4);
-          d += ' v 2';
-          d += ' h ' + (-2 * r / 3);
+      var d = 'M ' + cx + ' ' + cy;
+          d += ' L' + (cx - 3 * r / 10) + ' ' + (cy - 3 * r / 10);
+          d += ' L' + (cx - 3 * r / 10) + ' ' + (cy - 1 * r / 10);
+          d += ' L' + (cx - 12 * r / 10) + ' ' + (cy - 1 * r / 10);
+          d += ' L' + (cx - 12 * r / 10) + ' ' + (cy + 1 * r / 10);
+          d += ' L' + (cx - 3 * r / 10) + ' ' + (cy + 1 * r / 10);
+          d += ' L' + (cx - 3 * r / 10) + ' ' + (cy + 3 * r / 10);
+          d += ' Z';
+      return d;
+    };
+
+    this.horizontalSmallArrowPath = function(cx, cy, r) {
+      var d = 'M ' + cx + ' ' + cy;
+          d += ' L' + (cx - 5 * r / 10) + ' ' + (cy - 4 * r / 10);
+          d += ' L' + (cx - 5 * r / 10) + ' ' + (cy - 1 * r / 10);
+          d += ' L' + (cx - 12 * r / 10) + ' ' + (cy - 1 * r / 10);
+          d += ' L' + (cx - 12 * r / 10) + ' ' + (cy + 1 * r / 10);
+          d += ' L' + (cx - 5 * r / 10) + ' ' + (cy + 1 * r / 10);
+          d += ' L' + (cx - 5 * r / 10) + ' ' + (cy + 4 * r / 10);
           d += ' Z';
       return d;
     };
 
     this.verticalArrowPath = function(cx, cy, r) {
-      var d = 'M ' + (cx + 2) + ' ' + (cy + r / 2);
-          d += ' v' + (-2 * r / 3);
-          d += ' h 2';
-          d += ' L ' + cx + ' ' + (cy - r / 2);
-          d += ' L ' + (cx - 4) + ' ' + (cy - r / 6);
-          d += ' h 2';
-          d += ' v ' + (2 * r / 3);
+      var d = 'M ' + cx + ' ' + cy;
+          d += ' L' + (cx - 3 * r / 10) + ' ' + (cy + 3 * r / 10);
+          d += ' L' + (cx - 1 * r / 10) + ' ' + (cy + 3 * r / 10);
+          d += ' L' + (cx - 1 * r / 10) + ' ' + (cy + 12 * r / 10);
+          d += ' L' + (cx + 1 * r / 10) + ' ' + (cy + 12 * r / 10);
+          d += ' L' + (cx + 1 * r / 10) + ' ' + (cy + 3 * r / 10);
+          d += ' L' + (cx + 3 * r / 10) + ' ' + (cy + 3 * r / 10);
+          d += ' Z';
+      return d;
+    };
+
+    this.verticalSmallArrowPath = function(cx, cy, r) {
+      var d = 'M ' + cx + ' ' + cy;
+          d += ' L' + (cx - 4 * r / 10) + ' ' + (cy + 5 * r / 10);
+          d += ' L' + (cx - 1 * r / 10) + ' ' + (cy + 5 * r / 10);
+          d += ' L' + (cx - 1 * r / 10) + ' ' + (cy + 12 * r / 10);
+          d += ' L' + (cx + 1 * r / 10) + ' ' + (cy + 12 * r / 10);
+          d += ' L' + (cx + 1 * r / 10) + ' ' + (cy + 5 * r / 10);
+          d += ' L' + (cx + 4 * r / 10) + ' ' + (cy + 5 * r / 10);
           d += ' Z';
       return d;
     };
