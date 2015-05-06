@@ -81,6 +81,10 @@ angular.module('accessimapEditeurDerApp')
             .on('click', function() {
               this.remove();
             });
+          d3.selectAll('circle')
+            .on('click', function() {
+              this.remove();
+            });
           d3.selectAll('text')
             .on('click', function() {
               this.remove();
