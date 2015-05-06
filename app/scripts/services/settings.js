@@ -100,6 +100,7 @@ angular.module('accessimapEditeurDerApp')
       'smallhash45': textures.lines().orientation('2/8').thicker(),
       'waves': textures.paths().d('waves'),
       'smalldots': textures.circles().complement(),
+      'smalldotsline': textures.circles().lighter().thicker().complement().strokeWidth(1.1).background('white'),
       'smalldotsthicker': textures.circles().lighter().thicker().complement().strokeWidth(1.1),
       'smalldotsthicker2': textures.circles().lighter().thicker().complement().strokeWidth(1.3),
       'bigdots': textures.circles().fill("grey").heavier().complement(),
@@ -248,7 +249,7 @@ angular.module('accessimapEditeurDerApp')
       }],
       style_inner: [{
         'k': 'stroke',
-        'v': 'white'
+        'v': POLYGON_STYLES.smalldotsline.url()
       }, {
         'k': 'stroke-width',
         'v': '15'
