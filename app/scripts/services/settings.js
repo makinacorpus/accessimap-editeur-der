@@ -57,7 +57,13 @@ angular.module('accessimapEditeurDerApp')
       id: 'rues',
       name: 'Toutes les rues',
       type: 'line',
-      query: ['way["highway"]["footway"!="sidewalk"]["footway"!="crossing"]["area"!="yes"]'],
+      query: ['way["highway"]["highway"!="footway"]["highway"!="cycleway"]["highway"!="path"]["highway"!="steps"]["area"!="yes"]'],
+      icon: 'road'
+    }, {
+      id: 'ruespietonnes',
+      name: 'Chemins piétons',
+      type: 'line',
+      query: ['way["highway"~"footway|cycleway|path|steps"]["area"!="yes"]["footway"!="sidewalk"]["footway"!="crossing"]'],
       icon: 'road'
     }, {
       id: 'trafficSignals',
