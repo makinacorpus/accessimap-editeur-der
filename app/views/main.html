@@ -2,13 +2,11 @@
   <div class="form-group">
     <label >Carte</label>
     <select ng-model="mapFormat" class="form-control">
-      <option value="landscape">Paysage</option>
-      <option value="portrait">Portrait</option>
+      <option ng-repeat="(format, data) in formats" value="{{format}}">{{data.name}}</option>
     </select>
     <label >Légende</label>
     <select ng-model="legendFormat" class="form-control">
-      <option value="landscape">Paysage</option>
-      <option value="portrait">Portrait</option>
+      <option ng-repeat="(format, data) in formats" value="{{format}}">{{data.name}}</option>
     </select>
   </div>
 </form>

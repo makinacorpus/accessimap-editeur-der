@@ -17,23 +17,19 @@ angular.module('accessimapEditeurDerApp')
       var mapFormat = $location.search().mapFormat;
       var legendFormat = $location.search().legendFormat;
 
-      var width = 1000,
-          legendWidth = width,
-          height = width / Math.sqrt(2),
-          legendHeight = height,
+      var widthMm = settings.FORMATS[mapFormat].width,
+          legendWidthMm = settings.FORMATS[legendFormat].width,
+          heightMm = settings.FORMATS[mapFormat].height,
+          legendHeightMm = settings.FORMATS[legendFormat].height,
           margin = 10;
 
-      if (mapFormat === 'portrait') {
-          var tmpMapWidth = width;
-          width = height;
-          height = tmpMapWidth;
-      }
+      var mapsvg = initSvg.createMap(widthMm, heightMm);
+      var legendsvg = initSvg.createLegend(widthMm, heightMm);
 
-      if (legendFormat === 'portrait') {
-          var tmpLegendWidth = legendWidth;
-          legendWidth = legendHeight;
-          legendHeight = tmpLegendWidth;
-      }
+      var width = mapsvg[0][0].clientWidth,
+          height = mapsvg[0][0].clientHeight,
+          legendWidth = legendsvg[0][0].clientWidth,
+          legendHeight = legendsvg[0][0].clientHeight;
 
       var tile = d3.geo.tile()
           .size([width, height]);
@@ -105,9 +101,6 @@ angular.module('accessimapEditeurDerApp')
           .translate([width - center[0], height - center[1]])
           .on('zoom', zoomed)
           .on('zoomend', zoomed);
-
-      var mapsvg = initSvg.createMap(width, height);
-      var legendsvg = initSvg.createLegend(width, height);
 
       // Load polygon fill styles, defined in settings
       angular.forEach(settings.POLYGON_STYLES, function(key) {
@@ -321,7 +314,6 @@ angular.module('accessimapEditeurDerApp')
         });
         if (style.style_inner) {
           var symbolInner = d3.select('.legend#' + id).select('.inner');
-          console.log(symbolInner);
           angular.forEach(style.style_inner, function(attribute) {
             symbolInner.attr(attribute.k, attribute.v);
           });

@@ -17,6 +17,29 @@ angular.module('accessimapEditeurDerApp')
         GLOBAL_MAP_DEFAULT_ZOOM: 13,
     };
 
+    var FORMATS = {
+      'portraitA4': {
+        name: 'A4 Portrait',
+        width: '210mm',
+        height: '297mm'
+      },
+      'landscapeA4': {
+        name: 'A4 Paysage',
+        width: '297mm',
+        height: '210mm'
+      },
+      'portraitA3': {
+        name: 'A3 Portrait',
+        width: '297mm',
+        height: '420mm'
+      },
+      'landscapeA3': {
+        name: 'A3 Paysage',
+        width: '420mm',
+        height: '297mm'
+      }
+    }
+
     var QUERY_LIST = [{
       id: 'poi',
       name: 'Point d\'intérêt',
@@ -1009,6 +1032,7 @@ angular.module('accessimapEditeurDerApp')
     // Public API here
     return {
       XAPI_URL: XAPI_URL,
+      FORMATS: FORMATS,
       QUERY_LIST: QUERY_LIST,
       POLYGON_STYLES: POLYGON_STYLES,
       STYLES: STYLES,
