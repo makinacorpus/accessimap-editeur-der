@@ -8,7 +8,7 @@
  * Service in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
-  .service('mapService', function () {
+  .service('mapService', ['$http', function($http) {
 
     this.formatLocation = function(p, k) {
       var format = d3.format('.' + Math.floor(Math.log(k) / 2 - 2) + 'f');
@@ -17,4 +17,14 @@ angular.module('accessimapEditeurDerApp')
         'lat': p[1] < 0 ? format(-p[1]) : format(p[1])
       };
     };
-  });
+
+    this.zoomOnPlace = function(input) {
+      var url = 'http://api-adresse.data.gouv.fr/search/?q=' + input.target.value + '&limit=1';
+      $http.get(url).
+        success(function(data) {
+          if (data.features[0]) {
+            console.log(data.features[0].geometry.coordinates);
+          }
+      });
+    };
+  }]);

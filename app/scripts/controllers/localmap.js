@@ -544,11 +544,29 @@ angular.module('accessimapEditeurDerApp')
           });
       }
 
+
+      function zoomOnPlace(input) {
+        var url = 'http://api-adresse.data.gouv.fr/search/?q=' + input.target.value + '&limit=1';
+        $http.get(url).
+          success(function(data) {
+            if (data.features[0]) {
+              var p = d3.geo.mercator()
+                  .scale(zoom.scale() / 2 / Math.PI);
+              var location = p(data.features[0].geometry.coordinates);
+              var translateX = -location[0] + width,
+                  translateY = -location[1] + height;
+              zoom.translate([translateX, translateY]);
+              zoomed();
+            }
+        });
+      }
+
       $scope.downloadData = downloadData;
       $scope.downloadPoi = downloadPoi;
       $scope.removeFeature = removeFeature;
       $scope.updateFeature = updateFeature;
       $scope.simplifyFeatures = simplifyFeatures;
       $scope.mapCommon = mapCommon;
+      $scope.zoomOnPlace = zoomOnPlace;
 
 }]);

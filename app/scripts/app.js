@@ -18,7 +18,8 @@ angular
     'ngTouch',
     'angularSpinner',
     'ui.select',
-    'ui.bootstrap-slider'
+    'ui.bootstrap-slider',
+    'ui.keypress'
   ])
   .config(function($routeProvider) {
     $routeProvider

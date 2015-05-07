@@ -1,6 +1,18 @@
 <form class="form-inline">
-  Orientation 
-  <slider class="form-control" ng-model="rotationAngle" ng-change="rotateMap()" min="0" max="360"></slider>
+
+  <div class="input-group">
+    <span class="input-group-addon" id="basic-addon1">
+      <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+    </span>
+    <input ui-keypress="{13:'zoomOnPlace($event)'}" type="text" class="form-control" id="adress" placeholder="Adresse">
+  </div>
+
+  <div class="input-group">
+    <span class="input-group-addon" id="basic-addon1">
+      <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+    </span>
+    <slider class="form-control" ng-model="rotationAngle" ng-change="rotateMap()" min="0" max="360"></slider>
+  </div>
 
   <button class="btn btn-success" ng-click="mapCommon()" type="button">
     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Édition
