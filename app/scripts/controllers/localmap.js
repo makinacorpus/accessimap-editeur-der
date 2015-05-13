@@ -25,6 +25,7 @@ angular.module('accessimapEditeurDerApp')
 
       var mapsvg = initSvg.createMap(widthMm, heightMm);
       var legendsvg = initSvg.createLegend(widthMm, heightMm);
+      initSvg.createDefs(mapsvg);
 
       var width = mapsvg[0][0].clientWidth,
           height = mapsvg[0][0].clientHeight,
@@ -108,6 +109,9 @@ angular.module('accessimapEditeurDerApp')
           legendsvg.call(key);
       });
       $scope.rotationAngle = 0;
+      $scope.checkboxModel = {
+        arrow : false
+      };
 
       var map = mapsvg.append('g')
           .attr('width', width)
@@ -201,8 +205,11 @@ angular.module('accessimapEditeurDerApp')
                 .attr('class', 'inner')
                 .attr('fill', 'red');
             angular.forEach(style.style_inner, function(attribute) {
-              symbolInner.attr(attribute.k, attribute.v);
+              symbol.attr(attribute.k, attribute.v);
             });
+            if ($scope.checkboxModel.arrow) {
+              symbolInner.attr('marker-end', 'url(#arrowEnd)');
+            }
         }
         if (query.type === 'point') {
             symbol = legendGroup.append('path')
@@ -382,6 +389,12 @@ angular.module('accessimapEditeurDerApp')
           d3.select('#' + feature[0].id)
             .attr(attribute.k, attribute.v);
         });
+
+        // If the arrow checkbox is checked, add a marker-end
+        if ($scope.checkboxModel.arrow) {
+          d3.select('#' + feature[0].id)
+            .attr('marker-end', 'url(#arrowEnd)');
+        }
 
         if (optionalClass) {
           angular.forEach(feature[0].style['style_' + optionalClass], function(attribute) {

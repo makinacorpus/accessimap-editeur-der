@@ -18,13 +18,4 @@ angular.module('accessimapEditeurDerApp')
       };
     };
 
-    this.zoomOnPlace = function(input) {
-      var url = 'http://api-adresse.data.gouv.fr/search/?q=' + input.target.value + '&limit=1';
-      $http.get(url).
-        success(function(data) {
-          if (data.features[0]) {
-            console.log(data.features[0].geometry.coordinates);
-          }
-      });
-    };
   }]);
