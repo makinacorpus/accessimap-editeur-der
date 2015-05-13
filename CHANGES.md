@@ -9,11 +9,19 @@ CHANGELOG
 
 * Circle drawing
 * Parallel ways drawing
+* A4 and A3 formats
+* Add address search tool
 
 **Minor changes**
 
 * Add zebra crossings from OSM as points
 * Add partners logos tothe footer
+* Add arrow markers
+* Remove the footways from "all the streets"
+
+**Bug fixes**
+
+* Be able to delete a circle
 
 0.2
 -------------------
