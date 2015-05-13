@@ -482,6 +482,13 @@ angular.module('accessimapEditeurDerApp')
         'v': POLYGON_STYLES.bighash.url()
       }]
     },{
+      id: 'bighashnoborder',
+      name: 'Hachures sans bordure',
+      style: [{
+        'k': 'fill',
+        'v': POLYGON_STYLES.bighash.url()
+      }]
+    },{
       id: 'bighash-45',
       name: 'Hachures -45',
       style: [{
@@ -491,6 +498,13 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-width',
         'v': '2'
       },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.bighashm45.url()
+      }]
+    },{
+      id: 'bighash-45noborder',
+      name: 'Hachures -45 sans bordure',
+      style: [{
         'k': 'fill',
         'v': POLYGON_STYLES.bighashm45.url()
       }]
@@ -508,6 +522,13 @@ angular.module('accessimapEditeurDerApp')
         'v': POLYGON_STYLES.bighash45.url()
       }]
     },{
+      id: 'bighash45noborder',
+      name: 'Hachures 45 sans bordure',
+      style: [{
+        'k': 'fill',
+        'v': POLYGON_STYLES.bighash45.url()
+      }]
+    },{
       id: 'smallhash',
       name: 'Petites hachures',
       style: [{
@@ -517,6 +538,13 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-width',
         'v': '2'
       },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smallhash.url()
+      }]
+    },{
+      id: 'smallhashnoborder',
+      name: 'Petites hachures sans bordure',
+      style: [{
         'k': 'fill',
         'v': POLYGON_STYLES.smallhash.url()
       }]
@@ -534,6 +562,13 @@ angular.module('accessimapEditeurDerApp')
         'v': POLYGON_STYLES.smallhashm45.url()
       }]
     },{
+      id: 'smallhashm45noborder',
+      name: 'Petites hachures -45 sans bordure',
+      style: [{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smallhashm45.url()
+      }]
+    },{
       id: 'smallhash45',
       name: 'Petites hachures 45',
       style: [{
@@ -543,6 +578,13 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-width',
         'v': '2'
       },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smallhash45.url()
+      }]
+    },{
+      id: 'smallhash45noborder',
+      name: 'Petites hachures 45 sans bordure',
+      style: [{
         'k': 'fill',
         'v': POLYGON_STYLES.smallhash45.url()
       }]
@@ -560,6 +602,13 @@ angular.module('accessimapEditeurDerApp')
         'v': POLYGON_STYLES.waves.url()
       }]
     },{
+      id: 'wavesnoborder',
+      name: 'Vagues sans bordure',
+      style: [{
+        'k': 'fill',
+        'v': POLYGON_STYLES.waves.url()
+      }]
+    },{
       id: 'bigdots',
       name: 'Points',
       style: [{
@@ -569,6 +618,13 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-width',
         'v': '2'
       },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.bigdots.url()
+      }]
+    },{
+      id: 'bigdotsnoborder',
+      name: 'Points sans bordure',
+      style: [{
         'k': 'fill',
         'v': POLYGON_STYLES.bigdots.url()
       }]
@@ -586,6 +642,13 @@ angular.module('accessimapEditeurDerApp')
         'v': POLYGON_STYLES.smalldots.url()
       }]
     },{
+      id: 'smalldotsnoborder',
+      name: 'Petits points sans bordure',
+      style: [{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smalldots.url()
+      }]
+    },{
       id: 'smalldotsthicker',
       name: 'Petits points rapprochés',
       style: [{
@@ -595,6 +658,13 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-width',
         'v': '2'
       },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smalldotsthicker.url()
+      }]
+    },{
+      id: 'smalldotsthickernoborder',
+      name: 'Petits points rapprochés sans bordure',
+      style: [{
         'k': 'fill',
         'v': POLYGON_STYLES.smalldotsthicker.url()
       }]
@@ -612,6 +682,13 @@ angular.module('accessimapEditeurDerApp')
         'v': POLYGON_STYLES.smalldotsthicker2.url()
       }]
     },{
+      id: 'smalldotsthicker2noborder',
+      name: 'Petits points rapprochés 2 sans bordure',
+      style: [{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smalldotsthicker2.url()
+      }]
+    },{
       id: 'squares45',
       name: 'Quadrillage 45',
       style: [{
@@ -619,8 +696,15 @@ angular.module('accessimapEditeurDerApp')
         'v': 'black'
       }, {
         'k': 'stroke-width',
-        'v': '1'
+        'v': '2'
       },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.squares45.url()
+      }]
+    },{
+      id: 'squares45noborder',
+      name: 'Quadrillage 45 sans bordure',
+      style: [{
         'k': 'fill',
         'v': POLYGON_STYLES.squares45.url()
       }]
@@ -638,6 +722,13 @@ angular.module('accessimapEditeurDerApp')
         'v': POLYGON_STYLES.caps.url()
       }]
     },{
+      id: 'capsnoborder',
+      name: 'caps sans bordure',
+      style: [{
+        'k': 'fill',
+        'v': POLYGON_STYLES.caps.url()
+      }]
+    },{
       id: 'woven',
       name: 'woven',
       style: [{
@@ -651,6 +742,13 @@ angular.module('accessimapEditeurDerApp')
         'v': POLYGON_STYLES.woven.url()
       }]
     },{
+      id: 'wovennoborder',
+      name: 'woven sans bordure',
+      style: [{
+        'k': 'fill',
+        'v': POLYGON_STYLES.woven.url()
+      }]
+    },{
       id: 'redfill',
       name: 'Fond rouge',
       style: [{
@@ -660,6 +758,13 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-width',
         'v': '2'
       },{
+        'k': 'fill',
+        'v': 'red'
+      }]
+    },{
+      id: 'redfillnoborder',
+      name: 'Fond rouge sans bordure',
+      style: [{
         'k': 'fill',
         'v': 'red'
       }]

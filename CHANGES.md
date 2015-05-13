@@ -19,6 +19,7 @@ CHANGELOG
 * Add partners logos tothe footer
 * Add arrow markers
 * Remove the footways from "all the streets"
+* Polygon styles without borders
 
 **Bug fixes**
 
