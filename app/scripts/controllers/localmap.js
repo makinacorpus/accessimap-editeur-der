@@ -118,6 +118,8 @@ angular.module('accessimapEditeurDerApp')
           .attr('height', height)
           .attr('transform', 'rotate(' + $scope.rotationAngle + ')');
 
+      initSvg.createMargin(mapsvg, width, height);
+
       var raster = map.append('g')
           .attr('class', 'tiles');
 
