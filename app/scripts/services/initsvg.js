@@ -11,9 +11,9 @@ angular.module('accessimapEditeurDerApp')
   .service('initSvg', function() {
     this.createMap = function(width, height) {
       return d3.select('#map').append('svg')
-               .attr('width', width)
-               .attr('height', height);
-
+               .attr('width', width + 'mm')
+               .attr('height', height + 'mm')
+               .attr('viewBox', '0 0 ' + (width / 0.283) + ' ' + (height / 0.283));
     };
 
     this.createDefs = function(target) {
@@ -54,7 +54,8 @@ angular.module('accessimapEditeurDerApp')
 
     this.createLegend = function(width, height) {
       return d3.select('#legend').append('svg')
-               .attr('width', width)
-               .attr('height', height);
+               .attr('width', width + 'mm')
+               .attr('height', height + 'mm')
+               .attr('viewBox', '0 0 ' + (width / 0.283) + ' ' + (height / 0.283));
     };
   });

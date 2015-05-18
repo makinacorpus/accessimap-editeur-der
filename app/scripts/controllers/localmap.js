@@ -21,16 +21,16 @@ angular.module('accessimapEditeurDerApp')
           legendWidthMm = settings.FORMATS[legendFormat].width,
           heightMm = settings.FORMATS[mapFormat].height,
           legendHeightMm = settings.FORMATS[legendFormat].height,
-          margin = 10;
+          margin = 40;
 
       var mapsvg = initSvg.createMap(widthMm, heightMm);
       var legendsvg = initSvg.createLegend(widthMm, heightMm);
       initSvg.createDefs(mapsvg);
 
-      var width = mapsvg[0][0].clientWidth,
-          height = mapsvg[0][0].clientHeight,
-          legendWidth = legendsvg[0][0].clientWidth,
-          legendHeight = legendsvg[0][0].clientHeight;
+      var width = widthMm / 0.2822222,
+          height = heightMm / 0.2822222,
+          legendWidth = legendWidthMm / 0.2822222,
+          legendHeight = legendHeightMm / 0.2822222;
 
       var tile = d3.geo.tile()
           .size([width, height]);
@@ -119,6 +119,7 @@ angular.module('accessimapEditeurDerApp')
           .attr('transform', 'rotate(' + $scope.rotationAngle + ')');
 
       initSvg.createMargin(mapsvg, width, height);
+      initSvg.createMargin(legendsvg, legendWidth, legendHeight);
 
       var raster = map.append('g')
           .attr('class', 'tiles');
@@ -127,22 +128,13 @@ angular.module('accessimapEditeurDerApp')
           .attr('width', legendWidth)
           .attr('height', legendHeight);
 
-      legendContainter.append('rect')
-          .attr('x', function() {
-              return margin;
-          })
-          .attr('y', '0px')
-          .attr('width', function() {
-              return legendWidth - margin;
-          })
-          .attr('height', legendHeight)
-          .attr('fill', 'white');
-
       legendContainter.append('text')
           .attr('x', function() {
               return margin;
           })
-          .attr('y', '30px')
+          .attr('y', function() {
+              return margin * 2;
+          })
           .attr('class', 'braille')
           .attr('font-family', 'braille')
           .attr('font-size', '35px')
@@ -177,31 +169,31 @@ angular.module('accessimapEditeurDerApp')
         if (query.type === 'line') {
             symbol = legendGroup.append('line')
                 .attr('x1', function() {
-                    return margin;
+                    return margin * 2;
                 })
                 .attr('y1', function() {
-                    return position * 30 + 40;
+                    return position * 40 + margin * 2;
                 })
                 .attr('x2', function() {
-                    return margin + 40;
+                    return margin * 2 + 40;
                 })
                 .attr('y2', function() {
-                    return position * 30 + 40;
+                    return position * 40 + margin * 2;
                 })
                 .attr('class', 'symbol')
                 .attr('fill', 'red');
             var symbolInner = legendGroup.append('line')
                 .attr('x1', function() {
-                    return margin;
+                    return margin * 2;
                 })
                 .attr('y1', function() {
-                    return position * 30 + 40;
+                    return position * 40 + margin * 2;
                 })
                 .attr('x2', function() {
-                    return margin + 40;
+                    return margin * 2 + 40;
                 })
                 .attr('y2', function() {
-                    return position * 30 + 40;
+                    return position * 40 + margin * 2;
                 })
                 .attr('class', 'symbol')
                 .attr('class', 'inner')
@@ -215,8 +207,8 @@ angular.module('accessimapEditeurDerApp')
         }
         if (query.type === 'point') {
             symbol = legendGroup.append('path')
-                .attr('cx', margin + 20)
-                .attr('cy', position * 30 + 40 + style.radius / 2)
+                .attr('cx', margin * 2 + 20)
+                .attr('cy', position * 40 + margin * 2 + style.radius / 2)
                 .attr('d', function() {
                     var x = parseFloat(d3.select(this).attr('cx')),
                         y = parseFloat(d3.select(this).attr('cy'));
@@ -228,10 +220,10 @@ angular.module('accessimapEditeurDerApp')
         if (query.type === 'polygon') {
             symbol = legendGroup.append('rect')
                 .attr('x', function() {
-                    return margin;
+                    return margin * 2;
                 })
                 .attr('y', function() {
-                    return position * 30 + 40;
+                    return position * 40 + margin * 2;
                 })
                 .attr('width', function() {
                     return 40;
@@ -249,10 +241,10 @@ angular.module('accessimapEditeurDerApp')
 
           legendGroup.append('text')
               .attr('x', function() {
-                  return margin + 50;
+                  return margin * 2 + 50;
               })
               .attr('y', function() {
-                  return position * 30 + margin + 40;
+                  return position * 40 + margin * 2 + 20;
               })
               .attr('font-family', 'braille')
               .attr('font-size', '35px')

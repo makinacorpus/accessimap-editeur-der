@@ -20,25 +20,25 @@ angular.module('accessimapEditeurDerApp')
     var FORMATS = {
       'portraitA4': {
         name: 'A4 Portrait',
-        width: '210mm',
-        height: '297mm'
+        width: 210,
+        height: 297
       },
       'landscapeA4': {
         name: 'A4 Paysage',
-        width: '297mm',
-        height: '210mm'
+        width: 297,
+        height: 210
       },
       'portraitA3': {
         name: 'A3 Portrait',
-        width: '297mm',
-        height: '420mm'
+        width: 297,
+        height: 420
       },
       'landscapeA3': {
         name: 'A3 Paysage',
-        width: '420mm',
-        height: '297mm'
+        width: 420,
+        height: 297
       }
-    }
+    };
 
     var QUERY_LIST = [{
       id: 'poi',
