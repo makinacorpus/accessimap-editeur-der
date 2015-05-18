@@ -68,6 +68,7 @@ angular.module('accessimapEditeurDerApp')
           .attr("marker-mid", null);
         $('#der').css('cursor', 'auto');
         d3.select('.ongoing').remove();
+        d3.selectAll('.blink').classed('blink', false);
       }
 
       $scope.$watch('mode', function() {
@@ -93,8 +94,10 @@ angular.module('accessimapEditeurDerApp')
         if ($scope.mode === 'move') {
           resetActions();
           d3.selectAll('path')
-            .attr("marker-mid", function(d) { return "url(#midmarker)"; })
+            .attr('marker-mid', function(d) { return 'url(#midmarker)'; })
             .on('click', function() {
+              d3.selectAll('.blink').classed('blink', false);
+              d3.select(this).classed('blink', true);
               var _pathSegList = this.pathSegList;
               d3.select('svg')
                 .on('click', function() {
@@ -105,7 +108,6 @@ angular.module('accessimapEditeurDerApp')
                       }
                     });
                   var clickPoint = [d3.mouse(this)[0], d3.mouse(this)[1]];
-                  
                   var nearest = geometryutils.nearest(clickPoint, features);
 
                   _pathSegList[nearest[2]].x = clickPoint[0];
