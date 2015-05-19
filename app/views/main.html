@@ -1,13 +1,9 @@
 <form name="map-format-input" class="form-inline">
   <div class="form-group">
     <label >Carte</label>
-    <select ng-model="mapFormat" class="form-control">
-      <option ng-repeat="(format, data) in formats" value="{{format}}">{{data.name}}</option>
-    </select>
+    <select ng-model="mapFormat" class="form-control" ng-options="format as data.name for (format, data) in formats"></select>
     <label >Légende</label>
-    <select ng-model="legendFormat" class="form-control">
-      <option ng-repeat="(format, data) in formats" value="{{format}}">{{data.name}}</option>
-    </select>
+    <select ng-model="legendFormat" class="form-control" ng-options="format as data.name for (format, data) in formats"></select>
   </div>
 </form>
 <form class="form-inline">

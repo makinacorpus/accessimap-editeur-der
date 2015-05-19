@@ -12,6 +12,7 @@ CHANGELOG
 * A4 and A3 formats
 * Add address search tool
 * Draw an optional arrow at the end of a line
+* Add margins around the map and legend
 
 **Minor changes**
 
