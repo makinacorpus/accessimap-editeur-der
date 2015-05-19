@@ -8,7 +8,7 @@
  * Service in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
-  .service('mapService', ['$http', function($http) {
+  .service('mapService', function() {
 
     this.formatLocation = function(p, k) {
       var format = d3.format('.' + Math.floor(Math.log(k) / 2 - 2) + 'f');
@@ -18,4 +18,4 @@ angular.module('accessimapEditeurDerApp')
       };
     };
 
-  }]);
+  });

@@ -8,7 +8,8 @@
  * Controller of the accessimapEditeurDerApp
  */
 angular.module('accessimapEditeurDerApp')
-  .controller('CommonmapCtrl', ['$rootScope', '$scope', '$location', 'settings', 'exportService', 'shareSvg', 'svgicon', 'geometryutils',
+  .controller('CommonmapCtrl', ['$rootScope', '$scope', '$location', 'settings', 'exportService',
+    'shareSvg', 'svgicon', 'geometryutils',
     function($rootScope, $scope, $location, settings, exportService, shareSvg, svgicon, geometryutils) {
       d3.select('#der')
         .selectAll('svg')
@@ -40,18 +41,18 @@ angular.module('accessimapEditeurDerApp')
 
       $scope.featureIcon = svgicon.featureIcon;
 
-      d3.select('svg').append("defs")
-          .append("marker")
-          .attr("id", "midmarker")
-          .attr("refX", 2)
-          .attr("refY", 2)
-          .attr("markerWidth", 4)
-          .attr("markerHeight", 4)
-          .attr("orient", "auto")
-        .append("circle")
-          .attr("cx", "2")
-          .attr("cy", "2")
-          .attr("r", "2");
+      d3.select('svg').append('defs')
+          .append('marker')
+          .attr('id', 'midmarker')
+          .attr('refX', 2)
+          .attr('refY', 2)
+          .attr('markerWidth', 4)
+          .attr('markerHeight', 4)
+          .attr('orient', 'auto')
+        .append('circle')
+          .attr('cx', '2')
+          .attr('cy', '2')
+          .attr('r', '2');
 
 
       function resetActions() {
@@ -65,7 +66,7 @@ angular.module('accessimapEditeurDerApp')
           .on('keydown', function() {
           });
         d3.selectAll('path')
-          .attr("marker-mid", null);
+          .attr('marker-mid', null);
         $('#der').css('cursor', 'auto');
         d3.select('.ongoing').remove();
         d3.selectAll('.blink').classed('blink', false);
@@ -94,7 +95,7 @@ angular.module('accessimapEditeurDerApp')
         if ($scope.mode === 'move') {
           resetActions();
           d3.selectAll('path')
-            .attr('marker-mid', function(d) { return 'url(#midmarker)'; })
+            .attr('marker-mid', function() { return 'url(#midmarker)'; })
             .on('click', function() {
               d3.selectAll('.blink').classed('blink', false);
               d3.select(this).classed('blink', true);
@@ -129,12 +130,10 @@ angular.module('accessimapEditeurDerApp')
               angular.forEach($scope.styleChosen.style, function(attribute) {
                 feature.attr(attribute.k, attribute.v);
               });
-              console.log(feature)
               feature.append('actions')
               .append('action')
               .attr('id', '1');
-              console.log(feature)
-           })
+           });
         }
         if ($scope.mode === 'circle') {
           resetActions();
@@ -144,15 +143,16 @@ angular.module('accessimapEditeurDerApp')
           d3.select('svg')
             .on('click', function() {
               var coordinates = d3.mouse(this);
+              var feature;
               if (d3.select('.edition')[0][0]) {
-                var feature = d3.select('.edition');
+                feature = d3.select('.edition');
                 var xOffset = coordinates[0] - feature.attr('cx');
                 var yOffset = coordinates[1] - feature.attr('cy');
                 var r = Math.sqrt(Math.pow(xOffset, 2) + Math.pow(yOffset, 2));
                 feature.attr('r', r);
                 feature.classed('edition', false);
               } else {
-                var feature = d3.select('svg')
+                feature = d3.select('svg')
                 .append('circle')
                 .attr('cx', coordinates[0])
                 .attr('cy', coordinates[1])
@@ -190,7 +190,7 @@ angular.module('accessimapEditeurDerApp')
               var pathInner;
               if (d3.select('.edition')[0][0]) {
                 path = d3.select('.edition');
-                if ($scope.mode === 'line'){
+                if ($scope.mode === 'line') {
                   pathInner = d3.select('.edition.inner');
                 }
               } else {
@@ -201,11 +201,11 @@ angular.module('accessimapEditeurDerApp')
                 angular.forEach($scope.styleChosen.style, function(attribute) {
                   path.attr(attribute.k, attribute.v);
                 });
-                if ($scope.mode === 'line'){
+                if ($scope.mode === 'line') {
                   pathInner = d3.select('svg')
                   .append('path')
                   .attr({'class': 'edition inner'});
-                  angular.forEach($scope.styleChosen.style_inner, function(attribute) {
+                  angular.forEach($scope.styleChosen.styleInner, function(attribute) {
                     pathInner.attr(attribute.k, attribute.v);
                   });
                 }
@@ -217,17 +217,17 @@ angular.module('accessimapEditeurDerApp')
                 d: lineFunction(lineEdit)
               });
 
-              if ($scope.mode === 'line'){
+              if ($scope.mode === 'line') {
                 pathInner.attr({
                   d: lineFunction(lineEdit)
                 });
-              } 
+              }
               angular.forEach($scope.styleChosen.style, function(attribute) {
                 path.attr(attribute.k, attribute.v);
               });
 
-              if ($scope.mode === 'line'){
-                angular.forEach($scope.styleChosen.style_inner, function(attribute) {
+              if ($scope.mode === 'line') {
+                angular.forEach($scope.styleChosen.styleInner, function(attribute) {
                   pathInner.attr(attribute.k, attribute.v);
                 });
               }
@@ -235,14 +235,14 @@ angular.module('accessimapEditeurDerApp')
             .on('dblclick', function() {
               if ($scope.mode === 'polygon') {
                 var a = d3.select('.edition').attr('d');
-                a = a.replace(a.substr(a.lastIndexOf('L')), '')
+                a = a.replace(a.substr(a.lastIndexOf('L')), '');
                 d3.select('.edition').attr({
                   d: a + 'Z'
                 });
               }
               d3.select('.edition').classed('edition', false);
 
-              if ($scope.mode === 'line'){
+              if ($scope.mode === 'line') {
                 d3.select('.edition.inner').classed('edition', false);
               }
               d3.select('.ongoing').remove();

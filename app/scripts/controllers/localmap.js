@@ -110,7 +110,7 @@ angular.module('accessimapEditeurDerApp')
       });
       $scope.rotationAngle = 0;
       $scope.checkboxModel = {
-        arrow : false
+        arrow: false
       };
 
       var map = mapsvg.append('g')
@@ -198,7 +198,7 @@ angular.module('accessimapEditeurDerApp')
                 .attr('class', 'symbol')
                 .attr('class', 'inner')
                 .attr('fill', 'red');
-            angular.forEach(style.style_inner, function(attribute) {
+            angular.forEach(style.styleInner, function(attribute) {
               symbol.attr(attribute.k, attribute.v);
             });
             if ($scope.checkboxModel.arrow) {
@@ -294,8 +294,8 @@ angular.module('accessimapEditeurDerApp')
           d3.select('#' + id)
             .attr(attribute.k, attribute.v);
         });
-        if (style.style_inner) {
-          angular.forEach(style.style_inner, function(attribute) {
+        if (style.styleInner) {
+          angular.forEach(style.styleInner, function(attribute) {
             d3.select('.inner#' + id)
               .attr(attribute.k, attribute.v);
           });
@@ -313,9 +313,9 @@ angular.module('accessimapEditeurDerApp')
         angular.forEach(style.style, function(attribute) {
           symbol.attr(attribute.k, attribute.v);
         });
-        if (style.style_inner) {
+        if (style.styleInner) {
           var symbolInner = d3.select('.legend#' + id).select('.inner');
-          angular.forEach(style.style_inner, function(attribute) {
+          angular.forEach(style.styleInner, function(attribute) {
             symbolInner.attr(attribute.k, attribute.v);
           });
         }
@@ -340,7 +340,7 @@ angular.module('accessimapEditeurDerApp')
             if (optionalClass) {
               return 'vector ' + optionalClass;
             } else {
-              return 'vector'
+              return 'vector';
             }
           })
           .attr('id', feature[0].id)
@@ -353,7 +353,7 @@ angular.module('accessimapEditeurDerApp')
             if (optionalClass) {
               return feature[0].id + ' ' + optionalClass;
             } else {
-              return feature[0].id
+              return feature[0].id;
             }
           })
           .attr('name', function(d) {
@@ -443,7 +443,7 @@ angular.module('accessimapEditeurDerApp')
             }
           } else {
             drawFeature(data, featureExists);
-            if ($scope.styleChosen.style_inner) {
+            if ($scope.styleChosen.styleInner) {
               drawFeature(data, featureExists, 'inner');
             }
           }
@@ -465,25 +465,29 @@ angular.module('accessimapEditeurDerApp')
 
       function downloadData(point) {
         usSpinnerService.spin('spinner-1');
+        var mapS,
+            mapW,
+            mapN,
+            mapE;
         if (point) {
-          var mapS = parseFloat(point.lat) - 0.00005,
-              mapW = parseFloat(point.lon) - 0.00005,
-              mapN = parseFloat(point.lat) + 0.00005,
-              mapE = parseFloat(point.lon) + 0.00005;
+          mapS = parseFloat(point.lat) - 0.00005;
+          mapW = parseFloat(point.lon) - 0.00005;
+          mapN = parseFloat(point.lat) + 0.00005;
+          mapE = parseFloat(point.lon) + 0.00005;
         } else {
           $('#map').css('cursor', 'auto');
           var boundsNW = mapService.formatLocation(projection.invert([0, 0]), zoom.scale());
           var boundsSE = mapService.formatLocation(projection.invert([width, height]), zoom.scale());
-          var mapS = boundsSE.lat,
-              mapW = boundsNW.lon,
-              mapN = boundsNW.lat,
-              mapE = boundsSE.lon;
+          mapS = boundsSE.lat;
+          mapW = boundsNW.lon;
+          mapN = boundsNW.lat;
+          mapE = boundsSE.lon;
         }
         var url = settings.XAPI_URL + '[out:xml];(';
         for (var i = 0; i < $scope.queryChosen.query.length; i++) {
           url += $scope.queryChosen.query[i];
           url += '(' + mapS + ',' + mapW + ',' + mapN + ',' + mapE + ');';
-        };
+        }
         url += ');out body;>;out skel qt;';
         $http.get(url).
           success(function(data) {
@@ -493,19 +497,6 @@ angular.module('accessimapEditeurDerApp')
             // Polygon coordinates need therefore to be reversed
 
             osmGeojson.features.forEach(function(feature, index) {
-              var isClockwise = function(ring) {
-                var sum = 0;
-                var i = 1;
-                var len = ring.length;
-                var prev, cur;
-                while (i < len) {
-                  prev = cur || ring[0];
-                  cur = ring[i];
-                  sum += ((cur[0] - prev[0]) * (cur[1] + prev[1]));
-                  i++;
-                }
-                return sum > 0;
-              };
 
               if (feature.geometry.type === 'Polygon') {
                 var n = feature.geometry.coordinates.length;

@@ -126,10 +126,10 @@ angular.module('accessimapEditeurDerApp')
       'smalldotsline': textures.circles().lighter().thicker().complement().strokeWidth(1.1).background('white'),
       'smalldotsthicker': textures.circles().lighter().thicker().complement().strokeWidth(1.1),
       'smalldotsthicker2': textures.circles().lighter().thicker().complement().strokeWidth(1.3),
-      'bigdots': textures.circles().fill("grey").heavier().complement(),
-      'squares45': textures.lines().orientation("2/8", "6/8").size(20).strokeWidth(1),
-      'caps': textures.paths().d("caps"),
-      'woven': textures.paths().d("woven"),
+      'bigdots': textures.circles().fill('grey').heavier().complement(),
+      'squares45': textures.lines().orientation('2/8', '6/8').size(20).strokeWidth(1),
+      'caps': textures.paths().d('caps'),
+      'woven': textures.paths().d('woven'),
     };
 
 
@@ -149,7 +149,7 @@ angular.module('accessimapEditeurDerApp')
         'k': 'fill',
         'v': 'none'
       }],
-      style_inner: [{
+      styleInner: [{
         'k': 'stroke-width',
         'v': '0'
       }, {
@@ -169,7 +169,7 @@ angular.module('accessimapEditeurDerApp')
         'k': 'fill',
         'v': 'none'
       }],
-      style_inner: [{
+      styleInner: [{
         'k': 'stroke-width',
         'v': '0'
       }, {
@@ -189,7 +189,7 @@ angular.module('accessimapEditeurDerApp')
         'k': 'fill',
         'v': 'none'
       }],
-      style_inner: [{
+      styleInner: [{
         'k': 'stroke-width',
         'v': '0'
       }, {
@@ -212,7 +212,7 @@ angular.module('accessimapEditeurDerApp')
         'k': 'fill',
         'v': 'none'
       }],
-      style_inner: [{
+      styleInner: [{
         'k': 'stroke',
         'v': 'white'
       }, {
@@ -241,7 +241,7 @@ angular.module('accessimapEditeurDerApp')
         'k': 'fill',
         'v': 'none'
       }],
-      style_inner: [{
+      styleInner: [{
         'k': 'stroke',
         'v': 'white'
       }, {
@@ -270,7 +270,7 @@ angular.module('accessimapEditeurDerApp')
         'k': 'fill',
         'v': 'none'
       }],
-      style_inner: [{
+      styleInner: [{
         'k': 'stroke',
         'v': POLYGON_STYLES.smalldotsline.url()
       }, {
@@ -299,7 +299,7 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-dasharray',
         'v': '10, 5'
       }],
-      style_inner: [{
+      styleInner: [{
         'k': 'stroke-width',
         'v': '0'
       }, {
@@ -322,7 +322,7 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-dasharray',
         'v': '6, 6'
       }],
-      style_inner: [{
+      styleInner: [{
         'k': 'stroke-width',
         'v': '0'
       }, {
@@ -345,7 +345,7 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-dasharray',
         'v': '10, 10'
       }],
-      style_inner: [{
+      styleInner: [{
         'k': 'stroke-width',
         'v': '0'
       }, {
@@ -368,7 +368,7 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-dasharray',
         'v': '12, 6'
       }],
-      style_inner: [{
+      styleInner: [{
         'k': 'stroke-width',
         'v': '0'
       }, {
@@ -391,7 +391,7 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-dasharray',
         'v': '20, 10'
       }],
-      style_inner: [{
+      styleInner: [{
         'k': 'stroke-width',
         'v': '0'
       }, {
@@ -414,7 +414,7 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-dasharray',
         'v': '30, 10'
       }],
-      style_inner: [{
+      styleInner: [{
         'k': 'stroke-width',
         'v': '0'
       }, {
@@ -437,7 +437,7 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-dasharray',
         'v': '12, 6, 3, 6'
       }],
-      style_inner: [{
+      styleInner: [{
         'k': 'stroke-width',
         'v': '0'
       }, {
@@ -460,7 +460,7 @@ angular.module('accessimapEditeurDerApp')
         'k': 'stroke-dasharray',
         'v': '20, 10, 5, 10'
       }],
-      style_inner: [{
+      styleInner: [{
         'k': 'stroke-width',
         'v': '0'
       }, {

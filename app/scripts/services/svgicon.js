@@ -42,7 +42,7 @@ angular.module('accessimapEditeurDerApp')
                 return 15;
             })
             .attr('fill', 'red');
-          angular.forEach(item.style_inner, function(attribute) {
+          angular.forEach(item.styleInner, function(attribute) {
             symbolInner.attr(attribute.k, attribute.v);
           });
       }
