@@ -39,6 +39,20 @@ angular.module('accessimapEditeurDerApp')
       $scope.styleChoices = [];
       $scope.styleChosen = $scope.styleChoices[0];
 
+      $scope.interactionFilters = {
+        'f0': {
+          name: 'Aucune interaction'
+        },
+        'f1': {
+          name: 'filtre numéro 1'
+        },
+        'f2': {
+          name: 'filtre numéro 2'
+        }
+      };
+
+      $scope.interaction = {};
+
       $scope.featureIcon = svgicon.featureIcon;
 
       d3.select('svg').append('defs')
@@ -114,6 +128,81 @@ angular.module('accessimapEditeurDerApp')
                   _pathSegList[nearest[2]].x = clickPoint[0];
                   _pathSegList[nearest[2]].y = clickPoint[1];
                 });
+            });
+        }
+        if ($scope.mode === 'interaction') {
+          resetActions();
+          $('#der').css('cursor', 'crosshair');
+          // Add filters to SVG if they don't exist
+          if (d3.select('filters').empty()) {
+            var filters = d3.select('#der')
+              .select('svg')
+              .append('filters');
+            filters.append('filter')
+              .attr('id', 'f0')
+              .attr('name', 'Aucune interaction')
+              .attr('expandable', 'false');
+            filters.append('filter')
+              .attr('id', 'f1')
+              .attr('name', 'filtre numéro 1')
+              .attr('expandable', 'true');
+            filters.append('filter')
+              .attr('id', 'f2')
+              .attr('name', 'filtre numéro 2')
+              .attr('expandable', 'true');
+          }
+
+          // Make the selected feature blink
+          d3.selectAll('path')
+            .on('click', function() {
+              d3.selectAll('.blink').classed('blink', false);
+              var feature = d3.select(this);
+              feature.classed('blink', true);
+              var bbox = feature[0][0].getBBox();
+              if (feature.select('actions').empty()) {
+                $scope.$apply(function() {
+                  $scope.interaction = {};
+                });
+                feature.append('actions')
+                  .append('action')
+                  .attr('filter', $scope.interaction.filter)
+                  .attr('protocol', $scope.interaction.protocol)
+                  .attr('value', $scope.interaction.value)
+                  .attr('x', bbox.x)
+                  .attr('y', bbox.y)
+                  .attr('width', bbox.width)
+                  .attr('height', bbox.height);
+              } else {
+                $scope.$apply(function() {
+                  $scope.interaction.filter = feature.select('actions').select('action').attr('filter');
+                  $scope.interaction.protocol = feature.select('actions').select('action').attr('protocol');
+                  $scope.interaction.value = feature.select('actions').select('action').attr('value');
+                });
+              }
+              $scope.$watch('interaction.filter', function() {
+                d3.selectAll('.blink')
+                  .select('actions')
+                  .select('action')
+                  .attr('filter', $scope.interaction.filter);
+              });
+              $scope.$watch('interaction.protocol', function() {
+                d3.selectAll('.blink')
+                  .select('actions')
+                  .select('action')
+                  .attr('protocol', $scope.interaction.protocol);
+              });
+              $scope.$watch('interaction.value', function() {
+                d3.selectAll('.blink')
+                  .select('actions')
+                  .select('action')
+                  .attr('value', $scope.interaction.value);
+              });
+            });
+          d3.selectAll('circle')
+            .on('click', function() {
+              d3.selectAll('.blink').classed('blink', false);
+              var feature = d3.select(this);
+              feature.classed('blink', true);
             });
         }
         if ($scope.mode === 'point') {

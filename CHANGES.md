@@ -13,6 +13,7 @@ CHANGELOG
 * Add address search tool
 * Draw an optional arrow at the end of a line
 * Add margins around the map and legend
+* Add interaction areas
 
 **Minor changes**
 
