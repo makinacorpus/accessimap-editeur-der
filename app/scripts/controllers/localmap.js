@@ -136,7 +136,7 @@ angular.module('accessimapEditeurDerApp')
               return margin * 2;
           })
           .attr('class', 'braille')
-          .attr('font-family', 'braille')
+          .attr('font-family', 'Braille_2007')
           .attr('font-size', '35px')
           .text(function() {
               return 'Légende';
@@ -246,7 +246,7 @@ angular.module('accessimapEditeurDerApp')
               .attr('y', function() {
                   return position * 40 + margin * 2 + 20;
               })
-              .attr('font-family', 'braille')
+              .attr('font-family', 'Braille_2007')
               .attr('font-size', '35px')
               .attr('class', 'braille')
               .text(function() {

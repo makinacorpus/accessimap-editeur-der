@@ -27,6 +27,9 @@ CHANGELOG
 
 * Be able to delete a circle
 
+**Internal features**
+* Rewrite the "addText" function on the common map
+
 0.2
 -------------------
 

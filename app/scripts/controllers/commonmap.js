@@ -86,6 +86,15 @@ angular.module('accessimapEditeurDerApp')
         d3.selectAll('.blink').classed('blink', false);
       }
 
+
+      function selectElementContents(el) {
+          var range = document.createRange();
+          range.selectNodeContents(el);
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+      }
+
       $scope.$watch('mode', function() {
         if ($scope.mode === 'default') {
           resetActions();
@@ -364,26 +373,48 @@ angular.module('accessimapEditeurDerApp')
           d3.select('svg')
             .on('click', function() {
               // the previously edited text should not be edited anymore
-              d3.select('.braille.edition').classed('edition', false);
+              d3.select('.edition').classed('edition', false);
               var coordinates = d3.mouse(this);
+              var d = 'Texte';
               d3.select('svg')
                 .append('text')
                 .attr('x', coordinates[0])
                 .attr('y', coordinates[1])
-                .attr('font-family', 'braille')
+                .attr('font-family', 'Braille_2007')
                 .attr('font-size', '35px')
-                .attr({'class': 'braille edition'})
+                .attr({'class': 'edition'})
                 .text('');
-              d3.select('body')
+              d3.select('svg').selectAll('foreignObject')
+                .data([d])
+                .enter()
+                .append('foreignObject')
+                .attr('x', coordinates[0])
+                .attr('y', coordinates[1] - 35)
+                .attr('height', 50)
+                .attr('width', 500)
+                .attr('font-family', 'Braille_2007')
+                .attr('font-size', '35px')
+                .attr({'class': 'edition'})
+                .append('xhtml:p')
+                .attr('contentEditable', 'true')
+                .text(d)
+                .on('mousedown', function() {
+                  d3.event.stopPropagation();
+                })
                 .on('keydown', function() {
-                  window.onkeydown = function(e) {
-                    return (e.keyCode !== 32);
-                  };
-                  var newChar = String.fromCharCode(d3.event.keyCode).toLowerCase();
-                  var newText = d3.select('.braille.edition').text() + newChar;
-                  d3.select('.braille.edition').text(newText);
+                  d3.event.stopPropagation();
+                  if (d3.event.keyCode === 13 && !d3.event.shiftKey) {
+                    this.blur();
+                  }
+                })
+                .on('blur', function(d) {
+                  d = this.textContent;
+                  d3.select('.edition').text(d);
+                  d3.select(this.parentElement).remove();
+                });
+
+                selectElementContents(d3.selectAll(this.getElementsByTagName('foreignObject')).selectAll('p').node());
               });
-           });
         }
       });
 
