@@ -432,6 +432,7 @@ angular.module('accessimapEditeurDerApp')
                 })
                 .on('blur', function(d) {
                   d = this.textContent;
+                  d = d.replace(/(\d+)/g, '¤$1');
                   d3.select('.edition').text(d);
                   d3.select(this.parentElement).remove();
                 });

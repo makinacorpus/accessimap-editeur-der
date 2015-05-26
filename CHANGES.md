@@ -23,6 +23,7 @@ CHANGELOG
 * Add arrow markers
 * Remove the footways from "all the streets"
 * Polygon styles without borders
+* Add sixth point before numbers
 
 **Bug fixes**
 
