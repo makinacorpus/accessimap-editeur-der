@@ -1046,13 +1046,13 @@ angular.module('accessimapEditeurDerApp')
       radius: 100,
       style: [{
         'k': 'stroke',
-        'v': 'black'
+        'v': 'grey'
       }, {
         'k': 'stroke-width',
         'v': '4'
       },{
         'k': 'fill',
-        'v': 'black'
+        'v': 'grey'
       }]
     },{
       id: 'horizontalArrowMedium',
@@ -1061,13 +1061,13 @@ angular.module('accessimapEditeurDerApp')
       radius: 60,
       style: [{
         'k': 'stroke',
-        'v': 'black'
+        'v': 'grey'
       }, {
         'k': 'stroke-width',
         'v': '4'
       },{
         'k': 'fill',
-        'v': 'black'
+        'v': 'grey'
       }]
     },{
       id: 'horizontalArrowSmall',
@@ -1076,13 +1076,13 @@ angular.module('accessimapEditeurDerApp')
       radius: 30,
       style: [{
         'k': 'stroke',
-        'v': 'black'
+        'v': 'grey'
       }, {
         'k': 'stroke-width',
         'v': '4'
       },{
         'k': 'fill',
-        'v': 'black'
+        'v': 'grey'
       }]
     },{
       id: 'verticalArrow',
@@ -1091,13 +1091,13 @@ angular.module('accessimapEditeurDerApp')
       radius: 100,
       style: [{
         'k': 'stroke',
-        'v': 'black'
+        'v': 'grey'
       }, {
         'k': 'stroke-width',
         'v': '4'
       },{
         'k': 'fill',
-        'v': 'black'
+        'v': 'grey'
       }]
     },{
       id: 'verticalArrowMedium',
@@ -1106,13 +1106,13 @@ angular.module('accessimapEditeurDerApp')
       radius: 60,
       style: [{
         'k': 'stroke',
-        'v': 'black'
+        'v': 'grey'
       }, {
         'k': 'stroke-width',
         'v': '4'
       },{
         'k': 'fill',
-        'v': 'black'
+        'v': 'grey'
       }]
     },{
       id: 'verticalArrowSmall',
@@ -1121,13 +1121,13 @@ angular.module('accessimapEditeurDerApp')
       radius: 30,
       style: [{
         'k': 'stroke',
-        'v': 'black'
+        'v': 'grey'
       }, {
         'k': 'stroke-width',
         'v': '4'
       },{
         'k': 'fill',
-        'v': 'black'
+        'v': 'grey'
       }]
     }]};
 
