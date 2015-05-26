@@ -14,6 +14,7 @@ CHANGELOG
 * Draw an optional arrow at the end of a line
 * Add margins around the map and legend
 * Add interaction areas
+* Undo the last delete action
 
 **Minor changes**
 

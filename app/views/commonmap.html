@@ -1,8 +1,10 @@
 <form class="form-inline">
-
   <div class="btn-group">
     <a ng-click="mode = 'default'" ng-class="{ 'active' : mode == 'default' }" class="btn btn-primary active">
       Consulter
+    </a>
+    <a ng-click="mode = 'undo'" ng-class="{ 'active' : mode == 'undo', 'disabled' : !deletedFeature }" class="btn btn-primary">
+      <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Annuler
     </a>
     <a ng-click="mode = 'delete'" ng-class="{ 'active' : mode == 'delete' }" class="btn btn-primary">
       <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Supprimer un élément

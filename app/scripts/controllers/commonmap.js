@@ -38,6 +38,7 @@ angular.module('accessimapEditeurDerApp')
       $scope.mode = 'default';
       $scope.styleChoices = [];
       $scope.styleChosen = $scope.styleChoices[0];
+      $scope.deletedFeature = null;
 
       $scope.interactionFilters = {
         'f0': {
@@ -104,16 +105,38 @@ angular.module('accessimapEditeurDerApp')
           $('#der').css('cursor', 'crosshair');
           d3.selectAll('path')
             .on('click', function() {
+              var _this = this;
+              $scope.$apply(function() {
+                $scope.deletedFeature = new XMLSerializer().serializeToString(_this);
+              });
               this.remove();
             });
           d3.selectAll('circle')
             .on('click', function() {
+              var _this = this;
+              $scope.$apply(function() {
+                $scope.deletedFeature = new XMLSerializer().serializeToString(_this);
+              });
               this.remove();
             });
           d3.selectAll('text')
             .on('click', function() {
+              var _this = this;
+              $scope.$apply(function() {
+                $scope.deletedFeature = new XMLSerializer().serializeToString(_this);
+              });
               this.remove();
             });
+        }
+        if ($scope.mode === 'undo') {
+          resetActions();
+          if ($scope.deletedFeature) {
+            d3.select('svg')
+              .append('path')
+              .node()
+              .outerHTML = $scope.deletedFeature;
+            $scope.deletedFeature = null;
+          }
         }
         if ($scope.mode === 'move') {
           resetActions();
