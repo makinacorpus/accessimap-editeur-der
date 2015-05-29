@@ -1055,6 +1055,33 @@ angular.module('accessimapEditeurDerApp')
         'v': 'grey'
       }]
     },{
+      id: 'horizontalArrowHash',
+      name: 'horizontalArrowHash',
+      path: editSvg.horizontalArrowPath,
+      radius: 100,
+      style: [{
+        'k': 'stroke-width',
+        'v': '0'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smallhashm45.url()
+      }]
+    },{
+      id: 'horizontalArrowDots',
+      name: 'horizontalArrowDots',
+      path: editSvg.horizontalArrowPath,
+      radius: 100,
+      style: [{
+        'k': 'stroke',
+        'v': '#343434'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smalldotsthicker2.url()
+      }]
+    },{
       id: 'horizontalArrowMedium',
       name: 'horizontalArrowMedium',
       path: editSvg.horizontalArrowPath,
@@ -1098,6 +1125,33 @@ angular.module('accessimapEditeurDerApp')
       },{
         'k': 'fill',
         'v': 'grey'
+      }]
+    },{
+      id: 'verticalArrowHash',
+      name: 'verticalArrowHash',
+      path: editSvg.verticalArrowPath,
+      radius: 100,
+      style: [{
+        'k': 'stroke-width',
+        'v': '0'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smallhashm45.url()
+      }]
+    }, {
+      id: 'verticalArrowDots',
+      name: 'verticalArrowDots',
+      path: editSvg.verticalArrowPath,
+      radius: 100,
+      style: [{
+        'k': 'stroke',
+        'v': '#343434'
+      }, {
+        'k': 'stroke-width',
+        'v': '2'
+      },{
+        'k': 'fill',
+        'v': POLYGON_STYLES.smalldotsthicker2.url()
       }]
     },{
       id: 'verticalArrowMedium',
