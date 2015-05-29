@@ -15,6 +15,7 @@ CHANGELOG
 * Add margins around the map and legend
 * Add interaction areas
 * Undo the last delete action
+* Multiline text
 
 **Minor changes**
 

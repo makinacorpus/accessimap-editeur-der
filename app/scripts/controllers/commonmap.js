@@ -413,7 +413,7 @@ angular.module('accessimapEditeurDerApp')
                 .append('foreignObject')
                 .attr('x', coordinates[0])
                 .attr('y', coordinates[1] - 35)
-                .attr('height', 50)
+                .attr('height', 500)
                 .attr('width', 500)
                 .attr('font-family', 'Braille_2007')
                 .attr('font-size', '35px')
@@ -430,14 +430,39 @@ angular.module('accessimapEditeurDerApp')
                     this.blur();
                   }
                 })
-                .on('blur', function(d) {
-                  d = this.textContent;
-                  d = d.replace(/(\d+)/g, '¤$1');
-                  d3.select('.edition').text(d);
+                .on('blur', function() {
+                  angular.forEach(this.childNodes, function(node) {
+                    var data = node.data;
+                    if (data) {
+                      data = data.replace(/(\d+)/g, '¤$1');
+                      d3.select('.edition')
+                        .attr('text-anchor', 'start')
+                        .append('tspan')
+                        .attr('text-anchor', 'start')
+                        .attr('x', function() {
+                           return d3.select(this.parentNode).attr('x');
+                        })
+                        .attr('dy', 35)
+                        .text(data);
+                    }
+                  });
                   d3.select(this.parentElement).remove();
+                  // var bbox = d3.select('.edition')[0][0].getBBox();
+                  // d3.select('.edition')
+                  //       .append('rect')
+                  //       .attr('x', bbox.x)
+                  //       .attr('y', bbox.y)
+                  //       .attr('width', bbox.width)
+                  //       .attr('height', bbox.height);
+                  d3.select('.edition').classed('edition', false);
                 });
 
                 selectElementContents(d3.selectAll(this.getElementsByTagName('foreignObject')).selectAll('p').node());
+
+                $scope.$apply(function() {
+                  $scope.mode = 'default';
+                });
+                resetActions();
               });
         }
       });
