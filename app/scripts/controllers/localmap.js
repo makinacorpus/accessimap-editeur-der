@@ -383,6 +383,12 @@ angular.module('accessimapEditeurDerApp')
           d3.select('#' + feature[0].id)
             .attr(attribute.k, attribute.v);
         });
+        if (optionalClass) {
+          angular.forEach(feature[0].style.styleInner, function(attribute) {
+            d3.select('.' + optionalClass + '#' + feature[0].id)
+              .attr(attribute.k, attribute.v);
+          });
+        }
 
         // If the arrow checkbox is checked, add a marker-end
         if ($scope.checkboxModel.arrow) {
