@@ -13,6 +13,7 @@ angular.module('accessimapEditeurDerApp')
 
     this.mapExport = function() {
       d3.select('.tiles').selectAll('*').remove();
+      d3.select('.toBeDeleted').selectAll('*').remove();
       var zip = new JSZip();
       var mapNode = d3.select('#der').selectAll('svg').node();
       zip.file('map.svg', (new XMLSerializer()).serializeToString(mapNode));

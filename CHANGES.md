@@ -16,6 +16,7 @@ CHANGELOG
 * Add interaction areas
 * Undo the last delete action
 * Multiline text
+* Starting from a SVG, be able to delete it on export
 
 **Minor changes**
 
@@ -29,6 +30,7 @@ CHANGELOG
 **Bug fixes**
 
 * Be able to delete a circle
+* Fix initial import of innerStyle
 
 **Internal features**
 * Rewrite the "addText" function on the common map

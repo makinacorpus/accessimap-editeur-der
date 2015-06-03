@@ -13,6 +13,7 @@ angular.module('accessimapEditeurDerApp')
     function($scope, $rootScope, $http, $location, usSpinnerService,
       initSvg, mapService, settings, shareSvg) {
 
+      $scope.toBeDeleted = false;
 
       $scope.uploadSvg = function(element) {
         var svgFile = element.files[0];
@@ -41,6 +42,10 @@ angular.module('accessimapEditeurDerApp')
         $scope.accordionStyle = {display: 'none'};
         d3.xml(path, function(xml) {
           var svg = d3.select(xml.documentElement);
+          console.log(svg.selectAll('g'));
+          if ($scope.toBeDeleted) {
+            svg.selectAll('g').classed('toBeDeleted', true);
+          }
           // Load polygon fill styles taht will be used on common map
           angular.forEach(settings.POLYGON_STYLES, function(key) {
               svg.call(key);
