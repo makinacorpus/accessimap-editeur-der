@@ -64,6 +64,7 @@
         <div ng-bind-html="featureIcon(item, feature.geometryType)"></div>
       </ui-select-choices>
     </ui-select>
+    <slider ng-if="feature.geometryType === 'point'" class="form-control" ng-model="feature.rotation" ng-change="rotateFeature(feature)" min="0" max="360"></slider>
     <button class="btn btn-default" type="button" ng-click="removeFeature(feature.id)"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
   </li>
 </ul>

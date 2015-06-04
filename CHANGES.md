@@ -17,6 +17,7 @@ CHANGELOG
 * Undo the last delete action
 * Multiline text
 * Starting from a SVG, be able to delete it on export
+* Rotate symbol on local map
 
 **Minor changes**
 

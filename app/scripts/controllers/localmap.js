@@ -159,6 +159,12 @@ angular.module('accessimapEditeurDerApp')
           map.attr('transform', 'rotate(' + $scope.rotationAngle + ' ' + width / 2 + ' ' + height / 2 + ')');
       };
 
+      $scope.rotateFeature = function(feature) {
+        var cx = d3.select('.' + feature.id).attr('cx');
+        var cy = d3.select('.' + feature.id).attr('cy');
+        d3.select('.' + feature.id).attr('transform', 'rotate(' + feature.rotation + ' ' + cx + ' ' + cy + ')');
+      };
+
       $scope.featureIcon = svgicon.featureIcon;
 
       function addToLegend(query, style, position) {
@@ -424,7 +430,8 @@ angular.module('accessimapEditeurDerApp')
 
           if (featureExists.length === 0) {
             if (poi) {
-              var name = data.features[0].properties.tags.name || data.features[0].properties.tags.amenity || data.features[0].properties.tags.shop || 'POI';
+              var tags = data.features[0].properties.tags;
+              var name = tags.name || tags.amenity || tags.shop || 'POI';
               $scope.geojson.push({
                 id: id,
                 name: name,
@@ -432,7 +439,8 @@ angular.module('accessimapEditeurDerApp')
                 layer: $.extend(true, {}, data), //deep copy,
                 originallayer: $.extend(true, {}, data), //deep copy
                 style: $scope.styleChosen,
-                styleChoices: $scope.styleChoices
+                styleChoices: $scope.styleChoices,
+                rotation: 0
               });
               addToLegend({'type': 'point', 'name': name, 'id': id}, $scope.styleChosen, $scope.geojson.length);
             } else {
@@ -509,7 +517,8 @@ angular.module('accessimapEditeurDerApp')
                 feature.geometry.coordinates[0].reverse();
                 if (n > 1) {
                   for (var i = 1; i < n; i++) {
-                    osmGeojson.features[index].geometry.coordinates[i] = feature.geometry.coordinates[i].slice().reverse();
+                    var reversedCoordinates = feature.geometry.coordinates[i].slice().reverse();
+                    osmGeojson.features[index].geometry.coordinates[i] = reversedCoordinates;
                   }
                 }
               }
@@ -524,7 +533,10 @@ angular.module('accessimapEditeurDerApp')
                       coords[i] = coords[i].slice().reverse();
                     }
                   }
-                   osmGeojson.features.push({'type':'Feature','properties':osmGeojson.features[index].properties,'geometry':{'type':'Polygon','coordinates':coords}});
+                   osmGeojson.features.push({'type': 'Feature',
+                                             'properties': osmGeojson.features[index].properties,
+                                             'geometry': {'type': 'Polygon', 'coordinates': coords
+                                            }});
                    }
                 );
               }
