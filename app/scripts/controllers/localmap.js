@@ -373,6 +373,8 @@ angular.module('accessimapEditeurDerApp')
           .attr('name', function(d) {
             return d.properties.tags.name;
           })
+          .append('svg:title')
+            .text(function(d) { return d.properties.tags.name; })
           .attr('d', path)
           .data(data.features.filter(function(d) {
             return d.geometry.type === 'Point';
