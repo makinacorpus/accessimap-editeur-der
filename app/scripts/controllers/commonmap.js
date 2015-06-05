@@ -103,12 +103,17 @@ angular.module('accessimapEditeurDerApp')
         if ($scope.mode === 'delete') {
           resetActions();
           $('#der').css('cursor', 'crosshair');
+          // Remove previous deleted Element placeholder if it exists
+          d3.select('#deletedElement').remove();
           d3.selectAll('path')
             .on('click', function() {
               var _this = this;
               $scope.$apply(function() {
                 $scope.deletedFeature = new XMLSerializer().serializeToString(_this);
               });
+              var t = document.createElement('foreignObject');
+              d3.select(t).attr('id', 'deletedElement');
+              this.parentNode.insertBefore(t, this);
               this.remove();
             });
           d3.selectAll('circle')
@@ -117,6 +122,9 @@ angular.module('accessimapEditeurDerApp')
               $scope.$apply(function() {
                 $scope.deletedFeature = new XMLSerializer().serializeToString(_this);
               });
+              var t = document.createElement('foreignObject');
+              d3.select(t).attr('id', 'deletedElement');
+              this.parentNode.insertBefore(t, this);
               this.remove();
             });
           d3.selectAll('text')
@@ -125,16 +133,22 @@ angular.module('accessimapEditeurDerApp')
               $scope.$apply(function() {
                 $scope.deletedFeature = new XMLSerializer().serializeToString(_this);
               });
+              var t = document.createElement('foreignObject');
+              d3.select(t).attr('id', 'deletedElement');
+              this.parentNode.insertBefore(t, this);
               this.remove();
             });
         }
         if ($scope.mode === 'undo') {
           resetActions();
           if ($scope.deletedFeature) {
-            d3.select('svg')
-              .append('path')
-              .node()
+            var deletedElement = d3.select('#deletedElement').node();
+            var t = document.createElement('path');
+            d3.select(t).attr('id', 'restoredElement');
+            deletedElement.parentNode.insertBefore(t, deletedElement);
+            d3.select('#restoredElement').node()
               .outerHTML = $scope.deletedFeature;
+            d3.select('#deletedElement').remove();
             $scope.deletedFeature = null;
           }
         }
