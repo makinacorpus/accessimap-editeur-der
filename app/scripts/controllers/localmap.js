@@ -204,9 +204,14 @@ angular.module('accessimapEditeurDerApp')
                 .attr('class', 'symbol')
                 .attr('class', 'inner')
                 .attr('fill', 'red');
-            angular.forEach(style.styleInner, function(attribute) {
+            angular.forEach(style.style, function(attribute) {
               symbol.attr(attribute.k, attribute.v);
             });
+            if (style.styleInner) {
+              angular.forEach(style.styleInner, function(attribute) {
+                symbolInner.attr(attribute.k, attribute.v);
+              });
+            }
             if ($scope.checkboxModel.arrow) {
               symbolInner.attr('marker-end', 'url(#arrowEnd)');
             }
