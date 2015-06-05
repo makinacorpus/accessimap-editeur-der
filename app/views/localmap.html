@@ -39,9 +39,6 @@
         <div ng-bind-html="featureIcon(item, queryChosen.type)"></div>
       </ui-select-choices>
     </ui-select>
-    <span ng-if="queryChosen.type === 'line'" class="input-group-addon" id="basic-addon1">
-      <input type="checkbox" ng-model="checkboxModel.arrow"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    </span>
   </div>
 
   <button ng-if="queryChosen.id !== 'poi'" class="btn btn-primary" ng-click="downloadData()" type="button">
