@@ -116,20 +116,35 @@ angular.module('accessimapEditeurDerApp')
 
     var POLYGON_STYLES = {
       'bighash': textures.lines().orientation('vertical'),
+      'bighash_bg': textures.lines().orientation('vertical').background("white"),
       'bighashm45': textures.lines().orientation('6/8'),
+      'bighashm45_bg': textures.lines().orientation('6/8').background("white"),
       'bighash45': textures.lines().orientation('2/8'),
+      'bighash45_bg': textures.lines().orientation('2/8').background("white"),
       'smallhash': textures.lines().orientation('vertical').thicker(),
+      'smallhash_bg': textures.lines().orientation('vertical').thicker().background("white"),
       'smallhashm45': textures.lines().orientation('6/8').thicker(),
+      'smallhashm45_bg': textures.lines().orientation('6/8').thicker().background("white"),
       'smallhash45': textures.lines().orientation('2/8').thicker(),
+      'smallhash45_bg': textures.lines().orientation('2/8').thicker().background("white"),
       'waves': textures.paths().d('waves'),
+      'waves_bg': textures.paths().d('waves').background("white"),
       'smalldots': textures.circles().complement(),
+      'smalldots_bg': textures.circles().complement().background("white"),
       'smalldotsline': textures.circles().lighter().thicker().complement().strokeWidth(1.1).background('white'),
+      'smalldotsline_bg': textures.circles().lighter().thicker().complement().strokeWidth(1.1).background('white').background("white"),
       'smalldotsthicker': textures.circles().lighter().thicker().complement().strokeWidth(1.1),
+      'smalldotsthicker_bg': textures.circles().lighter().thicker().complement().strokeWidth(1.1).background("white"),
       'smalldotsthicker2': textures.circles().lighter().thicker().complement().strokeWidth(1.3),
+      'smalldotsthicker2_bg': textures.circles().lighter().thicker().complement().strokeWidth(1.3).background("white"),
       'bigdots': textures.circles().fill('grey').heavier().complement(),
+      'bigdots_bg': textures.circles().fill('grey').heavier().complement().background("white"),
       'squares45': textures.lines().orientation('2/8', '6/8').size(20).strokeWidth(1),
+      'squares45_bg': textures.lines().orientation('2/8', '6/8').size(20).strokeWidth(1).background("white"),
       'caps': textures.paths().d('caps'),
+      'caps_bg': textures.paths().d('caps').background("white"),
       'woven': textures.paths().d('woven'),
+      'woven_bg': textures.paths().d('woven').background("white"),
     };
 
 
@@ -472,298 +487,103 @@ angular.module('accessimapEditeurDerApp')
       id: 'bighash',
       name: 'Hachures',
       style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': POLYGON_STYLES.bighash.url()
-      }]
-    },{
-      id: 'bighashnoborder',
-      name: 'Hachures sans bordure',
-      style: [{
-        'k': 'fill',
-        'v': POLYGON_STYLES.bighash.url()
+        'k': 'fill-pattern',
+        'v': 'bighash'
       }]
     },{
       id: 'bighash-45',
       name: 'Hachures -45',
       style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': POLYGON_STYLES.bighashm45.url()
-      }]
-    },{
-      id: 'bighash-45noborder',
-      name: 'Hachures -45 sans bordure',
-      style: [{
-        'k': 'fill',
-        'v': POLYGON_STYLES.bighashm45.url()
+        'k': 'fill-pattern',
+        'v': 'bighashm45'
       }]
     },{
       id: 'bighash45',
       name: 'Hachures 45',
       style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': POLYGON_STYLES.bighash45.url()
-      }]
-    },{
-      id: 'bighash45noborder',
-      name: 'Hachures 45 sans bordure',
-      style: [{
-        'k': 'fill',
-        'v': POLYGON_STYLES.bighash45.url()
+        'k': 'fill-pattern',
+        'v': 'bighash45'
       }]
     },{
       id: 'smallhash',
       name: 'Petites hachures',
       style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': POLYGON_STYLES.smallhash.url()
-      }]
-    },{
-      id: 'smallhashnoborder',
-      name: 'Petites hachures sans bordure',
-      style: [{
-        'k': 'fill',
-        'v': POLYGON_STYLES.smallhash.url()
+        'k': 'fill-pattern',
+        'v': 'smallhash'
       }]
     },{
       id: 'smallhashm45',
       name: 'Petites hachures -45',
       style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': POLYGON_STYLES.smallhashm45.url()
-      }]
-    },{
-      id: 'smallhashm45noborder',
-      name: 'Petites hachures -45 sans bordure',
-      style: [{
-        'k': 'fill',
-        'v': POLYGON_STYLES.smallhashm45.url()
+        'k': 'fill-pattern',
+        'v': 'smallhashm45'
       }]
     },{
       id: 'smallhash45',
       name: 'Petites hachures 45',
       style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': POLYGON_STYLES.smallhash45.url()
-      }]
-    },{
-      id: 'smallhash45noborder',
-      name: 'Petites hachures 45 sans bordure',
-      style: [{
-        'k': 'fill',
-        'v': POLYGON_STYLES.smallhash45.url()
+        'k': 'fill-pattern',
+        'v': 'smallhash45'
       }]
     },{
       id: 'waves',
       name: 'Vagues',
       style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': POLYGON_STYLES.waves.url()
-      }]
-    },{
-      id: 'wavesnoborder',
-      name: 'Vagues sans bordure',
-      style: [{
-        'k': 'fill',
-        'v': POLYGON_STYLES.waves.url()
+        'k': 'fill-pattern',
+        'v': 'waves'
       }]
     },{
       id: 'bigdots',
       name: 'Points',
       style: [{
-        'k': 'stroke',
-        'v': 'grey'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': POLYGON_STYLES.bigdots.url()
-      }]
-    },{
-      id: 'bigdotsnoborder',
-      name: 'Points sans bordure',
-      style: [{
-        'k': 'fill',
-        'v': POLYGON_STYLES.bigdots.url()
+        'k': 'fill-pattern',
+        'v': 'bigdots'
       }]
     },{
       id: 'smalldots',
       name: 'Petits points',
       style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': POLYGON_STYLES.smalldots.url()
-      }]
-    },{
-      id: 'smalldotsnoborder',
-      name: 'Petits points sans bordure',
-      style: [{
-        'k': 'fill',
-        'v': POLYGON_STYLES.smalldots.url()
+        'k': 'fill-pattern',
+        'v': 'smalldots'
       }]
     },{
       id: 'smalldotsthicker',
       name: 'Petits points rapprochés',
       style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': POLYGON_STYLES.smalldotsthicker.url()
-      }]
-    },{
-      id: 'smalldotsthickernoborder',
-      name: 'Petits points rapprochés sans bordure',
-      style: [{
-        'k': 'fill',
-        'v': POLYGON_STYLES.smalldotsthicker.url()
+        'k': 'fill-pattern',
+        'v': 'smalldotsthicker'
       }]
     },{
       id: 'smalldotsthicker2',
       name: 'Petits points rapprochés 2',
       style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': POLYGON_STYLES.smalldotsthicker2.url()
-      }]
-    },{
-      id: 'smalldotsthicker2noborder',
-      name: 'Petits points rapprochés 2 sans bordure',
-      style: [{
-        'k': 'fill',
-        'v': POLYGON_STYLES.smalldotsthicker2.url()
+        'k': 'fill-pattern',
+        'v': 'smalldotsthicker2'
       }]
     },{
       id: 'squares45',
       name: 'Quadrillage 45',
       style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': POLYGON_STYLES.squares45.url()
-      }]
-    },{
-      id: 'squares45noborder',
-      name: 'Quadrillage 45 sans bordure',
-      style: [{
-        'k': 'fill',
-        'v': POLYGON_STYLES.squares45.url()
+        'k': 'fill-pattern',
+        'v': 'squares45'
       }]
     },{
       id: 'caps',
       name: 'caps',
       style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': POLYGON_STYLES.caps.url()
-      }]
-    },{
-      id: 'capsnoborder',
-      name: 'caps sans bordure',
-      style: [{
-        'k': 'fill',
-        'v': POLYGON_STYLES.caps.url()
+        'k': 'fill-pattern',
+        'v': 'caps'
       }]
     },{
       id: 'woven',
       name: 'woven',
       style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': POLYGON_STYLES.woven.url()
-      }]
-    },{
-      id: 'wovennoborder',
-      name: 'woven sans bordure',
-      style: [{
-        'k': 'fill',
-        'v': POLYGON_STYLES.woven.url()
+        'k': 'fill-pattern',
+        'v': 'woven'
       }]
     },{
       id: 'redfill',
       name: 'Fond rouge',
-      style: [{
-        'k': 'stroke',
-        'v': 'black'
-      }, {
-        'k': 'stroke-width',
-        'v': '2'
-      },{
-        'k': 'fill',
-        'v': 'red'
-      }]
-    },{
-      id: 'redfillnoborder',
-      name: 'Fond rouge sans bordure',
       style: [{
         'k': 'fill',
         'v': 'red'

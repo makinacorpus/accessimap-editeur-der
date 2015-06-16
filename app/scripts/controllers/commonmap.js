@@ -39,6 +39,10 @@ angular.module('accessimapEditeurDerApp')
       $scope.styleChoices = [];
       $scope.styleChosen = $scope.styleChoices[0];
       $scope.deletedFeature = null;
+      $scope.checkboxModel = {
+        contour: false,
+        fill: false,
+      };
 
       $scope.interactionFilters = {
         'f0': {
@@ -263,7 +267,16 @@ angular.module('accessimapEditeurDerApp')
               .append('path')
               .attr('d', $scope.styleChosen.path(coordinates[0], coordinates[1], $scope.styleChosen.radius));
               angular.forEach($scope.styleChosen.style, function(attribute) {
-                feature.attr(attribute.k, attribute.v);
+                var k = attribute.k;
+                var v = attribute.v;
+                if (k === 'fill-pattern') {
+                  if ($scope.checkboxModel.fill) {
+                    v += '_bg';
+                  }
+                  feature.attr('fill', settings.POLYGON_STYLES[v].url());
+                } else {
+                  feature.attr(k, v);
+                }
               });
               feature.append('actions')
               .append('action')
@@ -293,8 +306,23 @@ angular.module('accessimapEditeurDerApp')
                 .attr('cy', coordinates[1])
                 .attr({'class': 'edition'});
                 angular.forEach($scope.styleChosen.style, function(attribute) {
-                  feature.attr(attribute.k, attribute.v);
+                  var k = attribute.k;
+                  var v = attribute.v;
+                  if (k === 'fill-pattern') {
+                    if ($scope.checkboxModel.fill) {
+                      v += '_bg';
+                    }
+                    feature.attr('fill', settings.POLYGON_STYLES[v].url());
+                  } else {
+                    feature.attr(k, v);
+                  }
                 });
+
+                if ($scope.checkboxModel.contour && !feature.attr('stroke')) {
+                  feature
+                    .attr('stroke', 'black')
+                    .attr('stroke-width', '2');
+                }
               }
            })
            .on('mousemove', function() {
@@ -334,14 +362,39 @@ angular.module('accessimapEditeurDerApp')
                 .append('path')
                 .attr({'class': 'edition'});
                 angular.forEach($scope.styleChosen.style, function(attribute) {
-                  path.attr(attribute.k, attribute.v);
+                  var k = attribute.k;
+                  var v = attribute.v;
+                  if (k === 'fill-pattern') {
+                    if ($scope.checkboxModel.fill) {
+                      v += '_bg';
+                    }
+                    path.attr('fill', settings.POLYGON_STYLES[v].url());
+                  } else {
+                    path.attr(k, v);
+                  }
                 });
+
+                if ($scope.checkboxModel.contour && !path.attr('stroke')) {
+                  path
+                    .attr('stroke', 'black')
+                    .attr('stroke-width', '2');
+                }
+
                 if ($scope.mode === 'line') {
                   pathInner = d3.select('svg')
                   .append('path')
                   .attr({'class': 'edition inner'});
                   angular.forEach($scope.styleChosen.styleInner, function(attribute) {
-                    pathInner.attr(attribute.k, attribute.v);
+                    var k = attribute.k;
+                    var v = attribute.v;
+                    if (k === 'fill-pattern') {
+                      if ($scope.checkboxModel.fill) {
+                        v += '_bg';
+                      }
+                      pathInner.attr('fill', settings.POLYGON_STYLES[v].url());
+                    } else {
+                      pathInner.attr(k, v);
+                    }
                   });
                 }
               }
@@ -358,12 +411,36 @@ angular.module('accessimapEditeurDerApp')
                 });
               }
               angular.forEach($scope.styleChosen.style, function(attribute) {
-                path.attr(attribute.k, attribute.v);
+                var k = attribute.k;
+                var v = attribute.v;
+                if (k === 'fill-pattern') {
+                  if ($scope.checkboxModel.fill) {
+                    v += '_bg';
+                  }
+                  path.attr('fill', settings.POLYGON_STYLES[v].url());
+                } else {
+                  path.attr(k, v);
+                }
               });
+
+              if ($scope.checkboxModel.contour && !path.attr('stroke')) {
+                path
+                  .attr('stroke', 'black')
+                  .attr('stroke-width', '2');
+              }
 
               if ($scope.mode === 'line') {
                 angular.forEach($scope.styleChosen.styleInner, function(attribute) {
-                  pathInner.attr(attribute.k, attribute.v);
+                  var k = attribute.k;
+                  var v = attribute.v;
+                  if (k === 'fill-pattern') {
+                    if ($scope.checkboxModel.fill) {
+                      v += '_bg';
+                    }
+                    pathInner.attr('fill', settings.POLYGON_STYLES[v].url());
+                  } else {
+                    pathInner.attr(k, v);
+                  }
                 });
               }
             })
@@ -393,8 +470,23 @@ angular.module('accessimapEditeurDerApp')
                     .append('line')
                     .attr({'class': 'ongoing'});
                   angular.forEach($scope.styleChosen.style, function(attribute) {
-                    line.attr(attribute.k, attribute.v);
+                    var k = attribute.k;
+                    var v = attribute.v;
+                    if (k === 'fill-pattern') {
+                      if ($scope.checkboxModel.fill) {
+                        v += '_bg';
+                      }
+                      line.attr('fill', settings.POLYGON_STYLES[v].url());
+                    } else {
+                      line.attr(k, v);
+                    }
                   });
+
+                  if ($scope.checkboxModel.contour && !line.attr('stroke')) {
+                    line
+                      .attr('stroke', 'black')
+                      .attr('stroke-width', '2');
+                  }
                 }
                 var coordinates = d3.mouse(this);
                 line.attr('x1', lastPoint[0])

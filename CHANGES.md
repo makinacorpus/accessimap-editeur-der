@@ -2,6 +2,13 @@
 CHANGELOG
 =========
 
+0.4
+-------------------
+
+**New features**
+
+* Possibility to add/remove a contour or a white background to any polygon style
+
 0.3
 -------------------
 

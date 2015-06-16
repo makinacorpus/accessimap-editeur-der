@@ -32,13 +32,19 @@
     </a>
   </div>
 
-  <ui-select ng-show="mode === 'point' || mode === 'line' || mode === 'polygon' || mode === 'circle'" ng-model="$parent.styleChosen" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
-    <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
-    <ui-select-choices repeat="item in styleChoices | filter: $select.search">
-      <div ng-bind-html="item.name | highlight: $select.search"></div>
-      <div ng-bind-html="featureIcon(item, mode)"></div>
-    </ui-select-choices>
-  </ui-select>
+  <div class="input-group">
+    <ui-select ng-show="mode === 'point' || mode === 'line' || mode === 'polygon' || mode === 'circle'" ng-model="$parent.styleChosen" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
+      <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
+      <ui-select-choices repeat="item in styleChoices | filter: $select.search">
+        <div ng-bind-html="item.name | highlight: $select.search"></div>
+        <div ng-bind-html="featureIcon(item, mode)"></div>
+      </ui-select-choices>
+    </ui-select>
+    <span ng-if="mode === 'polygon' || mode === 'circle'" class="input-group-addon" id="basic-addon1">
+      <input type="checkbox" ng-model="checkboxModel.contour"><span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
+      <input type="checkbox" ng-model="checkboxModel.fill"><span class="glyphicon glyphicon-adjust" aria-hidden="true"></span>
+    </span>
+  </div>
 
   <button class="btn btn-success" ng-click="mapExport()" type="button">
     <span class="glyphicon glyphicon-download" aria-hidden="true"></span> Exporter

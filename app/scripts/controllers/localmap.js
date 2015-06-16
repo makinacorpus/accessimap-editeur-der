@@ -109,6 +109,10 @@ angular.module('accessimapEditeurDerApp')
           legendsvg.call(key);
       });
       $scope.rotationAngle = 0;
+      $scope.checkboxModel = {
+        contour: false,
+        fill: false,
+      };
 
       var map = mapsvg.append('g')
           .attr('width', width)
@@ -202,11 +206,21 @@ angular.module('accessimapEditeurDerApp')
                 .attr('class', 'inner')
                 .attr('fill', 'red');
             angular.forEach(style.style, function(attribute) {
-              symbol.attr(attribute.k, attribute.v);
+              var k = attribute.k;
+              var v = attribute.v;
+              if (typeof(v) === 'function') {
+                v = v.url();
+              }
+              symbol.attr(k, v);
             });
             if (style.styleInner) {
               angular.forEach(style.styleInner, function(attribute) {
-                symbolInner.attr(attribute.k, attribute.v);
+                var k = attribute.k;
+                var v = attribute.v;
+                if (typeof(v) === 'function') {
+                  v = v.url();
+                }
+                symbolInner.attr(k, v);
               });
             }
         }
@@ -241,8 +255,23 @@ angular.module('accessimapEditeurDerApp')
         }
 
           angular.forEach(style.style, function(attribute) {
-            symbol.attr(attribute.k, attribute.v);
+            var k = attribute.k;
+            var v = attribute.v;
+            if (k === 'fill-pattern') {
+              if ($scope.checkboxModel.fill) {
+                v += '_bg';
+              }
+              symbol.attr('fill', settings.POLYGON_STYLES[v].url());
+            } else {
+              symbol.attr(k, v);
+            }
           });
+
+          if ($scope.checkboxModel.contour && !symbol.attr('stroke')) {
+            symbol
+              .attr('stroke', 'black')
+              .attr('stroke-width', '2');
+          }
 
           legendGroup.append('text')
               .attr('x', function() {
@@ -295,39 +324,89 @@ angular.module('accessimapEditeurDerApp')
       }
 
       function updateFeature(id, style) {
+        var result = $scope.geojson.filter(function(obj) {
+          return obj.id === id;
+        });
+        var objectId = $scope.geojson.indexOf(result[0]);
+
         angular.forEach(style.style, function(attribute) {
-          d3.select('#' + id)
-            .attr(attribute.k, attribute.v);
+          var k = attribute.k;
+          var v = attribute.v;
+          if (k === 'fill-pattern') {
+            if ($scope.geojson[objectId].fill) {
+              v += '_bg';
+            }
+            d3.select('#' + id)
+              .attr('fill', settings.POLYGON_STYLES[v].url());
+          } else {
+            d3.select('#' + id)
+              .attr(k, v);
+          }
         });
         if (style.styleInner) {
           angular.forEach(style.styleInner, function(attribute) {
-            d3.select('.inner#' + id)
-              .attr(attribute.k, attribute.v);
+            var k = attribute.k;
+            var v = attribute.v;
+            if (k === 'fill-pattern') {
+              d3.select('.inner#' + id).attr('fill', settings.POLYGON_STYLES[v].url());
+            } else {
+              d3.select('.inner#' + id).attr(k, v);
+            }
           });
         }
         if (style.path) {
-          var result = $scope.geojson.filter(function(obj) {
-            return obj.id === id;
-          });
-          var index = $scope.geojson.indexOf(result[0]);
-          $scope.geojson[index].style.path = style.path;
+          $scope.geojson[objectId].style.path = style.path;
           zoomed();
+        }
+
+        if ($scope.geojson[objectId].contour) {
+          d3.select('#' + id)
+            .attr('stroke', 'black')
+            .attr('stroke-width', '2');
+        } else {
+          d3.select('#' + id)
+            .attr('stroke', null)
+            .attr('stroke-width', null);
         }
 
         var symbol = d3.select('.legend#' + id).select('.symbol');
         angular.forEach(style.style, function(attribute) {
-          symbol.attr(attribute.k, attribute.v);
+          var k = attribute.k;
+          var v = attribute.v;
+          if (k === 'fill-pattern') {
+            if ($scope.geojson[objectId].fill) {
+              v += '_bg';
+            }
+            symbol.attr('fill', settings.POLYGON_STYLES[v].url());
+          } else {
+            symbol.attr(k, v);
+          }
         });
         if (style.styleInner) {
           var symbolInner = d3.select('.legend#' + id).select('.inner');
           angular.forEach(style.styleInner, function(attribute) {
-            symbolInner.attr(attribute.k, attribute.v);
+            var k = attribute.k;
+            var v = attribute.v;
+            if (k === 'fill-pattern') {
+              symbol.attr('fill', settings.POLYGON_STYLES[v].url());
+            } else {
+              symbolInner.attr(k, v);
+            }
           });
         }
         if (style.path) {
           symbol.attr('d', function() {
               return style.path(symbol.attr('cx'), symbol.attr('cy'), style.radius);
           });
+        }
+        if ($scope.geojson[objectId].contour) {
+          symbol
+            .attr('stroke', 'black')
+            .attr('stroke-width', '2');
+        } else {
+          symbol
+            .attr('stroke', null)
+            .attr('stroke-width', null);
         }
       }
 
@@ -390,14 +469,35 @@ angular.module('accessimapEditeurDerApp')
           });
 
         angular.forEach(feature[0].style.style, function(attribute) {
-          d3.select('#' + feature[0].id)
-            .attr(attribute.k, attribute.v);
+          var k = attribute.k;
+          var v = attribute.v;
+          if (k === 'fill-pattern') {
+            if ($scope.checkboxModel.fill) {
+              v += '_bg';
+            }
+            d3.select('#' + feature[0].id).attr('fill', settings.POLYGON_STYLES[v].url());
+          } else {
+            d3.select('#' + feature[0].id).attr(k, v);
+          }
         });
         if (optionalClass) {
           angular.forEach(feature[0].style.styleInner, function(attribute) {
-            d3.select('.' + optionalClass + '#' + feature[0].id)
-              .attr(attribute.k, attribute.v);
+            var k = attribute.k;
+            var v = attribute.v;
+            if (k === 'fill-pattern') {
+              if ($scope.checkboxModel.fill) {
+                v += '_bg';
+              }
+              d3.select('.' + optionalClass + '#' + feature[0].id).attr('fill', settings.POLYGON_STYLES[v].url());
+            } else {
+              d3.select('.' + optionalClass + '#' + feature[0].id).attr(k, v);
+            }
           });
+        }
+        if ($scope.checkboxModel.contour && !d3.select('#' + feature[0].id).attr('stroke')) {
+          d3.select('#' + feature[0].id)
+            .attr('stroke', 'black')
+            .attr('stroke-width', '2');
         }
 
         if (optionalClass) {
@@ -449,7 +549,9 @@ angular.module('accessimapEditeurDerApp')
                 layer: $.extend(true, {}, data), //deep copy,
                 originallayer: $.extend(true, {}, data), //deep copy
                 style: $scope.styleChosen,
-                styleChoices: $scope.styleChoices
+                styleChoices: $scope.styleChoices,
+                contour: $scope.checkboxModel.contour,
+                fill: $scope.checkboxModel.fill
               });
               addToLegend($scope.queryChosen, $scope.styleChosen, $scope.geojson.length);
             }

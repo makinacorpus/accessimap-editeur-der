@@ -8,7 +8,7 @@
  * Service in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
-  .service('svgicon', function() {
+  .service('svgicon', ['settings', function(settings) {
     var featureIcon = function(item, type) {
       var iconSvg = document.createElement('svg');
       var iconContainer = d3.select(iconSvg).attr('height', 30).append('g');
@@ -43,7 +43,12 @@ angular.module('accessimapEditeurDerApp')
             })
             .attr('fill', 'red');
           angular.forEach(item.styleInner, function(attribute) {
-            symbolInner.attr(attribute.k, attribute.v);
+            var k = attribute.k;
+            var v = attribute.v;
+            if (typeof(v) === 'function') {
+              v = v.url();
+            }
+            symbolInner.attr(k, v);
           });
       }
       if (type === 'point') {
@@ -71,7 +76,13 @@ angular.module('accessimapEditeurDerApp')
       }
 
       angular.forEach(item.style, function(attribute) {
-        symbol.attr(attribute.k, attribute.v);
+        var k = attribute.k;
+        var v = attribute.v;
+        if (k === 'fill-pattern') {
+          symbol.attr('fill', settings.POLYGON_STYLES[v].url());
+        } else {
+          symbol.attr(k, v);
+        }
       });
 
       return (new XMLSerializer()).serializeToString(iconSvg);
@@ -81,4 +92,4 @@ angular.module('accessimapEditeurDerApp')
       featureIcon: featureIcon
     };
 
-  });
+  }]);
