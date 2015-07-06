@@ -51,12 +51,14 @@ angular.module('accessimapEditeurDerApp')
             var inner = 'M 40 40 L ' + w40 + ' 40 L ' + w40 + ' ' + h40 + ' L 40 ' + h40 + ' L 40 40 z';
             return outer + inner;
           })
-          .attr('style', 'opacity:1;fill:#ffffff;fill-opacity:1');
+          .attr('style', 'opacity:1;fill:#ffffff;fill-opacity:1')
+          .classed('notDeletable', true);
 
       marginGroup.append('path')
           .attr('d', function() {
             return 'M 40 40 L ' + w40 + ' 40 L ' + w40 + ' ' + h40 + ' L 40 ' + h40 + ' L 40 40 z';
           })
-          .attr('style', 'fill:none;stroke:#000000;stroke-width:2.5px;stroke-opacity:1');
+          .attr('style', 'fill:none;stroke:#000000;stroke-width:2.5px;stroke-opacity:1')
+          .classed('notDeletable', true);
     };
   });

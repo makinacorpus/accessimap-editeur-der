@@ -102,14 +102,18 @@ angular.module('accessimapEditeurDerApp')
 
       function deleteOnClick(el) {
         el.on('click', function() {
-          var _this = this;
-          $scope.$apply(function() {
-            $scope.deletedFeature = new XMLSerializer().serializeToString(_this);
-          });
-          var t = document.createElement('foreignObject');
-          d3.select(t).attr('id', 'deletedElement');
-          this.parentNode.insertBefore(t, this);
-          this.remove();
+          // Some objects should not be deletable
+          if(!d3.select(this).classed('notDeletable')) {
+            var _this = this;
+            console.log(d3.select(this).classed('notDeletable'))
+            $scope.$apply(function() {
+              $scope.deletedFeature = new XMLSerializer().serializeToString(_this);
+            });
+            var t = document.createElement('foreignObject');
+            d3.select(t).attr('id', 'deletedElement');
+            this.parentNode.insertBefore(t, this);
+            this.remove();
+          }
         });
       }
 
@@ -141,7 +145,7 @@ angular.module('accessimapEditeurDerApp')
         }
         if ($scope.mode === 'move') {
           resetActions();
-          d3.selectAll('path')
+          d3.selectAll('path:not(.notDeletable)')
             .attr('marker-mid', function() { return 'url(#midmarker)'; })
             .on('click', function() {
               d3.selectAll('.blink').classed('blink', false);

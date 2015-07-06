@@ -15,6 +15,7 @@ CHANGELOG
 * Change color and text of the button to go the the edition step
 * Add a new line style
 * Explicit text on map rotation slider
+* White margin around the map cannot be deleted nor moved
 
 **Internal features**
 
