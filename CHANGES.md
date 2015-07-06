@@ -9,6 +9,14 @@ CHANGELOG
 
 * Possibility to add/remove a contour or a white background to any polygon style
 
+**Minor changes**
+
+* Increase width of map contour
+
+**Internal features**
+
+* Refactoring
+
 0.3
 -------------------
 
