@@ -15,32 +15,16 @@ angular.module('accessimapEditeurDerApp')
       var symbol;
       if (type === 'line') {
         symbol = iconContainer.append('line')
-          .attr('x1', function() {
-              return 0;
-          })
-          .attr('y1', function() {
-              return 15;
-          })
-          .attr('x2', function() {
-              return 250;
-          })
-          .attr('y2', function() {
-              return 15;
-          })
+          .attr('x1', 0)
+          .attr('y1', 15)
+          .attr('x2', 250)
+          .attr('y2', 15)
           .attr('fill', 'red');
           var symbolInner = iconContainer.append('line')
-            .attr('x1', function() {
-                return 0;
-            })
-            .attr('y1', function() {
-                return 15;
-            })
-            .attr('x2', function() {
-                return 250;
-            })
-            .attr('y2', function() {
-                return 15;
-            })
+            .attr('x1', 0)
+            .attr('y1', 15)
+            .attr('x2', 250)
+            .attr('y2', 15)
             .attr('fill', 'red');
           angular.forEach(item.styleInner, function(attribute) {
             var k = attribute.k;
@@ -60,18 +44,10 @@ angular.module('accessimapEditeurDerApp')
       }
       if (type === 'polygon' || type === 'circle') {
         symbol = iconContainer.append('rect')
-              .attr('x', function() {
-                  return 0;
-              })
-              .attr('y', function() {
-                  return 0;
-              })
-              .attr('width', function() {
-                  return 250;
-              })
-              .attr('height', function() {
-                  return 30;
-              })
+              .attr('x', 0)
+              .attr('y', 0)
+              .attr('width', 250)
+              .attr('height', 30)
               .attr('fill', 'red');
       }
 

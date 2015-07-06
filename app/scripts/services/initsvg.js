@@ -9,11 +9,19 @@
  */
 angular.module('accessimapEditeurDerApp')
   .service('initSvg', function() {
-    this.createMap = function(width, height) {
-      return d3.select('#map').append('svg')
+
+    this.createSvg = function(id, width, height) {
+      return d3.select(id).append('svg')
                .attr('width', width + 'mm')
                .attr('height', height + 'mm')
                .attr('viewBox', '0 0 ' + (width / 0.283) + ' ' + (height / 0.283));
+    };
+
+    this.createMap = function(width, height) {
+      return this.createSvg('#map', width, height);
+    };
+    this.createLegend = function(width, height) {
+      return this.createSvg('#legend', width, height);
     };
 
     this.createDefs = function(target) {
@@ -50,12 +58,5 @@ angular.module('accessimapEditeurDerApp')
             return 'M 40 40 L ' + w40 + ' 40 L ' + w40 + ' ' + h40 + ' L 40 ' + h40 + ' L 40 40 z';
           })
           .attr('style', 'fill:none;stroke:#000000;stroke-width:1pt;stroke-opacity:1');
-    };
-
-    this.createLegend = function(width, height) {
-      return d3.select('#legend').append('svg')
-               .attr('width', width + 'mm')
-               .attr('height', height + 'mm')
-               .attr('viewBox', '0 0 ' + (width / 0.283) + ' ' + (height / 0.283));
     };
   });
