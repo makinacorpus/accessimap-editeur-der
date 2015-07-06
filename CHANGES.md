@@ -13,6 +13,7 @@ CHANGELOG
 
 * Increase width of map contour
 * Change color and text of the button to go the the edition step
+* Add a new line style
 
 **Internal features**
 

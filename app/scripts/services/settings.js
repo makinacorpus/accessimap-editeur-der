@@ -299,6 +299,35 @@ angular.module('accessimapEditeurDerApp')
         'v': 'none'
       }]
     },{
+      id: 'straight_35',
+      name: 'Traits parallèles 4',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '35'
+      }, {
+        'k': 'stroke-linecap',
+        'v': 'round'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }],
+      styleInner: [{
+        'k': 'stroke',
+        'v': 'white'
+      }, {
+        'k': 'stroke-width',
+        'v': '30'
+      }, {
+        'k': 'stroke-linecap',
+        'v': 'round'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }]
+    },{
       id: 'dashed21_5',
       name: 'Tirets 21_5',
       style: [{
