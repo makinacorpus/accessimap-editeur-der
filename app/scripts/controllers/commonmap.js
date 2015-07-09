@@ -35,6 +35,10 @@ angular.module('accessimapEditeurDerApp')
         }
       });
 
+      $scope.fonts = settings.FONTS;
+      $scope.fontChosen = $scope.fonts[0];
+      $scope.colors = settings.COLORS;
+      $scope.colorChosen = $scope.colors[0];
       $scope.mode = 'default';
       $scope.styleChoices = [];
       $scope.styleChosen = $scope.styleChoices[0];
@@ -105,7 +109,6 @@ angular.module('accessimapEditeurDerApp')
           // Some objects should not be deletable
           if(!d3.select(this).classed('notDeletable')) {
             var _this = this;
-            console.log(d3.select(this).classed('notDeletable'))
             $scope.$apply(function() {
               $scope.deletedFeature = new XMLSerializer().serializeToString(_this);
             });
@@ -496,8 +499,9 @@ angular.module('accessimapEditeurDerApp')
                 .append('text')
                 .attr('x', coordinates[0])
                 .attr('y', coordinates[1])
-                .attr('font-family', 'Braille_2007')
-                .attr('font-size', '35px')
+                .attr('font-family', $scope.fontChosen.family)
+                .attr('font-size', $scope.fontChosen.size)
+                .attr('fill', $scope.colorChosen.color)
                 .attr({'class': 'edition'})
                 .text('');
               d3.select('svg').selectAll('foreignObject')
@@ -508,8 +512,9 @@ angular.module('accessimapEditeurDerApp')
                 .attr('y', coordinates[1] - 35)
                 .attr('height', 500)
                 .attr('width', 500)
-                .attr('font-family', 'Braille_2007')
-                .attr('font-size', '35px')
+                .attr('font-family', $scope.fontChosen.family)
+                .attr('font-size', $scope.fontChosen.size)
+                .attr('fill', $scope.colorChosen.color)
                 .attr({'class': 'edition'})
                 .append('xhtml:p')
                 .attr('contentEditable', 'true')

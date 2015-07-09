@@ -18,6 +18,7 @@ angular.module('accessimapEditeurDerApp')
         var reader = new FileReader();
         reader.readAsDataURL(svgFile); //readAsDataURL
         reader.onload = function(e) {
+          console.log(e)
           appendSvg(e.target.result);
         };
       };

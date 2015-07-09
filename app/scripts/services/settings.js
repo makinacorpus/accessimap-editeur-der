@@ -17,6 +17,41 @@ angular.module('accessimapEditeurDerApp')
         GLOBAL_MAP_DEFAULT_ZOOM: 13,
     };
 
+    var FONTS = [{
+        name: 'Braille',
+        size: '35px',
+        family: 'Braille_2007'
+      }, {
+        name: 'Arial 32',
+        size: '32px',
+        family: 'Arial'
+      }, {
+        name: 'Arial 28',
+        size: '28px',
+        family: 'Arial'
+      }, {
+        name: 'Arial 22',
+        size: '22px',
+        family: 'Arial'
+      }, {
+        name: 'Arial 18',
+        size: '18px',
+        family: 'Arial'
+      }
+    ];
+
+    var COLORS = [{
+        name: 'Noir',
+        color: 'black',
+      }, {
+        name: 'Bleu',
+        color: 'blue',
+      }, {
+        name: 'Rouge',
+        color: 'red',
+      }
+    ];
+
     var FORMATS = {
       'portraitA4': {
         name: 'A4 Portrait',
@@ -1040,6 +1075,8 @@ angular.module('accessimapEditeurDerApp')
     // Public API here
     return {
       XAPI_URL: XAPI_URL,
+      FONTS: FONTS,
+      COLORS: COLORS,
       FORMATS: FORMATS,
       QUERY_LIST: QUERY_LIST,
       POLYGON_STYLES: POLYGON_STYLES,
