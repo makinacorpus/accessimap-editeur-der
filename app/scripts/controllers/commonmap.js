@@ -38,7 +38,8 @@ angular.module('accessimapEditeurDerApp')
       $scope.fonts = settings.FONTS;
       $scope.fontChosen = $scope.fonts[0];
       $scope.colors = settings.COLORS;
-      $scope.colorChosen = $scope.colors[0];
+      $scope.colorChosen = $scope.colors[$scope.fontChosen.color][0];
+      console.log($scope.fontChosen)
       $scope.mode = 'default';
       $scope.styleChoices = [];
       $scope.styleChosen = $scope.styleChoices[0];
@@ -77,6 +78,11 @@ angular.module('accessimapEditeurDerApp')
           .attr('cy', '2')
           .attr('r', '2');
 
+
+      $scope.changeColor = function() {
+          $scope.colorChosen = $scope.colors[$scope.fontChosen.color][0];
+      console.log($scope.colorChosen)
+      };
 
       function resetActions() {
         d3.selectAll('path')
@@ -498,9 +504,12 @@ angular.module('accessimapEditeurDerApp')
               d3.select('svg')
                 .append('text')
                 .attr('x', coordinates[0])
-                .attr('y', coordinates[1])
+                .attr('y', coordinates[1] - 35)
                 .attr('font-family', $scope.fontChosen.family)
                 .attr('font-size', $scope.fontChosen.size)
+                .attr('font-weight', function() {
+                  return $scope.fontChosen.weight;
+                })
                 .attr('fill', $scope.colorChosen.color)
                 .attr({'class': 'edition'})
                 .text('');
@@ -514,6 +523,9 @@ angular.module('accessimapEditeurDerApp')
                 .attr('width', 500)
                 .attr('font-family', $scope.fontChosen.family)
                 .attr('font-size', $scope.fontChosen.size)
+                .attr('font-weight', function() {
+                  return $scope.fontChosen.weight;
+                })
                 .attr('fill', $scope.colorChosen.color)
                 .attr({'class': 'edition'})
                 .append('xhtml:p')

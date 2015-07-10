@@ -44,7 +44,7 @@
       <input type="checkbox" ng-model="checkboxModel.contour"><span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
       <input type="checkbox" ng-model="checkboxModel.fill"><span class="glyphicon glyphicon-adjust" aria-hidden="true"></span>
     </span>
-    <ui-select ng-show="mode === 'addtext'" ng-model="$parent.fontChosen" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
+    <ui-select ng-show="mode === 'addtext'" ng-model="$parent.fontChosen" ng-change="changeColor()" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
       <ui-select-match placeholder="Sélectionnez une police">{{$select.selected.name}}</ui-select-match>
       <ui-select-choices repeat="item in fonts | filter: $select.search">
         <div ng-bind-html="item.name | highlight: $select.search"></div>
@@ -52,7 +52,7 @@
     </ui-select>
     <ui-select ng-show="mode === 'addtext'" ng-model="$parent.colorChosen" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
       <ui-select-match placeholder="Sélectionnez une couleur">{{$select.selected.name}}</ui-select-match>
-      <ui-select-choices repeat="item in colors | filter: $select.search">
+      <ui-select-choices repeat="item in colors[$parent.fontChosen.color] | filter: $select.search">
         <div ng-bind-html="item.name | highlight: $select.search"></div>
       </ui-select-choices>
     </ui-select>

@@ -20,37 +20,49 @@ angular.module('accessimapEditeurDerApp')
     var FONTS = [{
         name: 'Braille',
         size: '35px',
-        family: 'Braille_2007'
+        family: 'Braille_2007',
+        weight: null,
+        color: 'black'
       }, {
         name: 'Arial 32',
         size: '32px',
-        family: 'Arial'
+        family: 'Arial',
+        weight: 'bold',
+        color: 'other'
       }, {
         name: 'Arial 28',
         size: '28px',
-        family: 'Arial'
+        family: 'Arial',
+        weight: 'bold',
+        color: 'other'
       }, {
         name: 'Arial 22',
         size: '22px',
-        family: 'Arial'
+        family: 'Arial',
+        weight: 'bold',
+        color: 'other'
       }, {
         name: 'Arial 18',
         size: '18px',
-        family: 'Arial'
+        family: 'Arial',
+        weight: 'bold',
+        color: 'other'
       }
     ];
 
-    var COLORS = [{
+    var COLORS = {
+      'black': [{
         name: 'Noir',
         color: 'black',
-      }, {
+      }],
+      'other': [{
         name: 'Bleu',
         color: 'blue',
       }, {
         name: 'Rouge',
         color: 'red',
       }
-    ];
+    ]};
 
     var FORMATS = {
       'portraitA4': {
