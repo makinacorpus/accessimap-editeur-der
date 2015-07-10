@@ -57,10 +57,17 @@
       </ui-select-choices>
     </ui-select>
   </div>
-
-  <button class="btn btn-danger pull-right" ng-click="mapExport()" type="button">
-    <span class="glyphicon glyphicon-download" aria-hidden="true"></span> Exporter
-  </button>
+  <div class="input-group pull-right">
+      <div class="input-group">
+        <input type="text" class="form-control" ng-model="$parent.filename" placeholder="Nom du fichier">
+        <span class="input-group-addon" id="basic-addon2">.zip</span>
+      </div>
+      <span class="input-group-btn">
+        <button class="btn btn-danger pull-right" ng-click="mapExport($parent.filename)" type="button">
+          <span class="glyphicon glyphicon-download" aria-hidden="true"></span> Exporter
+        </button>
+      </span>
+  </div>
 </form>
 
 <div ng-show="mode === 'interaction'" class="form-inline">

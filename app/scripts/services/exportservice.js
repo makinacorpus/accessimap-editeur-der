@@ -11,7 +11,7 @@
 angular.module('accessimapEditeurDerApp')
   .service('exportService', function() {
 
-    this.mapExport = function() {
+    this.mapExport = function(filename) {
       var zip = new JSZip();
       var mapNode = d3.select('#der').select('svg').node();
       var exportNode = mapNode.cloneNode(true);
@@ -26,7 +26,7 @@ angular.module('accessimapEditeurDerApp')
       }
       zip.file('commentaires.txt', $('#comment').val());
       var content = zip.generate({type: 'blob'});
-      saveAs(content, 'map.zip');
+      saveAs(content, filename + '.zip');
     };
 
   });

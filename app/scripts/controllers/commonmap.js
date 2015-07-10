@@ -35,6 +35,7 @@ angular.module('accessimapEditeurDerApp')
         }
       });
 
+      $scope.filename = 'map';
       $scope.fonts = settings.FONTS;
       $scope.fontChosen = $scope.fonts[0];
       $scope.colors = settings.COLORS;
