@@ -39,7 +39,6 @@ angular.module('accessimapEditeurDerApp')
       $scope.fontChosen = $scope.fonts[0];
       $scope.colors = settings.COLORS;
       $scope.colorChosen = $scope.colors[$scope.fontChosen.color][0];
-      console.log($scope.fontChosen)
       $scope.mode = 'default';
       $scope.styleChoices = [];
       $scope.styleChosen = $scope.styleChoices[0];
@@ -81,7 +80,6 @@ angular.module('accessimapEditeurDerApp')
 
       $scope.changeColor = function() {
           $scope.colorChosen = $scope.colors[$scope.fontChosen.color][0];
-      console.log($scope.colorChosen)
       };
 
       function resetActions() {

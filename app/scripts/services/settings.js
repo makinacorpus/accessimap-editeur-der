@@ -24,25 +24,25 @@ angular.module('accessimapEditeurDerApp')
         weight: null,
         color: 'black'
       }, {
-        name: 'Arial 32',
+        name: 'Arial gras 32',
         size: '32px',
         family: 'Arial',
         weight: 'bold',
         color: 'other'
       }, {
-        name: 'Arial 28',
+        name: 'Arial gras 28',
         size: '28px',
         family: 'Arial',
         weight: 'bold',
         color: 'other'
       }, {
-        name: 'Arial 22',
+        name: 'Arial gras 22',
         size: '22px',
         family: 'Arial',
         weight: 'bold',
         color: 'other'
       }, {
-        name: 'Arial 18',
+        name: 'Arial gras 18',
         size: '18px',
         family: 'Arial',
         weight: 'bold',
