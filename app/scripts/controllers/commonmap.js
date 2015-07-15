@@ -83,6 +83,33 @@ angular.module('accessimapEditeurDerApp')
           $scope.colorChosen = $scope.colors[$scope.fontChosen.color][0];
       };
 
+      $scope.updatePolygonStyle = function() {
+          if ($scope.mode === 'editpolygon') {
+            var path = d3.select('.blink');
+            $scope.$watch($scope.styleChosen, function() {
+              angular.forEach($scope.styleChosen.style, function(attribute) {
+                var k = attribute.k;
+                var v = attribute.v;
+                if (k === 'fill-pattern') {
+                  if ($scope.checkboxModel.fill) {
+                    v += '_bg';
+                  }
+                  path.attr('fill', settings.POLYGON_STYLES[v].url());
+                } else {
+                  path.attr(k, v);
+                }
+              });
+              if ($scope.checkboxModel.contour) {
+                path.attr('stroke', 'black')
+                  .attr('stroke-width', '2');
+              } else {
+                path.attr('stroke', null)
+                  .attr('stroke-width', null);
+              }
+            });
+          }
+      };
+
       function resetActions() {
         d3.selectAll('path')
           .on('click', function() {
@@ -175,6 +202,45 @@ angular.module('accessimapEditeurDerApp')
                 });
             });
         }
+
+        if ($scope.mode === 'editpolygon') {
+          resetActions();
+          $scope.styleChoices = settings.STYLES.polygon;
+          $scope.styleChosen = $scope.styleChoices[0];
+          d3.selectAll('path')
+            .on('click', function() {
+              var path = d3.select(this);
+              var pathLastChar = path.attr('d').slice(-1);
+              if (pathLastChar === 'z' || pathLastChar ==='Z') {
+                d3.selectAll('.blink').classed('blink', false);
+                path.classed('blink', true);
+                if (path.attr('stroke')) {
+                  $scope.$apply(function() {
+                    $scope.checkboxModel.contour = true;
+                  });
+                } else {
+                  $scope.$apply(function() {
+                    $scope.checkboxModel.contour = false;
+                  });
+                }
+                var pathFill = path.attr('fill');
+                if (pathFill) {
+                  var pathFillName = pathFill.match(/\((.+?)\)/g)[0].slice(1, -1)
+                  var pathFillHasBackground = d3.select(pathFillName).select('rect').node();
+                  if (pathFillHasBackground) {
+                    $scope.$apply(function() {
+                      $scope.checkboxModel.fill = true;
+                    });
+                  } else {
+                    $scope.$apply(function() {
+                      $scope.checkboxModel.fill = false;
+                    });
+                  }
+                }
+              }
+            });
+        }
+
         if ($scope.mode === 'interaction') {
           resetActions();
           $('#der').css('cursor', 'crosshair');

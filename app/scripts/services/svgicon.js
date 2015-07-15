@@ -42,7 +42,7 @@ angular.module('accessimapEditeurDerApp')
             })
             .attr('fill', 'red');
       }
-      if (type === 'polygon' || type === 'circle') {
+      if (type === 'polygon' || type === 'editpolygon' || type === 'circle') {
         symbol = iconContainer.append('rect')
               .attr('x', 0)
               .attr('y', 0)
