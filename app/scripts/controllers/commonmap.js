@@ -164,6 +164,8 @@ angular.module('accessimapEditeurDerApp')
           deleteOnClick(d3.selectAll('path'));
           deleteOnClick(d3.selectAll('circle'));
           deleteOnClick(d3.selectAll('text'));
+          deleteOnClick(d3.selectAll('rect'));
+          deleteOnClick(d3.selectAll('ellipse'));
         }
         if ($scope.mode === 'undo') {
           resetActions();
