@@ -55,29 +55,31 @@
   </button>
 </form>
 
-<ul>
-  <li ng-repeat="feature in geojson" class="form-inline">
-    {{feature.name}}
-    <slider class="form-control" ng-model="feature.simplification" ng-show="feature.geometryType !== 'point'" ng-change="simplifyFeatures(feature)" min="0" max="100"></slider>
-    <div class="input-group">
-      <ui-select ng-model="feature.style" ng-disabled="disabled" ng-change="updateFeature(feature.id, feature.style)" theme="bootstrap" class="form-control style-selector" style="width: 150px;">
-        <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
-        <ui-select-choices repeat="item in feature.styleChoices | filter: $select.search">
-          <div ng-bind-html="item.name | highlight: $select.search"></div>
-          <div ng-bind-html="featureIcon(item, feature.geometryType)"></div>
-        </ui-select-choices>
-      </ui-select>
-      <slider ng-if="feature.geometryType === 'point'" class="form-control" ng-model="feature.rotation" ng-change="rotateFeature(feature)" min="0" max="360"></slider>
-      <span ng-if="feature.geometryType === 'polygon'" class="input-group-addon" id="basic-addon1">
-        <input type="checkbox" ng-model="feature.contour" ng-change="updateFeature(feature.id, feature.style)"><span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
-        <input type="checkbox" ng-model="feature.fill" ng-change="updateFeature(feature.id, feature.style)"><span class="glyphicon glyphicon-adjust" aria-hidden="true"></span>
-      </span>
-    </div>
-    <button class="btn btn-default" type="button" ng-click="removeFeature(feature.id)"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
-  </li>
-</ul>
+<div class="col-xs-3">
+  <ul class="features-list">
+    <li ng-repeat="feature in geojson" class="form-inline">
+      {{feature.name}}
+      <slider class="form-control" ng-model="feature.simplification" ng-show="feature.geometryType !== 'point'" ng-change="simplifyFeatures(feature)" min="0" max="100"></slider>
+        <ui-select ng-model="feature.style" ng-disabled="disabled" ng-change="updateFeature(feature.id, feature.style)" theme="bootstrap" class="form-control style-selector" style="width: 150px;">
+          <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
+          <ui-select-choices repeat="item in feature.styleChoices | filter: $select.search">
+            <div ng-bind-html="item.name | highlight: $select.search"></div>
+            <div ng-bind-html="featureIcon(item, feature.geometryType)"></div>
+          </ui-select-choices>
+        </ui-select>
+        <slider ng-if="feature.geometryType === 'point'" class="form-control" ng-model="feature.rotation" ng-change="rotateFeature(feature)" min="0" max="360"></slider>
+        <span ng-if="feature.geometryType === 'polygon'" class="input-group-addon" id="basic-addon1">
+          <input type="checkbox" ng-model="feature.contour" ng-change="updateFeature(feature.id, feature.style)"><span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
+          <input type="checkbox" ng-model="feature.fill" ng-change="updateFeature(feature.id, feature.style)"><span class="glyphicon glyphicon-adjust" aria-hidden="true"></span>
+        </span>
+      <button class="btn btn-default" type="button" ng-click="removeFeature(feature.id)"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
+    </li>
+  </ul>
+</div>
 
-<div id="map"></div>
-<div id="legend"></div>
+<div class="col-xs-9">
+  <div id="map"></div>
+  <div id="legend"></div>
+</div>
 
 <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
