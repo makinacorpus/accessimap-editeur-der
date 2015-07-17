@@ -161,9 +161,12 @@ angular.module('accessimapEditeurDerApp')
       };
 
       $scope.rotateFeature = function(feature) {
-        var cx = d3.select('.' + feature.id).attr('cx');
-        var cy = d3.select('.' + feature.id).attr('cy');
-        d3.select('.' + feature.id).attr('transform', 'rotate(' + feature.rotation + ' ' + cx + ' ' + cy + ')');
+        var features = d3.selectAll('.' + feature.id);
+        angular.forEach(features[0], function(featurei) {
+          var cx = d3.select(featurei).attr('cx');
+          var cy = d3.select(featurei).attr('cy');
+          d3.select(featurei).attr('transform', 'rotate(' + feature.rotation + ' ' + cx + ' ' + cy + ')');
+        });
       };
 
       $scope.featureIcon = svgicon.featureIcon;
