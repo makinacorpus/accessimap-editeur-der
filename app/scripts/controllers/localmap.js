@@ -40,9 +40,18 @@ angular.module('accessimapEditeurDerApp')
           .translate([width / 2, height / 2]);
 
       var center = projection(settings.leaflet.GLOBAL_MAP_CENTER);
-
       var path = d3.geo.path()
           .projection(projection);
+
+      $scope.leftMenuVisible = false;
+
+      $scope.hideMenu = function() {
+        $scope.leftMenuVisible = false;
+      };
+
+      $scope.showMenu = function() {
+        $scope.leftMenuVisible = true;
+      };
 
       function zoomed() {
         var tiles = tile

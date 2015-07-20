@@ -266,7 +266,7 @@ angular.module('accessimapEditeurDerApp')
           }
 
           // Make the selected feature blink
-          d3.selectAll('path')
+          d3.selectAll('path:not(.notDeletable)')
             .on('click', function() {
               d3.selectAll('.blink').classed('blink', false);
               var feature = d3.select(this);
@@ -280,7 +280,16 @@ angular.module('accessimapEditeurDerApp')
                   .append('action')
                   .attr('filter', $scope.interaction.filter)
                   .attr('protocol', $scope.interaction.protocol)
-                  .attr('value', $scope.interaction.value)
+                  .attr('value', function() {
+                    if (feature.attr('name')) {
+                      $scope.$apply(function() {
+                        $scope.interaction.value = feature.attr('name');
+                      });
+                      return feature.attr('name');
+                    } else {
+                      return $scope.interaction.value;
+                    }
+                  })
                   .attr('x', bbox.x)
                   .attr('y', bbox.y)
                   .attr('width', bbox.width)

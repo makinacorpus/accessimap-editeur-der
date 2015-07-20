@@ -55,7 +55,13 @@
   </button>
 </form>
 
-<div class="col-xs-3">
+<div class="mini-submenu" ng-hide="leftMenuVisible">
+    <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true" ng-click="showMenu()"></span>
+</div>
+<div class="col-xs-3 menu-left" ng-show="leftMenuVisible">
+  <span class="pull-right" id="slide-submenu" ng-click="hideMenu()">
+    <i class="fa fa-times"></i>
+  </span>
   <ul class="features-list">
     <li ng-repeat="feature in geojson" class="form-inline">
       {{feature.name}}
