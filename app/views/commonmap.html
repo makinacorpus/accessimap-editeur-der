@@ -85,10 +85,22 @@
   <input ng-model="interaction.value" class="form-control" type="text" id="comment"></input>
 </div>
 
-<div id="der"></div>
-<div id="der-legend"></div>
-
-<div class="form-group">
-  <label for="comment">Commentaires de transcription</label>
-  <textarea class="form-control" rows="5" id="comment"></textarea>
+<div class="col-xs-6">
+  <div id="der"></div>
+  <div id="der-legend"></div>
+  <div class="form-group">
+    <label for="comment">Commentaires de transcription</label>
+    <textarea class="form-control" rows="5" id="comment"></textarea>
+  </div>
 </div>
+
+<div class="mini-submenu pull-right" ng-hide="rightMenuVisible">
+    <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true" ng-click="showMenu()"></span>
+</div>
+<div class="col-xs-6 menu-right" ng-show="rightMenuVisible">
+  <span class="pull-right" id="slide-submenu" ng-click="hideMenu()">
+    <i class="fa fa-times"></i>
+  </span>
+    Ici, affichage des filtres d'interaction
+</div>
+

@@ -65,6 +65,15 @@ angular.module('accessimapEditeurDerApp')
 
       $scope.featureIcon = svgicon.featureIcon;
 
+      $scope.rightMenuVisible = false;
+      $scope.hideMenu = function() {
+        $scope.rightMenuVisible = false;
+      };
+
+      $scope.showMenu = function() {
+        $scope.rightMenuVisible = true;
+      };
+
       d3.select('svg').append('defs')
           .append('marker')
           .attr('id', 'midmarker')
