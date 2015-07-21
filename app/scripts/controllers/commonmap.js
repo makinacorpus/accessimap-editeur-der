@@ -74,6 +74,22 @@ angular.module('accessimapEditeurDerApp')
         $scope.rightMenuVisible = true;
       };
 
+      $scope.interactiveFiltersInit = [{
+        'id': 'name',
+        'f0': 'Aucune interaction'
+      }, {
+        'id': 'expandable',
+        'f0': false
+      }, {
+        'id': 'title',
+        'f0': 'Titre par défaut'
+      }];
+
+      $scope.interactiveFilters = {
+        data: $scope.interactiveFiltersInit
+      };
+
+
       d3.select('svg').append('defs')
           .append('marker')
           .attr('id', 'midmarker')

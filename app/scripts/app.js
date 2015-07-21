@@ -19,7 +19,8 @@ angular
     'angularSpinner',
     'ui.select',
     'ui.bootstrap-slider',
-    'ui.keypress'
+    'ui.keypress',
+    'ui.grid'
   ])
   .config(function($routeProvider) {
     $routeProvider
