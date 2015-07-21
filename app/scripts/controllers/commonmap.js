@@ -76,13 +76,15 @@ angular.module('accessimapEditeurDerApp')
 
       $scope.interactiveFiltersInit = [{
         'id': 'name',
-        'f0': 'Aucune interaction'
+        'f0': 'Aucune interaction',
+        'f1': 'Valeur OSM'
       }, {
         'id': 'expandable',
-        'f0': false
+        'f0': false,
+        'f1': false
       }, {
         'id': 'title',
-        'f0': 'Titre par défaut'
+        'f0': 'Titre par défaut',
       }];
 
       $scope.interactiveFilters = {
