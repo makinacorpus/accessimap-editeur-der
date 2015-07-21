@@ -20,7 +20,8 @@ angular
     'ui.select',
     'ui.bootstrap-slider',
     'ui.keypress',
-    'ui.grid'
+    'ui.grid',
+    'ui.grid.edit'
   ])
   .config(function($routeProvider) {
     $routeProvider

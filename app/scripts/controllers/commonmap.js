@@ -79,18 +79,27 @@ angular.module('accessimapEditeurDerApp')
         'f0': 'Aucune interaction',
         'f1': 'Valeur OSM'
       }, {
-        'id': 'expandable',
+        'id': 'Guidage',
         'f0': false,
-        'f1': false
+        'f1': true,
+        'type': 'boolean'
       }, {
         'id': 'title',
         'f0': 'Titre par défaut',
       }];
 
-      $scope.interactiveFilters = {
-        data: $scope.interactiveFiltersInit
-      };
+      var checkboxTemplate = '<input ng-if="row.entity.type === \'boolean\'" type="checkbox" value="{{row.entity[col.field]}}" ng-model="row.entity[col.field]"><div ng-if="row.entity.type !== \'boolean\'">{{row.entity[col.field]}}</div>';
 
+      $scope.interactiveFilters = {
+        data: $scope.interactiveFiltersInit,
+        showSelectionCheckbox: true,
+        enableSorting: false,
+        columnDefs: [
+          { name: 'id', enableCellEdit: false },
+          { name: 'f0', cellTemplate: checkboxTemplate },
+          { name: 'f1', cellTemplate: checkboxTemplate }
+        ],
+      };
 
       d3.select('svg').append('defs')
           .append('marker')
