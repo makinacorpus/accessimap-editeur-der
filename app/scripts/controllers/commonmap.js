@@ -88,17 +88,49 @@ angular.module('accessimapEditeurDerApp')
         'f0': 'Titre par défaut',
       }];
 
-      var checkboxTemplate = '<input ng-if="row.entity.type === \'boolean\'" type="checkbox" value="{{row.entity[col.field]}}" ng-model="row.entity[col.field]"><div ng-if="row.entity.type !== \'boolean\'">{{row.entity[col.field]}}</div>';
+      var checkboxTemplate = '<input ng-if="row.entity.type === \'boolean\'" type="checkbox" value="{{row.entity[col.field]}}" ng-model="row.entity[col.field]">';
+      checkboxTemplate += '<div ng-if="row.entity.type !== \'boolean\'">{{row.entity[col.field]}}</div>';
+
+      var menuItems = [
+        {
+          title: 'Supprimer cette colonne',
+          icon: 'ui-grid-icon-cancel',
+          action: function() {
+            var colName = this.context.col.name;
+
+            // Remove the column from interactiveFiltersColumns
+            var columnToDelete = interactiveFiltersColumns.filter(function(col) {
+              return col.name === colName;
+            });
+            var index = interactiveFiltersColumns.indexOf(columnToDelete[0]);
+            interactiveFiltersColumns.splice(index, 1);
+
+            // Remove the column from interactiveFiltersColumns
+            angular.forEach($scope.interactiveFilters.data, function(row) {
+              delete row[colName];
+            });
+          }
+        }
+      ];
+
+      var interactiveFiltersColumns = [
+        { name: 'id', enableCellEdit: false, enableHiding: false },
+        { name: 'f0', cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false },
+        { name: 'f1', cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false }
+      ];
 
       $scope.interactiveFilters = {
         data: $scope.interactiveFiltersInit,
         showSelectionCheckbox: true,
         enableSorting: false,
-        columnDefs: [
-          { name: 'id', enableCellEdit: false },
-          { name: 'f0', cellTemplate: checkboxTemplate },
-          { name: 'f1', cellTemplate: checkboxTemplate }
-        ],
+        columnDefs: interactiveFiltersColumns,
+      };
+
+      $scope.nextFilterNumber = 2;
+
+      $scope.addFilter = function() {
+        interactiveFiltersColumns.push({ name: 'f' + $scope.nextFilterNumber, cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false });
+        $scope.nextFilterNumber += 1;
       };
 
       d3.select('svg').append('defs')
