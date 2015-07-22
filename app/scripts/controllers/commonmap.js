@@ -314,24 +314,6 @@ angular.module('accessimapEditeurDerApp')
         if ($scope.mode === 'interaction') {
           resetActions();
           $('#der').css('cursor', 'crosshair');
-          // Add filters to SVG if they don't exist
-          if (d3.select('filters').empty()) {
-            var filters = d3.select('#der')
-              .select('svg')
-              .append('filters');
-            filters.append('filter')
-              .attr('id', 'f0')
-              .attr('name', 'Aucune interaction')
-              .attr('expandable', 'false');
-            filters.append('filter')
-              .attr('id', 'f1')
-              .attr('name', 'filtre numéro 1')
-              .attr('expandable', 'true');
-            filters.append('filter')
-              .attr('id', 'f2')
-              .attr('name', 'filtre numéro 2')
-              .attr('expandable', 'true');
-          }
 
           // Make the selected feature blink
           d3.selectAll('path:not(.notDeletable)')
@@ -339,62 +321,27 @@ angular.module('accessimapEditeurDerApp')
               d3.selectAll('.blink').classed('blink', false);
               var feature = d3.select(this);
               feature.classed('blink', true);
-              var bbox = feature[0][0].getBBox();
-              if (feature.select('actions').empty()) {
+              var featureIid;
+              featureIid = feature.attr('iid');
+              if (!featureIid) {
+                featureIid = $rootScope.getiid();
+                feature.attr('iid', featureIid);
+              }
+
+              var featurePosition = $scope.interactiveFilters.data.filter(function(row) {
+                return row.id === 'poi-' + featureIid;
+              });
+              var featureToAdd = $scope.interactiveFilters.data.indexOf(featurePosition[0]) < 0;
+
+              if (featureToAdd) {
                 $scope.$apply(function() {
-                  $scope.interaction = {};
-                });
-                feature.append('actions')
-                  .append('action')
-                  .attr('filter', $scope.interaction.filter)
-                  .attr('protocol', $scope.interaction.protocol)
-                  .attr('value', function() {
-                    if (feature.attr('name')) {
-                      $scope.$apply(function() {
-                        $scope.interaction.value = feature.attr('name');
-                      });
-                      return feature.attr('name');
-                    } else {
-                      return $scope.interaction.value;
-                    }
-                  })
-                  .attr('x', bbox.x)
-                  .attr('y', bbox.y)
-                  .attr('width', bbox.width)
-                  .attr('height', bbox.height);
-              } else {
-                $scope.$apply(function() {
-                  $scope.interaction.filter = feature.select('actions').select('action').attr('filter');
-                  $scope.interaction.protocol = feature.select('actions').select('action').attr('protocol');
-                  $scope.interaction.value = feature.select('actions').select('action').attr('value');
+                  $scope.interactiveFilters.data.push({'id': 'poi-' + featureIid});
                 });
               }
-              $scope.$watch('interaction.filter', function() {
-                d3.selectAll('.blink')
-                  .select('actions')
-                  .select('action')
-                  .attr('filter', $scope.interaction.filter);
-              });
-              $scope.$watch('interaction.protocol', function() {
-                d3.selectAll('.blink')
-                  .select('actions')
-                  .select('action')
-                  .attr('protocol', $scope.interaction.protocol);
-              });
-              $scope.$watch('interaction.value', function() {
-                d3.selectAll('.blink')
-                  .select('actions')
-                  .select('action')
-                  .attr('value', $scope.interaction.value);
-              });
-            });
-          d3.selectAll('circle')
-            .on('click', function() {
-              d3.selectAll('.blink').classed('blink', false);
-              var feature = d3.select(this);
-              feature.classed('blink', true);
+
             });
         }
+
         if ($scope.mode === 'point') {
           resetActions();
           $('#der').css('cursor', 'crosshair');
@@ -405,7 +352,8 @@ angular.module('accessimapEditeurDerApp')
               var coordinates = d3.mouse(this);
               var feature = d3.select('svg')
               .append('path')
-              .attr('d', $scope.styleChosen.path(coordinates[0], coordinates[1], $scope.styleChosen.radius));
+              .attr('d', $scope.styleChosen.path(coordinates[0], coordinates[1], $scope.styleChosen.radius))
+              .attr('iid', $rootScope.getiid());
               angular.forEach($scope.styleChosen.style, function(attribute) {
                 var k = attribute.k;
                 var v = attribute.v;
