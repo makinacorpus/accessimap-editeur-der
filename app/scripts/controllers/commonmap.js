@@ -49,20 +49,6 @@ angular.module('accessimapEditeurDerApp')
         fill: false,
       };
 
-      $scope.interactionFilters = {
-        'f0': {
-          name: 'Aucune interaction'
-        },
-        'f1': {
-          name: 'filtre numéro 1'
-        },
-        'f2': {
-          name: 'filtre numéro 2'
-        }
-      };
-
-      $scope.interaction = {};
-
       $scope.featureIcon = svgicon.featureIcon;
 
       $scope.rightMenuVisible = false;
@@ -77,19 +63,24 @@ angular.module('accessimapEditeurDerApp')
       $scope.interactiveFiltersInit = [{
         'id': 'name',
         'f0': 'Aucune interaction',
-        'f1': 'Valeur OSM'
+        'f1': 'Valeur OSM',
+        'deletable': false
       }, {
         'id': 'Guidage',
         'f0': false,
         'f1': true,
-        'type': 'boolean'
+        'type': 'boolean',
+        'deletable': false
       }, {
         'id': 'title',
         'f0': 'Titre par défaut',
+        'deletable': false
       }];
 
       var checkboxTemplate = '<input ng-if="row.entity.type === \'boolean\'" type="checkbox" value="{{row.entity[col.field]}}" ng-model="row.entity[col.field]">';
       checkboxTemplate += '<div ng-if="row.entity.type !== \'boolean\'">{{row.entity[col.field]}}</div>';
+
+      var removeTemplate = '<button ng-if="row.entity.deletable" class="btn btn-danger" ng-click="grid.appScope.removeRow(row)"><i class="glyphicon glyphicon-remove"></i></button>';
 
       var menuItems = [
         {
@@ -116,7 +107,8 @@ angular.module('accessimapEditeurDerApp')
       var interactiveFiltersColumns = [
         { name: 'id', enableCellEdit: false, enableHiding: false },
         { name: 'f0', cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false },
-        { name: 'f1', cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false }
+        { name: 'f1', cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false },
+        { field: 'remove', displayName: '', width: 40, cellTemplate: removeTemplate, enableCellEdit: false, enableHiding: false}
       ];
 
       $scope.interactiveFilters = {
@@ -129,8 +121,17 @@ angular.module('accessimapEditeurDerApp')
       $scope.nextFilterNumber = 2;
 
       $scope.addFilter = function() {
-        interactiveFiltersColumns.push({ name: 'f' + $scope.nextFilterNumber, cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false });
+        var filterPosition = interactiveFiltersColumns.length - 1;
+        interactiveFiltersColumns.splice(filterPosition, 0, { name: 'f' + $scope.nextFilterNumber, cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false });
+        //interactiveFiltersColumns.push({ name: 'f' + $scope.nextFilterNumber, cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false });
         $scope.nextFilterNumber += 1;
+      };
+
+      $scope.removeRow = function(row) {
+        var index = $scope.interactiveFilters.data.indexOf(row.entity);
+        if (index !== -1) {
+          $scope.interactiveFilters.data.splice(index, 1);
+        }
       };
 
       d3.select('svg').append('defs')
@@ -335,7 +336,7 @@ angular.module('accessimapEditeurDerApp')
 
               if (featureToAdd) {
                 $scope.$apply(function() {
-                  $scope.interactiveFilters.data.push({'id': 'poi-' + featureIid});
+                  $scope.interactiveFilters.data.push({'id': 'poi-' + featureIid, 'deletable': true});
                 });
               }
 

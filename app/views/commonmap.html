@@ -73,18 +73,6 @@
   </div>
 </form>
 
-<div ng-show="mode === 'interaction'" class="form-inline">
-  <label for="comment">Filtre</label>
-  <select ng-model="interaction.filter" class="form-control" ng-options="filterId as filter.name for (filterId, filter) in interactionFilters"></select>
-  <label for="comment">Protocole</label>
-  <select ng-model="interaction.protocol" class="form-control">
-    <option value="tts">TTS</option>
-    <option value="mp3">MP3</option>
-  </select>
-  <label for="comment">Valeur</label>
-  <input ng-model="interaction.value" class="form-control" type="text" id="comment"></input>
-</div>
-
 <div class="col-xs-6">
   <div id="der"></div>
   <div id="der-legend"></div>
