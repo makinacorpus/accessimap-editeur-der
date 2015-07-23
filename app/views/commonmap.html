@@ -82,13 +82,14 @@
   </div>
 </div>
 
-<div class="mini-submenu pull-right" ng-hide="rightMenuVisible">
-    <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true" ng-click="showMenu()"></span>
-</div>
+<button class="btn btn-default pull-right" ng-hide="rightMenuVisible" ng-click="showMenu()" type="button">
+  Ajouter des interactions <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+</button>
+
 <div class="col-xs-6 menu-right" ng-show="rightMenuVisible">
-  <span class="pull-right" id="slide-submenu" ng-click="hideMenu()">
-    <i class="fa fa-times"></i>
-  </span>
+  <button class="btn btn-default pull-right" ng-click="hideMenu()" type="button">
+    <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+  </button>
   <button id="button_add" class="btn btn-success" ng-click="addFilter()">Ajouter un filtre d'interaction</button>
   <div ui-grid="interactiveFilters" ui-grid-edit ui-grid-selection class="myGrid"></div>
 </div>

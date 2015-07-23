@@ -124,15 +124,11 @@ angular.module('accessimapEditeurDerApp')
         columnDefs: interactiveFiltersColumns
       };
 
-    $scope.scrollTo = function(rowIndex, colIndex) {
-      $scope.gridApi.core.scrollTo($scope.gridOptions.data[rowIndex], $scope.gridOptions.columnDefs[colIndex]);
-    };
-
       $scope.nextFilterNumber = 2;
 
       $scope.addFilter = function() {
         var filterPosition = interactiveFiltersColumns.length - 1;
-        interactiveFiltersColumns.splice(filterPosition, 0, { name: 'f' + $scope.nextFilterNumber, cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false });
+        interactiveFiltersColumns.splice(filterPosition, 0, { name: 'f' + $scope.nextFilterNumber, cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false, cellClass: cellClassId });
         $scope.nextFilterNumber += 1;
       };
 
