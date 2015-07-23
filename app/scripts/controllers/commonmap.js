@@ -57,6 +57,7 @@ angular.module('accessimapEditeurDerApp')
       };
 
       $scope.showMenu = function() {
+        d3.selectAll('.highlight').classed('highlight', false);
         $scope.rightMenuVisible = true;
       };
 
@@ -104,26 +105,34 @@ angular.module('accessimapEditeurDerApp')
         }
       ];
 
+      var cellClassId = function(grid, row, col, rowRenderIndex, colRenderIndex) {
+        return $scope.interactiveFilters.data[rowRenderIndex].id + ' highlight';
+      };
+
       var interactiveFiltersColumns = [
-        { name: 'id', enableCellEdit: false, enableHiding: false },
-        { name: 'f0', cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false },
-        { name: 'f1', cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false },
-        { field: 'remove', displayName: '', width: 40, cellTemplate: removeTemplate, enableCellEdit: false, enableHiding: false}
+        { name: 'id', enableCellEdit: false, enableHiding: false, cellClass: cellClassId},
+        { name: 'f0', cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false, cellClass: cellClassId},
+        { name: 'f1', cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false, cellClass: cellClassId},
+        { field: 'remove', displayName: '', width: 40, cellTemplate: removeTemplate, enableCellEdit: false, enableHiding: false, cellClass: cellClassId}
       ];
 
       $scope.interactiveFilters = {
         data: $scope.interactiveFiltersInit,
         showSelectionCheckbox: true,
         enableSorting: false,
-        columnDefs: interactiveFiltersColumns,
+        enableRowSelection: true,
+        columnDefs: interactiveFiltersColumns
       };
+
+    $scope.scrollTo = function( rowIndex, colIndex ) {
+      $scope.gridApi.core.scrollTo( $scope.gridOptions.data[rowIndex], $scope.gridOptions.columnDefs[colIndex]);
+    };
 
       $scope.nextFilterNumber = 2;
 
       $scope.addFilter = function() {
         var filterPosition = interactiveFiltersColumns.length - 1;
         interactiveFiltersColumns.splice(filterPosition, 0, { name: 'f' + $scope.nextFilterNumber, cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false });
-        //interactiveFiltersColumns.push({ name: 'f' + $scope.nextFilterNumber, cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false });
         $scope.nextFilterNumber += 1;
       };
 
@@ -194,6 +203,7 @@ angular.module('accessimapEditeurDerApp')
         $('#der').css('cursor', 'auto');
         d3.select('.ongoing').remove();
         d3.selectAll('.blink').classed('blink', false);
+        d3.selectAll('.highlight').classed('highlight', false);
       }
 
 
@@ -320,6 +330,7 @@ angular.module('accessimapEditeurDerApp')
           d3.selectAll('path:not(.notDeletable)')
             .on('click', function() {
               d3.selectAll('.blink').classed('blink', false);
+              d3.selectAll('.highlight').classed('highlight', false);
               var feature = d3.select(this);
               feature.classed('blink', true);
               var featureIid;
@@ -328,6 +339,8 @@ angular.module('accessimapEditeurDerApp')
                 featureIid = $rootScope.getiid();
                 feature.attr('iid', featureIid);
               }
+              // Add the highlight class to the relevant cells of the grid
+              d3.selectAll('.poi-' + featureIid).classed('highlight', true);
 
               var featurePosition = $scope.interactiveFilters.data.filter(function(row) {
                 return row.id === 'poi-' + featureIid;
@@ -336,7 +349,7 @@ angular.module('accessimapEditeurDerApp')
 
               if (featureToAdd) {
                 $scope.$apply(function() {
-                  $scope.interactiveFilters.data.push({'id': 'poi-' + featureIid, 'deletable': true});
+                  $scope.interactiveFilters.data.push({'id': 'poi-' + featureIid, 'f1': feature.attr('name'), 'deletable': true});
                 });
               }
 
