@@ -83,36 +83,56 @@ angular.module('accessimapEditeurDerApp')
 
       var removeTemplate = '<button ng-if="row.entity.deletable" class="btn btn-danger" ng-click="grid.appScope.removeRow(row.entity)"><i class="glyphicon glyphicon-remove"></i></button>';
 
-      var menuItems = [
-        {
-          title: 'Supprimer cette colonne',
-          icon: 'ui-grid-icon-cancel',
-          action: function() {
-            var colName = this.context.col.name;
-
-            // Remove the column from interactiveFiltersColumns
-            var columnToDelete = interactiveFiltersColumns.filter(function(col) {
-              return col.name === colName;
-            });
-            var index = interactiveFiltersColumns.indexOf(columnToDelete[0]);
-            interactiveFiltersColumns.splice(index, 1);
-
-            // Remove the column from interactiveFiltersColumns
-            angular.forEach($scope.interactiveFilters.data, function(row) {
-              delete row[colName];
-            });
-          }
-        }
-      ];
-
       var cellClassId = function(grid, row, col, rowRenderIndex, colRenderIndex) {
         return $scope.interactiveFilters.data[rowRenderIndex].id + ' highlight';
       };
 
+      $scope.deleteCol = function(colName) {
+        // Remove the column from interactiveFiltersColumns
+        var columnToDelete = interactiveFiltersColumns.filter(function(col) {
+          return col.name === colName;
+        });
+        var index = interactiveFiltersColumns.indexOf(columnToDelete[0]);
+        if (index > -1) {
+          interactiveFiltersColumns.splice(index, 1);
+        }
+        // Remove the column from interactiveFiltersColumns
+        angular.forEach($scope.interactiveFilters.data, function(row) {
+          delete row[colName];
+        });
+      };
+
       var interactiveFiltersColumns = [
         { name: 'id', enableCellEdit: false, enableHiding: false, cellClass: cellClassId},
-        { name: 'f0', cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false, cellClass: cellClassId},
-        { name: 'f1', cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false, cellClass: cellClassId},
+        { name: 'f0',
+          cellTemplate: checkboxTemplate,
+          menuItems: [
+            {
+              title: 'Supprimer cette colonne',
+              icon: 'ui-grid-icon-cancel',
+              action: function() {
+                var colName = this.context.col.name;
+                $scope.deleteCol(colName);
+              }
+            }
+          ],
+          enableHiding: false, cellClass: cellClassId
+        },
+        { name: 'f1',
+          cellTemplate: checkboxTemplate,
+          menuItems: [
+            {
+              title: 'Supprimer cette colonne',
+              icon: 'ui-grid-icon-cancel',
+              action: function($event) {
+                var colName = this.context.col.name;
+                $scope.deleteCol(colName);
+              }
+            }
+          ],
+          enableHiding: false,
+          cellClass: cellClassId
+        },
         { field: 'remove', displayName: '', width: 40, cellTemplate: removeTemplate, enableCellEdit: false, enableHiding: false, cellClass: cellClassId}
       ];
 
@@ -121,14 +141,30 @@ angular.module('accessimapEditeurDerApp')
         showSelectionCheckbox: true,
         enableSorting: false,
         enableRowSelection: true,
-        columnDefs: interactiveFiltersColumns
+        columnDefs: interactiveFiltersColumns,
+        onRegisterApi: function(gridApi){
+          $scope.gridApi = gridApi;
+        }
       };
 
       $scope.nextFilterNumber = 2;
 
       $scope.addFilter = function() {
         var filterPosition = interactiveFiltersColumns.length - 1;
-        interactiveFiltersColumns.splice(filterPosition, 0, { name: 'f' + $scope.nextFilterNumber, cellTemplate: checkboxTemplate, menuItems: menuItems, enableHiding: false, cellClass: cellClassId });
+        interactiveFiltersColumns.splice(filterPosition, 0, {
+          name: 'f' + $scope.nextFilterNumber,
+          cellTemplate: checkboxTemplate,
+          menuItems: [
+            {
+              title: 'Supprimer cette colonne',
+              icon: 'ui-grid-icon-cancel',
+              action: function($event) {
+                var colName = this.context.col.name;
+                $scope.deleteCol(colName);
+              }
+            }
+          ],
+          enableHiding: false, cellClass: cellClassId });
         $scope.nextFilterNumber += 1;
       };
 
