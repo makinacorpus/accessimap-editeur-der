@@ -86,11 +86,11 @@
   Ajouter des interactions <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
 </button>
 
-<div class="col-xs-6 menu-right" ng-show="rightMenuVisible">
+<div id="filters-container" class="col-xs-6 menu-right" ng-show="rightMenuVisible">
   <button class="btn btn-default pull-right" ng-click="hideMenu()" type="button">
     <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
   </button>
   <button id="button_add" class="btn btn-success" ng-click="addFilter()">Ajouter un filtre d'interaction</button>
-  <div ui-grid="interactiveFilters" ui-grid-edit ui-grid-selection class="myGrid"></div>
+  <div ui-grid="interactiveFilters" ui-grid-edit ui-grid-selection ui-grid-auto-resize class="filters-grid"></div>
 </div>
 

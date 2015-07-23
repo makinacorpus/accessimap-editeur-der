@@ -21,7 +21,8 @@ angular
     'ui.bootstrap-slider',
     'ui.keypress',
     'ui.grid',
-    'ui.grid.edit'
+    'ui.grid.edit',
+    'ui.grid.autoResize'
   ])
   .config(function($routeProvider) {
     $routeProvider
