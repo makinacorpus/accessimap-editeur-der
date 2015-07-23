@@ -81,7 +81,7 @@ angular.module('accessimapEditeurDerApp')
       var checkboxTemplate = '<input ng-if="row.entity.type === \'boolean\'" type="checkbox" value="{{row.entity[col.field]}}" ng-model="row.entity[col.field]">';
       checkboxTemplate += '<div ng-if="row.entity.type !== \'boolean\'">{{row.entity[col.field]}}</div>';
 
-      var removeTemplate = '<button ng-if="row.entity.deletable" class="btn btn-danger" ng-click="grid.appScope.removeRow(row)"><i class="glyphicon glyphicon-remove"></i></button>';
+      var removeTemplate = '<button ng-if="row.entity.deletable" class="btn btn-danger" ng-click="grid.appScope.removeRow(row.entity)"><i class="glyphicon glyphicon-remove"></i></button>';
 
       var menuItems = [
         {
@@ -124,8 +124,8 @@ angular.module('accessimapEditeurDerApp')
         columnDefs: interactiveFiltersColumns
       };
 
-    $scope.scrollTo = function( rowIndex, colIndex ) {
-      $scope.gridApi.core.scrollTo( $scope.gridOptions.data[rowIndex], $scope.gridOptions.columnDefs[colIndex]);
+    $scope.scrollTo = function(rowIndex, colIndex) {
+      $scope.gridApi.core.scrollTo($scope.gridOptions.data[rowIndex], $scope.gridOptions.columnDefs[colIndex]);
     };
 
       $scope.nextFilterNumber = 2;
@@ -137,7 +137,7 @@ angular.module('accessimapEditeurDerApp')
       };
 
       $scope.removeRow = function(row) {
-        var index = $scope.interactiveFilters.data.indexOf(row.entity);
+        var index = $scope.interactiveFilters.data.indexOf(row);
         if (index !== -1) {
           $scope.interactiveFilters.data.splice(index, 1);
         }
@@ -218,15 +218,34 @@ angular.module('accessimapEditeurDerApp')
       function deleteOnClick(el) {
         el.on('click', function() {
           // Some objects should not be deletable
-          if(!d3.select(this).classed('notDeletable')) {
+          if (!d3.select(this).classed('notDeletable')) {
             var _this = this;
-            $scope.$apply(function() {
-              $scope.deletedFeature = new XMLSerializer().serializeToString(_this);
+            var iid = d3.select(this).attr('iid');
+
+            var featurePosition = $scope.interactiveFilters.data.filter(function(row) {
+              return row.id === 'poi-' + iid;
             });
-            var t = document.createElement('foreignObject');
-            d3.select(t).attr('id', 'deletedElement');
-            this.parentNode.insertBefore(t, this);
-            this.remove();
+            var featureInFilters = $scope.interactiveFilters.data.indexOf(featurePosition[0]);
+            if (featureInFilters > -1) {
+              if (window.confirm('Ce point est interactif. Voules-vous vraiment le supprimer ?')) {
+                $scope.removeRow($scope.interactiveFilters.data[featureInFilters]);
+                $scope.$apply(function() {
+                  $scope.deletedFeature = new XMLSerializer().serializeToString(_this);
+                });
+                var t = document.createElement('foreignObject');
+                d3.select(t).attr('id', 'deletedElement');
+                this.parentNode.insertBefore(t, this);
+                this.remove();
+              }
+            } else {
+              $scope.$apply(function() {
+                $scope.deletedFeature = new XMLSerializer().serializeToString(_this);
+              });
+              var t = document.createElement('foreignObject');
+              d3.select(t).attr('id', 'deletedElement');
+              this.parentNode.insertBefore(t, this);
+              this.remove();
+            }
           }
         });
       }
