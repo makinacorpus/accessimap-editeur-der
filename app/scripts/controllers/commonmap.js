@@ -78,8 +78,8 @@ angular.module('accessimapEditeurDerApp')
         'deletable': false
       }];
 
-      var checkboxTemplate = '<input ng-if="row.entity.type === \'boolean\'" type="checkbox" value="{{row.entity[col.field]}}" ng-model="row.entity[col.field]">';
-      checkboxTemplate += '<div ng-if="row.entity.type !== \'boolean\'">{{row.entity[col.field]}}</div>';
+      var cellTemplate = '<input ng-if="row.entity.type === \'boolean\'" type="checkbox" value="{{row.entity[col.field]}}" ng-model="row.entity[col.field]">';
+      cellTemplate += '<div ng-if="row.entity.type !== \'boolean\'">{{row.entity[col.field]}}</div>';
 
       var removeTemplate = '<button ng-if="row.entity.deletable" class="btn btn-danger" ng-click="grid.appScope.removeRow(row.entity)"><i class="glyphicon glyphicon-remove"></i></button>';
 
@@ -105,7 +105,7 @@ angular.module('accessimapEditeurDerApp')
       var interactiveFiltersColumns = [
         { name: 'id', enableCellEdit: false, enableHiding: false, cellClass: cellClassId},
         { name: 'f0',
-          cellTemplate: checkboxTemplate,
+          cellTemplate: cellTemplate,
           menuItems: [
             {
               title: 'Supprimer cette colonne',
@@ -119,7 +119,7 @@ angular.module('accessimapEditeurDerApp')
           enableHiding: false, cellClass: cellClassId
         },
         { name: 'f1',
-          cellTemplate: checkboxTemplate,
+          cellTemplate: cellTemplate,
           menuItems: [
             {
               title: 'Supprimer cette colonne',
@@ -142,8 +142,8 @@ angular.module('accessimapEditeurDerApp')
         enableSorting: false,
         enableRowSelection: true,
         columnDefs: interactiveFiltersColumns,
-        onRegisterApi: function(gridApi){
-          $scope.gridApi = gridApi;
+        onRegisterApi: function(gridApi) {
+          shareSvg.addInteractions(gridApi);
         }
       };
 
@@ -153,7 +153,7 @@ angular.module('accessimapEditeurDerApp')
         var filterPosition = interactiveFiltersColumns.length - 1;
         interactiveFiltersColumns.splice(filterPosition, 0, {
           name: 'f' + $scope.nextFilterNumber,
-          cellTemplate: checkboxTemplate,
+          cellTemplate: cellTemplate,
           menuItems: [
             {
               title: 'Supprimer cette colonne',
@@ -431,9 +431,6 @@ angular.module('accessimapEditeurDerApp')
                   feature.attr(k, v);
                 }
               });
-              feature.append('actions')
-              .append('action')
-              .attr('id', '1');
            });
         }
         if ($scope.mode === 'circle') {
