@@ -341,6 +341,16 @@ angular.module('accessimapEditeurDerApp')
         });
         var objectId = $scope.geojson.indexOf(result[0]);
 
+        if ($scope.geojson[objectId].contour) {
+          d3.select('#' + id)
+            .attr('stroke', 'black')
+            .attr('stroke-width', '2');
+        } else {
+          d3.select('#' + id)
+            .attr('stroke', null)
+            .attr('stroke-width', null);
+        }
+
         angular.forEach(style.style, function(attribute) {
           var k = attribute.k;
           var v = attribute.v;
@@ -371,17 +381,17 @@ angular.module('accessimapEditeurDerApp')
           zoomed();
         }
 
+        var symbol = d3.select('.legend#' + id).select('.symbol');
+
         if ($scope.geojson[objectId].contour) {
-          d3.select('#' + id)
+          symbol
             .attr('stroke', 'black')
             .attr('stroke-width', '2');
         } else {
-          d3.select('#' + id)
+          symbol
             .attr('stroke', null)
             .attr('stroke-width', null);
         }
-
-        var symbol = d3.select('.legend#' + id).select('.symbol');
         angular.forEach(style.style, function(attribute) {
           var k = attribute.k;
           var v = attribute.v;
@@ -410,15 +420,6 @@ angular.module('accessimapEditeurDerApp')
           symbol.attr('d', function() {
               return style.path(symbol.attr('cx'), symbol.attr('cy'), style.radius);
           });
-        }
-        if ($scope.geojson[objectId].contour) {
-          symbol
-            .attr('stroke', 'black')
-            .attr('stroke-width', '2');
-        } else {
-          symbol
-            .attr('stroke', null)
-            .attr('stroke-width', null);
         }
       }
 
