@@ -98,7 +98,15 @@ angular.module('accessimapEditeurDerApp')
               if (key !== '$$hashKey' && key !== 'deletable' && key !== 'id') {
                 actions.append('action')
                 .attr('filter', key)
-                .attr('value', d[key]);
+                .attr('value', d[key])
+                .attr('protocol', function() {
+                  var extension = d[key].split('.')[d[key].split('.').length - 1];
+                  if (extension === 'mp3') {
+                    return 'mp3';
+                  } else {
+                    return 'tts';
+                  }
+                });
               }
             });
           });
