@@ -11,9 +11,4 @@ describe('Filter: layerNotSelected', function () {
     layerNotSelected = $filter('layerNotSelected');
   }));
 
-  it('should return the input prefixed with "layerNotSelected filter:"', function () {
-    var text = 'angularjs';
-    expect(layerNotSelected(text)).toBe('layerNotSelected filter: ' + text);
-  });
-
 });

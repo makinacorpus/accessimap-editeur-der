@@ -19,7 +19,6 @@ angular
     'angularSpinner',
     'ui.select',
     'ui.bootstrap-slider',
-    'ui.keypress',
     'ui.grid',
     'ui.grid.edit',
     'ui.grid.autoResize'

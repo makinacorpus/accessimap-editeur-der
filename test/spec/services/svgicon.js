@@ -19,7 +19,7 @@ describe('Service: svgicon', function () {
     var $injector = angular.injector(['accessimapEditeurDerApp']);
     var settings = $injector.get('settings');
     var linesettings = settings.STYLES.line[0];
-    expect(svgicon.featureIcon(linesettings, 'line')).toBe('<svg height="30"><g><line x1="0" y1="15" x2="250" y2="15" fill="none" stroke="black" stroke-width="1"></line></g></svg>');
+    expect(svgicon.featureIcon(linesettings, 'line')).toBe('<svg height="30"><g><line x1="0" y1="15" x2="250" y2="15" fill="none" stroke="black" stroke-width="2"></line><line x1="0" y1="15" x2="250" y2="15" fill="none" stroke-width="0"></line></g></svg>');
   });
 
 });
