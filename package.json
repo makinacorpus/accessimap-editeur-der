@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "dependencies": {},
   "devDependencies": {
+    "coveralls": "^2.11.3",
     "grunt": "^0.4.1",
     "grunt-autoprefixer": "^0.7.3",
     "grunt-concurrent": "^0.5.0",
@@ -27,6 +28,8 @@
     "grunt-wiredep": "^1.7.0",
     "jasmine-core": "^2.3.4",
     "jshint-stylish": "^0.2.0",
+    "karma-coverage": "^0.5.0",
+    "karma-coveralls": "^1.1.2",
     "karma-jasmine": "^0.3.6",
     "karma-phantomjs-launcher": "^0.1.4",
     "load-grunt-tasks": "^0.4.0",
