@@ -36,6 +36,19 @@
   </div>
 
   <div class="input-group">
+    <span class="input-group-addon" id="basic-addon1">
+      Trame de fond
+    </span>
+    <ui-select ng-model="$parent.containerStyle" ng-change="changeContainerStyle($parent.containerStyle)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 200px;">
+      <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
+      <ui-select-choices repeat="item in containerStyleChoices | filter: $select.search">
+        <div ng-bind-html="item.name | highlight: $select.search"></div>
+        <div ng-bind-html="featureIcon(item, 'polygon')"></div>
+      </ui-select-choices>
+    </ui-select>
+  </div>
+
+  <div class="input-group">
     <ui-select ng-show="mode === 'point' || mode === 'line' || mode === 'polygon' || mode === 'editpolygon' || mode === 'circle'" ng-model="$parent.styleChosen" ng-change="updatePolygonStyle()" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
       <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
       <ui-select-choices repeat="item in styleChoices | filter: $select.search">
@@ -73,24 +86,30 @@
   </div>
 </form>
 
-<div class="col-xs-6">
-  <div id="der"></div>
-  <div id="der-legend"></div>
-  <div class="form-group">
-    <label for="comment">Commentaires de transcription</label>
-    <textarea class="form-control" rows="5" id="comment"></textarea>
+<div class="col-xs-12">
+
+  <div class="row">
+    <button class="btn btn-default pull-right" ng-hide="rightMenuVisible" ng-click="showMenu()" type="button">
+      Ajouter des interactions <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+    </button>
   </div>
-</div>
 
-<button class="btn btn-default pull-right" ng-hide="rightMenuVisible" ng-click="showMenu()" type="button">
-  Ajouter des interactions <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
-</button>
+  <div class="col-xs-6">
+    <div id="der"></div>
+    <div id="der-legend"></div>
+    <div class="form-group">
+      <label for="comment">Commentaires de transcription</label>
+      <textarea class="form-control" rows="5" id="comment"></textarea>
+    </div>
+  </div>
 
-<div id="filters-container" class="col-xs-6 menu-right" ng-show="rightMenuVisible">
-  <button class="btn btn-default pull-right" ng-click="hideMenu()" type="button">
-    <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-  </button>
-  <button id="button_add" class="btn btn-success" ng-click="addFilter()">Ajouter un filtre d'interaction</button>
-  <div ui-grid="interactiveFilters" ui-grid-edit ui-grid-selection ui-grid-auto-resize class="filters-grid"></div>
+  <div id="filters-container" class="col-xs-6 menu-right" ng-show="rightMenuVisible">
+    <button class="btn btn-default pull-right" ng-click="hideMenu()" type="button">
+      <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+    </button>
+    <button id="button_add" class="btn btn-success" ng-click="addFilter()">Ajouter un filtre d'interaction</button>
+    <div ui-grid="interactiveFilters" ui-grid-edit ui-grid-selection ui-grid-auto-resize class="filters-grid"></div>
+  </div>
+
 </div>
 

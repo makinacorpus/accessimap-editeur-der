@@ -51,6 +51,21 @@ angular.module('accessimapEditeurDerApp')
 
       $scope.featureIcon = svgicon.featureIcon;
 
+      $scope.containerStyleChoices = settings.STYLES['polygon'];
+      $scope.containerStyle = $scope.containerStyleChoices[0];
+
+      $scope.changeContainerStyle = function(style) {
+        angular.forEach(style.style, function(attribute) {
+          var k = attribute.k;
+          var v = attribute.v;
+          if (k === 'fill-pattern') {
+            d3.select('#svgContainer').attr('fill', settings.POLYGON_STYLES[v].url());
+          } else {
+            d3.select('#svgContainer').attr(k, v);
+          }
+        });
+      };
+
       $scope.rightMenuVisible = false;
       $scope.hideMenu = function() {
         $scope.rightMenuVisible = false;

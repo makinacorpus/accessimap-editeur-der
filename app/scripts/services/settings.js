@@ -664,6 +664,13 @@ angular.module('accessimapEditeurDerApp')
         'k': 'fill',
         'v': 'red'
       }]
+    },{
+      id: 'none',
+      name: 'Aucun',
+      style: [{
+        'k': 'fill',
+        'v': 'none'
+      }]
     }],
     'point': [{
       id: 'smallcircleempty',

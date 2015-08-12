@@ -58,7 +58,11 @@ angular.module('accessimapEditeurDerApp')
           .attr('d', function() {
             return 'M 40 40 L ' + w40 + ' 40 L ' + w40 + ' ' + h40 + ' L 40 ' + h40 + ' L 40 40 z';
           })
-          .attr('style', 'fill:none;stroke:#000000;stroke-width:2.5px;stroke-opacity:1')
+          .attr('fill', 'none')
+          .attr('stroke', '#000000')
+          .attr('stroke-width', '2.5px')
+          .attr('stroke-opacity', '1')
+          .attr('id', 'svgContainer')
           .classed('notDeletable', true);
     };
   });
