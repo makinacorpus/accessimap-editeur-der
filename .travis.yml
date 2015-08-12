@@ -1,8 +1,19 @@
 language: node_js
+
 node_js:
-  - '0.10'
-before_script:
-  - 'npm install -g bower grunt-cli'
+  - '0.12'
+
+before_install:
+  - 'npm i bower grunt-cli'
+
+install:
+  - 'gem install compass'
   - 'bower install'
+
 script:
-  - "grunt test"
+  - 'npm install'
+  - 'npm test'
+
+cache:
+  directories:
+    - node_modules
