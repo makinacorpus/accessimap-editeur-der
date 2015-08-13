@@ -42,6 +42,7 @@ angular.module('accessimapEditeurDerApp')
           h40 = height - 40;
 
       var marginGroup = target.append('g')
+          .attr('id', 'margin')
           .attr('width', width)
           .attr('height', height);
 
@@ -52,6 +53,7 @@ angular.module('accessimapEditeurDerApp')
             return outer + inner;
           })
           .attr('style', 'opacity:1;fill:#ffffff;fill-opacity:1')
+          .attr('id', 'svgWhiteBorder')
           .classed('notDeletable', true);
 
       marginGroup.append('path')

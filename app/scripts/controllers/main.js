@@ -21,7 +21,7 @@ angular.module('accessimapEditeurDerApp')
       $rootScope.iid = 1;
 
       $rootScope.getiid = function() {
-        return $rootScope.iid ++;
+        return $rootScope.iid++;
       };
 
   }]);
