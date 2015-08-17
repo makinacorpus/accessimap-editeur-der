@@ -585,7 +585,7 @@ angular.module('accessimapEditeurDerApp')
         d3.select('svg')
           .on('click', function() {
             var coordinates = d3.mouse(this);
-            var point = mapService.formatLocation(projection.invert(coordinates), zoom.scale());
+            var point = projection.invert(coordinates);
             downloadData(point);
           });
       }
@@ -597,18 +597,18 @@ angular.module('accessimapEditeurDerApp')
             mapN,
             mapE;
         if (point) {
-          mapS = parseFloat(point.lat) - 0.00005;
-          mapW = parseFloat(point.lon) - 0.00005;
-          mapN = parseFloat(point.lat) + 0.00005;
-          mapE = parseFloat(point.lon) + 0.00005;
+          mapS = parseFloat(point[1]) - 0.00005;
+          mapW = parseFloat(point[0]) - 0.00005;
+          mapN = parseFloat(point[1]) + 0.00005;
+          mapE = parseFloat(point[0]) + 0.00005;
         } else {
           $('#map').css('cursor', 'auto');
-          var boundsNW = mapService.formatLocation(projection.invert([0, 0]), zoom.scale());
-          var boundsSE = mapService.formatLocation(projection.invert([width, height]), zoom.scale());
-          mapS = boundsSE.lat;
-          mapW = boundsNW.lon;
-          mapN = boundsNW.lat;
-          mapE = boundsSE.lon;
+          var boundsNW = projection.invert([0, 0]);
+          var boundsSE = projection.invert([width, height]);
+          mapS = boundsSE[1];
+          mapW = boundsNW[0];
+          mapN = boundsNW[1];
+          mapE = boundsSE[0];
         }
         var url = settings.XAPI_URL + '[out:xml];(';
         for (var i = 0; i < $scope.queryChosen.query.length; i++) {
