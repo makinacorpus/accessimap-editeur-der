@@ -15,11 +15,27 @@ describe('Service: svgicon', function () {
     expect(!!svgicon).toBe(true);
   });
 
-  it('should do coucou', function() {
-    var $injector = angular.injector(['accessimapEditeurDerApp']);
-    var settings = $injector.get('settings');
-    var linesettings = settings.STYLES.line[0];
-    expect(svgicon.featureIcon(linesettings, 'line')).toBe('<svg height="30"><g><line x1="0" y1="15" x2="250" y2="15" fill="none" stroke="black" stroke-width="2"></line><line x1="0" y1="15" x2="250" y2="15" fill="none" stroke-width="0"></line></g></svg>');
+  describe('svgIcon, when called with a line', function() {
+
+    it('should return the right style', function() {
+      var $injector = angular.injector(['accessimapEditeurDerApp']);
+      var settings = $injector.get('settings');
+      var linesettings = settings.STYLES.line[0];
+      expect(svgicon.featureIcon(linesettings, 'line')).toBe('<svg height="30"><g><line x1="0" y1="15" x2="250" y2="15" fill="none" stroke="black" stroke-width="2"></line><line x1="0" y1="15" x2="250" y2="15" fill="none" stroke-width="0"></line></g></svg>');
+    });
+
   });
+
+  describe('svgIcon, when called with a point', function() {
+
+    it('should return the right style', function() {
+      var $injector = angular.injector(['accessimapEditeurDerApp']);
+      var settings = $injector.get('settings');
+      var pointsettings = settings.STYLES.point[0];
+      expect(svgicon.featureIcon(pointsettings, 'point')).toBe('<svg height="30"><g><path d="M 15 15 m -10, 0 a 10,10 0 1,0 20,0 a 10,10 0 1,0 -20,0" fill="none" stroke="black" stroke-width="2"></path></g></svg>');
+    });
+
+  });
+
 
 });

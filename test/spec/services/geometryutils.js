@@ -30,7 +30,7 @@ describe('Service: geometryutils', function () {
     var points = [[0, 0], [10, 10], [4, 4]];
 
     it('should return the nearest point', function() {
-      var nearest = geometryutils.nearest(targetPoint, points)
+      var nearest = geometryutils.nearest(targetPoint, points);
       expect(nearest[0]).toBe(4);
       expect(nearest[1]).toBe(4);
       expect(nearest[2]).toBeCloseTo(1.414);
