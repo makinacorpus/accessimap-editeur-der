@@ -33,7 +33,7 @@ describe('Service: geometryutils', function () {
       var nearest = geometryutils.nearest(targetPoint, points);
       expect(nearest[0]).toBe(4);
       expect(nearest[1]).toBe(4);
-      expect(nearest[2]).toBeCloseTo(1.414);
+      expect(nearest[3]).toBeCloseTo(1.414);
     });
 
   });

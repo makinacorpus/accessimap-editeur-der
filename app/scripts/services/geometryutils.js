@@ -21,11 +21,11 @@ angular.module('accessimapEditeurDerApp')
           var dist = _this.distance(targetPoint, pt);
           if (!nearestPoint) {
             nearestPoint = pt;
-            nearestPoint[2] = dist;
+            nearestPoint[3] = dist;
           } else {
-            if (dist < nearestPoint[2]) {
+            if (dist < nearestPoint[3]) {
               nearestPoint = pt;
-              nearestPoint[2] = dist;
+              nearestPoint[3] = dist;
             }
           }
         });
