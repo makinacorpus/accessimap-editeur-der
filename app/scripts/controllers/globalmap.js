@@ -9,9 +9,9 @@
  */
 angular.module('accessimapEditeurDerApp')
   .controller('GlobalmapCtrl', ['$scope', '$rootScope', '$http', '$location', 'usSpinnerService',
-    'initSvg', 'mapService', 'settings', 'shareSvg',
+    'initSvg', 'settings', 'shareSvg',
     function($scope, $rootScope, $http, $location, usSpinnerService,
-      initSvg, mapService, settings, shareSvg) {
+      initSvg, settings, shareSvg) {
 
       $scope.uploadSvg = function(element) {
         var svgFile = element.files[0];

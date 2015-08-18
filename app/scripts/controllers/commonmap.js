@@ -8,9 +8,9 @@
  * Controller of the accessimapEditeurDerApp
  */
 angular.module('accessimapEditeurDerApp')
-  .controller('CommonmapCtrl', ['$rootScope', '$scope', '$location', 'settings', 'exportService',
+  .controller('CommonmapCtrl', ['$rootScope', '$scope', '$location', 'settings', 'exportData',
     'shareSvg', 'svgicon', 'geometryutils',
-    function($rootScope, $scope, $location, settings, exportService, shareSvg, svgicon, geometryutils) {
+    function($rootScope, $scope, $location, settings, exportData, shareSvg, svgicon, geometryutils) {
       d3.select('#der')
         .selectAll('svg')
         .remove();
@@ -746,5 +746,5 @@ angular.module('accessimapEditeurDerApp')
         }
       });
 
-      $scope.mapExport = exportService.mapExport;
+      $scope.mapExport = exportData.mapExport;
   }]);

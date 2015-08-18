@@ -3,13 +3,13 @@
 
 /**
  * @ngdoc service
- * @name accessimapEditeurDerApp.exportService
+ * @name accessimapEditeurDerApp.exportData
  * @description
- * # exportService
+ * # exportData
  * Service in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
-  .service('exportService', ['shareSvg',
+  .service('exportData', ['shareSvg',
   function(shareSvg) {
 
     this.mapExport = function(filename) {

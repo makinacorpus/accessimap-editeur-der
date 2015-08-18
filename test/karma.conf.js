@@ -67,7 +67,9 @@ module.exports = function(config) {
     // Code coverage report
     reporters: ['progress', 'coverage', 'coveralls'],
     preprocessors: {
-      'app/scripts/**/*.js': ['coverage']
+      'app/scripts/controllers/*.js': ['coverage'],
+      'app/scripts/filters/*.js': ['coverage'],
+      'app/scripts/services/*.js': ['coverage']
     },
     coverageReporter: {
       type: 'lcov',

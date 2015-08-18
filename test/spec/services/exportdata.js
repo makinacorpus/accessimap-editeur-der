@@ -1,18 +1,18 @@
 'use strict';
 
-describe('Service: mapService', function () {
+describe('Service: exportData', function () {
 
   // load the service's module
   beforeEach(module('accessimapEditeurDerApp'));
 
   // instantiate service
-  var mapService;
-  beforeEach(inject(function (_mapService_) {
-    mapService = _mapService_;
+  var exportData;
+  beforeEach(inject(function (_exportData_) {
+    exportData = _exportData_;
   }));
 
   it('should do something', function () {
-    expect(!!mapService).toBe(true);
+    expect(!!exportData).toBe(true);
   });
 
 });

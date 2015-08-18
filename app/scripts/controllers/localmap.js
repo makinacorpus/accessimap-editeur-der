@@ -10,9 +10,9 @@
  */
 angular.module('accessimapEditeurDerApp')
   .controller('LocalmapCtrl', ['$rootScope', '$scope', '$http', '$location', 'usSpinnerService', 'initSvg',
-    'mapService', 'settings', 'exportService', 'shareSvg', 'editSvg', 'svgicon',
+    'settings', 'shareSvg', 'editSvg', 'svgicon',
     function($rootScope, $scope, $http, $location, usSpinnerService, initSvg,
-      mapService, settings, exportService, shareSvg, editSvg, svgicon) {
+      settings, shareSvg, editSvg, svgicon) {
 
       var mapFormat = $location.search().mapFormat;
       var legendFormat = $location.search().legendFormat;
