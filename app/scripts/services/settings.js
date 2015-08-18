@@ -630,13 +630,6 @@ angular.module('accessimapEditeurDerApp')
         'v': 'smalldotsthicker'
       }]
     },{
-      id: 'smalldotsthicker2',
-      name: 'Petits points rapprochés 2',
-      style: [{
-        'k': 'fill-pattern',
-        'v': 'smalldotsthicker2'
-      }]
-    },{
       id: 'squares45',
       name: 'Quadrillage 45',
       style: [{
