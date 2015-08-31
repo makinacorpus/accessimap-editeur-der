@@ -354,7 +354,7 @@ angular.module('accessimapEditeurDerApp')
           resetActions();
           $scope.styleChoices = settings.STYLES.polygon;
           $scope.styleChosen = $scope.styleChoices[0];
-          d3.selectAll('path')
+          d3.selectAll('path:not(.notDeletable)')
             .on('click', function() {
               var path = d3.select(this);
               var pathLastChar = path.attr('d').slice(-1);
@@ -402,6 +402,7 @@ angular.module('accessimapEditeurDerApp')
               var featureIid;
               featureIid = feature.attr('iid');
               if (!featureIid) {
+                console.log($rootScope)
                 featureIid = $rootScope.getiid();
                 feature.attr('iid', featureIid);
               }
