@@ -100,11 +100,13 @@ angular.module('accessimapEditeurDerApp')
                 .attr('filter', key)
                 .attr('value', d[key])
                 .attr('protocol', function() {
-                  var extension = d[key].split('.')[d[key].split('.').length - 1];
-                  if (extension === 'mp3') {
-                    return 'mp3';
-                  } else {
-                    return 'tts';
+                  if (d[key]) {
+                    var extension = d[key] && d[key].split('.')[d[key].split('.').length - 1];
+                    if (extension === 'mp3') {
+                      return 'mp3';
+                    } else {
+                      return 'tts';
+                    }
                   }
                 });
               }
