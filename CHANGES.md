@@ -7,7 +7,14 @@ CHANGELOG
 
 **New features**
 
+* Add interaction filters
+* Export an XML file with interaction filters
 * Possibility to add/remove a contour or a white background to any polygon style
+* Write in braille or Arial font, several sizes and colors
+* Choose file name to be downloaded
+* Change polygon style
+* Rotate all point features
+* Add a background pattern
 
 **Minor changes**
 
@@ -16,10 +23,14 @@ CHANGELOG
 * Add a new line style
 * Explicit text on map rotation slider
 * White margin around the map cannot be deleted nor moved
+* Be able to delete a rect and an ellipse
+* Layout changes
+* Improve how the point styles are displayed
 
 **Internal features**
 
 * Refactoring
+* Automatic testing and code coverage
 
 0.3
 -------------------
