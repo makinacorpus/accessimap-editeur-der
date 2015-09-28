@@ -7,12 +7,12 @@
     <input ui-keypress="{13:'zoomOnPlace($event)'}" type="text" class="form-control" id="adress" placeholder="Adresse">
   </div>
 
-  <div class="input-group">
-    <span class="input-group-addon" id="basic-addon1">
+  <div class="input-group col-xs-3">
+    <span class="input-group-addon" style="width: inherit" id="basic-addon1">
       Déplacer le curseur pour orienter la carte
       <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
     </span>
-    <slider class="form-control" ng-model="rotationAngle" ng-change="rotateMap()" min="0" max="360"></slider>
+    <slider style="width: 100%" style="width: 100%" class="form-control aaaaa" ng-model="rotationAngle" ng-change="rotateMap()" min="0" max="360"></slider>
   </div>
 
   <button class="btn btn-danger pull-right" ng-click="mapCommon()" type="button">
@@ -65,7 +65,7 @@
   <ul class="features-list">
     <li ng-repeat="feature in geojson" class="form-inline">
       {{feature.name}}
-      <slider class="form-control" ng-model="feature.simplification" ng-show="feature.geometryType !== 'point'" ng-change="simplifyFeatures(feature)" min="0" max="100"></slider>
+      <slider style="width: 100%" class="form-control" ng-model="feature.simplification" ng-show="feature.geometryType !== 'point'" ng-change="simplifyFeatures(feature)" min="0" max="100"></slider>
         <ui-select ng-model="feature.style" ng-disabled="disabled" ng-change="updateFeature(feature.id, feature.style)" theme="bootstrap" class="form-control style-selector" style="width: 150px;">
           <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
           <ui-select-choices repeat="item in feature.styleChoices | filter: $select.search">
@@ -73,7 +73,7 @@
             <div ng-bind-html="featureIcon(item, feature.geometryType)"></div>
           </ui-select-choices>
         </ui-select>
-        <slider ng-if="feature.geometryType === 'point'" class="form-control" ng-model="feature.rotation" ng-change="rotateFeature(feature)" min="0" max="360"></slider>
+        <slider style="width: 100%" ng-if="feature.geometryType === 'point'" class="form-control" ng-model="feature.rotation" ng-change="rotateFeature(feature)" min="0" max="360"></slider>
         <span ng-if="feature.geometryType === 'polygon'" class="input-group-addon" id="basic-addon1">
           <input type="checkbox" ng-model="feature.contour" ng-change="updateFeature(feature.id, feature.style)"><span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
           <input type="checkbox" ng-model="feature.fill" ng-change="updateFeature(feature.id, feature.style)"><span class="glyphicon glyphicon-adjust" aria-hidden="true"></span>

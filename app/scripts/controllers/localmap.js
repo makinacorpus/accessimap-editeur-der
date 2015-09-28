@@ -54,10 +54,12 @@ angular.module('accessimapEditeurDerApp')
       };
 
       function zoomed() {
+        console.log('    zoomed();')
         var tiles = tile
             .scale(zoom.scale())
             .translate(zoom.translate())();
 
+        console.log($scope.geojson)
         angular.forEach($scope.geojson, function(geojson) {
           d3.selectAll('path.' + geojson.id)
               .filter(function(d) {
@@ -539,6 +541,7 @@ angular.module('accessimapEditeurDerApp')
             });
           }
 
+          console.log(featureExists)
           if (featureExists.length === 0) {
             if (poi) {
               var tags = data.features[0].properties.tags;
@@ -568,6 +571,16 @@ angular.module('accessimapEditeurDerApp')
               });
               addToLegend($scope.queryChosen, $scope.styleChosen, $scope.geojson.length);
             }
+            drawFeature(data, [{
+                id: id,
+                name: name,
+                geometryType: $scope.queryChosen.type,
+                layer: $.extend(true, {}, data), //deep copy,
+                originallayer: $.extend(true, {}, data), //deep copy
+                style: $scope.styleChosen,
+                styleChoices: $scope.styleChoices,
+                rotation: 0
+              }])
           } else {
             drawFeature(data, featureExists);
             if ($scope.styleChosen.styleInner) {
