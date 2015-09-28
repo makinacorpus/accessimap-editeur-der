@@ -16,7 +16,7 @@
     "d3": "~3.5.3",
     "angular-ui-select": "master",
     "select2": "~3.4.5",
-    "angular-bootstrap-slider": "~0.1.1",
+    "angular-bootstrap-slider": "~0.1.7",
     "jszip": "Stuk/jszip#~2.5.0",
     "file-saver.js": "~1.20150304.1",
     "turf": "~2.0.2",
