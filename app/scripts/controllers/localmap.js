@@ -54,12 +54,10 @@ angular.module('accessimapEditeurDerApp')
       };
 
       function zoomed() {
-        console.log('    zoomed();')
         var tiles = tile
             .scale(zoom.scale())
             .translate(zoom.translate())();
 
-        console.log($scope.geojson)
         angular.forEach($scope.geojson, function(geojson) {
           d3.selectAll('path.' + geojson.id)
               .filter(function(d) {
@@ -437,15 +435,26 @@ angular.module('accessimapEditeurDerApp')
       }
 
       function drawFeature(data, feature, optionalClass) {
-        map.append('g')
-          .attr('class', function() {
-            if (optionalClass) {
-              return 'vector ' + optionalClass;
-            } else {
-              return 'vector';
-            }
-          })
-          .attr('id', feature[0].id)
+        var featureGroup;
+        if (optionalClass) {
+          if (d3.select('.vector.' + optionalClass + '#' + feature[0].id).empty()) {
+            featureGroup = map.append('g')
+            .attr('class', 'vector ' + optionalClass)
+            .attr('id', feature[0].id);
+          } else {
+            featureGroup = d3.select('.vector.' + optionalClass + '#' + feature[0].id);
+          }
+        } else {
+          if (d3.select('.vector#' + feature[0].id).empty()) {
+            featureGroup = map.append('g')
+            .attr('class', 'vector')
+            .attr('id', feature[0].id);
+          } else {
+            featureGroup = d3.select('.vector#' + feature[0].id);
+          }
+        }
+
+        featureGroup
           .selectAll('path')
           .data(data.features.filter(function(d) {
             return d.geometry.type !== 'Point';
@@ -541,12 +550,12 @@ angular.module('accessimapEditeurDerApp')
             });
           }
 
-          console.log(featureExists)
           if (featureExists.length === 0) {
+            var obj;
             if (poi) {
               var tags = data.features[0].properties.tags;
               var name = tags.name || tags.amenity || tags.shop || 'POI';
-              $scope.geojson.push({
+              obj = {
                 id: id,
                 name: name,
                 geometryType: $scope.queryChosen.type,
@@ -555,10 +564,10 @@ angular.module('accessimapEditeurDerApp')
                 style: $scope.styleChosen,
                 styleChoices: $scope.styleChoices,
                 rotation: 0
-              });
+              };
               addToLegend({'type': 'point', 'name': name, 'id': id}, $scope.styleChosen, $scope.geojson.length);
             } else {
-              $scope.geojson.push({
+              obj = {
                 id: $scope.queryChosen.id,
                 name: $scope.queryChosen.name,
                 geometryType: $scope.queryChosen.type,
@@ -568,19 +577,14 @@ angular.module('accessimapEditeurDerApp')
                 styleChoices: $scope.styleChoices,
                 contour: $scope.checkboxModel.contour,
                 fill: $scope.checkboxModel.fill
-              });
+              };
               addToLegend($scope.queryChosen, $scope.styleChosen, $scope.geojson.length);
             }
-            drawFeature(data, [{
-                id: id,
-                name: name,
-                geometryType: $scope.queryChosen.type,
-                layer: $.extend(true, {}, data), //deep copy,
-                originallayer: $.extend(true, {}, data), //deep copy
-                style: $scope.styleChosen,
-                styleChoices: $scope.styleChoices,
-                rotation: 0
-              }])
+            $scope.geojson.push(obj)
+            drawFeature(data, [obj])
+            if ($scope.styleChosen.styleInner) {
+              drawFeature(data, [obj], 'inner');
+            }
           } else {
             drawFeature(data, featureExists);
             if ($scope.styleChosen.styleInner) {
