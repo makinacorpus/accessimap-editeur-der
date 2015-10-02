@@ -26,7 +26,6 @@ angular.module('accessimapEditeurDerApp')
           path: 'data/France_all_regions_A4.svg'
         }]
       }];
-
       $scope.uploadSvg = function(element) {
         var svgFile = element.files[0];
         var fileType = svgFile.type;
@@ -44,11 +43,47 @@ angular.module('accessimapEditeurDerApp')
             case 'image/jpeg':
               appendPng(e.target.result);
               break;
+            case 'application/pdf':
+              appendPdf(e.target.result);
+              break;
             default:
               console.log('Mauvais format');
           }
         };
       };
+
+      function appendPdf(dataURI) {
+        var BASE64_MARKER = ';base64,';
+        var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+        var base64 = dataURI.substring(base64Index);
+        var raw = window.atob(base64);
+        var rawLength = raw.length;
+        var array = new Uint8Array(new ArrayBuffer(rawLength));
+
+        for (var i = 0; i < rawLength; i++) {
+          array[i] = raw.charCodeAt(i);
+        }
+        PDFJS.getDocument(array)
+        .then(function(pdf) {
+          pdf.getPage(1).then(function(page) {
+            var scale = 1.5;
+            var viewport = page.getViewport(scale);
+
+            var canvas = document.getElementById('pdf-canvas');
+            var context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            var renderContext = {
+              canvasContext: context,
+              viewport: viewport
+            };
+            page.render(renderContext).then(function(rrr) {
+              appendPng(canvas.toDataURL());
+            });
+          });
+        });
+      }
 
       function appendPng(image) {
         var svg = initSvg.createDetachedSvg(210, 297);
@@ -85,7 +120,7 @@ angular.module('accessimapEditeurDerApp')
           .then(function() {
             $location.path('/commonmap');
           });
-        }
+        };
       }
 
       function appendSvg(path) {

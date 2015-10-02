@@ -1,10 +1,11 @@
 <form class="form-inline">
   <div class="form-group">
-    <input onchange="angular.element(this).scope().uploadSvg(this)" class="btn btn-success" type="file" accept="image/svg+xml,image/png,image/jpeg" />Télécharger un fichier SVG, JPG ou PNG
+    <input onchange="angular.element(this).scope().uploadSvg(this)" class="btn btn-success" type="file" accept="image/svg+xml,image/png,image/jpeg,application/pdf" />Télécharger un fichier SVG, JPG, PNG ou PDF
     </input>
   </div>
 </form>
-
+<canvas id="pdf-canvas" style="display:none;">
+</canvas>
 <div class="panel-group" id="accordion" ng-style="accordionStyle">
   <div class="panel panel-default" ng-repeat="mapCategory in mapCategories">
     <div class="panel-heading">
