@@ -27,10 +27,10 @@ angular.module('accessimapEditeurDerApp')
       var legendsvg = initSvg.createLegend(widthMm, heightMm);
       initSvg.createDefs(mapsvg);
 
-      var width = widthMm / 0.2822222,
-          height = heightMm / 0.2822222,
-          legendWidth = legendWidthMm / 0.2822222,
-          legendHeight = legendHeightMm / 0.2822222;
+      var width = widthMm / 0.283,
+          height = heightMm / 0.283,
+          legendWidth = legendWidthMm / 0.283,
+          legendHeight = legendHeightMm / 0.283;
 
       var tile = d3.geo.tile()
           .size([width, height]);

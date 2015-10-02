@@ -86,9 +86,14 @@ angular.module('accessimapEditeurDerApp')
       }
 
       function appendPng(image) {
-        var svg = initSvg.createDetachedSvg(210, 297);
-        var widthSvg = 742;
-        var heightSvg = 1049;
+        var mapFormat = $location.search().mapFormat;
+        var legendFormat = $location.search().legendFormat;
+
+        var widthMm = settings.FORMATS[mapFormat].width,
+            heightMm = settings.FORMATS[mapFormat].height,
+            widthSvg = widthMm / 0.283,
+            heightSvg = heightMm / 0.283;
+        var svg = initSvg.createDetachedSvg(widthMm, heightMm);
         var ratioSvg = heightSvg / widthSvg;
         var img = new Image();
         img.src = image;
