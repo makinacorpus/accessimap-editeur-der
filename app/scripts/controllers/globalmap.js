@@ -13,15 +13,6 @@ angular.module('accessimapEditeurDerApp')
     function($scope, $rootScope, $http, $location, usSpinnerService,
       initSvg, settings, shareSvg) {
 
-      $scope.uploadSvg = function(element) {
-        var svgFile = element.files[0];
-        var reader = new FileReader();
-        reader.readAsDataURL(svgFile); //readAsDataURL
-        reader.onload = function(e) {
-          appendSvg(e.target.result);
-        };
-      };
-
       $scope.mapCategories = [{
         id: 'world',
         name: 'Monde',
@@ -36,8 +27,68 @@ angular.module('accessimapEditeurDerApp')
         }]
       }];
 
+      $scope.uploadSvg = function(element) {
+        var svgFile = element.files[0];
+        var fileType = svgFile.type;
+        var reader = new FileReader();
+        reader.readAsDataURL(svgFile);
+        reader.onload = function(e) {
+          $scope.accordionStyle = {display: 'none'};
+          switch (fileType) {
+            case 'image/svg+xml':
+              appendSvg(e.target.result);
+              break;
+            case 'image/png':
+              appendPng(e.target.result);
+              break;
+            case 'image/jpeg':
+              appendPng(e.target.result);
+              break;
+            default:
+              console.log('Mauvais format');
+          }
+        };
+      };
+
+      function appendPng(image) {
+        var svg = initSvg.createDetachedSvg(210, 297);
+        var widthSvg = 742;
+        var heightSvg = 1049;
+        var ratioSvg = heightSvg / widthSvg;
+        var img = new Image();
+        img.src = image;
+        img.onload = function() {
+          var width = this.width;
+          var height = this.height;
+          var ratio = height / width;
+          var w, h;
+          if (ratio > ratioSvg) {
+            h = heightSvg;
+            w = h / ratio;
+          } else {
+            w = widthSvg;
+            h = w / ratio;
+          }
+          var g = svg.append('g')
+            .classed('sourceDocument', true)
+            .append('image')
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('width', w)
+            .attr('height', h)
+            .attr('xlink:href', image);
+          // Load polygon fill styles taht will be used on common map
+          angular.forEach(settings.POLYGON_STYLES, function(key) {
+              svg.call(key);
+          });
+          shareSvg.addMap(svg.node())
+          .then(function() {
+            $location.path('/commonmap');
+          });
+        }
+      }
+
       function appendSvg(path) {
-        $scope.accordionStyle = {display: 'none'};
         d3.xml(path, function(xml) {
           var svg = d3.select(xml.documentElement);
           angular.forEach(svg[0][0].children, function(child) {

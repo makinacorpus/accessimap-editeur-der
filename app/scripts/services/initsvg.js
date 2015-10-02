@@ -17,6 +17,13 @@ angular.module('accessimapEditeurDerApp')
                .attr('viewBox', '0 0 ' + (width / 0.283) + ' ' + (height / 0.283));
     };
 
+    this.createDetachedSvg = function(width, height) {
+      return d3.select(document.createElementNS(d3.ns.prefix.svg, 'svg'))
+               .attr('width', width + 'mm')
+               .attr('height', height + 'mm')
+               .attr('viewBox', '0 0 ' + (width / 0.283) + ' ' + (height / 0.283));
+    };
+
     this.createMap = function(width, height) {
       return this.createSvg('#map', width, height);
     };

@@ -7,6 +7,7 @@ CHANGELOG
 
 **New features**
 
+* Import a JPG or PNG image
 * Add interaction filters
 * Export an XML file with interaction filters
 * Possibility to add/remove a contour or a white background to any polygon style
