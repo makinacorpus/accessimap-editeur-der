@@ -107,7 +107,7 @@ angular.module('accessimapEditeurDerApp')
             w = h / ratio;
           } else {
             w = widthSvg;
-            h = w / ratio;
+            h = w * ratio;
           }
           var g = svg.append('g')
             .classed('sourceDocument', true)
