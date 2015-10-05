@@ -18,3 +18,19 @@
 grunt build
 git subtree push --prefix dist origin gh-pages
 ```
+
+### PDFJS
+In bower_components/pdfjs-dist/bower.json, this part:
+``` json
+  "main": [
+    "build/pdf.js",
+    "build/pdf.worker.js"
+  ],
+```
+should be replaced by this:
+
+``` json
+  "main": [
+    "build/pdf.combined.js"
+  ],
+```
