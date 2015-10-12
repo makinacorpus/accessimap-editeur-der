@@ -78,7 +78,14 @@ angular.module('accessimapEditeurDerApp')
               })
               .attr('d', function(d) {
                 var coords = projection(d.geometry.coordinates);
-                return geojson.style.path(coords[0], coords[1], geojson.style.radius);});
+                return geojson.style.path(coords[0], coords[1], geojson.style.radius);
+              })
+              .attr('transform', function(d) {
+                if (this.transform.baseVal.length > 0) {
+                  var coords = projection(d.geometry.coordinates);
+                  return 'rotate(' + geojson.rotation + ' ' + coords[0] + ' ' + coords[1] + ')';
+                }
+              });
         });
 
         projection
@@ -580,8 +587,8 @@ angular.module('accessimapEditeurDerApp')
               };
               addToLegend($scope.queryChosen, $scope.styleChosen, $scope.geojson.length);
             }
-            $scope.geojson.push(obj)
-            drawFeature(data, [obj])
+            $scope.geojson.push(obj);
+            drawFeature(data, [obj]);
             if ($scope.styleChosen.styleInner) {
               drawFeature(data, [obj], 'inner');
             }
