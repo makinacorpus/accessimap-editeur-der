@@ -130,6 +130,8 @@ angular.module('accessimapEditeurDerApp')
         fill: false,
       };
 
+      $scope.address = {};
+
       var map = mapsvg.append('g')
           .attr('width', width)
           .attr('height', height)
@@ -698,20 +700,27 @@ angular.module('accessimapEditeurDerApp')
       }
 
 
-      function zoomOnPlace(input) {
-        var url = 'http://api-adresse.data.gouv.fr/search/?q=' + input.target.value + '&limit=1';
-        $http.get(url).
-          success(function(data) {
-            if (data.features[0]) {
-              var p = d3.geo.mercator()
-                  .scale(zoom.scale() / 2 / Math.PI);
-              var location = p(data.features[0].geometry.coordinates);
-              var translateX = -location[0] + width,
-                  translateY = -location[1] + height;
-              zoom.translate([translateX, translateY]);
-              zoomed();
-            }
-        });
+      function zoomOnPlace() {
+        var start = $scope.address.start !== '' && $scope.address.start;
+        var stop = $scope.address.stop !== '' && $scope.address.stop;
+        if (start && stop) {
+
+        } else {
+          var location = start || stop;
+          var url = 'http://api-adresse.data.gouv.fr/search/?q=' + location + '&limit=1';
+          $http.get(url).
+            success(function(data) {
+              if (data.features[0]) {
+                var p = d3.geo.mercator()
+                    .scale(zoom.scale() / 2 / Math.PI);
+                var location = p(data.features[0].geometry.coordinates);
+                var translateX = -location[0] + width,
+                    translateY = -location[1] + height;
+                zoom.translate([translateX, translateY]);
+                zoomed();
+              }
+          });
+        }
       }
 
       $scope.downloadData = downloadData;

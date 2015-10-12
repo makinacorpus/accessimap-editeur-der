@@ -1,12 +1,15 @@
 <form class="form-inline">
-
   <div class="input-group">
     <span class="input-group-addon" id="basic-addon1">
       <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
     </span>
-    <input ui-keypress="{13:'zoomOnPlace($event)'}" type="text" class="form-control" id="adress" placeholder="Adresse">
+    <input ng-model="address.start" type="text" class="form-control" id="startAddress" placeholder="Adresse de départ">
+    <input ng-model="address.stop" type="text" class="form-control" id="stopAddress" placeholder="Adresse d'arrivée">
   </div>
+  <button class="btn btn-primary" ng-click="zoomOnPlace()">Positionner</button>
+</form>
 
+<form class="form-inline">
   <div class="input-group col-xs-3">
     <span class="input-group-addon" style="width: inherit" id="basic-addon1">
       Déplacer le curseur pour orienter la carte
