@@ -706,16 +706,17 @@ angular.module('accessimapEditeurDerApp')
         if (start && stop) {
 
         } else {
-          var location = start || stop;
-          var url = 'http://api-adresse.data.gouv.fr/search/?q=' + location + '&limit=1';
+          var place = start || stop;
+          var url = 'http://api-adresse.data.gouv.fr/search/?q=' + place + '&limit=1';
           $http.get(url).
             success(function(data) {
               if (data.features[0]) {
                 var p = d3.geo.mercator()
-                    .scale(zoom.scale() / 2 / Math.PI);
+                    .scale(zoom.scale() / 2 / Math.PI)
+                    .translate([width / 2, height / 2]);
                 var location = p(data.features[0].geometry.coordinates);
-                var translateX = -location[0] + width,
-                    translateY = -location[1] + height;
+                var translateX = width - location[0],
+                    translateY = height - location[1];
                 zoom.translate([translateX, translateY]);
                 zoomed();
               }

@@ -13,7 +13,7 @@ angular.module('accessimapEditeurDerApp')
     function(editSvg) {
 
     var leafletConf = {
-        GLOBAL_MAP_CENTER: [1.44, 43.6], // [lon, lat]
+        GLOBAL_MAP_CENTER: [1.441019, 43.604268], // [lon, lat]
         GLOBAL_MAP_DEFAULT_ZOOM: 13,
     };
 
