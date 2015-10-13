@@ -704,20 +704,52 @@ angular.module('accessimapEditeurDerApp')
         var start = $scope.address.start !== '' && $scope.address.start;
         var stop = $scope.address.stop !== '' && $scope.address.stop;
         if (start && stop) {
+          var urlStart = 'http://api-adresse.data.gouv.fr/search/?q=' + start + '&limit=1';
+          $http.get(urlStart).success(function(dataStart) {
+            if (dataStart.features[0]) {
+              var urlStop = 'http://api-adresse.data.gouv.fr/search/?q=' + stop + '&limit=1';
+              $http.get(urlStop).success(function(dataStop) {
+                if (dataStop.features[0]) {
+                  var p = d3.geo.mercator()
+                      .scale(zoom.scale() / 2 / Math.PI)
+                      .translate([width / 2, height / 2]);
+                  var lonStart = dataStart.features[0].geometry.coordinates[0];
+                  var latStart = dataStart.features[0].geometry.coordinates[1];
+                  var lonStop = dataStop.features[0].geometry.coordinates[0];
+                  var latStop = dataStop.features[0].geometry.coordinates[1];
+                  var locationStart = p(dataStart.features[0].geometry.coordinates);
+                  var locationStop = p(dataStop.features[0].geometry.coordinates);
 
+                  // Calculate the new map scale
+                  var s = zoom.scale() / Math.max(Math.abs(locationStart[0] - locationStop[0]) / width, Math.abs(locationStart[1] - locationStop[1]) / height) / 1.2;
+                  p = d3.geo.mercator()
+                      .scale(s / 2 / Math.PI)
+                      .translate([width / 2, height / 2]);
+                  var coordinates = [(lonStart + lonStop) / 2, (latStart + latStop) / 2];
+                  var location = p(coordinates);
+                  var translateX = width - location[0],
+                      translateY = height - location[1];
+                  zoom.translate([translateX, translateY])
+                    .scale(s);
+                  zoomed();
+                }
+              });
+            }
+          });
         } else {
           var place = start || stop;
           var url = 'http://api-adresse.data.gouv.fr/search/?q=' + place + '&limit=1';
           $http.get(url).
             success(function(data) {
               if (data.features[0]) {
+                var s = Math.pow(2, 24);
                 var p = d3.geo.mercator()
-                    .scale(zoom.scale() / 2 / Math.PI)
+                    .scale(s / 2 / Math.PI)
                     .translate([width / 2, height / 2]);
                 var location = p(data.features[0].geometry.coordinates);
-                var translateX = width - location[0],
-                    translateY = height - location[1];
-                zoom.translate([translateX, translateY]);
+                var t = [width - location[0], height - location[1]];
+                zoom.scale(s)
+                  .translate(t);
                 zoomed();
               }
           });

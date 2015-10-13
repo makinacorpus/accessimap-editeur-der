@@ -2,6 +2,13 @@
 CHANGELOG
 =========
 
+0.5
+-------------------
+
+**New features**
+
+* Address search: center the map on one or two locations
+
 0.4
 -------------------
 
