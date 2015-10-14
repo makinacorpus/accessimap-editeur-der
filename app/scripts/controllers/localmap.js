@@ -444,6 +444,7 @@ angular.module('accessimapEditeurDerApp')
       }
 
       function drawFeature(data, feature, optionalClass) {
+        console.log(data, feature, optionalClass)
         var featureGroup;
         if (optionalClass) {
           if (d3.select('.vector.' + optionalClass + '#' + feature[0].id).empty()) {
@@ -477,7 +478,9 @@ angular.module('accessimapEditeurDerApp')
             }
           })
           .attr('name', function(d) {
-            return d.properties.tags.name;
+            if (d.properties.tags) {
+              return d.properties.tags.name;
+            }
           })
           .append('svg:title')
             .text(function(d) { return d.properties.tags.name; })
@@ -488,7 +491,9 @@ angular.module('accessimapEditeurDerApp')
           .enter().append('path')
           .attr('class', feature[0].id)
           .attr('name', function(d) {
-            return d.properties.tags.name;
+            if (d.properties.tags) {
+              return d.properties.tags.name;
+            }
           })
           .attr('cx', function(d) {
             return projection(d.geometry.coordinates)[0];
@@ -729,9 +734,36 @@ angular.module('accessimapEditeurDerApp')
                   var location = p(coordinates);
                   var translateX = width - location[0],
                       translateY = height - location[1];
+
                   zoom.translate([translateX, translateY])
                     .scale(s);
+
+                  var objStart = {
+                    id: 'startPoint',
+                    name: 'Point de départ',
+                    geometryType: 'point',
+                    layer: $.extend(true, {}, dataStart.features[0]), //deep copy,
+                    originallayer: $.extend(true, {}, dataStart.features[0]), //deep copy
+                    style: settings.STYLES['point'][0],
+                    styleChoices: settings.STYLES['point'],
+                    rotation: 0
+                  };
+                  var objStop = {
+                    id: 'stopPoint',
+                    name: 'Point d\'arrivée',
+                    geometryType: 'point',
+                    layer: $.extend(true, {}, dataStop.features[0]), //deep copy,
+                    originallayer: $.extend(true, {}, dataStop.features[0]), //deep copy
+                    style: settings.STYLES['point'][2],
+                    styleChoices: settings.STYLES['point'],
+                    rotation: 0
+                  };
                   zoomed();
+
+                  $scope.geojson.push(objStart);
+                  drawFeature(dataStart, [objStart]);
+                  $scope.geojson.push(objStop);
+                  drawFeature(dataStop, [objStop]);
                 }
               });
             }
@@ -748,9 +780,24 @@ angular.module('accessimapEditeurDerApp')
                     .translate([width / 2, height / 2]);
                 var location = p(data.features[0].geometry.coordinates);
                 var t = [width - location[0], height - location[1]];
+
+                // Draw a point
+                var obj = {
+                  id: 'uniquePoint',
+                  name: 'Point de départ',
+                  geometryType: 'point',
+                  layer: $.extend(true, {}, data.features[0]), //deep copy,
+                  originallayer: $.extend(true, {}, data.features[0]), //deep copy
+                  style: settings.STYLES['point'][0],
+                  styleChoices: settings.STYLES['point'],
+                  rotation: 0
+                };
                 zoom.scale(s)
                   .translate(t);
                 zoomed();
+
+                $scope.geojson.push(obj);
+                drawFeature(data, [obj]);
               }
           });
         }
