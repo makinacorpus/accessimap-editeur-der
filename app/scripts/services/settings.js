@@ -84,6 +84,11 @@ angular.module('accessimapEditeurDerApp')
         name: 'A3 Paysage',
         width: 420,
         height: 297
+      },
+      'nexus9': {
+        name: 'Nexus 9 Paysage',
+        width: 181, // 7.12"
+        height: 136 // 5.35"
       }
     };
 
@@ -373,6 +378,38 @@ angular.module('accessimapEditeurDerApp')
       }, {
         'k': 'fill',
         'v': 'none'
+      }]
+    },{
+      id: 'dashed11_11_5',
+      name: 'Passage',
+      style: [{
+        'k': 'stroke',
+        'v': 'black'
+      }, {
+        'k': 'stroke-width',
+        'v': '15'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }, {
+        'k': 'stroke-dasharray',
+        'v': '4, 4'
+      }],
+      styleInner: [{
+        'k': 'stroke',
+        'v': 'white'
+      }, {
+        'k': 'stroke-width',
+        'v': '15'
+      }, {
+        'k': 'fill',
+        'v': 'none'
+      }, {
+        'k': 'stroke-dasharray',
+        'v': '4, 4'
+      }, {
+        'k': 'stroke-dashoffset',
+        'v': '4'
       }]
     },{
       id: 'dashed21_5',
