@@ -9,6 +9,11 @@ CHANGELOG
 
 * Address search: center the map on one or two locations
 * Address search: add points on the found locations
+* Start from a white page
+
+**Minor changes**
+
+* Add a zebra crossing line style
 
 0.4
 -------------------

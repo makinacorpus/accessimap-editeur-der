@@ -147,19 +147,7 @@ angular.module('accessimapEditeurDerApp')
           .attr('width', legendWidth)
           .attr('height', legendHeight);
 
-      legendContainter.append('text')
-          .attr('x', function() {
-              return margin;
-          })
-          .attr('y', function() {
-              return margin * 2;
-          })
-          .attr('class', 'braille')
-          .attr('font-family', 'Braille_2007')
-          .attr('font-size', '35px')
-          .text(function() {
-              return 'Légende';
-          });
+      initSvg.createLegendText(legendContainter, margin);
 
       $scope.geojson = [];
 

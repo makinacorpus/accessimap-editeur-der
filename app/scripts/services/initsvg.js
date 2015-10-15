@@ -27,9 +27,29 @@ angular.module('accessimapEditeurDerApp')
     this.createMap = function(width, height) {
       return this.createSvg('#map', width, height);
     };
+
     this.createLegend = function(width, height) {
       return this.createSvg('#legend', width, height);
     };
+
+    this.createLegendText = function(legendContainter, margin) {
+      legendContainter.append('text')
+      .attr('x', function() {
+          return margin;
+      })
+      .attr('y', function() {
+          return margin * 2;
+      })
+      .attr('class', 'braille')
+      .attr('font-family', 'Braille_2007')
+      .attr('font-size', '35px')
+      .text(function() {
+          return 'Légende';
+      });
+    };
+
+
+
 
     this.createDefs = function(target) {
       target.append('defs')
