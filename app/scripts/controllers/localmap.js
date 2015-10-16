@@ -157,9 +157,18 @@ angular.module('accessimapEditeurDerApp')
       $scope.styleChoices = settings.STYLES[$scope.queryChosen.type];
       $scope.styleChosen = $scope.styleChoices[0];
 
+      $scope.colors = settings.COLORS.other;
+      $scope.colorChosen = $scope.colors[0];
+      console.log($scope.colorChosen)
+      console.log($scope.colors)
+
       $scope.changeStyle = function() {
           $scope.styleChoices = settings.STYLES[$scope.queryChosen.type];
           $scope.styleChosen = $scope.styleChoices[0];
+      };
+
+      $scope.changeColor = function() {
+          $scope.colorChosen = this.$parent.colorChosen;
       };
 
       $scope.rotateMap = function() {
@@ -268,7 +277,10 @@ angular.module('accessimapEditeurDerApp')
             var v = attribute.v;
             if (k === 'fill-pattern') {
               if ($scope.checkboxModel.fill) {
-                v += '_bg';
+                console.log($scope.colorChosen)
+                if ($scope.colorChosen) {
+                  v += '_' + $scope.colorChosen.color;
+                }
               }
               symbol.attr('fill', settings.POLYGON_STYLES[v].url());
             } else {
@@ -499,7 +511,9 @@ angular.module('accessimapEditeurDerApp')
           var v = attribute.v;
           if (k === 'fill-pattern') {
             if ($scope.checkboxModel.fill) {
-              v += '_bg';
+              if ($scope.colorChosen) {
+                v += '_' + $scope.colorChosen.color;
+              }
             }
             d3.select('#' + feature[0].id).attr('fill', settings.POLYGON_STYLES[v].url());
           } else {
