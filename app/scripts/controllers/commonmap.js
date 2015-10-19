@@ -38,16 +38,18 @@ angular.module('accessimapEditeurDerApp')
       $scope.filename = 'map';
       $scope.fonts = settings.FONTS;
       $scope.fontChosen = $scope.fonts[0];
-      $scope.colors = settings.COLORS;
-      $scope.colorChosen = $scope.colors[$scope.fontChosen.color][0];
+      $scope.fontColors = settings.COLORS;
+      $scope.fontColorChosen = $scope.fontColors[$scope.fontChosen.color][0];
       $scope.mode = 'default';
       $scope.styleChoices = [];
       $scope.styleChosen = $scope.styleChoices[0];
       $scope.deletedFeature = null;
       $scope.checkboxModel = {
-        contour: false,
-        fill: false,
+        contour: false
       };
+
+      $scope.colors = (settings.COLORS.transparent).concat(settings.COLORS.other);
+      $scope.colorChosen = $scope.colors[0];
 
       $scope.featureIcon = svgicon.featureIcon;
 
@@ -64,6 +66,11 @@ angular.module('accessimapEditeurDerApp')
             d3.select('#svgContainer').attr(k, v);
           }
         });
+      };
+
+      $scope.changeColor = function() {
+          $scope.colorChosen = this.$parent.colorChosen;
+          $scope.updatePolygonStyle();
       };
 
       $scope.rightMenuVisible = false;
@@ -204,8 +211,8 @@ angular.module('accessimapEditeurDerApp')
           .attr('r', '2');
 
 
-      $scope.changeColor = function() {
-          $scope.colorChosen = $scope.colors[$scope.fontChosen.color][0];
+      $scope.changeTextColor = function() {
+          $scope.fontColorChosen = $scope.fontColors[$scope.fontChosen.color][0];
       };
 
       $scope.updatePolygonStyle = function() {
@@ -216,8 +223,8 @@ angular.module('accessimapEditeurDerApp')
                 var k = attribute.k;
                 var v = attribute.v;
                 if (k === 'fill-pattern') {
-                  if ($scope.checkboxModel.fill) {
-                    v += '_bg';
+                  if ($scope.colorChosen && $scope.colorChosen.color !== 'none') {
+                    v += '_' + $scope.colorChosen.color;
                   }
                   path.attr('fill', settings.POLYGON_STYLES[v].url());
                 } else {
@@ -358,7 +365,7 @@ angular.module('accessimapEditeurDerApp')
             .on('click', function() {
               var path = d3.select(this);
               var pathLastChar = path.attr('d').slice(-1);
-              if (pathLastChar === 'z' || pathLastChar ==='Z') {
+              if (pathLastChar === 'z' || pathLastChar === 'Z') {
                 d3.selectAll('.blink').classed('blink', false);
                 path.classed('blink', true);
                 if (path.attr('stroke')) {
@@ -372,7 +379,9 @@ angular.module('accessimapEditeurDerApp')
                 }
                 var pathFill = path.attr('fill');
                 if (pathFill) {
-                  var pathFillName = pathFill.match(/\((.+?)\)/g)[0].slice(1, -1)
+                  // $scope.colorChosen
+                  // $scope.styleChosen
+                  var pathFillName = pathFill.match(/\((.+?)\)/g)[0].slice(1, -1);
                   var pathFillHasBackground = d3.select(pathFillName).select('rect').node();
                   if (pathFillHasBackground) {
                     $scope.$apply(function() {
@@ -402,7 +411,6 @@ angular.module('accessimapEditeurDerApp')
               var featureIid;
               featureIid = feature.attr('iid');
               if (!featureIid) {
-                console.log($rootScope)
                 featureIid = $rootScope.getiid();
                 feature.attr('iid', featureIid);
               }
@@ -439,8 +447,8 @@ angular.module('accessimapEditeurDerApp')
                 var k = attribute.k;
                 var v = attribute.v;
                 if (k === 'fill-pattern') {
-                  if ($scope.checkboxModel.fill) {
-                    v += '_bg';
+                  if ($scope.colorChosen && $scope.colorChosen.color !== 'none') {
+                    v += '_' + $scope.colorChosen.color;
                   }
                   feature.attr('fill', settings.POLYGON_STYLES[v].url());
                 } else {
@@ -475,8 +483,8 @@ angular.module('accessimapEditeurDerApp')
                   var k = attribute.k;
                   var v = attribute.v;
                   if (k === 'fill-pattern') {
-                    if ($scope.checkboxModel.fill) {
-                      v += '_bg';
+                    if ($scope.colorChosen && $scope.colorChosen.color !== 'none') {
+                      v += '_' + $scope.colorChosen.color;
                     }
                     feature.attr('fill', settings.POLYGON_STYLES[v].url());
                   } else {
@@ -531,8 +539,8 @@ angular.module('accessimapEditeurDerApp')
                   var k = attribute.k;
                   var v = attribute.v;
                   if (k === 'fill-pattern') {
-                    if ($scope.checkboxModel.fill) {
-                      v += '_bg';
+                    if ($scope.colorChosen && $scope.colorChosen.color !== 'none') {
+                      v += '_' + $scope.colorChosen.color;
                     }
                     path.attr('fill', settings.POLYGON_STYLES[v].url());
                   } else {
@@ -554,8 +562,8 @@ angular.module('accessimapEditeurDerApp')
                     var k = attribute.k;
                     var v = attribute.v;
                     if (k === 'fill-pattern') {
-                      if ($scope.checkboxModel.fill) {
-                        v += '_bg';
+                      if ($scope.colorChosen && $scope.colorChosen.color !== 'none') {
+                        v += '_' + $scope.colorChosen.color;
                       }
                       pathInner.attr('fill', settings.POLYGON_STYLES[v].url());
                     } else {
@@ -580,8 +588,8 @@ angular.module('accessimapEditeurDerApp')
                 var k = attribute.k;
                 var v = attribute.v;
                 if (k === 'fill-pattern') {
-                  if ($scope.checkboxModel.fill) {
-                    v += '_bg';
+                  if ($scope.colorChosen && $scope.colorChosen.color !== 'none') {
+                    v += '_' + $scope.colorChosen.color;
                   }
                   path.attr('fill', settings.POLYGON_STYLES[v].url());
                 } else {
@@ -600,8 +608,8 @@ angular.module('accessimapEditeurDerApp')
                   var k = attribute.k;
                   var v = attribute.v;
                   if (k === 'fill-pattern') {
-                    if ($scope.checkboxModel.fill) {
-                      v += '_bg';
+                    if ($scope.colorChosen && $scope.colorChosen.color !== 'none') {
+                      v += '_' + $scope.colorChosen.color;
                     }
                     pathInner.attr('fill', settings.POLYGON_STYLES[v].url());
                   } else {
@@ -639,8 +647,8 @@ angular.module('accessimapEditeurDerApp')
                     var k = attribute.k;
                     var v = attribute.v;
                     if (k === 'fill-pattern') {
-                      if ($scope.checkboxModel.fill) {
-                        v += '_bg';
+                      if ($scope.colorChosen && $scope.colorChosen.color !== 'none') {
+                        v += '_' + $scope.colorChosen.color;
                       }
                       line.attr('fill', settings.POLYGON_STYLES[v].url());
                     } else {
@@ -680,7 +688,7 @@ angular.module('accessimapEditeurDerApp')
                 .attr('font-weight', function() {
                   return $scope.fontChosen.weight;
                 })
-                .attr('fill', $scope.colorChosen.color)
+                .attr('fill', $scope.fontColorChosen.color)
                 .attr({'class': 'edition'})
                 .text('');
               d3.select('svg').selectAll('foreignObject')
@@ -696,7 +704,7 @@ angular.module('accessimapEditeurDerApp')
                 .attr('font-weight', function() {
                   return $scope.fontChosen.weight;
                 })
-                .attr('fill', $scope.colorChosen.color)
+                .attr('fill', $scope.fontColorChosen.color)
                 .attr({'class': 'edition'})
                 .append('xhtml:p')
                 .attr('contentEditable', 'true')

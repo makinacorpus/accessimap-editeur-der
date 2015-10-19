@@ -56,19 +56,24 @@
         <div ng-bind-html="featureIcon(item, mode)"></div>
       </ui-select-choices>
     </ui-select>
+    <ui-select ng-if="mode === 'polygon' || mode === 'editpolygon' || mode === 'circle'" ng-model="$parent.colorChosen" ng-change="changeColor()" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
+      <ui-select-match placeholder="Couleur de fond">{{$select.selected.name}}</ui-select-match>
+      <ui-select-choices repeat="item in colors | filter: $select.search" style="max-height: 500px;">
+        <span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span>
+      </ui-select-choices>
+    </ui-select>
     <span ng-if="mode === 'polygon' || mode === 'editpolygon' || mode === 'circle'" class="input-group-addon" id="basic-addon1">
       <input type="checkbox" ng-model="checkboxModel.contour" ng-change="updatePolygonStyle()"><span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
-      <input type="checkbox" ng-model="checkboxModel.fill" ng-change="updatePolygonStyle()"><span class="glyphicon glyphicon-adjust" aria-hidden="true"></span>
     </span>
-    <ui-select ng-show="mode === 'addtext'" ng-model="$parent.fontChosen" ng-change="changeColor()" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
+    <ui-select ng-show="mode === 'addtext'" ng-model="$parent.fontChosen" ng-change="changeTextColor()" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
       <ui-select-match placeholder="Sélectionnez une police">{{$select.selected.name}}</ui-select-match>
       <ui-select-choices repeat="item in fonts | filter: $select.search">
         <div ng-bind-html="item.name | highlight: $select.search"></div>
       </ui-select-choices>
     </ui-select>
-    <ui-select ng-show="mode === 'addtext'" ng-model="$parent.colorChosen" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
+    <ui-select ng-show="mode === 'addtext'" ng-model="$parent.fontColorChosen" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
       <ui-select-match placeholder="Sélectionnez une couleur">{{$select.selected.name}}</ui-select-match>
-      <ui-select-choices repeat="item in colors[$parent.fontChosen.color] | filter: $select.search">
+      <ui-select-choices repeat="item in fontColors[$parent.fontChosen.color] | filter: $select.search">
         <div ng-bind-html="item.name | highlight: $select.search"></div>
       </ui-select-choices>
     </ui-select>
