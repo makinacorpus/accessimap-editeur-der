@@ -9,6 +9,7 @@ CHANGELOG
 
 * Address search: center the map on one or two locations
 * Address search: add points on the found locations
+* Add a color in pattern's background
 * Start from a white page
 
 **Minor changes**

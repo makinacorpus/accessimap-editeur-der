@@ -55,6 +55,13 @@ angular.module('accessimapEditeurDerApp')
         name: 'Noir',
         color: 'black',
       }],
+      'transparent': [{
+        name: 'Transparent',
+        color: 'none',
+      }, {
+        name: 'Blanc',
+        color: 'white',
+      }],
       'other': [{
         name: 'Bleu',
         color: 'blue',
@@ -169,39 +176,6 @@ angular.module('accessimapEditeurDerApp')
       icon: 'leaf'
     }];
 
-    // var POLYGON_STYLES = {
-    //   'bighash': textures.lines().orientation('vertical'),
-    //   'bighash_bg': textures.lines().orientation('vertical').background("white"),
-    //   'bighashm45': textures.lines().orientation('6/8'),
-    //   'bighashm45_bg': textures.lines().orientation('6/8').background("white"),
-    //   'bighash45': textures.lines().orientation('2/8'),
-    //   'bighash45_bg': textures.lines().orientation('2/8').background("white"),
-    //   'smallhash': textures.lines().orientation('vertical').thicker(),
-    //   'smallhash_bg': textures.lines().orientation('vertical').thicker().background("white"),
-    //   'smallhashm45': textures.lines().orientation('6/8').thicker(),
-    //   'smallhashm45_bg': textures.lines().orientation('6/8').thicker().background("white"),
-    //   'smallhash45': textures.lines().orientation('2/8').thicker(),
-    //   'smallhash45_bg': textures.lines().orientation('2/8').thicker().background("white"),
-    //   'waves': textures.paths().d('waves'),
-    //   'waves_bg': textures.paths().d('waves').background("white"),
-    //   'smalldots': textures.circles().complement(),
-    //   'smalldots_bg': textures.circles().complement().background("white"),
-    //   'smalldotsline': textures.circles().lighter().thicker().complement().strokeWidth(1.1).background('white'),
-    //   'smalldotsline_bg': textures.circles().lighter().thicker().complement().strokeWidth(1.1).background('white').background("white"),
-    //   'smalldotsthicker': textures.circles().lighter().thicker().complement().strokeWidth(1.1),
-    //   'smalldotsthicker_bg': textures.circles().lighter().thicker().complement().strokeWidth(1.1).background("white"),
-    //   'smalldotsthicker2': textures.circles().lighter().thicker().complement().strokeWidth(1.3),
-    //   'smalldotsthicker2_bg': textures.circles().lighter().thicker().complement().strokeWidth(1.3).background("white"),
-    //   'bigdots': textures.circles().fill('grey').heavier().complement(),
-    //   'bigdots_bg': textures.circles().fill('grey').heavier().complement().background("white"),
-    //   'squares45': textures.lines().orientation('2/8', '6/8').size(20).strokeWidth(1),
-    //   'squares45_bg': textures.lines().orientation('2/8', '6/8').size(20).strokeWidth(1).background("white"),
-    //   'caps': textures.paths().d('caps'),
-    //   'caps_bg': textures.paths().d('caps').background("white"),
-    //   'woven': textures.paths().d('woven'),
-    //   'woven_bg': textures.paths().d('woven').background("white"),
-    // };
-
     var POLYGON_STYLES = {
       'bighash': textures.lines().orientation('vertical'),
       'bighashm45': textures.lines().orientation('6/8'),
@@ -218,6 +192,7 @@ angular.module('accessimapEditeurDerApp')
       'squares45': textures.lines().orientation('2/8', '6/8').size(20).strokeWidth(1),
       'caps': textures.paths().d('caps'),
       'woven': textures.paths().d('woven'),
+      'solid': textures.lines().strokeWidth(0),
       'bighash_white': textures.lines().orientation('vertical').background('white'),
       'bighashm45_white': textures.lines().orientation('6/8').background('white'),
       'bighash45_white': textures.lines().orientation('2/8').background('white'),
@@ -233,6 +208,23 @@ angular.module('accessimapEditeurDerApp')
       'squares45_white': textures.lines().orientation('2/8', '6/8').size(20).strokeWidth(1).background('white'),
       'caps_white': textures.paths().d('caps').background('white'),
       'woven_white': textures.paths().d('woven').background('white'),
+      'solid_white': textures.lines().strokeWidth(0).background('white'),
+      'bighash_blue': textures.lines().orientation('vertical').background('blue'),
+      'bighashm45_blue': textures.lines().orientation('6/8').background('blue'),
+      'bighash45_blue': textures.lines().orientation('2/8').background('blue'),
+      'smallhash_blue': textures.lines().orientation('vertical').thicker().background('blue'),
+      'smallhashm45_blue': textures.lines().orientation('6/8').thicker().background('blue'),
+      'smallhash45_blue': textures.lines().orientation('2/8').thicker().background('blue'),
+      'waves_blue': textures.paths().d('waves').background('blue'),
+      'smalldots_blue': textures.circles().complement().background('blue'),
+      'smalldotsline_blue': textures.circles().lighter().thicker().complement().strokeWidth(1.1).background('blue'),
+      'smalldotsthicker_blue': textures.circles().lighter().thicker().complement().strokeWidth(1.1).background('blue'),
+      'smalldotsthicker2_blue': textures.circles().lighter().thicker().complement().strokeWidth(1.3).background('blue'),
+      'bigdots_blue': textures.circles().fill('grey').heavier().complement().background('blue'),
+      'squares45_blue': textures.lines().orientation('2/8', '6/8').size(20).strokeWidth(1).background('blue'),
+      'caps_blue': textures.paths().d('caps').background('blue'),
+      'woven_blue': textures.paths().d('woven').background('blue'),
+      'solid_blue': textures.lines().strokeWidth(0).background('blue'),
       'bighash_red': textures.lines().orientation('vertical').background('red'),
       'bighashm45_red': textures.lines().orientation('6/8').background('red'),
       'bighash45_red': textures.lines().orientation('2/8').background('red'),
@@ -248,6 +240,7 @@ angular.module('accessimapEditeurDerApp')
       'squares45_red': textures.lines().orientation('2/8', '6/8').size(20).strokeWidth(1).background('red'),
       'caps_red': textures.paths().d('caps').background('red'),
       'woven_red': textures.paths().d('woven').background('red'),
+      'solid_red': textures.lines().strokeWidth(0).background('red'),
       'bighash_yellow': textures.lines().orientation('vertical').background('yellow'),
       'bighashm45_yellow': textures.lines().orientation('6/8').background('yellow'),
       'bighash45_yellow': textures.lines().orientation('2/8').background('yellow'),
@@ -263,6 +256,7 @@ angular.module('accessimapEditeurDerApp')
       'squares45_yellow': textures.lines().orientation('2/8', '6/8').size(20).strokeWidth(1).background('yellow'),
       'caps_yellow': textures.paths().d('caps').background('yellow'),
       'woven_yellow': textures.paths().d('woven').background('yellow'),
+      'solid_yellow': textures.lines().strokeWidth(0).background('yellow'),
     };
 
 
@@ -753,18 +747,11 @@ angular.module('accessimapEditeurDerApp')
         'v': 'woven'
       }]
     },{
-      id: 'redfill',
-      name: 'Fond rouge',
+      id: 'solid',
+      name: 'Fond uni',
       style: [{
-        'k': 'fill',
-        'v': 'red'
-      }]
-    },{
-      id: 'none',
-      name: 'Aucun',
-      style: [{
-        'k': 'fill',
-        'v': 'none'
+        'k': 'fill-pattern',
+        'v': 'solid'
       }]
     }],
     'point': [{
