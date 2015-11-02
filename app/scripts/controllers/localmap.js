@@ -732,6 +732,12 @@ angular.module('accessimapEditeurDerApp')
                   zoom.translate([translateX, translateY])
                     .scale(s);
 
+                  if (d3.select('#startPoint').node()) {
+                    d3.select('#startPoint').remove();
+                  }
+                  if (d3.select('#stopPoint').node()) {
+                    d3.select('#stopPoint').remove();
+                  }
                   var objStart = {
                     id: 'startPoint',
                     name: 'Point de départ',
@@ -776,6 +782,9 @@ angular.module('accessimapEditeurDerApp')
                 var t = [width - location[0], height - location[1]];
 
                 // Draw a point
+                if (d3.select('#uniquePoint').node()) {
+                  d3.select('#uniquePoint').remove();
+                }
                 var obj = {
                   id: 'uniquePoint',
                   name: 'Point de départ',
