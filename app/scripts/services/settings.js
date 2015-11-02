@@ -166,7 +166,7 @@ angular.module('accessimapEditeurDerApp')
       id: 'eau',
       name: 'Eau',
       type: 'polygon',
-      query: ['relation["type"="multipolygon"]["natural"="water"]'],
+      query: ['relation["type"="multipolygon"]["natural"="water"]', 'way["waterway"="riverbank"]'],
       icon: 'leaf'
     }, {
       id: 'parc',
