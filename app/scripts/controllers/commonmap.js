@@ -109,6 +109,27 @@ angular.module('accessimapEditeurDerApp')
         return $scope.interactiveFilters.data[rowRenderIndex].id + ' highlight';
       };
 
+      function convertImgToBase64(tile) {
+        var img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.src = d3.select(tile).attr('href');
+        img.onload = function() {
+          var canvas = document.createElement('CANVAS');
+          var ctx = canvas.getContext('2d');
+          canvas.height = this.height;
+          canvas.width = this.width;
+          ctx.drawImage(this, 0, 0);
+          var dataURL = canvas.toDataURL('image/png');
+          d3.select(tile).attr('href', dataURL);
+        };
+      };
+
+      // Transform the images into base64 so they can be exported
+      d3.select('.tiles').selectAll('image')[0].forEach(function(tile) {
+        convertImgToBase64(tile);
+      });
+
+
       $scope.deleteCol = function(colName) {
         // Remove the column from interactiveFiltersColumns
         var columnToDelete = interactiveFiltersColumns.filter(function(col) {

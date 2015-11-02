@@ -11,6 +11,7 @@ CHANGELOG
 * Address search: add points on the found locations
 * Add a color in pattern's background
 * Start from a white page
+* Transform the images into base64 so they can be exported
 
 **Minor changes**
 
