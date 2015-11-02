@@ -15,6 +15,7 @@ CHANGELOG
 **Minor changes**
 
 * Add a zebra crossing line style
+* Delete the zebra crossing points
 
 **Bug fixes**
 
