@@ -16,6 +16,12 @@ CHANGELOG
 
 * Add a zebra crossing line style
 
+**Bug fixes**
+
+* Add waterway=riverbank in the "water" preset
+* When searching an address, delete the previously added icon
+* Do not duplicate the #deletedElement ovjects
+
 0.4
 -------------------
 
