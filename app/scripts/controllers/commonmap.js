@@ -271,6 +271,9 @@ angular.module('accessimapEditeurDerApp')
 
       function deleteOnClick(el) {
         el.on('click', function() {
+          // Remove previous deleted Element placeholder if it exists
+          d3.select('#deletedElement').remove();
+
           // Some objects should not be deletable
           if (!d3.select(this).classed('notDeletable')) {
             var _this = this;
@@ -311,8 +314,6 @@ angular.module('accessimapEditeurDerApp')
         if ($scope.mode === 'delete') {
           resetActions();
           $('#der').css('cursor', 'crosshair');
-          // Remove previous deleted Element placeholder if it exists
-          d3.select('#deletedElement').remove();
           deleteOnClick(d3.selectAll('path'));
           deleteOnClick(d3.selectAll('circle'));
           deleteOnClick(d3.selectAll('text'));
