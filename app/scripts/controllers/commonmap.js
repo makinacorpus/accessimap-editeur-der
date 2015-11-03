@@ -9,8 +9,8 @@
  */
 angular.module('accessimapEditeurDerApp')
     .controller('CommonmapCtrl', ['$rootScope', '$scope', '$location', 'settings', 'exportData',
-        'shareSvg', 'svgicon', 'geometryutils',
-        function($rootScope, $scope, $location, settings, exportData, shareSvg, svgicon, geometryutils) {
+        'shareSvg', 'svgicon', 'geometryutils', 'styleutils',
+        function($rootScope, $scope, $location, settings, exportData, shareSvg, svgicon, geometryutils, styleutils) {
             d3.select('#der')
                 .selectAll('svg')
                 .remove();
@@ -252,18 +252,7 @@ angular.module('accessimapEditeurDerApp')
                     if ($scope.mode === 'editpolygon') {
                         var path = d3.select('.blink');
                         $scope.$watch($scope.styleChosen, function() {
-                            angular.forEach($scope.styleChosen.style, function(attribute) {
-                                var k = attribute.k;
-                                var v = attribute.v;
-                                if (k === 'fill-pattern') {
-                                    if ($scope.colorChosen && $scope.colorChosen.color !== 'none') {
-                                        v += '_' + $scope.colorChosen.color;
-                                    }
-                                    path.attr('fill', settings.POLYGON_STYLES[v].url());
-                                } else {
-                                    path.attr(k, v);
-                                }
-                            });
+                            styleutils.applyStyle(path, $scope.styleChosen.style, $scope.colorChosen);
                             if ($scope.checkboxModel.contour) {
                                 path.attr('stroke', 'black')
                                     .attr('stroke-width', '2');
@@ -471,21 +460,10 @@ angular.module('accessimapEditeurDerApp')
                         .on('click', function() {
                             var coordinates = d3.mouse(this);
                             var feature = d3.select('svg')
-                            .append('path')
-                            .attr('d', $scope.styleChosen.path(coordinates[0], coordinates[1], $scope.styleChosen.radius))
-                            .attr('iid', $rootScope.getiid());
-                            angular.forEach($scope.styleChosen.style, function(attribute) {
-                                var k = attribute.k;
-                                var v = attribute.v;
-                                if (k === 'fill-pattern') {
-                                    if ($scope.colorChosen && $scope.colorChosen.color !== 'none') {
-                                        v += '_' + $scope.colorChosen.color;
-                                    }
-                                    feature.attr('fill', settings.POLYGON_STYLES[v].url());
-                                } else {
-                                    feature.attr(k, v);
-                                }
-                            });
+                                .append('path')
+                                .attr('d', $scope.styleChosen.path(coordinates[0], coordinates[1], $scope.styleChosen.radius))
+                                .attr('iid', $rootScope.getiid());
+                            styleutils.applyStyle(feature, $scope.styleChosen.style, $scope.colorChosen);
                      });
                 }
                 if ($scope.mode === 'circle') {
@@ -506,22 +484,11 @@ angular.module('accessimapEditeurDerApp')
                                 feature.classed('edition', false);
                             } else {
                                 feature = d3.select('svg')
-                                .append('circle')
-                                .attr('cx', coordinates[0])
-                                .attr('cy', coordinates[1])
-                                .attr({'class': 'edition'});
-                                angular.forEach($scope.styleChosen.style, function(attribute) {
-                                    var k = attribute.k;
-                                    var v = attribute.v;
-                                    if (k === 'fill-pattern') {
-                                        if ($scope.colorChosen && $scope.colorChosen.color !== 'none') {
-                                            v += '_' + $scope.colorChosen.color;
-                                        }
-                                        feature.attr('fill', settings.POLYGON_STYLES[v].url());
-                                    } else {
-                                        feature.attr(k, v);
-                                    }
-                                });
+                                    .append('circle')
+                                    .attr('cx', coordinates[0])
+                                    .attr('cy', coordinates[1])
+                                    .attr({'class': 'edition'});
+                                styleutils.applyStyle(feature, $scope.styleChosen.style, $scope.colorChosen);
 
                                 if ($scope.checkboxModel.contour && !feature.attr('stroke')) {
                                     feature
@@ -564,20 +531,9 @@ angular.module('accessimapEditeurDerApp')
                             } else {
                                 lineEdit = [];
                                 path = d3.select('svg')
-                                .append('path')
-                                .attr({'class': 'edition'});
-                                angular.forEach($scope.styleChosen.style, function(attribute) {
-                                    var k = attribute.k;
-                                    var v = attribute.v;
-                                    if (k === 'fill-pattern') {
-                                        if ($scope.colorChosen && $scope.colorChosen.color !== 'none') {
-                                            v += '_' + $scope.colorChosen.color;
-                                        }
-                                        path.attr('fill', settings.POLYGON_STYLES[v].url());
-                                    } else {
-                                        path.attr(k, v);
-                                    }
-                                });
+                                    .append('path')
+                                    .attr({'class': 'edition'});
+                                styleutils.applyStyle(path, $scope.styleChosen.style, $scope.colorChosen);
 
                                 if ($scope.checkboxModel.contour && !path.attr('stroke')) {
                                     path
@@ -587,20 +543,9 @@ angular.module('accessimapEditeurDerApp')
 
                                 if ($scope.mode === 'line') {
                                     pathInner = d3.select('svg')
-                                    .append('path')
-                                    .attr({'class': 'edition inner'});
-                                    angular.forEach($scope.styleChosen.styleInner, function(attribute) {
-                                        var k = attribute.k;
-                                        var v = attribute.v;
-                                        if (k === 'fill-pattern') {
-                                            if ($scope.colorChosen && $scope.colorChosen.color !== 'none') {
-                                                v += '_' + $scope.colorChosen.color;
-                                            }
-                                            pathInner.attr('fill', settings.POLYGON_STYLES[v].url());
-                                        } else {
-                                            pathInner.attr(k, v);
-                                        }
-                                    });
+                                        .append('path')
+                                        .attr({'class': 'edition inner'});
+                                    styleutils.applyStyle(pathInner, $scope.styleChosen.styleInner, $scope.colorChosen);
                                 }
                             }
                             var coordinates = d3.mouse(this);
@@ -615,18 +560,7 @@ angular.module('accessimapEditeurDerApp')
                                     d: lineFunction(lineEdit)
                                 });
                             }
-                            angular.forEach($scope.styleChosen.style, function(attribute) {
-                                var k = attribute.k;
-                                var v = attribute.v;
-                                if (k === 'fill-pattern') {
-                                    if ($scope.colorChosen && $scope.colorChosen.color !== 'none') {
-                                        v += '_' + $scope.colorChosen.color;
-                                    }
-                                    path.attr('fill', settings.POLYGON_STYLES[v].url());
-                                } else {
-                                    path.attr(k, v);
-                                }
-                            });
+                            styleutils.applyStyle(path, $scope.styleChosen.style, $scope.colorChosen);
 
                             if ($scope.checkboxModel.contour && !path.attr('stroke')) {
                                 path
@@ -635,18 +569,7 @@ angular.module('accessimapEditeurDerApp')
                             }
 
                             if ($scope.mode === 'line') {
-                                angular.forEach($scope.styleChosen.styleInner, function(attribute) {
-                                    var k = attribute.k;
-                                    var v = attribute.v;
-                                    if (k === 'fill-pattern') {
-                                        if ($scope.colorChosen && $scope.colorChosen.color !== 'none') {
-                                            v += '_' + $scope.colorChosen.color;
-                                        }
-                                        pathInner.attr('fill', settings.POLYGON_STYLES[v].url());
-                                    } else {
-                                        pathInner.attr(k, v);
-                                    }
-                                });
+                                styleutils.applyStyle(pathInner, $scope.styleChosen.styleInner, $scope.colorChosen);
                             }
                         })
                         .on('dblclick', function() {
@@ -674,18 +597,7 @@ angular.module('accessimapEditeurDerApp')
                                     line = d3.select('svg')
                                         .append('line')
                                         .attr({'class': 'ongoing'});
-                                    angular.forEach($scope.styleChosen.style, function(attribute) {
-                                        var k = attribute.k;
-                                        var v = attribute.v;
-                                        if (k === 'fill-pattern') {
-                                            if ($scope.colorChosen && $scope.colorChosen.color !== 'none') {
-                                                v += '_' + $scope.colorChosen.color;
-                                            }
-                                            line.attr('fill', settings.POLYGON_STYLES[v].url());
-                                        } else {
-                                            line.attr(k, v);
-                                        }
-                                    });
+                                    styleutils.applyStyle(line, $scope.styleChosen.style, $scope.colorChosen);
 
                                     if ($scope.checkboxModel.contour && !line.attr('stroke')) {
                                         line
