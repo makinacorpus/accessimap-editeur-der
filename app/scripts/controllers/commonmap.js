@@ -125,9 +125,11 @@ angular.module('accessimapEditeurDerApp')
       };
 
       // Transform the images into base64 so they can be exported
-      d3.select('.tiles').selectAll('image')[0].forEach(function(tile) {
-        convertImgToBase64(tile);
-      });
+      if (d3.select('.tiles').node()) {
+        d3.select('.tiles').selectAll('image')[0].forEach(function(tile) {
+          convertImgToBase64(tile);
+        });
+      }
 
 
       $scope.deleteCol = function(colName) {
