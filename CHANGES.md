@@ -22,7 +22,8 @@ CHANGELOG
 
 * Add waterway=riverbank in the "water" preset
 * When searching an address, delete the previously added icon
-* Do not duplicate the #deletedElement ovjects
+* Do not duplicate the #deletedElement objects
+* Be able to write text after a feature has been deleted
 
 0.4
 -------------------

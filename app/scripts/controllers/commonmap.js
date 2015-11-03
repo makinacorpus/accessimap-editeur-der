@@ -634,10 +634,11 @@ angular.module('accessimapEditeurDerApp')
                                 .attr('fill', $scope.fontColorChosen.color)
                                 .attr({'class': 'edition'})
                                 .text('');
-                            d3.select('svg').selectAll('foreignObject')
+                            d3.select('svg').selectAll('foreignObject#textEdition')
                                 .data([d])
                                 .enter()
                                 .append('foreignObject')
+                                .attr('id', 'textEdition')
                                 .attr('x', coordinates[0])
                                 .attr('y', coordinates[1] - 35)
                                 .attr('height', 500)
@@ -688,7 +689,7 @@ angular.module('accessimapEditeurDerApp')
                                     d3.select('.edition').classed('edition', false);
                                 });
 
-                                selectElementContents(d3.selectAll(this.getElementsByTagName('foreignObject')).selectAll('p').node());
+                                selectElementContents(d3.selectAll('foreignObject#textEdition').selectAll('p').node());
 
                                 $scope.$apply(function() {
                                     $scope.mode = 'default';
