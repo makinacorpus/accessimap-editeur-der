@@ -392,6 +392,35 @@ angular.module('accessimapEditeurDerApp')
             }],
             styleInner: [{
                 'k': 'stroke',
+                'v': 'white'
+            }, {
+                'k': 'stroke-width',
+                'v': '15'
+            }, {
+                'k': 'stroke-linecap',
+                'v': 'round'
+            }, {
+                'k': 'fill',
+                'v': 'none'
+            }]
+        },{
+            id: 'straight_20_fill',
+            name: 'Traits parallèles 3 rempli',
+            style: [{
+                'k': 'stroke',
+                'v': 'black'
+            }, {
+                'k': 'stroke-width',
+                'v': '20'
+            }, {
+                'k': 'stroke-linecap',
+                'v': 'round'
+            }, {
+                'k': 'fill',
+                'v': 'none'
+            }],
+            styleInner: [{
+                'k': 'stroke',
                 'v': POLYGON_STYLES.smalldotsline.url()
             }, {
                 'k': 'stroke-width',
