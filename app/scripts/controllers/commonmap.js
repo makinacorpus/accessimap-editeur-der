@@ -53,7 +53,7 @@ angular.module('accessimapEditeurDerApp')
 
             $scope.featureIcon = svgicon.featureIcon;
 
-            $scope.containerStyleChoices = settings.STYLES['polygon'];
+            $scope.containerStyleChoices = settings.STYLES.polygon;
             $scope.containerStyle = $scope.containerStyleChoices[0];
 
             $scope.changeContainerStyle = function(style) {
@@ -100,12 +100,14 @@ angular.module('accessimapEditeurDerApp')
                 'deletable': false
             }];
 
-            var cellTemplate = '<input ng-if="row.entity.type === \'boolean\'" type="checkbox" value="{{row.entity[col.field]}}" ng-model="row.entity[col.field]">';
+            var cellTemplate = '<input ng-if="row.entity.type === \'boolean\'" type="checkbox" value="{{row.entity[col.field]}}"';
+            cellTemplate += 'ng-model="row.entity[col.field]">';
             cellTemplate += '<div ng-if="row.entity.type !== \'boolean\'">{{row.entity[col.field]}}</div>';
 
-            var removeTemplate = '<button ng-if="row.entity.deletable" class="btn btn-danger" ng-click="grid.appScope.removeRow(row.entity)"><i class="glyphicon glyphicon-remove"></i></button>';
+            var removeTemplate = '<button ng-if="row.entity.deletable" class="btn btn-danger" ng-click="grid.appScope.removeRow(row.entity)">';
+            removeTemplate += '<i class="glyphicon glyphicon-remove"></i></button>';
 
-            var cellClassId = function(grid, row, col, rowRenderIndex, colRenderIndex) {
+            var cellClassId = function(grid, row, col, rowRenderIndex) {
                 return $scope.interactiveFilters.data[rowRenderIndex].id + ' highlight';
             };
 
@@ -122,7 +124,7 @@ angular.module('accessimapEditeurDerApp')
                     var dataURL = canvas.toDataURL('image/png');
                     d3.select(tile).attr('href', dataURL);
                 };
-            };
+            }
 
             // Transform the images into base64 so they can be exported
             if (d3.select('.tiles').node()) {
@@ -169,7 +171,7 @@ angular.module('accessimapEditeurDerApp')
                         {
                             title: 'Supprimer cette colonne',
                             icon: 'ui-grid-icon-cancel',
-                            action: function($event) {
+                            action: function() {
                                 var colName = this.context.col.name;
                                 $scope.deleteCol(colName);
                             }
@@ -178,7 +180,15 @@ angular.module('accessimapEditeurDerApp')
                     enableHiding: false,
                     cellClass: cellClassId
                 },
-                { field: 'remove', displayName: '', width: 40, cellTemplate: removeTemplate, enableCellEdit: false, enableHiding: false, cellClass: cellClassId}
+                {
+                    field: 'remove',
+                    displayName: '',
+                    width: 40, cellTemplate:
+                    removeTemplate,
+                    enableCellEdit: false,
+                    enableHiding: false,
+                    cellClass: cellClassId
+                }
             ];
 
             $scope.interactiveFilters = {
@@ -203,7 +213,7 @@ angular.module('accessimapEditeurDerApp')
                         {
                             title: 'Supprimer cette colonne',
                             icon: 'ui-grid-icon-cancel',
-                            action: function($event) {
+                            action: function() {
                                 var colName = this.context.col.name;
                                 $scope.deleteCol(colName);
                             }
@@ -292,6 +302,16 @@ angular.module('accessimapEditeurDerApp')
                     sel.addRange(range);
             }
 
+            function deleteFeature(el) {
+                $scope.$apply(function() {
+                    $scope.deletedFeature = new XMLSerializer().serializeToString(el);
+                });
+                var t = document.createElement('foreignObject');
+                d3.select(t).attr('id', 'deletedElement');
+                el.parentNode.insertBefore(t, el);
+                el.remove();
+            }
+
             function deleteOnClick(el) {
                 el.on('click', function() {
                     // Remove previous deleted Element placeholder if it exists
@@ -299,7 +319,6 @@ angular.module('accessimapEditeurDerApp')
 
                     // Some objects should not be deletable
                     if (!d3.select(this).classed('notDeletable')) {
-                        var _this = this;
                         var iid = d3.select(this).attr('iid');
 
                         var featurePosition = $scope.interactiveFilters.data.filter(function(row) {
@@ -309,22 +328,10 @@ angular.module('accessimapEditeurDerApp')
                         if (featureInFilters > -1) {
                             if (window.confirm('Ce point est interactif. Voules-vous vraiment le supprimer ?')) {
                                 $scope.removeRow($scope.interactiveFilters.data[featureInFilters]);
-                                $scope.$apply(function() {
-                                    $scope.deletedFeature = new XMLSerializer().serializeToString(_this);
-                                });
-                                var t = document.createElement('foreignObject');
-                                d3.select(t).attr('id', 'deletedElement');
-                                this.parentNode.insertBefore(t, this);
-                                this.remove();
+                                deleteFeature(this);
                             }
                         } else {
-                            $scope.$apply(function() {
-                                $scope.deletedFeature = new XMLSerializer().serializeToString(_this);
-                            });
-                            var t = document.createElement('foreignObject');
-                            d3.select(t).attr('id', 'deletedElement');
-                            this.parentNode.insertBefore(t, this);
-                            this.remove();
+                            deleteFeature(this);
                         }
                     }
                 });

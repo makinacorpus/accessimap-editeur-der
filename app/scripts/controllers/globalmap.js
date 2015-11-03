@@ -1,4 +1,5 @@
 'use strict';
+/*global PDFJS */
 
 /**
  * @ngdoc function
@@ -78,7 +79,7 @@ angular.module('accessimapEditeurDerApp')
                             canvasContext: context,
                             viewport: viewport
                         };
-                        page.render(renderContext).then(function(rrr) {
+                        page.render(renderContext).then(function() {
                             appendPng(canvas.toDataURL());
                         });
                     });
@@ -87,7 +88,6 @@ angular.module('accessimapEditeurDerApp')
 
             function appendPng(image) {
                 var mapFormat = $location.search().mapFormat;
-                var legendFormat = $location.search().legendFormat;
 
                 var widthMm = settings.FORMATS[mapFormat].width,
                         heightMm = settings.FORMATS[mapFormat].height,
@@ -109,7 +109,7 @@ angular.module('accessimapEditeurDerApp')
                         w = widthSvg;
                         h = w * ratio;
                     }
-                    var g = svg.append('g')
+                    svg.append('g')
                         .classed('sourceDocument', true)
                         .append('image')
                         .attr('x', 0)

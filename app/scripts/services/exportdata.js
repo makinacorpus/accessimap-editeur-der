@@ -31,12 +31,13 @@ angular.module('accessimapEditeurDerApp')
             shareSvg.getInteractions()
             .then(function(data) {
                 var columns = [];
-                for (var i = 0; i < data.grid.columns.length; i++) {
+                var i;
+                for (i = 0; i < data.grid.columns.length; i++) {
                     columns.push({'field': data.grid.columns[i].field});
                 }
 
                 var rows = [];
-                for (var i = 0; i < data.grid.rows.length; i++) {
+                for (i = 0; i < data.grid.rows.length; i++) {
                     rows.push(data.grid.rows[i].entity);
                 }
 
@@ -47,7 +48,7 @@ angular.module('accessimapEditeurDerApp')
                 var filterName = rows[0];
                 var filterExpandable = rows[1];
 
-                for (var i = 0; i < columns.length; i++) {
+                for (i = 0; i < columns.length; i++) {
                     var currentField = columns[i].field;
                     columns[i].name = filterName[currentField];
                     columns[i].expandable = filterExpandable[currentField];

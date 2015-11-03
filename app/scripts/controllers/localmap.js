@@ -744,8 +744,8 @@ angular.module('accessimapEditeurDerApp')
                                         geometryType: 'point',
                                         layer: $.extend(true, {}, dataStart.features[0]), //deep copy,
                                         originallayer: $.extend(true, {}, dataStart.features[0]), //deep copy
-                                        style: settings.STYLES['point'][0],
-                                        styleChoices: settings.STYLES['point'],
+                                        style: settings.STYLES.point[0],
+                                        styleChoices: settings.STYLES.point,
                                         rotation: 0
                                     };
                                     var objStop = {
@@ -754,8 +754,8 @@ angular.module('accessimapEditeurDerApp')
                                         geometryType: 'point',
                                         layer: $.extend(true, {}, dataStop.features[0]), //deep copy,
                                         originallayer: $.extend(true, {}, dataStop.features[0]), //deep copy
-                                        style: settings.STYLES['point'][2],
-                                        styleChoices: settings.STYLES['point'],
+                                        style: settings.STYLES.point[2],
+                                        styleChoices: settings.STYLES.point,
                                         rotation: 0
                                     };
                                     zoomed();
@@ -791,8 +791,8 @@ angular.module('accessimapEditeurDerApp')
                                     geometryType: 'point',
                                     layer: $.extend(true, {}, data.features[0]), //deep copy,
                                     originallayer: $.extend(true, {}, data.features[0]), //deep copy
-                                    style: settings.STYLES['point'][0],
-                                    styleChoices: settings.STYLES['point'],
+                                    style: settings.STYLES.point[0],
+                                    styleChoices: settings.STYLES.point,
                                     rotation: 0
                                 };
                                 zoom.scale(s)
