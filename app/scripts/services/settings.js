@@ -151,6 +151,12 @@ angular.module('accessimapEditeurDerApp')
             query: ['node["highway"="traffic_signals"]'],
             icon: 'street-view'
         }, {
+            id: 'trafficSignals_sound',
+            name: 'Feux sonores',
+            type: 'point',
+            query: ['node["traffic_signals:sound"]'],
+            icon: 'street-view'
+        }, {
             id: 'batiments',
             name: 'Batiments',
             type: 'polygon',
