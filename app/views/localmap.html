@@ -15,7 +15,7 @@
       Déplacer le curseur pour orienter la carte
       <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
     </span>
-    <slider style="width: 100%" style="width: 100%" class="form-control aaaaa" ng-model="rotationAngle" ng-change="rotateMap()" min="0" max="360"></slider>
+    <slider class="form-control slider-container" ng-model="rotationAngle" ng-change="rotateMap()" min="0" max="360"></slider>
   </div>
 
   <button class="btn btn-danger pull-right" ng-click="mapCommon()" type="button">
@@ -74,7 +74,7 @@
   <ul class="features-list">
     <li ng-repeat="feature in geojson" class="form-inline">
       {{feature.name}}
-      <slider style="width: 100%" class="form-control" ng-model="feature.simplification" ng-show="feature.geometryType !== 'point'" ng-change="simplifyFeatures(feature)" min="0" max="100"></slider>
+      <slider class="form-control slider-container" ng-model="feature.simplification" ng-show="feature.geometryType !== 'point'" ng-change="simplifyFeatures(feature)" min="0" max="100"></slider>
         <ui-select ng-model="feature.style" ng-disabled="disabled" ng-change="updateFeature(feature.id, feature.style)" theme="bootstrap" class="form-control style-selector" style="width: 150px;">
           <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
           <ui-select-choices repeat="item in feature.styleChoices | filter: $select.search">
@@ -82,7 +82,7 @@
             <div ng-bind-html="featureIcon(item, feature.geometryType)"></div>
           </ui-select-choices>
         </ui-select>
-        <slider style="width: 100%" ng-if="feature.geometryType === 'point'" class="form-control" ng-model="feature.rotation" ng-change="rotateFeature(feature)" min="0" max="360"></slider>
+        <slider ng-if="feature.geometryType === 'point'" class="form-control slider-container" ng-model="feature.rotation" ng-change="rotateFeature(feature)" min="0" max="360"></slider>
         <ui-select ng-if="feature.geometryType === 'polygon'" ng-model="feature.color" ng-change="updateFeature(feature.id, feature.style)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
           <ui-select-match placeholder="Couleur de fond">{{$select.selected.name}}</ui-select-match>
           <ui-select-choices repeat="item in colors | filter: $select.search" style="max-height: 500px;">
