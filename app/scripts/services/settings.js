@@ -333,7 +333,7 @@ angular.module('accessimapEditeurDerApp')
                 'v': '8'
             }, {
                 'k': 'stroke-linecap',
-                'v': 'round'
+                'v': 'butt'
             }, {
                 'k': 'fill',
                 'v': 'none'
@@ -362,7 +362,7 @@ angular.module('accessimapEditeurDerApp')
                 'v': '12'
             }, {
                 'k': 'stroke-linecap',
-                'v': 'round'
+                'v': 'butt'
             }, {
                 'k': 'fill',
                 'v': 'none'
@@ -391,7 +391,7 @@ angular.module('accessimapEditeurDerApp')
                 'v': '20'
             }, {
                 'k': 'stroke-linecap',
-                'v': 'round'
+                'v': 'butt'
             }, {
                 'k': 'fill',
                 'v': 'none'
@@ -449,7 +449,7 @@ angular.module('accessimapEditeurDerApp')
                 'v': '35'
             }, {
                 'k': 'stroke-linecap',
-                'v': 'round'
+                'v': 'butt'
             }, {
                 'k': 'fill',
                 'v': 'none'
