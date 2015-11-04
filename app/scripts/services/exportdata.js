@@ -84,20 +84,29 @@ angular.module('accessimapEditeurDerApp')
                     })
                     .each(function(d) {
                         var shapeD;
+                        var bbox;
                         d3.select('#der').select('svg').selectAll('path')[0]
                             .forEach(function(shape) {
                                 if ('poi-' + d3.select(shape).attr('iid') === d.id) {
                                     shapeD = d3.select(shape).attr('d');
+                                    bbox = d3.select(shape).node().getBBox();
                                 }
                             });
                         var poi = d3.select(this);
                         poi.attr('id', d.id);
+                        if (bbox) {
+                            poi.attr('x', bbox.x);
+                            poi.attr('y', bbox.y);
+                            poi.attr('width', bbox.width);
+                            poi.attr('height', bbox.height);
+                        }
                         poi.attr('coord', shapeD);
                         var actions = poi.append('actions');
                         // loop through the keys - this assumes no extra data
                         d3.keys(d).forEach(function(key) {
                             if (key !== '$$hashKey' && key !== 'deletable' && key !== 'id') {
                                 actions.append('action')
+                                .attr('gesture', 'double_tap')
                                 .attr('filter', key)
                                 .attr('value', d[key])
                                 .attr('protocol', function() {
