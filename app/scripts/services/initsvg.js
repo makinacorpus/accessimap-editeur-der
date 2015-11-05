@@ -66,10 +66,10 @@ angular.module('accessimapEditeurDerApp')
 
         this.createMargin = function(target, width, height) {
             var w40 = width - 40,
-                    h40 = height - 40;
+                h40 = height - 40;
 
             var marginGroup = target.append('g')
-                    .attr('id', 'margin')
+                    .attr('id', 'margin-layer')
                     .attr('width', width)
                     .attr('height', height);
 
@@ -83,7 +83,31 @@ angular.module('accessimapEditeurDerApp')
                     .attr('id', 'svgWhiteBorder')
                     .classed('notDeletable', true);
 
-            marginGroup.append('path')
+        };
+
+        this.createDrawing = function(target) {
+            var drawingGroup = target.append('g')
+                    .attr('id', 'drawing-layer')
+                    .classed('rotable', true);
+
+            drawingGroup.append('g')
+                    .attr('id', 'polygons-layer');
+            drawingGroup.append('g')
+                    .attr('id', 'lines-layer');
+            drawingGroup.append('g')
+                    .attr('id', 'points-layer');
+            drawingGroup.append('g')
+                    .attr('id', 'text-layer');
+        };
+
+        this.createFrame = function(target, width, height) {
+            var w40 = width - 40,
+                h40 = height - 40;
+
+            var frameGroup = target.append('g')
+                    .attr('id', 'frame-layer');
+
+            frameGroup.append('path')
                     .attr('d', function() {
                         return 'M 40 40 L ' + w40 + ' 40 L ' + w40 + ' ' + h40 + ' L 40 ' + h40 + ' L 40 40 z';
                     })
@@ -93,5 +117,11 @@ angular.module('accessimapEditeurDerApp')
                     .attr('stroke-opacity', '1')
                     .attr('id', 'svgContainer')
                     .classed('notDeletable', true);
+        };
+
+        this.createSource = function(target) {
+            return target.append('g')
+                    .attr('id', 'source-layer')
+                    .classed('rotable', true);
         };
     });

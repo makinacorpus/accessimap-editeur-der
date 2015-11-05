@@ -109,7 +109,17 @@ angular.module('accessimapEditeurDerApp')
                         w = widthSvg;
                         h = w * ratio;
                     }
-                    svg.append('g')
+                    // Load polygon fill styles taht will be used on common map
+                    angular.forEach(settings.POLYGON_STYLES, function(key) {
+                        svg.call(key);
+                    });
+
+                    var sourceLayer = initSvg.createSource(svg);
+                    initSvg.createFrame(svg, widthSvg, heightSvg);
+                    initSvg.createDrawing(svg);
+                    initSvg.createMargin(svg, widthSvg, heightSvg);
+
+                    sourceLayer.append('g')
                         .classed('sourceDocument', true)
                         .append('image')
                         .attr('x', 0)
@@ -117,10 +127,7 @@ angular.module('accessimapEditeurDerApp')
                         .attr('width', w)
                         .attr('height', h)
                         .attr('xlink:href', image);
-                    // Load polygon fill styles taht will be used on common map
-                    angular.forEach(settings.POLYGON_STYLES, function(key) {
-                            svg.call(key);
-                    });
+
                     shareSvg.addMap(svg.node())
                     .then(function() {
                         $location.path('/commonmap');
@@ -129,16 +136,36 @@ angular.module('accessimapEditeurDerApp')
             }
 
             function appendSvg(path) {
+                var mapFormat = $location.search().mapFormat;
+
+                var widthMm = settings.FORMATS[mapFormat].width,
+                        heightMm = settings.FORMATS[mapFormat].height,
+                        widthSvg = widthMm / 0.283,
+                        heightSvg = heightMm / 0.283;
+                var svg = initSvg.createDetachedSvg(widthMm, heightMm);
+
                 d3.xml(path, function(xml) {
-                    var svg = d3.select(xml.documentElement);
-                    angular.forEach(svg[0][0].children, function(child) {
-                            d3.select(child).classed('sourceDocument', true);
-                    });
                     // Load polygon fill styles taht will be used on common map
                     angular.forEach(settings.POLYGON_STYLES, function(key) {
-                            svg.call(key);
+                        svg.call(key);
                     });
-                    shareSvg.addMap(xml.documentElement)
+
+                    var sourceLayer = initSvg.createSource(svg);
+                    initSvg.createFrame(svg, widthSvg, heightSvg);
+                    initSvg.createDrawing(svg);
+                    initSvg.createMargin(svg, widthSvg, heightSvg);
+
+                    var originalSvg = d3.select(xml.documentElement);
+                    var children = originalSvg[0][0].children;
+
+                    for (var i = 0; i < children.length; i++) {
+                        d3.select(children[i]).classed('sourceDocument', true);
+                        sourceLayer.append(function() {
+                            return children[i];
+                        });
+                    }
+
+                    shareSvg.addMap(svg.node())
                     .then(function() {
                         $location.path('/commonmap');
                     });

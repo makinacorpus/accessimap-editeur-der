@@ -38,6 +38,12 @@ angular.module('accessimapEditeurDerApp')
                 var legendsvg = initSvg.createDetachedSvg(widthMm, heightMm);
                 initSvg.createDefs(mapsvg);
 
+                // Load polygon fill styles taht will be used on common map
+                angular.forEach(settings.POLYGON_STYLES, function(key) {
+                        mapsvg.call(key);
+                        legendsvg.call(key);
+                });
+
                 var width = widthMm / 0.283,
                         height = heightMm / 0.283,
                         legendWidth = legendWidthMm / 0.283,
@@ -48,14 +54,12 @@ angular.module('accessimapEditeurDerApp')
                         .attr('height', legendHeight);
                 initSvg.createLegendText(legendContainter, margin);
 
+                initSvg.createSource(mapsvg);
+                initSvg.createFrame(mapsvg, width, height);
+                initSvg.createDrawing(mapsvg);
                 initSvg.createMargin(mapsvg, width, height);
-                initSvg.createMargin(legendsvg, legendWidth, legendHeight);
 
-                // Load polygon fill styles taht will be used on common map
-                angular.forEach(settings.POLYGON_STYLES, function(key) {
-                        mapsvg.call(key);
-                        legendsvg.call(key);
-                });
+                initSvg.createMargin(legendsvg, legendWidth, legendHeight);
 
                 shareSvg.addMap(mapsvg.node())
                 .then(function() {

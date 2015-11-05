@@ -133,14 +133,20 @@ angular.module('accessimapEditeurDerApp')
             $scope.address = {};
 
             var map = mapsvg.append('g')
+                    .attr('id', 'map-layer')
                     .attr('width', width)
                     .attr('height', height)
                     .attr('transform', 'rotate(' + $scope.rotationAngle + ')');
 
+
+            initSvg.createSource(map);
+            initSvg.createFrame(map, width, height);
+            initSvg.createDrawing(map);
             initSvg.createMargin(mapsvg, width, height);
             initSvg.createMargin(legendsvg, legendWidth, legendHeight);
 
-            var raster = map.append('g')
+            var sourceLayer = d3.select('#source-layer');
+            var raster = sourceLayer.append('g')
                     .attr('class', 'tiles');
 
             var legendContainter = legendsvg.append('g')
@@ -170,7 +176,7 @@ angular.module('accessimapEditeurDerApp')
             };
 
             $scope.rotateMap = function() {
-                    map.attr('transform', 'rotate(' + $scope.rotationAngle + ' ' + width / 2 + ' ' + height / 2 + ')');
+                    d3.selectAll('.rotable').attr('transform', 'rotate(' + $scope.rotationAngle + ' ' + width / 2 + ' ' + height / 2 + ')');
             };
 
             $scope.rotateFeature = function(feature) {
@@ -440,9 +446,10 @@ angular.module('accessimapEditeurDerApp')
 
             function drawFeature(data, feature, optionalClass) {
                 var featureGroup;
+                var drawingLayer = d3.select('#drawing-layer');
                 if (optionalClass) {
                     if (d3.select('.vector.' + optionalClass + '#' + feature[0].id).empty()) {
-                        featureGroup = map.append('g')
+                        featureGroup = drawingLayer.append('g')
                         .attr('class', 'vector ' + optionalClass)
                         .attr('id', feature[0].id);
                     } else {
@@ -450,7 +457,7 @@ angular.module('accessimapEditeurDerApp')
                     }
                 } else {
                     if (d3.select('.vector#' + feature[0].id).empty()) {
-                        featureGroup = map.append('g')
+                        featureGroup = drawingLayer.append('g')
                         .attr('class', 'vector')
                         .attr('id', feature[0].id);
                     } else {

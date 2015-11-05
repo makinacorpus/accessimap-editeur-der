@@ -459,7 +459,7 @@ angular.module('accessimapEditeurDerApp')
                     d3.select('svg')
                         .on('click', function() {
                             var coordinates = d3.mouse(this);
-                            var feature = d3.select('svg')
+                            var feature = d3.select('#points-layer')
                                 .append('path')
                                 .attr('d', $scope.styleChosen.path(coordinates[0], coordinates[1], $scope.styleChosen.radius))
                                 .attr('iid', $rootScope.getiid());
@@ -483,7 +483,7 @@ angular.module('accessimapEditeurDerApp')
                                 feature.attr('r', r);
                                 feature.classed('edition', false);
                             } else {
-                                feature = d3.select('svg')
+                                feature = d3.select('#polygons-layer')
                                     .append('circle')
                                     .attr('cx', coordinates[0])
                                     .attr('cy', coordinates[1])
@@ -519,6 +519,14 @@ angular.module('accessimapEditeurDerApp')
                                                  .x(function(d) { return d[0]; })
                                                  .y(function(d) { return d[1]; })
                                                  .interpolate('linear');
+                    var drawingLayer;
+
+                    if ($scope.mode === 'line') {
+                        drawingLayer = d3.select('#lines-layer');
+                    } else {
+                        drawingLayer = d3.select('#polygons-layer');
+                    }
+
                     d3.select('svg')
                         .on('click', function() {
                             var path;
@@ -530,7 +538,7 @@ angular.module('accessimapEditeurDerApp')
                                 }
                             } else {
                                 lineEdit = [];
-                                path = d3.select('svg')
+                                path = drawingLayer
                                     .append('path')
                                     .attr({'class': 'edition'});
                                 styleutils.applyStyle(path, $scope.styleChosen.style, $scope.colorChosen);
@@ -542,7 +550,7 @@ angular.module('accessimapEditeurDerApp')
                                 }
 
                                 if ($scope.mode === 'line') {
-                                    pathInner = d3.select('svg')
+                                    pathInner = drawingLayer
                                         .append('path')
                                         .attr({'class': 'edition inner'});
                                     styleutils.applyStyle(pathInner, $scope.styleChosen.styleInner, $scope.colorChosen);
@@ -594,7 +602,7 @@ angular.module('accessimapEditeurDerApp')
                                 if (d3.select('.ongoing')[0][0]) {
                                     line = d3.select('.ongoing');
                                 } else {
-                                    line = d3.select('svg')
+                                    line = drawingLayer
                                         .append('line')
                                         .attr({'class': 'ongoing'});
                                     styleutils.applyStyle(line, $scope.styleChosen.style, $scope.colorChosen);
@@ -622,7 +630,7 @@ angular.module('accessimapEditeurDerApp')
                             d3.select('.edition').classed('edition', false);
                             var coordinates = d3.mouse(this);
                             var d = 'Texte';
-                            d3.select('svg')
+                            d3.select('#text-layer')
                                 .append('text')
                                 .attr('x', coordinates[0])
                                 .attr('y', coordinates[1] - 35)
@@ -634,7 +642,7 @@ angular.module('accessimapEditeurDerApp')
                                 .attr('fill', $scope.fontColorChosen.color)
                                 .attr({'class': 'edition'})
                                 .text('');
-                            d3.select('svg').selectAll('foreignObject#textEdition')
+                            d3.select('#text-layer').selectAll('foreignObject#textEdition')
                                 .data([d])
                                 .enter()
                                 .append('foreignObject')
