@@ -113,8 +113,9 @@ CHANGELOG
 **Bug fixes**
 
 * Prevent map panning on common map
-* An already selected layer cannot be added again to the local 
+* An already selected layer cannot be added again to the local
 * Better handle the polygons and multipolygons
+* Open selection list always down
 
 **Minor changes**
 

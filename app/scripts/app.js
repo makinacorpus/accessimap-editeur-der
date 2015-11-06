@@ -48,4 +48,7 @@ angular
             .otherwise({
                 redirectTo: '/'
             });
+    })
+    .config(function(uiSelectConfig) {
+      uiSelectConfig.dropdownPosition = 'down';
     });

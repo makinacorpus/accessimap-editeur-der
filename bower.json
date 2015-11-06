@@ -14,7 +14,7 @@
     "angular-touch": "~1.4.x",
     "angular-spinner": "~0.6.1",
     "d3": "~3.5.3",
-    "angular-ui-select": "master",
+    "angular-ui-select": "~0.13.1",
     "select2": "~3.4.5",
     "angular-bootstrap-slider": "~0.1.7",
     "jszip": "Stuk/jszip#~2.5.0",
@@ -31,6 +31,6 @@
   },
   "appPath": "app",
   "resolutions": {
-    "angular-ui-select": "master"
+    "angular-ui-select": "~0.13.1"
   }
 }
