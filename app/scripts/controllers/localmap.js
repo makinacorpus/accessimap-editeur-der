@@ -752,7 +752,7 @@ angular.module('accessimapEditeurDerApp')
                                         geometryType: 'point',
                                         layer: $.extend(true, {}, dataStart.features[0]), //deep copy,
                                         originallayer: $.extend(true, {}, dataStart.features[0]), //deep copy
-                                        style: settings.STYLES.point[0],
+                                        style: settings.STYLES.point[2],
                                         styleChoices: settings.STYLES.point,
                                         rotation: 0
                                     };

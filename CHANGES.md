@@ -18,6 +18,7 @@ CHANGELOG
 
 * Add a zebra crossing line style
 * Delete the zebra crossing points
+* Same icon for the start and stop points when searching an address
 
 **Bug fixes**
 
