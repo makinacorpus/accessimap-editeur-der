@@ -82,7 +82,7 @@ describe('Service: initSvg', function () {
 
   });
 
-  describe('when createMArgin is called, the margin\'s group', function() {
+  describe('when createMArgin is called', function() {
     var map;
     var mapSvg;
 
@@ -92,16 +92,28 @@ describe('Service: initSvg', function () {
       initSvg.createMargin(mapSvg, 500, 500);
     });
 
-    it('should be created', function() {
-      expect(mapSvg.select('#margin').empty()).not.toBe(true);
+    it('the margin group should be created', function() {
+      expect(mapSvg.select('#margin-layer').empty()).not.toBe(true);
     });
 
-    it('should contain the white border', function() {
-      expect(mapSvg.select('#margin').select('#svgWhiteBorder').empty()).not.toBe(true);
+    it('the margin group should contain the white border', function() {
+      expect(mapSvg.select('#margin-layer').select('#svgWhiteBorder').empty()).not.toBe(true);
     });
 
-    it('should contain the black border', function() {
-      expect(mapSvg.select('#margin').select('#svgContainer').empty()).not.toBe(true);
+  });
+
+  describe('when createFrame is called', function() {
+    var map;
+    var mapSvg;
+
+    beforeAll(function() {
+      map = d3.select('body').append('div').attr('id', 'map');
+      mapSvg = initSvg.createMap(500, 500);
+      initSvg.createFrame(mapSvg, 500, 500);
+    });
+
+    it('the frame group should contain the black border', function() {
+      expect(mapSvg.select('#frame-layer').select('#svgContainer').empty()).not.toBe(true);
     });
 
   });

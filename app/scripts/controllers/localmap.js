@@ -446,7 +446,8 @@ angular.module('accessimapEditeurDerApp')
 
             function drawFeature(data, feature, optionalClass) {
                 var featureGroup;
-                var drawingLayer = d3.select('#drawing-layer');
+                var geometryType = feature[0].geometryType;
+                var drawingLayer = d3.select('#' + geometryType + 's-layer');
                 if (optionalClass) {
                     if (d3.select('.vector.' + optionalClass + '#' + feature[0].id).empty()) {
                         featureGroup = drawingLayer.append('g')
