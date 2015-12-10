@@ -83,12 +83,10 @@ angular.module('accessimapEditeurDerApp')
                         return d.id;
                     })
                     .each(function(d) {
-                        var shapeD;
                         var bbox;
                         d3.select('#der').select('svg').selectAll('path')[0]
                             .forEach(function(shape) {
                                 if ('poi-' + d3.select(shape).attr('iid') === d.id) {
-                                    shapeD = d3.select(shape).attr('d');
                                     bbox = d3.select(shape).node().getBBox();
                                 }
                             });
@@ -100,7 +98,6 @@ angular.module('accessimapEditeurDerApp')
                             poi.attr('width', bbox.width);
                             poi.attr('height', bbox.height);
                         }
-                        poi.attr('coord', shapeD);
                         var actions = poi.append('actions');
                         // loop through the keys - this assumes no extra data
                         d3.keys(d).forEach(function(key) {
