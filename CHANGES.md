@@ -26,6 +26,7 @@ CHANGELOG
 * When searching an address, delete the previously added icon
 * Do not duplicate the #deletedElement objects
 * Be able to write text after a feature has been deleted
+* Fix header of the interactions XML
 
 0.4
 -------------------

@@ -123,7 +123,11 @@ angular.module('accessimapEditeurDerApp')
                         });
                     });
                 var interactionsNode = d3.select('#der').select('xml').node();
-                zip.file('interactions.xml', (new XMLSerializer()).serializeToString(interactionsNode));
+                var xmlToExport = '<?xml version="1.0" encoding="UTF-8"?>';
+                xmlToExport += (new XMLSerializer()).serializeToString(interactionsNode);
+                xmlToExport = xmlToExport.replace(/<xml.*<config>/, '<config>');
+                xmlToExport = xmlToExport.replace('</xml>', '');
+                zip.file('interactions.xml', xmlToExport);
                 var content = zip.generate({type: 'blob'});
                 saveAs(content, filename + '.zip');
             });
