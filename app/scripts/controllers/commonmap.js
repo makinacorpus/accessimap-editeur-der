@@ -474,6 +474,7 @@ angular.module('accessimapEditeurDerApp')
                             if (!d3.event.defaultPrevented) {
                                 var coordinates = d3.mouse(this);
                                 var realCoordinates = geometryutils.realCoordinates(coordinates);
+
                                 var feature = d3.select('#points-layer')
                                     .append('path')
                                     .attr('d', $scope.styleChosen.path(realCoordinates[0], realCoordinates[1], $scope.styleChosen.radius))

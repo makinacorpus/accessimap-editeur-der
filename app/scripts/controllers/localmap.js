@@ -314,6 +314,15 @@ angular.module('accessimapEditeurDerApp')
                         legend = d3.select('#legend').select('svg').node();
                 zoom.on('zoom', null)
                         .on('zoomend', null);
+
+
+                var transform = d3.select('#drawing-layer').attr('transform');
+                var rotation = null;
+                if (transform) {
+                    rotation = transform.replace('rotate(', 'rotate(-');
+                }
+
+
                 shareSvg.addMap(svg)
                 .then(function() {
                     shareSvg.addLegend(legend)
@@ -448,6 +457,7 @@ angular.module('accessimapEditeurDerApp')
                     if (d3.select('.vector.' + optionalClass + '#' + feature[0].id).empty()) {
                         featureGroup = drawingLayer.append('g')
                         .attr('class', 'vector ' + optionalClass)
+                        .classed('rotable', true)
                         .attr('id', feature[0].id);
                     } else {
                         featureGroup = d3.select('.vector.' + optionalClass + '#' + feature[0].id);
@@ -456,6 +466,7 @@ angular.module('accessimapEditeurDerApp')
                     if (d3.select('.vector#' + feature[0].id).empty()) {
                         featureGroup = drawingLayer.append('g')
                         .attr('class', 'vector')
+                        .classed('rotable', true)
                         .attr('id', feature[0].id);
                     } else {
                         featureGroup = d3.select('.vector#' + feature[0].id);
@@ -542,6 +553,7 @@ angular.module('accessimapEditeurDerApp')
                             .attr(attribute.k, attribute.v);
                     });
                 }
+                $scope.rotateMap();
             }
 
             function geojsonToSvg(data, simplification, id, poi) {
