@@ -13,6 +13,7 @@ CHANGELOG
 * Start from a white page
 * Transform the tiles images into base64 so they can be exported
 * Introduce layers to order the features drawing
+* Allow zooming on edition
 
 **Minor changes**
 

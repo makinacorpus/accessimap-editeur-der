@@ -21,6 +21,7 @@ angular.module('accessimapEditeurDerApp')
                     d3.select('#der')
                         .node()
                         .appendChild($scope.data);
+                    d3.select('#der').select('svg').call(zoom).on('dblclick.zoom', null);
                 } else {
                     $location.path('/');
                 }
@@ -110,6 +111,16 @@ angular.module('accessimapEditeurDerApp')
             var cellClassId = function(grid, row, col, rowRenderIndex) {
                 return $scope.interactiveFilters.data[rowRenderIndex].id + ' highlight';
             };
+
+            function zoomed() {
+                d3.select('#map-layer').attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
+            }
+
+            var zoom = d3.behavior.zoom()
+                .translate([0, 0])
+                .scale(1)
+                .scaleExtent([1, 8])
+                .on('zoom', zoomed);
 
             function convertImgToBase64(tile) {
                 var img = new Image();
@@ -368,7 +379,9 @@ angular.module('accessimapEditeurDerApp')
                                                 features.push([point.x, point.y, index]);
                                             }
                                         });
-                                    var clickPoint = [d3.mouse(this)[0], d3.mouse(this)[1]];
+                                    var coordinates = d3.mouse(this);
+                                    var realCoordinates = geometryutils.realCoordinates(coordinates);
+                                    var clickPoint = [realCoordinates[0], realCoordinates[1]];
                                     var nearest = geometryutils.nearest(clickPoint, features);
 
                                     _pathSegList[nearest[2]].x = clickPoint[0];
@@ -458,12 +471,15 @@ angular.module('accessimapEditeurDerApp')
                     $scope.styleChosen = $scope.styleChoices[0];
                     d3.select('svg')
                         .on('click', function() {
-                            var coordinates = d3.mouse(this);
-                            var feature = d3.select('#points-layer')
-                                .append('path')
-                                .attr('d', $scope.styleChosen.path(coordinates[0], coordinates[1], $scope.styleChosen.radius))
-                                .attr('iid', $rootScope.getiid());
-                            styleutils.applyStyle(feature, $scope.styleChosen.style, $scope.colorChosen);
+                            if (!d3.event.defaultPrevented) {
+                                var coordinates = d3.mouse(this);
+                                var realCoordinates = geometryutils.realCoordinates(coordinates);
+                                var feature = d3.select('#points-layer')
+                                    .append('path')
+                                    .attr('d', $scope.styleChosen.path(realCoordinates[0], realCoordinates[1], $scope.styleChosen.radius))
+                                    .attr('iid', $rootScope.getiid());
+                                styleutils.applyStyle(feature, $scope.styleChosen.style, $scope.colorChosen);
+                            }
                      });
                 }
                 if ($scope.mode === 'circle') {
@@ -473,40 +489,44 @@ angular.module('accessimapEditeurDerApp')
                     $scope.styleChosen = $scope.styleChoices[0];
                     d3.select('svg')
                         .on('click', function() {
-                            var coordinates = d3.mouse(this);
-                            var feature;
-                            if (d3.select('.edition')[0][0]) {
-                                feature = d3.select('.edition');
-                                var xOffset = coordinates[0] - feature.attr('cx');
-                                var yOffset = coordinates[1] - feature.attr('cy');
-                                var r = Math.sqrt(Math.pow(xOffset, 2) + Math.pow(yOffset, 2));
-                                feature.attr('r', r);
-                                feature.classed('edition', false);
-                            } else {
-                                feature = d3.select('#polygons-layer')
-                                    .append('circle')
-                                    .attr('cx', coordinates[0])
-                                    .attr('cy', coordinates[1])
-                                    .attr({'class': 'edition'});
-                                styleutils.applyStyle(feature, $scope.styleChosen.style, $scope.colorChosen);
+                            if (!d3.event.defaultPrevented) {
+                                var coordinates = d3.mouse(this);
+                                var realCoordinates = geometryutils.realCoordinates(coordinates);
+                                var feature;
+                                if (d3.select('.edition')[0][0]) {
+                                    feature = d3.select('.edition');
+                                    var xOffset = realCoordinates[0] - feature.attr('cx');
+                                    var yOffset = realCoordinates[1] - feature.attr('cy');
+                                    var r = Math.sqrt(Math.pow(xOffset, 2) + Math.pow(yOffset, 2));
+                                    feature.attr('r', r);
+                                    feature.classed('edition', false);
+                                } else {
+                                    feature = d3.select('#polygons-layer')
+                                        .append('circle')
+                                        .attr('cx', realCoordinates[0])
+                                        .attr('cy', realCoordinates[1])
+                                        .attr({'class': 'edition'});
+                                    styleutils.applyStyle(feature, $scope.styleChosen.style, $scope.colorChosen);
 
-                                if ($scope.checkboxModel.contour && !feature.attr('stroke')) {
-                                    feature
-                                        .attr('stroke', 'black')
-                                        .attr('stroke-width', '2');
+                                    if ($scope.checkboxModel.contour && !feature.attr('stroke')) {
+                                        feature
+                                            .attr('stroke', 'black')
+                                            .attr('stroke-width', '2');
+                                    }
                                 }
                             }
-                     })
-                     .on('mousemove', function() {
+                        })
+                        .on('mousemove', function() {
                             var feature = d3.select('.edition');
                             if (feature[0][0]) {
                                 var coordinates = d3.mouse(this);
-                                var xOffset = coordinates[0] - feature.attr('cx');
-                                var yOffset = coordinates[1] - feature.attr('cy');
+                                var realCoordinates = geometryutils.realCoordinates(coordinates);
+                                var xOffset = realCoordinates[0] - feature.attr('cx');
+                                var yOffset = realCoordinates[1] - feature.attr('cy');
                                 var r = Math.sqrt(Math.pow(xOffset, 2) + Math.pow(yOffset, 2));
                                 feature.attr('r', r);
                             }
-                     });
+                        });
                 }
                 if ($scope.mode === 'line' || $scope.mode === 'polygon') {
                     resetActions();
@@ -529,18 +549,47 @@ angular.module('accessimapEditeurDerApp')
 
                     d3.select('svg')
                         .on('click', function() {
-                            var path;
-                            var pathInner;
-                            if (d3.select('.edition')[0][0]) {
-                                path = d3.select('.edition');
-                                if ($scope.mode === 'line') {
-                                    pathInner = d3.select('.edition.inner');
+                            if (!d3.event.defaultPrevented) {
+                                var path;
+                                var pathInner;
+                                if (d3.select('.edition')[0][0]) {
+                                    path = d3.select('.edition');
+                                    if ($scope.mode === 'line') {
+                                        pathInner = d3.select('.edition.inner');
+                                    }
+                                } else {
+                                    lineEdit = [];
+                                    path = drawingLayer
+                                        .append('path')
+                                        .attr({'class': 'edition'});
+                                    styleutils.applyStyle(path, $scope.styleChosen.style, $scope.colorChosen);
+
+                                    if ($scope.checkboxModel.contour && !path.attr('stroke')) {
+                                        path
+                                            .attr('stroke', 'black')
+                                            .attr('stroke-width', '2');
+                                    }
+
+                                    if ($scope.mode === 'line') {
+                                        pathInner = drawingLayer
+                                            .append('path')
+                                            .attr({'class': 'edition inner'});
+                                        styleutils.applyStyle(pathInner, $scope.styleChosen.styleInner, $scope.colorChosen);
+                                    }
                                 }
-                            } else {
-                                lineEdit = [];
-                                path = drawingLayer
-                                    .append('path')
-                                    .attr({'class': 'edition'});
+                                var coordinates = d3.mouse(this);
+                                var realCoordinates = geometryutils.realCoordinates(coordinates);
+                                lastPoint = realCoordinates;
+                                lineEdit.push(realCoordinates);
+                                path.attr({
+                                    d: lineFunction(lineEdit)
+                                });
+
+                                if ($scope.mode === 'line') {
+                                    pathInner.attr({
+                                        d: lineFunction(lineEdit)
+                                    });
+                                }
                                 styleutils.applyStyle(path, $scope.styleChosen.style, $scope.colorChosen);
 
                                 if ($scope.checkboxModel.contour && !path.attr('stroke')) {
@@ -550,34 +599,8 @@ angular.module('accessimapEditeurDerApp')
                                 }
 
                                 if ($scope.mode === 'line') {
-                                    pathInner = drawingLayer
-                                        .append('path')
-                                        .attr({'class': 'edition inner'});
                                     styleutils.applyStyle(pathInner, $scope.styleChosen.styleInner, $scope.colorChosen);
                                 }
-                            }
-                            var coordinates = d3.mouse(this);
-                            lastPoint = coordinates;
-                            lineEdit.push(coordinates);
-                            path.attr({
-                                d: lineFunction(lineEdit)
-                            });
-
-                            if ($scope.mode === 'line') {
-                                pathInner.attr({
-                                    d: lineFunction(lineEdit)
-                                });
-                            }
-                            styleutils.applyStyle(path, $scope.styleChosen.style, $scope.colorChosen);
-
-                            if ($scope.checkboxModel.contour && !path.attr('stroke')) {
-                                path
-                                    .attr('stroke', 'black')
-                                    .attr('stroke-width', '2');
-                            }
-
-                            if ($scope.mode === 'line') {
-                                styleutils.applyStyle(pathInner, $scope.styleChosen.styleInner, $scope.colorChosen);
                             }
                         })
                         .on('dblclick', function() {
@@ -614,26 +637,28 @@ angular.module('accessimapEditeurDerApp')
                                     }
                                 }
                                 var coordinates = d3.mouse(this);
+                                var realCoordinates = geometryutils.realCoordinates(coordinates);
                                 line.attr('x1', lastPoint[0])
                                     .attr('y1', lastPoint[1])
-                                    .attr('x2', coordinates[0])
-                                    .attr('y2', coordinates[1]);
+                                    .attr('x2', realCoordinates[0])
+                                    .attr('y2', realCoordinates[1]);
                             }
                         });
                 }
                 if ($scope.mode === 'addtext') {
                     resetActions();
                     $('#der').css('cursor', 'crosshair');
-                    d3.select('svg')
-                        .on('click', function() {
+                    d3.select('svg').on('click', function() {
+                        if (!d3.event.defaultPrevented) {
                             // the previously edited text should not be edited anymore
                             d3.select('.edition').classed('edition', false);
                             var coordinates = d3.mouse(this);
+                            var realCoordinates = geometryutils.realCoordinates(coordinates);
                             var d = 'Texte';
                             d3.select('#text-layer')
                                 .append('text')
-                                .attr('x', coordinates[0])
-                                .attr('y', coordinates[1] - 35)
+                                .attr('x', realCoordinates[0])
+                                .attr('y', realCoordinates[1] - 35)
                                 .attr('font-family', $scope.fontChosen.family)
                                 .attr('font-size', $scope.fontChosen.size)
                                 .attr('font-weight', function() {
@@ -647,8 +672,8 @@ angular.module('accessimapEditeurDerApp')
                                 .enter()
                                 .append('foreignObject')
                                 .attr('id', 'textEdition')
-                                .attr('x', coordinates[0])
-                                .attr('y', coordinates[1] - 35)
+                                .attr('x', realCoordinates[0])
+                                .attr('y', realCoordinates[1] - 35)
                                 .attr('height', 500)
                                 .attr('width', 500)
                                 .attr('font-family', $scope.fontChosen.family)
@@ -703,7 +728,8 @@ angular.module('accessimapEditeurDerApp')
                                     $scope.mode = 'default';
                                 });
                                 resetActions();
-                            });
+                        }
+                    });
                 }
             });
 

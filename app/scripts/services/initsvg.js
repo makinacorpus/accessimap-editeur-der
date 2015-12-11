@@ -48,9 +48,6 @@ angular.module('accessimapEditeurDerApp')
             });
         };
 
-
-
-
         this.createDefs = function(target) {
             target.append('defs')
                         .append('marker')
@@ -123,5 +120,12 @@ angular.module('accessimapEditeurDerApp')
             return target.append('g')
                     .attr('id', 'source-layer')
                     .classed('rotable', true);
+        };
+
+        this.createMapLayer = function(target, width, height) {
+            return target.append('g')
+                    .attr('id', 'map-layer')
+                    .attr('width', width)
+                    .attr('height', height);
         };
     });

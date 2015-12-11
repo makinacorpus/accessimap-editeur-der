@@ -132,17 +132,13 @@ angular.module('accessimapEditeurDerApp')
 
             $scope.address = {};
 
-            var map = mapsvg.append('g')
-                    .attr('id', 'map-layer')
-                    .attr('width', width)
-                    .attr('height', height)
-                    .attr('transform', 'rotate(' + $scope.rotationAngle + ')');
-
+            var map = initSvg.createMapLayer(mapsvg, width, height);
+            map.attr('transform', 'rotate(' + $scope.rotationAngle + ')');
 
             initSvg.createSource(map);
-            initSvg.createFrame(map, width, height);
             initSvg.createDrawing(map);
             initSvg.createMargin(mapsvg, width, height);
+            initSvg.createFrame(mapsvg, width, height);
             initSvg.createMargin(legendsvg, legendWidth, legendHeight);
 
             var sourceLayer = d3.select('#source-layer');

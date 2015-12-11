@@ -45,4 +45,14 @@ angular.module('accessimapEditeurDerApp')
             }
             return sum > 0;
         };
+
+        this.realCoordinates = function(coordinates) {
+            var transform = d3.transform(d3.select('#map-layer').attr('transform'));
+            var translate = transform.translate;
+            var scale = transform.scale[0];
+            var realCoordinates = [];
+            realCoordinates[0] = (coordinates[0] - translate[0]) / scale;
+            realCoordinates[1] = (coordinates[1] - translate[1]) / scale;
+            return realCoordinates;
+        };
     });
