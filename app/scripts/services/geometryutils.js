@@ -55,4 +55,5 @@ angular.module('accessimapEditeurDerApp')
             realCoordinates[1] = (coordinates[1] - translate[1]) / scale;
             return realCoordinates;
         };
+
     });

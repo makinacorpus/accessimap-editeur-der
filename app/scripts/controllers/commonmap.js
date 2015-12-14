@@ -579,7 +579,24 @@ angular.module('accessimapEditeurDerApp')
                                     }
                                 }
                                 var coordinates = d3.mouse(this);
+
                                 var realCoordinates = geometryutils.realCoordinates(coordinates);
+
+                                if (lastPoint) {
+                                    var tanAngle = Math.abs((realCoordinates[1] - lastPoint[1]) / (realCoordinates[0] - lastPoint[0]));
+                                    var tan5 = Math.tan((5 * 2 * Math.PI) / 360);
+                                    var tan85 = Math.tan((85 * 2 * Math.PI) / 360);
+
+                                    // If the ctrlKey is pressed, draw horizontal or vertical lines with a tolerance of 5°
+                                    if (d3.event.ctrlKey && (tanAngle < tan5 || tanAngle > tan85)) {
+                                        if (tanAngle < tan5) {
+                                            realCoordinates[1] = lastPoint[1];
+                                        } else {
+                                            realCoordinates[0] = lastPoint[0];
+                                        }
+                                    }
+                                }
+
                                 lastPoint = realCoordinates;
                                 lineEdit.push(realCoordinates);
                                 path.attr({
@@ -639,6 +656,19 @@ angular.module('accessimapEditeurDerApp')
                                 }
                                 var coordinates = d3.mouse(this);
                                 var realCoordinates = geometryutils.realCoordinates(coordinates);
+                                var tanAngle = Math.abs((realCoordinates[1] - lastPoint[1]) / (realCoordinates[0] - lastPoint[0]));
+                                var tan5 = Math.tan((5 * 2 * Math.PI) / 360);
+                                var tan85 = Math.tan((85 * 2 * Math.PI) / 360);
+
+                                // If the ctrlKey is pressed, draw horizontal or vertical lines with a tolerance of 5°
+                                if (d3.event.ctrlKey && (tanAngle < tan5 || tanAngle > tan85)) {
+                                    if (tanAngle < tan5) {
+                                        realCoordinates[1] = lastPoint[1];
+                                    } else {
+                                        realCoordinates[0] = lastPoint[0];
+                                    }
+                                }
+
                                 line.attr('x1', lastPoint[0])
                                     .attr('y1', lastPoint[1])
                                     .attr('x2', realCoordinates[0])

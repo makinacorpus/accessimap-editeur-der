@@ -14,6 +14,7 @@ CHANGELOG
 * Transform the tiles images into base64 so they can be exported
 * Introduce layers to order the features drawing
 * Allow zooming on edition
+* Magnetic lines on Ctrl press to draw vertical or horizontal lines
 
 **Minor changes**
 
