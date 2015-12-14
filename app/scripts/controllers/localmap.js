@@ -719,21 +719,23 @@ angular.module('accessimapEditeurDerApp')
                 var start = $scope.address.start !== '' && $scope.address.start;
                 var stop = $scope.address.stop !== '' && $scope.address.stop;
                 if (start && stop) {
-                    var urlStart = 'http://api-adresse.data.gouv.fr/search/?q=' + start + '&limit=1';
+                    var urlStart = 'http://nominatim.openstreetmap.org/search/' + start + '?format=json&limit=1';
                     $http.get(urlStart).success(function(dataStart) {
-                        if (dataStart.features[0]) {
-                            var urlStop = 'http://api-adresse.data.gouv.fr/search/?q=' + stop + '&limit=1';
+                        if (dataStart[0]) {
+                            var urlStop = 'http://nominatim.openstreetmap.org/search/' + stop + '?format=json&limit=1';
                             $http.get(urlStop).success(function(dataStop) {
-                                if (dataStop.features[0]) {
+                                if (dataStop[0]) {
                                     var p = d3.geo.mercator()
                                             .scale(zoom.scale() / 2 / Math.PI)
                                             .translate([width / 2, height / 2]);
-                                    var lonStart = dataStart.features[0].geometry.coordinates[0];
-                                    var latStart = dataStart.features[0].geometry.coordinates[1];
-                                    var lonStop = dataStop.features[0].geometry.coordinates[0];
-                                    var latStop = dataStop.features[0].geometry.coordinates[1];
-                                    var locationStart = p(dataStart.features[0].geometry.coordinates);
-                                    var locationStop = p(dataStop.features[0].geometry.coordinates);
+                                    var lonStart = parseFloat(dataStart[0].lon);
+                                    var latStart = parseFloat(dataStart[0].lat);
+                                    var lonStop = parseFloat(dataStop[0].lon);
+                                    var latStop = parseFloat(dataStop[0].lat);
+                                    var locationStart = p([lonStart, latStart]);
+                                    var locationStop = p([lonStop, latStop]);
+                                    var pointStart = turf.point([lonStart, latStart]);
+                                    var pointStop = turf.point([lonStop, latStop]);
 
                                     // Calculate the new map scale
                                     var s = zoom.scale() / Math.max(Math.abs(locationStart[0] - locationStop[0]) / width, Math.abs(locationStart[1] - locationStop[1]) / height) / 1.2;
@@ -758,8 +760,8 @@ angular.module('accessimapEditeurDerApp')
                                         id: 'startPoint',
                                         name: 'Point de départ',
                                         geometryType: 'point',
-                                        layer: $.extend(true, {}, dataStart.features[0]), //deep copy,
-                                        originallayer: $.extend(true, {}, dataStart.features[0]), //deep copy
+                                        layer: $.extend(true, {}, pointStart), //deep copy,
+                                        originallayer: $.extend(true, {}, pointStart), //deep copy
                                         style: settings.STYLES.point[2],
                                         styleChoices: settings.STYLES.point,
                                         rotation: 0
@@ -768,8 +770,8 @@ angular.module('accessimapEditeurDerApp')
                                         id: 'stopPoint',
                                         name: 'Point d\'arrivée',
                                         geometryType: 'point',
-                                        layer: $.extend(true, {}, dataStop.features[0]), //deep copy,
-                                        originallayer: $.extend(true, {}, dataStop.features[0]), //deep copy
+                                        layer: $.extend(true, {}, pointStop), //deep copy,
+                                        originallayer: $.extend(true, {}, pointStop), //deep copy
                                         style: settings.STYLES.point[2],
                                         styleChoices: settings.STYLES.point,
                                         rotation: 0
@@ -777,24 +779,29 @@ angular.module('accessimapEditeurDerApp')
                                     zoomed();
 
                                     $scope.geojson.push(objStart);
-                                    drawFeature(dataStart, [objStart]);
+                                    var featuresStart = turf.featurecollection([pointStart]);
+                                    drawFeature(featuresStart, [objStart]);
                                     $scope.geojson.push(objStop);
-                                    drawFeature(dataStop, [objStop]);
+                                    var featuresStop = turf.featurecollection([pointStop]);
+                                    drawFeature(featuresStop, [objStop]);
                                 }
                             });
                         }
                     });
                 } else {
                     var place = start || stop;
-                    var url = 'http://api-adresse.data.gouv.fr/search/?q=' + place + '&limit=1';
+                    var url = 'http://nominatim.openstreetmap.org/search/' + place + '?format=json&limit=1';
                     $http.get(url).
                         success(function(data) {
-                            if (data.features[0]) {
+                            if (data[0]) {
                                 var s = Math.pow(2, 24);
                                 var p = d3.geo.mercator()
                                         .scale(s / 2 / Math.PI)
                                         .translate([width / 2, height / 2]);
-                                var location = p(data.features[0].geometry.coordinates);
+                                var lon = data[0].lon;
+                                var lat = data[0].lat;
+                                var point = turf.point([lon, lat]);
+                                var location = p([lon, lat]);
                                 var t = [width - location[0], height - location[1]];
 
                                 // Draw a point
@@ -805,8 +812,8 @@ angular.module('accessimapEditeurDerApp')
                                     id: 'uniquePoint',
                                     name: 'Point de départ',
                                     geometryType: 'point',
-                                    layer: $.extend(true, {}, data.features[0]), //deep copy,
-                                    originallayer: $.extend(true, {}, data.features[0]), //deep copy
+                                    layer: $.extend(true, {}, point), //deep copy,
+                                    originallayer: $.extend(true, {}, point), //deep copy
                                     style: settings.STYLES.point[0],
                                     styleChoices: settings.STYLES.point,
                                     rotation: 0
@@ -816,7 +823,8 @@ angular.module('accessimapEditeurDerApp')
                                 zoomed();
 
                                 $scope.geojson.push(obj);
-                                drawFeature(data, [obj]);
+                                var features = turf.featurecollection([point]);
+                                drawFeature(features, [obj]);
                             }
                     });
                 }
