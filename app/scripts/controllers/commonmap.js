@@ -9,8 +9,8 @@
  */
 angular.module('accessimapEditeurDerApp')
     .controller('CommonmapCtrl', ['$rootScope', '$scope', '$location', 'settings', 'exportData',
-        'shareSvg', 'svgicon', 'geometryutils', 'styleutils',
-        function($rootScope, $scope, $location, settings, exportData, shareSvg, svgicon, geometryutils, styleutils) {
+        'shareSvg', 'svgicon', 'geometryutils', 'styleutils', 'radialMenu',
+        function($rootScope, $scope, $location, settings, exportData, shareSvg, svgicon, geometryutils, styleutils, radialMenu) {
             d3.select('#der')
                 .selectAll('svg')
                 .remove();
@@ -144,7 +144,6 @@ angular.module('accessimapEditeurDerApp')
                 });
             }
 
-
             $scope.deleteCol = function(colName) {
                 // Remove the column from interactiveFiltersColumns
                 var columnToDelete = interactiveFiltersColumns.filter(function(col) {
@@ -276,7 +275,7 @@ angular.module('accessimapEditeurDerApp')
             };
 
             function resetActions() {
-                d3.selectAll('path')
+                d3.selectAll('path:not(.menu-segment)')
                     .on('click', function() {
                     });
                 d3.selectAll('svg')
@@ -337,9 +336,18 @@ angular.module('accessimapEditeurDerApp')
                 });
             }
 
+            function addRadialMenu(el) {
+                el.on('contextmenu', function() {
+                    d3.event.preventDefault();
+                    d3.event.stopPropagation();
+                    radialMenu.drawMenu(d3.select(this), d3.mouse(this));
+                });
+            }
+
             $scope.$watch('mode', function() {
                 if ($scope.mode === 'default') {
                     resetActions();
+                    addRadialMenu(d3.selectAll('path'));
                 }
                 if ($scope.mode === 'delete') {
                     resetActions();
