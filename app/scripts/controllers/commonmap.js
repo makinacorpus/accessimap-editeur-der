@@ -345,9 +345,8 @@ angular.module('accessimapEditeurDerApp')
                     if ($scope.menu) {
                         $scope.menu.hide();
                     }
-                    var type = 'point';
                     var mapLayer = d3.select('#der').select('svg');
-                    $scope.menu = radialMenu.drawMenu(d3.select(this), type, d3.mouse(mapLayer.node()), $scope.menu);
+                    $scope.menu = radialMenu.drawMenu(d3.select(this), d3.mouse(mapLayer.node()), $scope.menu);
                 });
             }
 
@@ -355,6 +354,8 @@ angular.module('accessimapEditeurDerApp')
                 if ($scope.mode === 'default') {
                     resetActions();
                     addRadialMenu(d3.selectAll('path'));
+                    addRadialMenu(d3.selectAll('circle'));
+                    addRadialMenu(d3.selectAll('text'));
                 }
                 if ($scope.mode === 'delete') {
                     resetActions();

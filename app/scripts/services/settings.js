@@ -1210,13 +1210,29 @@ angular.module('accessimapEditeurDerApp')
                 { icon: 'https://github.com/favicon.ico', action: 'fill' },
                 { icon: 'https://github.com/favicon.ico', action: 'frame' },
                 { icon: 'https://github.com/favicon.ico', action: 'interaction' }
+            ],
+            'line': [
+                { icon: 'data/France_all_regions_A4.svg', action: 'delete' },
+                { icon: 'https://github.com/favicon.ico', action: 'movePoint' },
+                { icon: 'https://github.com/favicon.ico', action: 'markers' }
+            ],
+            'polygon': [
+                { icon: 'data/France_all_regions_A4.svg', action: 'delete' },
+                { icon: 'https://github.com/favicon.ico', action: 'movePoint' },
+                { icon: 'https://github.com/favicon.ico', action: 'changePattern' },
+                { icon: 'https://github.com/favicon.ico', action: 'changeFillColor' },
+                { icon: 'https://github.com/favicon.ico', action: 'displayStroke' }
+            ],
+            'circle': [
+                { icon: 'data/France_all_regions_A4.svg', action: 'delete' },
+                { icon: 'https://github.com/favicon.ico', action: 'changePattern' },
+                { icon: 'https://github.com/favicon.ico', action: 'changeFillColor' },
+                { icon: 'https://github.com/favicon.ico', action: 'displayStroke' }
+            ],
+            'text': [
+                { icon: 'data/France_all_regions_A4.svg', action: 'delete' }
             ]
         };
-
-
-
-
-
 
         // Public API here
         return {
