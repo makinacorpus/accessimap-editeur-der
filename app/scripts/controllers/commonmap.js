@@ -57,6 +57,8 @@ angular.module('accessimapEditeurDerApp')
             $scope.containerStyleChoices = settings.STYLES.polygon;
             $scope.containerStyle = $scope.containerStyleChoices[0];
 
+            $scope.menu = null;
+
             $scope.changeContainerStyle = function(style) {
                 angular.forEach(style.style, function(attribute) {
                     var k = attribute.k;
@@ -340,7 +342,11 @@ angular.module('accessimapEditeurDerApp')
                 el.on('contextmenu', function() {
                     d3.event.preventDefault();
                     d3.event.stopPropagation();
-                    radialMenu.drawMenu(d3.select(this), d3.mouse(this));
+                    if ($scope.menu) {
+                        $scope.menu.hide();
+                    }
+                    var type = 'point';
+                    $scope.menu = radialMenu.drawMenu(d3.select(this), type, d3.mouse(this), $scope.menu);
                 });
             }
 

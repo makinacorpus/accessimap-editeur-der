@@ -8,24 +8,25 @@
  * Service in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
-  .service('radialMenu', function() {
+  .service('radialMenu', ['settings', function(settings) {
 
-        this.drawMenu = function(target, mousePosition) {
-            var data = [
-                { icon: 'https://github.com/favicon.ico', action: 'segment 1' },
-                { icon: 'https://github.com/favicon.ico', action: 'segment 2' },
-                { icon: 'https://github.com/favicon.ico', action: 'segment 3' },
-                { icon: 'https://github.com/favicon.ico', action: 'segment 4' }
-            ];
+        this.drawMenu = function(target, type, mousePosition, menu) {
+            var data = settings.ACTIONS[type];
 
             var m = new d3.radialMenu().radius(50)
                 .thickness(50)
+                .animationDuration(100)
+                .iconSize(40)
                 .translation(mousePosition[0] + ' ' + mousePosition[1])
                 .onClick(function(d) {
                     console.log(d);
                 })
                 .appendTo(target.node().parentNode)
                 .show(data);
+
+            return m;
         };
 
-  });
+  }]);
+
+

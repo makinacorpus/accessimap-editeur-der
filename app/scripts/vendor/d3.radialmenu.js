@@ -152,11 +152,8 @@ d3.radialMenu = function() {
         // Convert the target into a valid D3 selection
         // that we can append our menu into
         target = d3.select(target);
-        console.log(target)
 
          // Create the visualiziation   
-        console.log(translation)
-        console.log("transform", "translate(" + translation + ") rotate(" + offsetAngleDeg + ")")
         segmentLayer = target.append("g")
                              .attr("transform", "translate(" + translation + ") rotate(" + offsetAngleDeg + ")");
         
@@ -290,7 +287,8 @@ d3.radialMenu = function() {
                 .each("end", function(d) { 
                     dataJoin.remove();      // Remove all of the segment groups once the transition has completed
                 });
-        
+        dataJoin.node().parentNode.remove()
+        dataJoin.remove()
         return control;
     };
     

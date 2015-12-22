@@ -1202,6 +1202,22 @@ angular.module('accessimapEditeurDerApp')
 
         var XAPI_URL = 'http://overpass-api.de/api/interpreter?data=';
 
+        var ACTIONS = {
+            'point': [
+                { icon: 'data/France_all_regions_A4.svg', action: 'delete' },
+                { icon: 'https://github.com/favicon.ico', action: 'move' },
+                { icon: 'https://github.com/favicon.ico', action: 'rotate' },
+                { icon: 'https://github.com/favicon.ico', action: 'fill' },
+                { icon: 'https://github.com/favicon.ico', action: 'frame' },
+                { icon: 'https://github.com/favicon.ico', action: 'interaction' }
+            ]
+        };
+
+
+
+
+
+
         // Public API here
         return {
             XAPI_URL: XAPI_URL,
@@ -1211,6 +1227,7 @@ angular.module('accessimapEditeurDerApp')
             QUERY_LIST: QUERY_LIST,
             POLYGON_STYLES: POLYGON_STYLES,
             STYLES: STYLES,
+            ACTIONS: ACTIONS,
             leaflet: leafletConf
         };
     }]);
