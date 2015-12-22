@@ -12,6 +12,7 @@ angular.module('accessimapEditeurDerApp')
 
         this.drawMenu = function(target, type, mousePosition, menu) {
             var data = settings.ACTIONS[type];
+            var mapLayer = d3.select('#der').select('svg');
 
             var m = new d3.radialMenu().radius(50)
                 .thickness(50)
@@ -21,7 +22,7 @@ angular.module('accessimapEditeurDerApp')
                 .onClick(function(d) {
                     console.log(d);
                 })
-                .appendTo(target.node().parentNode)
+                .appendTo(mapLayer.node())
                 .show(data);
 
             return m;

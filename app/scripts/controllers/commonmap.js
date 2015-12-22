@@ -346,7 +346,8 @@ angular.module('accessimapEditeurDerApp')
                         $scope.menu.hide();
                     }
                     var type = 'point';
-                    $scope.menu = radialMenu.drawMenu(d3.select(this), type, d3.mouse(this), $scope.menu);
+                    var mapLayer = d3.select('#der').select('svg');
+                    $scope.menu = radialMenu.drawMenu(d3.select(this), type, d3.mouse(mapLayer.node()), $scope.menu);
                 });
             }
 
