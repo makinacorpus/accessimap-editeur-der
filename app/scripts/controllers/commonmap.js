@@ -115,6 +115,11 @@ angular.module('accessimapEditeurDerApp')
             };
 
             function zoomed() {
+
+                if ($scope.menu) {
+                    $scope.menu.hide();
+                    $scope.menu = null;
+                }
                 d3.select('#map-layer').attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
             }
 
