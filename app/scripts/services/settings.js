@@ -1205,32 +1205,32 @@ angular.module('accessimapEditeurDerApp')
         var ACTIONS = {
             'point': [
                 { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject},
-                { icon: 'https://github.com/favicon.ico', action: 'move' },
-                { icon: 'https://github.com/favicon.ico', action: 'rotate' },
-                { icon: 'https://github.com/favicon.ico', action: 'fill' },
-                { icon: 'https://github.com/favicon.ico', action: 'frame' },
-                { icon: 'https://github.com/favicon.ico', action: 'interaction' }
+                { icon: '../bower_components/material-design-icons/action/svg/production/ic_open_with_48px.svg', action: 'move' },
+                { icon: '../bower_components/material-design-icons/action/svg/production/ic_autorenew_48px.svg', action: 'rotate' },
+                { icon: '../bower_components/material-design-icons/image/svg/production/ic_colorize_48px.svg', action: 'fill' },
+                { icon: '../bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: 'frame' },
+                { icon: '../bower_components/material-design-icons/av/svg/production/ic_hearing_48px.svg', action: 'interaction' }
             ],
             'line': [
-                { icon: 'data/France_all_regions_A4.svg', action: 'delete' },
-                { icon: 'https://github.com/favicon.ico', action: 'movePoint' },
-                { icon: 'https://github.com/favicon.ico', action: 'markers' }
+                { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: 'delete' },
+                { icon: '../bower_components/material-design-icons/editor/svg/production/ic_linear_scale_48px.svg', action: 'movePoint' },
+                { icon: '../bower_components/material-design-icons/action/svg/production/ic_trending_flat_48px.svg', action: 'markers' }
             ],
             'polygon': [
-                { icon: 'data/France_all_regions_A4.svg', action: 'delete' },
-                { icon: 'https://github.com/favicon.ico', action: 'movePoint' },
-                { icon: 'https://github.com/favicon.ico', action: 'changePattern' },
-                { icon: 'https://github.com/favicon.ico', action: 'changeFillColor' },
-                { icon: 'https://github.com/favicon.ico', action: 'displayStroke' }
+                { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: 'delete' },
+                { icon: '../bower_components/material-design-icons/editor/svg/production/ic_linear_scale_48px.svg', action: 'movePoint' },
+                { icon: '../bower_components/material-design-icons/image/svg/production/ic_grain_48px.svg', action: 'changePattern' },
+                { icon: '../bower_components/material-design-icons/image/svg/production/ic_color_lens_48px.svg', action: 'changeFillColor' },
+                { icon: '../bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: 'displayStroke' }
             ],
             'circle': [
-                { icon: 'data/France_all_regions_A4.svg', action: 'delete' },
-                { icon: 'https://github.com/favicon.ico', action: 'changePattern' },
-                { icon: 'https://github.com/favicon.ico', action: 'changeFillColor' },
-                { icon: 'https://github.com/favicon.ico', action: 'displayStroke' }
+                { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: 'delete' },
+                { icon: '../bower_components/material-design-icons/image/svg/production/ic_grain_48px.svg', action: 'changePattern' },
+                { icon: '../bower_components/material-design-icons/image/svg/production/ic_color_lens_48px.svg', action: 'changeFillColor' },
+                { icon: '../bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: 'displayStroke' }
             ],
             'text': [
-                { icon: 'data/France_all_regions_A4.svg', action: 'delete' }
+                { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: 'delete' }
             ]
         };
 
