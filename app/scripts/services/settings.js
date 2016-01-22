@@ -9,8 +9,8 @@
  * Factory in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
-    .factory('settings', ['editSvg',
-        function(editSvg) {
+    .factory('settings', ['editSvg', 'delete',
+        function(editSvg, deleteService) {
 
         var leafletConf = {
                 GLOBAL_MAP_CENTER: [1.441019, 43.604268], // [lon, lat]
@@ -1204,7 +1204,7 @@ angular.module('accessimapEditeurDerApp')
 
         var ACTIONS = {
             'point': [
-                { icon: 'data/France_all_regions_A4.svg', action: 'delete' },
+                { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject},
                 { icon: 'https://github.com/favicon.ico', action: 'move' },
                 { icon: 'https://github.com/favicon.ico', action: 'rotate' },
                 { icon: 'https://github.com/favicon.ico', action: 'fill' },

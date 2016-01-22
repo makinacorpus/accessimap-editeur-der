@@ -309,6 +309,7 @@ angular.module('accessimapEditeurDerApp')
             }
 
             function deleteFeature(el) {
+                // Delete when radial menu is fully working
                 $scope.$apply(function() {
                     $scope.deletedFeature = new XMLSerializer().serializeToString(el);
                 });
@@ -319,6 +320,7 @@ angular.module('accessimapEditeurDerApp')
             }
 
             function deleteOnClick(el) {
+                // Delete when radial menu is fully working
                 el.on('click', function() {
                     // Remove previous deleted Element placeholder if it exists
                     d3.select('#deletedElement').remove();
@@ -351,7 +353,7 @@ angular.module('accessimapEditeurDerApp')
                         $scope.menu.hide();
                     }
                     var mapLayer = d3.select('#der').select('svg');
-                    $scope.menu = radialMenu.drawMenu(d3.select(this), d3.mouse(mapLayer.node()), $scope.menu);
+                    $scope.menu = radialMenu.drawMenu(d3.select(this), d3.mouse(mapLayer.node()), $scope);
                 });
             }
 

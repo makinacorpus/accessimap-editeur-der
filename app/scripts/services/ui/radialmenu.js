@@ -10,7 +10,8 @@
 angular.module('accessimapEditeurDerApp')
   .service('radialMenu', ['settings', 'getType', function(settings, getType) {
 
-        this.drawMenu = function(target, mousePosition, menu) {
+        this.drawMenu = function(target, mousePosition, scope) {
+            var menu = scope.menu;
             var type = getType.getType(target);
             if (type) {
                 var data = settings.ACTIONS[type];
@@ -22,7 +23,8 @@ angular.module('accessimapEditeurDerApp')
                     .iconSize(40)
                     .translation(mousePosition[0] + ' ' + mousePosition[1])
                     .onClick(function(d) {
-                        console.log(d);
+                        var action = d.data.action;
+                        action(target, scope);
                     })
                     .appendTo(mapLayer.node())
                     .show(data);
