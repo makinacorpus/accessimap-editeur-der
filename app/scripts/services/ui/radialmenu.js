@@ -25,6 +25,8 @@ angular.module('accessimapEditeurDerApp')
                     .onClick(function(d) {
                         var action = d.data.action;
                         action(target, scope);
+                        scope.menu.hide();
+                        scope.menu = null;
                     })
                     .appendTo(mapLayer.node())
                     .show(data);
