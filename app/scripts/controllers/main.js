@@ -54,12 +54,12 @@ angular.module('accessimapEditeurDerApp')
                         .attr('height', legendHeight);
                 initSvg.createLegendText(legendContainter, margin);
 
+                initSvg.createFrame(mapsvg, width, height);
                 var map = initSvg.createMapLayer(mapsvg, width, height);
 
                 initSvg.createSource(map);
                 initSvg.createDrawing(map);
                 initSvg.createMargin(mapsvg, width, height);
-                initSvg.createFrame(mapsvg, width, height);
 
                 initSvg.createMargin(legendsvg, legendWidth, legendHeight);
 

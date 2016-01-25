@@ -114,6 +114,7 @@ angular.module('accessimapEditeurDerApp')
                         svg.call(key);
                     });
 
+                    initSvg.createFrame(svg, widthSvg, heightSvg);
                     var map = svg.append('g')
                             .attr('id', 'map-layer')
                             .attr('width', widthSvg)
@@ -122,7 +123,6 @@ angular.module('accessimapEditeurDerApp')
                     var sourceLayer = initSvg.createSource(map);
                     initSvg.createDrawing(map);
                     initSvg.createMargin(svg, widthSvg, heightSvg);
-                    initSvg.createFrame(svg, widthSvg, heightSvg);
 
                     sourceLayer.append('g')
                         .classed('sourceDocument', true)
@@ -154,6 +154,7 @@ angular.module('accessimapEditeurDerApp')
                     angular.forEach(settings.POLYGON_STYLES, function(key) {
                         svg.call(key);
                     });
+                    initSvg.createFrame(svg, widthSvg, heightSvg);
                     var map = svg.append('g')
                             .attr('id', 'map-layer')
                             .attr('width', widthSvg)
@@ -162,7 +163,6 @@ angular.module('accessimapEditeurDerApp')
                     var sourceLayer = initSvg.createSource(map);
                     initSvg.createDrawing(map);
                     initSvg.createMargin(svg, widthSvg, heightSvg);
-                    initSvg.createFrame(svg, widthSvg, heightSvg);
 
                     var originalSvg = d3.select(xml.documentElement);
                     var children = originalSvg[0][0].children;
