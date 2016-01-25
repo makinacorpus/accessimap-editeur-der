@@ -9,8 +9,8 @@
  * Factory in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
-    .factory('settings', ['editSvg', 'delete', 'interact',
-        function(editSvg, deleteService, interactService) {
+    .factory('settings', ['editSvg', 'delete', 'interact', 'style',
+        function(editSvg, deleteService, interactService, styleService) {
 
         var leafletConf = {
                 GLOBAL_MAP_CENTER: [1.441019, 43.604268], // [lon, lat]
@@ -1221,13 +1221,13 @@ angular.module('accessimapEditeurDerApp')
                 { icon: '../bower_components/material-design-icons/editor/svg/production/ic_linear_scale_48px.svg', action: 'movePoint' },
                 { icon: '../bower_components/material-design-icons/image/svg/production/ic_grain_48px.svg', action: 'changePattern' },
                 { icon: '../bower_components/material-design-icons/image/svg/production/ic_color_lens_48px.svg', action: 'changeFillColor' },
-                { icon: '../bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: 'displayStroke' }
+                { icon: '../bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: styleService.toggleStroke }
             ],
             'circle': [
                 { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject },
                 { icon: '../bower_components/material-design-icons/image/svg/production/ic_grain_48px.svg', action: 'changePattern' },
                 { icon: '../bower_components/material-design-icons/image/svg/production/ic_color_lens_48px.svg', action: 'changeFillColor' },
-                { icon: '../bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: 'displayStroke' }
+                { icon: '../bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: styleService.toggleStroke }
             ],
             'text': [
                 { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject }

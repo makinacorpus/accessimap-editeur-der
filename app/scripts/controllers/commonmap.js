@@ -262,23 +262,24 @@ angular.module('accessimapEditeurDerApp')
 
 
             $scope.changeTextColor = function() {
-                    $scope.fontColorChosen = $scope.fontColors[$scope.fontChosen.color][0];
+                $scope.fontColorChosen = $scope.fontColors[$scope.fontChosen.color][0];
             };
 
             $scope.updatePolygonStyle = function() {
-                    if ($scope.mode === 'editpolygon') {
-                        var path = d3.select('.blink');
-                        $scope.$watch($scope.styleChosen, function() {
-                            styleutils.applyStyle(path, $scope.styleChosen.style, $scope.colorChosen);
-                            if ($scope.checkboxModel.contour) {
-                                path.attr('stroke', 'black')
-                                    .attr('stroke-width', '2');
-                            } else {
-                                path.attr('stroke', null)
-                                    .attr('stroke-width', null);
-                            }
-                        });
-                    }
+                // Delete when radial menu is fully working
+                if ($scope.mode === 'editpolygon') {
+                    var path = d3.select('.blink');
+                    $scope.$watch($scope.styleChosen, function() {
+                        styleutils.applyStyle(path, $scope.styleChosen.style, $scope.colorChosen);
+                        if ($scope.checkboxModel.contour) {
+                            path.attr('stroke', 'black')
+                                .attr('stroke-width', '2');
+                        } else {
+                            path.attr('stroke', null)
+                                .attr('stroke-width', null);
+                        }
+                    });
+                }
             };
 
             function resetActions() {
@@ -454,6 +455,7 @@ angular.module('accessimapEditeurDerApp')
                 }
 
                 if ($scope.mode === 'interaction') {
+                    // Delete when radial menu is fully working
                     resetActions();
                     $('#der').css('cursor', 'crosshair');
 
