@@ -15,7 +15,6 @@ angular.module('accessimapEditeurDerApp')
         };
 
         this.nearest = function(targetPoint, points) {
-            console.log(this);
             var nearestPoint;
             var _this = this;
             points.forEach(function(pt) {

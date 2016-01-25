@@ -41,7 +41,7 @@ module.exports = function(config) {
       'app/scripts/vendor/textures.js',
       'app/scripts/app.js',
       'app/scripts/controllers/*.js',
-      'app/scripts/services/*.js',
+      'app/scripts/services/**/*.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'
     ],
