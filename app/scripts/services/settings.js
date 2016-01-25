@@ -9,8 +9,8 @@
  * Factory in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
-    .factory('settings', ['editSvg', 'delete',
-        function(editSvg, deleteService) {
+    .factory('settings', ['editSvg', 'delete', 'interact',
+        function(editSvg, deleteService, interactService) {
 
         var leafletConf = {
                 GLOBAL_MAP_CENTER: [1.441019, 43.604268], // [lon, lat]
@@ -1209,7 +1209,7 @@ angular.module('accessimapEditeurDerApp')
                 { icon: '../bower_components/material-design-icons/action/svg/production/ic_autorenew_48px.svg', action: 'rotate' },
                 { icon: '../bower_components/material-design-icons/image/svg/production/ic_colorize_48px.svg', action: 'fill' },
                 { icon: '../bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: 'frame' },
-                { icon: '../bower_components/material-design-icons/av/svg/production/ic_hearing_48px.svg', action: 'interaction' }
+                { icon: '../bower_components/material-design-icons/av/svg/production/ic_hearing_48px.svg', action: interactService.addInteraction }
             ],
             'line': [
                 { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject },

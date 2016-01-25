@@ -167,11 +167,13 @@ angular.module('accessimapEditeurDerApp')
                     var originalSvg = d3.select(xml.documentElement);
                     var children = originalSvg[0][0].children;
 
+                    var returnChildren = function() {
+                        return children[i];
+                    };
+
                     for (var i = 0; i < children.length; i++) {
                         d3.select(children[i]).classed('sourceDocument', true);
-                        sourceLayer.append(function() {
-                            return children[i];
-                        });
+                        sourceLayer.append(returnChildren);
                     }
 
                     shareSvg.addMap(svg.node())
