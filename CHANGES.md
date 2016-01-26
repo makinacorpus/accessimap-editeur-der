@@ -5,6 +5,11 @@ CHANGELOG
 0.6
 -------------------
 
+**New features**
+
+* Radial menu to interact with the objects
+* Optionnaly add an empty area surrounding a point
+
 0.5
 -------------------
 
