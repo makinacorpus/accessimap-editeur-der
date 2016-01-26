@@ -388,6 +388,7 @@ angular.module('accessimapEditeurDerApp')
                     }
                 }
                 if ($scope.mode === 'move') {
+                // Delete when radial menu is fully working
                     resetActions();
                     d3.selectAll('path:not(.notDeletable)')
                         .attr('marker-mid', function() { return 'url(#midmarker)'; })
@@ -647,18 +648,21 @@ angular.module('accessimapEditeurDerApp')
                             }
                         })
                         .on('dblclick', function() {
+                            var a = d3.select('.edition').attr('d');
+                            a = a.replace(a.substr(a.lastIndexOf('L')), '');
                             if ($scope.mode === 'polygon') {
-                                var a = d3.select('.edition').attr('d');
-                                a = a.replace(a.substr(a.lastIndexOf('L')), '');
                                 d3.select('.edition').attr({
                                     d: a + 'Z'
                                 });
                             }
-                            d3.select('.edition').classed('edition', false);
 
                             if ($scope.mode === 'line') {
+                                d3.selectAll('.edition').attr({
+                                    d: a
+                                });
                                 d3.select('.edition.inner').classed('edition', false);
                             }
+                            d3.select('.edition').classed('edition', false);
                             d3.select('.ongoing').remove();
                             lastPoint = null;
                         })

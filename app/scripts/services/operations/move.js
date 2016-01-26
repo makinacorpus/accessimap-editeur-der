@@ -47,4 +47,49 @@ angular.module('accessimapEditeurDerApp')
                     });
             };
 
+            this.movePoint = function(feature, scope) {
+                var el = feature.node();
+                var pathSegList = el.pathSegList;
+
+                // draw temporary node at all path breaks
+                var features = [];
+
+                var drag = d3.behavior.drag();
+
+                angular.forEach(pathSegList, function(point, index) {
+                    if (point.x && point.y) {
+                        features.push([point.x, point.y, index]);
+                        d3.select('#points-layer')
+                            .append('circle')
+                            .classed('tmpVertex', true)
+                            .attr('id', 'n' + index)
+                            .attr('cx', point.x)
+                            .attr('cy', point.y)
+                            .attr('r', 10)
+                            .attr('fill', 'red')
+                            .call(drag);
+                    }
+                });
+
+                var nearest = null;
+
+                drag.on('dragstart', function(e) {
+                    d3.event.sourceEvent.stopPropagation(); // silence other listeners
+                    nearest = geometryutils.nearest(d3.mouse(this), features);
+                });
+
+                drag.on('drag', function() {
+                    var mousePosition = d3.mouse(this);
+                    d3.select(this)
+                        .attr('cx', mousePosition[0])
+                        .attr('cy', mousePosition[1]);
+
+                    var vertexNumber = parseInt(d3.select(this).attr('id').replace('n', ''));
+                    pathSegList[vertexNumber].x = mousePosition[0];
+                    pathSegList[vertexNumber].y = mousePosition[1];
+                });
+
+
+            };
+
     }]);
