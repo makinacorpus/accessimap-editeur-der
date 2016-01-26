@@ -29,10 +29,11 @@ angular.module('accessimapEditeurDerApp')
                 var el = feature.node();
                 var bbox = el.getBBox();
 
-                var radius = Math.max(bbox.height, bbox.width) + 5;
+                var radius = Math.max(bbox.height, bbox.width) / 2 + 10;
                 var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                 d3.select(circle)
                     .classed('c' + feature.attr('iid'), true)
+                    .classed('notDeletable', true)
                     .attr('cx', bbox.x + bbox.width / 2)
                     .attr('cy', bbox.y + bbox.height / 2)
                     .attr('r', radius)

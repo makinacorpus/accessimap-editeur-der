@@ -9,6 +9,7 @@ CHANGELOG
 
 * Radial menu to interact with the objects
 * Optionnaly add an empty area surrounding a point
+* Move a point
 
 0.5
 -------------------

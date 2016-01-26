@@ -361,9 +361,9 @@ angular.module('accessimapEditeurDerApp')
             $scope.$watch('mode', function() {
                 if ($scope.mode === 'default') {
                     resetActions();
-                    addRadialMenu(d3.selectAll('path'));
-                    addRadialMenu(d3.selectAll('circle'));
-                    addRadialMenu(d3.selectAll('text'));
+                    addRadialMenu(d3.selectAll('path:not(.notDeletable)'));
+                    addRadialMenu(d3.selectAll('circle:not(.notDeletable)'));
+                    addRadialMenu(d3.selectAll('text:not(.notDeletable)'));
                 }
                 if ($scope.mode === 'delete') {
                     resetActions();

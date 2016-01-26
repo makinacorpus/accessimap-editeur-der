@@ -9,8 +9,8 @@
  * Factory in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
-    .factory('settings', ['editSvg', 'delete', 'interact', 'style',
-        function(editSvg, deleteService, interactService, styleService) {
+    .factory('settings', ['editSvg', 'delete', 'interact', 'style', 'move',
+        function(editSvg, deleteService, interactService, styleService, moveService) {
 
         var leafletConf = {
                 GLOBAL_MAP_CENTER: [1.441019, 43.604268], // [lon, lat]
@@ -1205,7 +1205,7 @@ angular.module('accessimapEditeurDerApp')
         var ACTIONS = {
             'point': [
                 { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject},
-                { icon: '../bower_components/material-design-icons/action/svg/production/ic_open_with_48px.svg', action: 'move' },
+                { icon: '../bower_components/material-design-icons/action/svg/production/ic_open_with_48px.svg', action: moveService.movePath },
                 { icon: '../bower_components/material-design-icons/action/svg/production/ic_autorenew_48px.svg', action: 'rotate' },
                 { icon: '../bower_components/material-design-icons/image/svg/production/ic_color_lens_48px.svg', action: 'fill' },
                 { icon: '../bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: styleService.emptyNearFeature },
