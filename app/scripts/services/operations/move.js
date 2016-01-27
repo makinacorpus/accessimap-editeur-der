@@ -26,8 +26,14 @@ angular.module('accessimapEditeurDerApp')
                             var realCoordinates = geometryutils.realCoordinates(coordinates);
                             var transX = realCoordinates[0] - bbox.x,
                                 transY = realCoordinates[1] - bbox.y;
+                            var emptyCircle = d3.select('.c' + feature.attr('iid'));
+                            var emptyCircleExists = emptyCircle.node();
 
                             feature.attr('transform', 'translate(' + [transX, transY] + ')');
+
+                            if (emptyCircleExists) {
+                                emptyCircle.attr('transform', 'translate(' + [transX, transY] + ')');
+                            }
 
                             d3.select('svg').on('click', null);
                             d3.select('svg').on('mousemove', null);
@@ -108,7 +114,7 @@ angular.module('accessimapEditeurDerApp')
                     .attr('cx', 0)
                     .attr('cy', 0)
                     .attr('r', 10)
-                    .attr('fill', 'gray')
+                    .attr('fill', 'red')
                     .attr('stroke', 'none');
                 rotationMarker.append('svg:image')
                     .attr('xlink:href', '../bower_components/material-design-icons/action/svg/production/ic_autorenew_48px.svg')
