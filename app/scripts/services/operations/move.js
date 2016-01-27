@@ -61,7 +61,7 @@ angular.module('accessimapEditeurDerApp')
                         features.push([point.x, point.y, index]);
                         d3.select('#points-layer')
                             .append('circle')
-                            .classed('tmpVertex', true)
+                            .classed('ongoing', true)
                             .attr('id', 'n' + index)
                             .attr('cx', point.x)
                             .attr('cy', point.y)
@@ -89,7 +89,50 @@ angular.module('accessimapEditeurDerApp')
                     pathSegList[vertexNumber].y = mousePosition[1];
                 });
 
+            };
 
+            this.rotatePath = function(feature, scope) {
+                var el = feature.node();
+                var bbox = el.getBBox();
+                var pathCenter = [bbox.x + bbox.width / 2, bbox.y + bbox.height / 2];
+
+                var drag = d3.behavior.drag();
+
+                var rotationMarker = d3.select('#points-layer')
+                    .append('g')
+                    .classed('ongoing', true)
+                    .attr('transform', 'translate(' + pathCenter[0] + ',' + (pathCenter[1] + bbox.height * 2) + ')')
+                    .call(drag);
+
+                rotationMarker.append('circle')
+                    .attr('cx', 0)
+                    .attr('cy', 0)
+                    .attr('r', 10)
+                    .attr('fill', 'gray')
+                    .attr('stroke', 'none');
+                rotationMarker.append('svg:image')
+                    .attr('xlink:href', '../bower_components/material-design-icons/action/svg/production/ic_autorenew_48px.svg')
+                    .attr('width', 20)
+                    .attr('height', 20)
+                    .attr('x', -10)
+                    .attr('y', -10);
+                var initialAngle = 0;
+                var firstClick = true;
+
+                drag.on('dragstart', function() {
+                    d3.event.sourceEvent.stopPropagation(); // silence other listeners
+                    var mouse = d3.mouse(d3.select('#points-layer').node());
+                    initialAngle = geometryutils.angle(pathCenter[0], pathCenter[1], mouse[0], mouse[1]);
+                }).on('drag', function() {
+                    var mouse = d3.mouse(d3.select('#points-layer').node());
+                    var currentAngle = geometryutils.angle(pathCenter[0], pathCenter[1], mouse[0], mouse[1]);
+                    var diffAngle = currentAngle - initialAngle;
+                    feature.attr('transform', 'rotate(' + diffAngle + ' ' + pathCenter[0] + ' ' + pathCenter[1] + ')');
+                    rotationMarker.attr('transform', 'translate(' + mouse[0] + ',' + mouse[1] + ')');
+                }).on('dragend', function() {
+                    d3.select('#points-layer').on('mousedown.drag', null);
+                    $('#der').css('cursor', 'auto');
+                });
             };
 
     }]);

@@ -294,8 +294,10 @@ angular.module('accessimapEditeurDerApp')
                     });
                 d3.selectAll('path')
                     .attr('marker-mid', null);
-                $('#der').css('cursor', 'auto');
-                d3.select('.ongoing').remove();
+                //$('#der').css('cursor', 'auto');
+
+                d3.selectAll('.ongoing').remove();
+
                 d3.selectAll('.blink').classed('blink', false);
                 d3.selectAll('.highlight').classed('highlight', false);
             }

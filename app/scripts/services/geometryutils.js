@@ -56,4 +56,13 @@ angular.module('accessimapEditeurDerApp')
             return realCoordinates;
         };
 
+        this.angle = function(cx, cy, ex, ey) {
+          var dy = ey - cy;
+          var dx = ex - cx;
+          var theta = Math.atan2(dy, dx);
+          theta *= 180 / Math.PI;
+          //if (theta < 0) theta = 360 + theta; // range [0, 360)
+          return theta;
+        };
+
     });
