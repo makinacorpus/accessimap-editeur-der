@@ -19,6 +19,7 @@ angular.module('accessimapEditeurDerApp')
                     .attr('opacity', 0.5);
                 d3.select('#points-layer').node().appendChild(temporaryPath);
 
+
                 d3.select('svg')
                     .on('click', function() {
                         if (d3.select(temporaryPath).classed('moved')) {
@@ -29,10 +30,18 @@ angular.module('accessimapEditeurDerApp')
                             var emptyCircle = d3.select('.c' + feature.attr('iid'));
                             var emptyCircleExists = emptyCircle.node();
 
-                            feature.attr('transform', 'translate(' + [transX, transY] + ')');
+                            var transformString = '';
+                            var hasRotate = /rotate\((.*?) (.*?) (.*?)\)/.exec(feature.attr('transform'));
+
+                            if (hasRotate) {
+                                transformString += 'rotate(' + [hasRotate[1], (parseFloat(hasRotate[2]) + transX), (parseFloat(hasRotate[3]) + transY)] + ')';
+                            }
+                            transformString += 'translate(' + [transX, transY] + ')';
+
+                            feature.attr('transform', transformString);
 
                             if (emptyCircleExists) {
-                                emptyCircle.attr('transform', 'translate(' + [transX, transY] + ')');
+                                emptyCircle.attr('transform', transformString);
                             }
 
                             d3.select('svg').on('click', null);
@@ -46,10 +55,17 @@ angular.module('accessimapEditeurDerApp')
                         var realCoordinates = geometryutils.realCoordinates(coordinates);
                         var transX = realCoordinates[0] - bbox.x,
                             transY = realCoordinates[1] - bbox.y;
+                        var transformString = '';
+                        var hasRotate = /rotate\((.*?)(?: |,)(.*?)(?: |,)(.*?)\)/.exec(feature.attr('transform'));
+
+                        if (hasRotate) {
+                            transformString += 'rotate(' + [hasRotate[1], (parseFloat(hasRotate[2]) + transX), (parseFloat(hasRotate[3]) + transY)] + ')';
+                        }
+                        transformString += 'translate(' + [transX, transY] + ')';
 
                         d3.select(temporaryPath)
                             .classed('moved', true)
-                            .attr('transform', 'translate(' + [transX, transY] + ')');
+                            .attr('transform', transformString);
                     });
             };
 
@@ -101,13 +117,26 @@ angular.module('accessimapEditeurDerApp')
                 var el = feature.node();
                 var bbox = el.getBBox();
                 var pathCenter = [bbox.x + bbox.width / 2, bbox.y + bbox.height / 2];
+                var pathCenterTranslate = [];
+                pathCenterTranslate[0] = pathCenter[0];
+                pathCenterTranslate[1] = pathCenter[1];
+                var pathHasTranslate = null;
+                if (feature.attr('transform')) {
+                    var pathHasTranslate = /translate\((.*?)(?: |,)(.*?)\)/.exec(feature.attr('transform'));
+                    if (pathHasTranslate) {
+                        pathCenterTranslate[0] = pathCenter[0] + parseFloat(pathHasTranslate[1]);
+                        pathCenterTranslate[1] = pathCenter[1] + parseFloat(pathHasTranslate[2]);
+                    }
+                }
 
                 var drag = d3.behavior.drag();
 
                 var rotationMarker = d3.select('#points-layer')
                     .append('g')
                     .classed('ongoing', true)
-                    .attr('transform', 'translate(' + pathCenter[0] + ',' + (pathCenter[1] + bbox.height * 2) + ')')
+                    .attr('transform', 'translate(' + pathCenterTranslate[0] + ',' + (pathCenterTranslate[1] + bbox.height * 2) + ')')
+                    .attr('pathCenter', pathCenter)
+                    .attr('pathCenterTranslate', pathCenterTranslate)
                     .call(drag);
 
                 rotationMarker.append('circle')
@@ -122,18 +151,27 @@ angular.module('accessimapEditeurDerApp')
                     .attr('height', 20)
                     .attr('x', -10)
                     .attr('y', -10);
+
                 var initialAngle = 0;
-                var firstClick = true;
 
                 drag.on('dragstart', function() {
                     d3.event.sourceEvent.stopPropagation(); // silence other listeners
                     var mouse = d3.mouse(d3.select('#points-layer').node());
-                    initialAngle = geometryutils.angle(pathCenter[0], pathCenter[1], mouse[0], mouse[1]);
+                    initialAngle = geometryutils.angle(pathCenterTranslate[0], pathCenterTranslate[1], mouse[0], mouse[1]);
                 }).on('drag', function() {
                     var mouse = d3.mouse(d3.select('#points-layer').node());
-                    var currentAngle = geometryutils.angle(pathCenter[0], pathCenter[1], mouse[0], mouse[1]);
+                    var currentAngle = geometryutils.angle(pathCenterTranslate[0], pathCenterTranslate[1], mouse[0], mouse[1]);
                     var diffAngle = currentAngle - initialAngle;
-                    feature.attr('transform', 'rotate(' + diffAngle + ' ' + pathCenter[0] + ' ' + pathCenter[1] + ')');
+
+                    var transformString = '';
+                    var hasTranslate = /translate\((.*?)\)/.exec(feature.attr('transform'));
+
+                    if (hasTranslate) {
+                        transformString += hasTranslate[0];
+                    }
+
+                    transformString += 'rotate(' + diffAngle + ' ' + pathCenter[0] + ' ' + pathCenter[1] + ')';
+                    feature.attr('transform', transformString);
                     rotationMarker.attr('transform', 'translate(' + mouse[0] + ',' + mouse[1] + ')');
                 }).on('dragend', function() {
                     d3.select('#points-layer').on('mousedown.drag', null);
