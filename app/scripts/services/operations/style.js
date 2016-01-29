@@ -19,6 +19,14 @@ angular.module('accessimapEditeurDerApp')
             }
         };
 
+        this.toggleArrow = function(feature, scope) {
+            if (feature.attr('marker-end')) {
+                feature.attr('marker-end', null);
+            } else {
+                feature.attr('marker-end', 'url(#arrowmarker)');
+            }
+        };
+
         this.emptyNearFeature = function(feature, scope) {
 
             var emptyCircleExists = d3.select('.c' + feature.attr('iid')).node();

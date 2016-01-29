@@ -12,6 +12,7 @@ CHANGELOG
 * Move a point
 * Rotate a point
 * Improve the line/polygon vertex edition
+* Optionnaly add an arrow at line end
 
 0.5
 -------------------

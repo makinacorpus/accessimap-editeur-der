@@ -247,20 +247,6 @@ angular.module('accessimapEditeurDerApp')
                 }
             };
 
-            d3.select('svg').append('defs')
-                    .append('marker')
-                    .attr('id', 'midmarker')
-                    .attr('refX', 2)
-                    .attr('refY', 2)
-                    .attr('markerWidth', 4)
-                    .attr('markerHeight', 4)
-                    .attr('orient', 'auto')
-                .append('circle')
-                    .attr('cx', '2')
-                    .attr('cy', '2')
-                    .attr('r', '2');
-
-
             $scope.changeTextColor = function() {
                 $scope.fontColorChosen = $scope.fontColors[$scope.fontChosen.color][0];
             };

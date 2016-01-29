@@ -1214,7 +1214,7 @@ angular.module('accessimapEditeurDerApp')
             'line': [
                 { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject },
                 { icon: '../bower_components/material-design-icons/editor/svg/production/ic_linear_scale_48px.svg', action: moveService.movePoint },
-                { icon: '../bower_components/material-design-icons/action/svg/production/ic_trending_flat_48px.svg', action: 'markers' }
+                { icon: '../bower_components/material-design-icons/action/svg/production/ic_trending_flat_48px.svg', action: styleService.toggleArrow }
             ],
             'polygon': [
                 { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject },

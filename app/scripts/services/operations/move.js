@@ -14,11 +14,11 @@ angular.module('accessimapEditeurDerApp')
                 var el = feature.node();
                 var temporaryPath = el.cloneNode(true);
                 var bbox = el.getBBox();
+
                 d3.select(temporaryPath)
                     .attr('id', 'temporaryPath')
                     .attr('opacity', 0.5);
                 d3.select('#points-layer').node().appendChild(temporaryPath);
-
 
                 d3.select('svg')
                     .on('click', function() {
@@ -31,7 +31,7 @@ angular.module('accessimapEditeurDerApp')
                             var emptyCircleExists = emptyCircle.node();
 
                             var transformString = '';
-                            var hasRotate = /rotate\((.*?) (.*?) (.*?)\)/.exec(feature.attr('transform'));
+                            var hasRotate = /rotate\((.*?)(?: |,)(.*?)(?: |,)(.*?)\)/.exec(feature.attr('transform'));
 
                             if (hasRotate) {
                                 transformString += 'rotate(' + [hasRotate[1], (parseFloat(hasRotate[2]) + transX), (parseFloat(hasRotate[3]) + transY)] + ')';
@@ -120,7 +120,6 @@ angular.module('accessimapEditeurDerApp')
                 var pathCenterTranslate = [];
                 pathCenterTranslate[0] = pathCenter[0];
                 pathCenterTranslate[1] = pathCenter[1];
-                var pathHasTranslate = null;
                 if (feature.attr('transform')) {
                     var pathHasTranslate = /translate\((.*?)(?: |,)(.*?)\)/.exec(feature.attr('transform'));
                     if (pathHasTranslate) {

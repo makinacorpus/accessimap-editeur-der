@@ -50,15 +50,16 @@ angular.module('accessimapEditeurDerApp')
 
         this.createDefs = function(target) {
             target.append('defs')
-                .append('marker')
-                .attr('orient', 'auto')
-                .attr('refY', '0.0')
-                .attr('refX', '0.0')
-                .attr('id', 'arrowEnd')
-                .attr('style', 'overflow:visible')
+                    .append('marker')
+                    .attr('id', 'arrowmarker')
+                    .attr('refX', 5)
+                    .attr('refY', 5)
+                    .attr('markerWidth', 10)
+                    .attr('markerHeight', 10)
+                    .attr('orient', 'auto')
                 .append('path')
-                .attr('d', 'M -5,-5 L 0,0 L -5,5')
-                .attr('style', 'fill:none;stroke:#000000;stroke-width:2.5px;stroke-opacity:1');
+                    .attr('d', 'M1,1 L5,5 1,9')
+                    .attr('style', 'fill:none;stroke:#000000;stroke-opacity:1');
         };
 
         this.createMargin = function(target, width, height) {
