@@ -48,6 +48,18 @@ angular.module('accessimapEditeurDerApp')
                     .attr('fill', 'white');
                 el.parentNode.insertBefore(circle, el);
             }
-
         };
+
+        this.changeColor = function(feature, scope) {
+
+            $('#changeColorModal').modal('show')
+            feature.classed('edition', true)
+        };
+
+        this.changePattern = function(feature, scope) {
+
+            $('#changePatternModal').modal('show')
+            feature.classed('edition', true)
+        };
+
     });

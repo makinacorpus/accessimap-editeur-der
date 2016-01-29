@@ -72,9 +72,16 @@ angular.module('accessimapEditeurDerApp')
             };
 
             $scope.changeColor = function() {
-                    $scope.colorChosen = this.$parent.colorChosen;
-                    $scope.updatePolygonStyle();
+                $scope.colorChosen = this.$parent.colorChosen;
+                $scope.updatePolygonStyle();
             };
+
+            $('#changeColorModal').on('hidden.bs.modal', function(e) {
+                resetActions();
+            });
+            $('#changePatternModal').on('hidden.bs.modal', function(e) {
+                resetActions();
+            });
 
             $scope.rightMenuVisible = false;
             $scope.hideMenu = function() {
@@ -252,20 +259,10 @@ angular.module('accessimapEditeurDerApp')
             };
 
             $scope.updatePolygonStyle = function() {
-                // Delete when radial menu is fully working
-                if ($scope.mode === 'editpolygon') {
-                    var path = d3.select('.blink');
-                    $scope.$watch($scope.styleChosen, function() {
-                        styleutils.applyStyle(path, $scope.styleChosen.style, $scope.colorChosen);
-                        if ($scope.checkboxModel.contour) {
-                            path.attr('stroke', 'black')
-                                .attr('stroke-width', '2');
-                        } else {
-                            path.attr('stroke', null)
-                                .attr('stroke-width', null);
-                        }
-                    });
-                }
+                var path = d3.select('.edition');
+                $scope.$watch($scope.styleChosen, function() {
+                    styleutils.applyStyle(path, $scope.styleChosen.style, $scope.colorChosen);
+                });
             };
 
             function resetActions() {
@@ -285,6 +282,7 @@ angular.module('accessimapEditeurDerApp')
                 d3.selectAll('.ongoing').remove();
 
                 d3.selectAll('.blink').classed('blink', false);
+                d3.selectAll('.edition').classed('edition', false);
                 d3.selectAll('.highlight').classed('highlight', false);
             }
 
