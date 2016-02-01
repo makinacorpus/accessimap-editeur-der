@@ -76,10 +76,10 @@ angular.module('accessimapEditeurDerApp')
                 $scope.updatePolygonStyle();
             };
 
-            $('#changeColorModal').on('hidden.bs.modal', function(e) {
+            $('#changeColorModal').on('hidden.bs.modal', function() {
                 resetActions();
             });
-            $('#changePatternModal').on('hidden.bs.modal', function(e) {
+            $('#changePatternModal').on('hidden.bs.modal', function() {
                 resetActions();
             });
 
@@ -127,6 +127,7 @@ angular.module('accessimapEditeurDerApp')
                     $scope.menu.hide();
                     $scope.menu = null;
                 }
+                d3.selectAll('.ongoing').remove();
                 d3.select('#map-layer').attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
             }
 
@@ -295,43 +296,6 @@ angular.module('accessimapEditeurDerApp')
                     sel.addRange(range);
             }
 
-            function deleteFeature(el) {
-                // Delete when radial menu is fully working
-                $scope.$apply(function() {
-                    $scope.deletedFeature = new XMLSerializer().serializeToString(el);
-                });
-                var t = document.createElement('foreignObject');
-                d3.select(t).attr('id', 'deletedElement');
-                el.parentNode.insertBefore(t, el);
-                el.remove();
-            }
-
-            function deleteOnClick(el) {
-                // Delete when radial menu is fully working
-                el.on('click', function() {
-                    // Remove previous deleted Element placeholder if it exists
-                    d3.select('#deletedElement').remove();
-
-                    // Some objects should not be deletable
-                    if (!d3.select(this).classed('notDeletable')) {
-                        var iid = d3.select(this).attr('iid');
-
-                        var featurePosition = $scope.interactiveFilters.data.filter(function(row) {
-                            return row.id === 'poi-' + iid;
-                        });
-                        var featureInFilters = $scope.interactiveFilters.data.indexOf(featurePosition[0]);
-                        if (featureInFilters > -1) {
-                            if (window.confirm('Ce point est interactif. Voules-vous vraiment le supprimer ?')) {
-                                $scope.removeRow($scope.interactiveFilters.data[featureInFilters]);
-                                deleteFeature(this);
-                            }
-                        } else {
-                            deleteFeature(this);
-                        }
-                    }
-                });
-            }
-
             function addRadialMenu(el) {
                 el.on('contextmenu', function() {
                     d3.event.preventDefault();
@@ -351,15 +315,7 @@ angular.module('accessimapEditeurDerApp')
                     addRadialMenu(d3.selectAll('circle:not(.notDeletable)'));
                     addRadialMenu(d3.selectAll('text:not(.notDeletable)'));
                 }
-                if ($scope.mode === 'delete') {
-                    resetActions();
-                    $('#der').css('cursor', 'crosshair');
-                    deleteOnClick(d3.selectAll('path'));
-                    deleteOnClick(d3.selectAll('circle'));
-                    deleteOnClick(d3.selectAll('text'));
-                    deleteOnClick(d3.selectAll('rect'));
-                    deleteOnClick(d3.selectAll('ellipse'));
-                }
+
                 if ($scope.mode === 'undo') {
                     resetActions();
                     if ($scope.deletedFeature) {
@@ -372,108 +328,6 @@ angular.module('accessimapEditeurDerApp')
                         d3.select('#deletedElement').remove();
                         $scope.deletedFeature = null;
                     }
-                }
-                if ($scope.mode === 'move') {
-                // Delete when radial menu is fully working
-                    resetActions();
-                    d3.selectAll('path:not(.notDeletable)')
-                        .attr('marker-mid', function() { return 'url(#midmarker)'; })
-                        .on('click', function() {
-                            d3.selectAll('.blink').classed('blink', false);
-                            d3.select(this).classed('blink', true);
-                            var _pathSegList = this.pathSegList;
-                            d3.select('svg')
-                                .on('click', function() {
-                                    var features = [];
-                                    angular.forEach(_pathSegList, function(point, index) {
-                                            if (point.x && point.y) {
-                                                features.push([point.x, point.y, index]);
-                                            }
-                                        });
-                                    var coordinates = d3.mouse(this);
-                                    var realCoordinates = geometryutils.realCoordinates(coordinates);
-                                    var clickPoint = [realCoordinates[0], realCoordinates[1]];
-                                    var nearest = geometryutils.nearest(clickPoint, features);
-
-                                    _pathSegList[nearest[2]].x = clickPoint[0];
-                                    _pathSegList[nearest[2]].y = clickPoint[1];
-                                });
-                        });
-                }
-
-                if ($scope.mode === 'editpolygon') {
-                    resetActions();
-                    $scope.styleChoices = settings.STYLES.polygon;
-                    $scope.styleChosen = $scope.styleChoices[0];
-                    d3.selectAll('path:not(.notDeletable)')
-                        .on('click', function() {
-                            var path = d3.select(this);
-                            var pathLastChar = path.attr('d').slice(-1);
-                            if (pathLastChar === 'z' || pathLastChar === 'Z') {
-                                d3.selectAll('.blink').classed('blink', false);
-                                path.classed('blink', true);
-                                if (path.attr('stroke')) {
-                                    $scope.$apply(function() {
-                                        $scope.checkboxModel.contour = true;
-                                    });
-                                } else {
-                                    $scope.$apply(function() {
-                                        $scope.checkboxModel.contour = false;
-                                    });
-                                }
-                                var pathFill = path.attr('fill');
-                                if (pathFill) {
-                                    // $scope.colorChosen
-                                    // $scope.styleChosen
-                                    var pathFillName = pathFill.match(/\((.+?)\)/g)[0].slice(1, -1);
-                                    var pathFillHasBackground = d3.select(pathFillName).select('rect').node();
-                                    if (pathFillHasBackground) {
-                                        $scope.$apply(function() {
-                                            $scope.checkboxModel.fill = true;
-                                        });
-                                    } else {
-                                        $scope.$apply(function() {
-                                            $scope.checkboxModel.fill = false;
-                                        });
-                                    }
-                                }
-                            }
-                        });
-                }
-
-                if ($scope.mode === 'interaction') {
-                    // Delete when radial menu is fully working
-                    resetActions();
-                    $('#der').css('cursor', 'crosshair');
-
-                    // Make the selected feature blink
-                    d3.selectAll('path:not(.notDeletable)')
-                        .on('click', function() {
-                            d3.selectAll('.blink').classed('blink', false);
-                            d3.selectAll('.highlight').classed('highlight', false);
-                            var feature = d3.select(this);
-                            feature.classed('blink', true);
-                            var featureIid;
-                            featureIid = feature.attr('iid');
-                            if (!featureIid) {
-                                featureIid = $rootScope.getiid();
-                                feature.attr('iid', featureIid);
-                            }
-                            // Add the highlight class to the relevant cells of the grid
-                            d3.selectAll('.poi-' + featureIid).classed('highlight', true);
-
-                            var featurePosition = $scope.interactiveFilters.data.filter(function(row) {
-                                return row.id === 'poi-' + featureIid;
-                            });
-                            var featureToAdd = $scope.interactiveFilters.data.indexOf(featurePosition[0]) < 0;
-
-                            if (featureToAdd) {
-                                $scope.$apply(function() {
-                                    $scope.interactiveFilters.data.push({'id': 'poi-' + featureIid, 'f1': feature.attr('name'), 'deletable': true});
-                                });
-                            }
-
-                        });
                 }
 
                 if ($scope.mode === 'point') {
@@ -495,6 +349,7 @@ angular.module('accessimapEditeurDerApp')
                             }
                      });
                 }
+
                 if ($scope.mode === 'circle') {
                     resetActions();
                     $('#der').css('cursor', 'crosshair');
@@ -711,7 +566,8 @@ angular.module('accessimapEditeurDerApp')
                                     return $scope.fontChosen.weight;
                                 })
                                 .attr('fill', $scope.fontColorChosen.color)
-                                .attr({'class': 'edition'})
+                                .attr('id', 'finalText')
+                                .classed('edition', true)
                                 .text('');
                             d3.select('#text-layer').selectAll('foreignObject#textEdition')
                                 .data([d])
@@ -728,7 +584,7 @@ angular.module('accessimapEditeurDerApp')
                                     return $scope.fontChosen.weight;
                                 })
                                 .attr('fill', $scope.fontColorChosen.color)
-                                .attr({'class': 'edition'})
+                                .classed('edition', true)
                                 .append('xhtml:p')
                                 .attr('contentEditable', 'true')
                                 .text(d)
@@ -746,7 +602,7 @@ angular.module('accessimapEditeurDerApp')
                                         var data = node.data;
                                         if (data) {
                                             data = data.replace(/(\d+)/g, '¤$1');
-                                            d3.select('.edition')
+                                            d3.select('#finalText')
                                                 .attr('text-anchor', 'start')
                                                 .append('tspan')
                                                 .attr('text-anchor', 'start')
@@ -758,14 +614,9 @@ angular.module('accessimapEditeurDerApp')
                                         }
                                     });
                                     d3.select(this.parentElement).remove();
-                                    // var bbox = d3.select('.edition')[0][0].getBBox();
-                                    // d3.select('.edition')
-                                    //       .append('rect')
-                                    //       .attr('x', bbox.x)
-                                    //       .attr('y', bbox.y)
-                                    //       .attr('width', bbox.width)
-                                    //       .attr('height', bbox.height);
+
                                     d3.select('.edition').classed('edition', false);
+                                    d3.select('#finalText').attr('id', null);
                                 });
 
                                 selectElementContents(d3.selectAll('foreignObject#textEdition').selectAll('p').node());
