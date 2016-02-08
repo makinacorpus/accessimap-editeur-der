@@ -13,6 +13,10 @@ angular.module('accessimapEditeurDerApp')
     function(shareSvg) {
 
         this.mapExport = function(filename) {
+            if (!filename) {
+                filename = 'der';
+            }
+
             var zip = new JSZip();
             var mapNode = d3.select('#der').select('svg').node();
             var exportNode = mapNode.cloneNode(true);
