@@ -14,6 +14,9 @@ angular.module('accessimapEditeurDerApp')
                 switch (nodeType) {
                     case 'path':
                         var parent = feature.node().parentNode;
+                        if(d3.select(parent).classed('vector')) {
+                            parent = parent.parentNode;
+                        }
                         var parentId = parent.id;
                         switch (parentId) {
                             case 'points-layer':
