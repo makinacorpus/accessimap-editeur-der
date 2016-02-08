@@ -288,6 +288,12 @@ angular.module('accessimapEditeurDerApp')
             }
 
 
+            d3.select('body').on('keyup', function() {
+                if (d3.event.keyCode === 27) {
+                    resetActions();
+                }
+            });
+
             function selectElementContents(el) {
                     var range = document.createRange();
                     range.selectNodeContents(el);
