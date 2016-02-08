@@ -53,13 +53,13 @@ angular.module('accessimapEditeurDerApp')
         this.changeColor = function(feature, scope) {
 
             $('#changeColorModal').modal('show')
-            feature.classed('edition', true)
+            feature.classed('styleEdition', true)
         };
 
         this.changePattern = function(feature, scope) {
 
             $('#changePatternModal').modal('show')
-            feature.classed('edition', true)
+            feature.classed('styleEdition', true)
         };
 
     });

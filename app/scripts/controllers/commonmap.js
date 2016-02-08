@@ -36,7 +36,7 @@ angular.module('accessimapEditeurDerApp')
                 }
             });
 
-            $scope.filename = 'map';
+            $scope.filename = 'der';
             $scope.fonts = settings.FONTS;
             $scope.fontChosen = $scope.fonts[0];
             $scope.fontColors = settings.COLORS;
@@ -260,7 +260,7 @@ angular.module('accessimapEditeurDerApp')
             };
 
             $scope.updatePolygonStyle = function() {
-                var path = d3.select('.edition');
+                var path = d3.select('.styleEdition');
                 $scope.$watch($scope.styleChosen, function() {
                     styleutils.applyStyle(path, $scope.styleChosen.style, $scope.colorChosen);
                 });
@@ -284,6 +284,7 @@ angular.module('accessimapEditeurDerApp')
 
                 d3.selectAll('.blink').classed('blink', false);
                 d3.selectAll('.edition').classed('edition', false);
+                d3.selectAll('.styleEdition').classed('styleEdition', false);
                 d3.selectAll('.highlight').classed('highlight', false);
             }
 
@@ -304,6 +305,10 @@ angular.module('accessimapEditeurDerApp')
 
             function addRadialMenu(el) {
                 el.on('contextmenu', function() {
+                    $scope.$apply(function() {
+                        $scope.mode = 'default';
+                    });
+                    resetActions();
                     d3.event.preventDefault();
                     d3.event.stopPropagation();
                     if ($scope.menu) {
