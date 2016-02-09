@@ -9,8 +9,8 @@
  * Factory in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
-    .factory('settings', ['editSvg', 'delete', 'interact', 'style', 'move',
-        function(editSvg, deleteService, interactService, styleService, moveService) {
+    .factory('settings', ['editSvg', 'delete', 'interact', 'style', 'move', 'geometry',
+        function(editSvg, deleteService, interactService, styleService, moveService, geometryService) {
 
         var leafletConf = {
                 GLOBAL_MAP_CENTER: [1.441019, 43.604268], // [lon, lat]
@@ -1214,7 +1214,8 @@ angular.module('accessimapEditeurDerApp')
             'line': [
                 { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject },
                 { icon: '../bower_components/material-design-icons/editor/svg/production/ic_linear_scale_48px.svg', action: moveService.movePoint },
-                { icon: '../bower_components/material-design-icons/action/svg/production/ic_trending_flat_48px.svg', action: styleService.toggleArrow }
+                { icon: '../bower_components/material-design-icons/action/svg/production/ic_trending_flat_48px.svg', action: styleService.toggleArrow },
+                { icon: '../bower_components/material-design-icons/action/svg/production/ic_rounded_corner_48px.svg', action: geometryService.lineToCardinal }
             ],
             'polygon': [
                 { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject },

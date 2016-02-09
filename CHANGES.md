@@ -14,6 +14,7 @@ CHANGELOG
 * Improve the line/polygon vertex edition
 * Optionnaly add an arrow at line end
 * Edit color and pattern with radial menu
+* Optionnaly smooth a line
 
 0.5
 -------------------

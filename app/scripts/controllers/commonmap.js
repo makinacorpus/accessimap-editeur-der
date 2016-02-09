@@ -9,8 +9,8 @@
  */
 angular.module('accessimapEditeurDerApp')
     .controller('CommonmapCtrl', ['$rootScope', '$scope', '$location', 'settings', 'exportData',
-        'shareSvg', 'svgicon', 'geometryutils', 'styleutils', 'radialMenu',
-        function($rootScope, $scope, $location, settings, exportData, shareSvg, svgicon, geometryutils, styleutils, radialMenu) {
+        'shareSvg', 'svgicon', 'geometryutils', 'styleutils', 'radialMenu', 'generators',
+        function($rootScope, $scope, $location, settings, exportData, shareSvg, svgicon, geometryutils, styleutils, radialMenu, generators) {
             d3.select('#der')
                 .selectAll('svg')
                 .remove();
@@ -414,10 +414,6 @@ angular.module('accessimapEditeurDerApp')
                     $scope.styleChosen = $scope.styleChoices[0];
                     var lineEdit = [];
                     var lastPoint = null;
-                    var lineFunction = d3.svg.line()
-                                                 .x(function(d) { return d[0]; })
-                                                 .y(function(d) { return d[1]; })
-                                                 .interpolate('linear');
                     var drawingLayer;
 
                     if ($scope.mode === 'line') {
@@ -428,7 +424,8 @@ angular.module('accessimapEditeurDerApp')
 
                     d3.select('svg')
                         .on('click', function() {
-                            if (!d3.event.defaultPrevented) {
+                            // d3.event.detail is used to check is the click is not a double click
+                            if (!d3.event.defaultPrevented && d3.event.detail !== 2) {
                                 var path;
                                 var pathInner;
                                 if (d3.select('.edition')[0][0]) {
@@ -478,12 +475,12 @@ angular.module('accessimapEditeurDerApp')
                                 lastPoint = realCoordinates;
                                 lineEdit.push(realCoordinates);
                                 path.attr({
-                                    d: lineFunction(lineEdit)
+                                    d: generators.pathFunction[$scope.mode](lineEdit)
                                 });
 
                                 if ($scope.mode === 'line') {
                                     pathInner.attr({
-                                        d: lineFunction(lineEdit)
+                                        d: generators.pathFunction[$scope.mode](lineEdit)
                                     });
                                 }
                                 styleutils.applyStyle(path, $scope.styleChosen.style, $scope.colorChosen);
@@ -500,20 +497,10 @@ angular.module('accessimapEditeurDerApp')
                             }
                         })
                         .on('dblclick', function() {
-                            var a = d3.select('.edition').attr('d');
-                            a = a.replace(a.substr(a.lastIndexOf('L')), '');
-                            if ($scope.mode === 'polygon') {
-                                d3.select('.edition').attr({
-                                    d: a + 'Z'
-                                });
-                            }
-
                             if ($scope.mode === 'line') {
-                                d3.selectAll('.edition').attr({
-                                    d: a
-                                });
                                 d3.select('.edition.inner').classed('edition', false);
                             }
+
                             d3.select('.edition').classed('edition', false);
                             d3.select('.ongoing').remove();
                             lastPoint = null;
