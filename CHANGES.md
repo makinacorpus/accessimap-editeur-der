@@ -9,6 +9,7 @@ CHANGELOG
 
 * Radial menu to interact with the objects
 * Optionnaly add an empty area surrounding a point
+* Optionnaly add an empty area surrounding a text
 * Move a point
 * Rotate a point
 * Improve the line/polygon vertex edition
