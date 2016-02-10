@@ -497,11 +497,19 @@ angular.module('accessimapEditeurDerApp')
                             }
                         })
                         .on('dblclick', function() {
+                            var uid = $rootScope.getiid();
+
                             if ($scope.mode === 'line') {
-                                d3.select('.edition.inner').classed('edition', false);
+                                d3.select('.edition.inner')
+                                    .classed('edition', false)
+                                    .classed('link_' + uid, true)
+                                    .attr('data-link', uid);
                             }
 
-                            d3.select('.edition').classed('edition', false);
+                            d3.select('.edition')
+                                .classed('edition', false)
+                                .classed('link_' + uid, true)
+                                .attr('data-link', uid);
                             d3.select('.ongoing').remove();
                             lastPoint = null;
                         })

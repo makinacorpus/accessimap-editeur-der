@@ -456,7 +456,8 @@ angular.module('accessimapEditeurDerApp')
                 if (optionalClass) {
                     if (d3.select('.vector.' + optionalClass + '#' + feature[0].id).empty()) {
                         featureGroup = drawingLayer.append('g')
-                        .attr('class', 'vector ' + optionalClass)
+                        .classed('vector', true)
+                        .classed(optionalClass, true)
                         .classed('rotable', true)
                         .attr('id', feature[0].id);
                     } else {
@@ -465,7 +466,7 @@ angular.module('accessimapEditeurDerApp')
                 } else {
                     if (d3.select('.vector#' + feature[0].id).empty()) {
                         featureGroup = drawingLayer.append('g')
-                        .attr('class', 'vector')
+                        .classed('vector', true)
                         .classed('rotable', true)
                         .attr('id', feature[0].id);
                     } else {
@@ -479,12 +480,15 @@ angular.module('accessimapEditeurDerApp')
                         return d.geometry.type !== 'Point';
                     }))
                     .enter().append('path')
-                    .attr('class', function() {
+                    .attr('class', function(d) {
                         if (optionalClass) {
-                            return feature[0].id + ' ' + optionalClass;
+                            return feature[0].id + ' ' + optionalClass + ' link_' + d.properties.id;
                         } else {
-                            return feature[0].id;
+                            return feature[0].id + ' link_' + d.properties.id;
                         }
+                    })
+                    .attr('data-link', function(d) {
+                        return d.properties.id;
                     })
                     .attr('name', function(d) {
                         if (d.properties.tags) {
@@ -553,6 +557,14 @@ angular.module('accessimapEditeurDerApp')
                             .attr(attribute.k, attribute.v);
                     });
                 }
+
+                // Update the uid so to ensure this will be unique
+                angular.forEach(data.features, function(f) {
+                    if ($rootScope.uid < f.properties.id) {
+                        $rootScope.uid = f.properties.id;
+                    }
+                });
+
                 $scope.rotateMap();
             }
 

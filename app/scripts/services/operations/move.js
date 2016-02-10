@@ -73,6 +73,11 @@ angular.module('accessimapEditeurDerApp')
                 var el = feature.node();
                 var pathSegList = el.pathSegList;
 
+                var featuresToUpdate = feature;
+                if (feature.attr('data-link')) {
+                    featuresToUpdate = d3.selectAll('.link_' + feature.attr('data-link'));
+                }
+
                 // draw temporary node at all path breaks
                 var features = [];
 
@@ -107,8 +112,11 @@ angular.module('accessimapEditeurDerApp')
                         .attr('cy', mousePosition[1]);
 
                     var vertexNumber = parseInt(d3.select(this).attr('id').replace('n', ''));
-                    pathSegList[vertexNumber].x = mousePosition[0];
-                    pathSegList[vertexNumber].y = mousePosition[1];
+                    featuresToUpdate.each(function(d, i) {
+                        var pathSegListToUpdate = this.pathSegList;
+                        pathSegListToUpdate[vertexNumber].x = mousePosition[0];
+                        pathSegListToUpdate[vertexNumber].y = mousePosition[1];
+                    });
                 });
 
             };

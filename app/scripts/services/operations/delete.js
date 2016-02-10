@@ -10,14 +10,18 @@
 angular.module('accessimapEditeurDerApp')
     .service('delete', function() {
         var deleteFeature = function(feature, scope) {
-            var el = feature.node();
+            var featuresToUpdate = feature;
+            if (feature.attr('data-link')) {
+                featuresToUpdate = d3.selectAll('.link_' + feature.attr('data-link'));
+            }
+            var el = featuresToUpdate.node();
             scope.$apply(function() {
                 scope.deletedFeature = new XMLSerializer().serializeToString(el);
             });
             var t = document.createElement('foreignObject');
             d3.select(t).attr('id', 'deletedElement');
             el.parentNode.insertBefore(t, el);
-            el.remove();
+            featuresToUpdate.remove();
         };
 
 

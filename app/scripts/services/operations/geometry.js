@@ -12,6 +12,10 @@ angular.module('accessimapEditeurDerApp')
 
         this.lineToCardinal = function(feature, scope) {
             var arr = feature.attr('d').split('L');
+            var featuresToUpdate = feature;
+            if (feature.attr('data-link')) {
+                featuresToUpdate = d3.selectAll('.link_' + feature.attr('data-link'));
+            }
             if (arr.length > 1) { // line's type is linear
                 var coords = arr.map(function(c) {
                     c = c.replace(/M(\s?)+/, '');
@@ -26,7 +30,7 @@ angular.module('accessimapEditeurDerApp')
                         return parseFloat(ca);
                     });
                 });
-                feature.attr('d', generators.cardinalLineFunction(coords));
+                featuresToUpdate.attr('d', generators.cardinalLineFunction(coords));
             } else { // line's type is cardinal
                 arr = feature.attr('d').split(/[CQS]+/);
                 var coords = arr.map(function(c) {
@@ -46,7 +50,7 @@ angular.module('accessimapEditeurDerApp')
                         return parseFloat(ca);
                     });
                 });
-                feature.attr('d', generators.lineFunction(coords));
+                featuresToUpdate.attr('d', generators.lineFunction(coords));
             }
         };
     }]);
