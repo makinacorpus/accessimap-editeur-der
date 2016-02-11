@@ -14,6 +14,7 @@ angular.module('accessimapEditeurDerApp')
             var menu = scope.menu;
             var type = getType.getType(target);
             if (type) {
+                scope.styleChoices = settings.STYLES[type];
                 var data = settings.ACTIONS[type];
                 var mapLayer = d3.select('#der').select('svg');
 
