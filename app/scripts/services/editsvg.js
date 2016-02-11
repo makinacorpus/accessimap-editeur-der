@@ -112,13 +112,6 @@ angular.module('accessimapEditeurDerApp')
             return d;
         };
 
-        this.verticalRectPath = function(cx, cy, r) {
-            var d = 'M ' + cx + ' ' + (cy - r / 2);
-                    d += ' v' + r;
-                    d += ' Z';
-            return d;
-        };
-
         this.horizontalArrowPath = function(cx, cy, r) {
             var d = 'M ' + cx + ' ' + cy;
                     d += ' L' + (cx - 3 * r / 10) + ' ' + (cy - 3 * r / 10);
@@ -139,30 +132,6 @@ angular.module('accessimapEditeurDerApp')
                     d += ' L' + (cx - 12 * r / 10) + ' ' + (cy + 1 * r / 10);
                     d += ' L' + (cx - 5 * r / 10) + ' ' + (cy + 1 * r / 10);
                     d += ' L' + (cx - 5 * r / 10) + ' ' + (cy + 4 * r / 10);
-                    d += ' Z';
-            return d;
-        };
-
-        this.verticalArrowPath = function(cx, cy, r) {
-            var d = 'M ' + cx + ' ' + cy;
-                    d += ' L' + (cx - 3 * r / 10) + ' ' + (cy + 3 * r / 10);
-                    d += ' L' + (cx - 1 * r / 10) + ' ' + (cy + 3 * r / 10);
-                    d += ' L' + (cx - 1 * r / 10) + ' ' + (cy + 12 * r / 10);
-                    d += ' L' + (cx + 1 * r / 10) + ' ' + (cy + 12 * r / 10);
-                    d += ' L' + (cx + 1 * r / 10) + ' ' + (cy + 3 * r / 10);
-                    d += ' L' + (cx + 3 * r / 10) + ' ' + (cy + 3 * r / 10);
-                    d += ' Z';
-            return d;
-        };
-
-        this.verticalSmallArrowPath = function(cx, cy, r) {
-            var d = 'M ' + cx + ' ' + cy;
-                    d += ' L' + (cx - 4 * r / 10) + ' ' + (cy + 5 * r / 10);
-                    d += ' L' + (cx - 1 * r / 10) + ' ' + (cy + 5 * r / 10);
-                    d += ' L' + (cx - 1 * r / 10) + ' ' + (cy + 12 * r / 10);
-                    d += ' L' + (cx + 1 * r / 10) + ' ' + (cy + 12 * r / 10);
-                    d += ' L' + (cx + 1 * r / 10) + ' ' + (cy + 5 * r / 10);
-                    d += ' L' + (cx + 4 * r / 10) + ' ' + (cy + 5 * r / 10);
                     d += ' Z';
             return d;
         };

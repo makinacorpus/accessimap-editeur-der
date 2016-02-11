@@ -20,6 +20,7 @@ CHANGELOG
 **Minor changes**
 
 * Add a north orientation symbol
+* Vertical symbols are no more proposed as the vertical orientation can be achieved through the rotation tool
 
 **Bug fixes**
 
