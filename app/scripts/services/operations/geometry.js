@@ -16,8 +16,9 @@ angular.module('accessimapEditeurDerApp')
             if (feature.attr('data-link')) {
                 featuresToUpdate = d3.selectAll('.link_' + feature.attr('data-link'));
             }
+            var coords = undefined;
             if (arr.length > 1) { // line's type is linear
-                var coords = arr.map(function(c) {
+                coords = arr.map(function(c) {
                     c = c.replace(/M(\s?)+/, '');
                     c = c.replace('Z', '');
                     c = c.replace(/(\s?)+/, ''); //remove first space
@@ -33,7 +34,7 @@ angular.module('accessimapEditeurDerApp')
                 featuresToUpdate.attr('d', generators.cardinalLineFunction(coords));
             } else { // line's type is cardinal
                 arr = feature.attr('d').split(/[CQS]+/);
-                var coords = arr.map(function(c) {
+                coords = arr.map(function(c) {
                     c = c.replace(/M(\s?)+/, '');
                     c = c.replace('Z', '');
                     c = c.replace(/(\s?)+/, ''); //remove first space
