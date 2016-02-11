@@ -69,12 +69,6 @@ describe('Service: editSvg', function () {
     });
   });
 
-  describe('the verticalRectPath function', function() {
-    it('should return the right symbol', function() {
-      expect(editSvg.verticalRectPath(100, 100, 10)).toBe('M 100 95 v10 Z');
-    });
-  });
-
   describe('the horizontalArrowPath function', function() {
     it('should return the right symbol', function() {
       expect(editSvg.horizontalArrowPath(100, 100, 10)).toBe('M 100 100 L97 97 L97 99 L88 99 L88 101 L97 101 L97 103 Z');
@@ -84,18 +78,6 @@ describe('Service: editSvg', function () {
   describe('the horizontalSmallArrowPath function', function() {
     it('should return the right symbol', function() {
       expect(editSvg.horizontalSmallArrowPath(100, 100, 10)).toBe('M 100 100 L95 96 L95 99 L88 99 L88 101 L95 101 L95 104 Z');
-    });
-  });
-
-  describe('the verticalArrowPath function', function() {
-    it('should return the right symbol', function() {
-      expect(editSvg.verticalArrowPath(100, 100, 10)).toBe('M 100 100 L97 103 L99 103 L99 112 L101 112 L101 103 L103 103 Z');
-    });
-  });
-
-  describe('the verticalSmallArrowPath function', function() {
-    it('should return the right symbol', function() {
-      expect(editSvg.verticalSmallArrowPath(100, 100, 10)).toBe('M 100 100 L96 105 L99 105 L99 112 L101 112 L101 105 L104 105 Z');
     });
   });
 
