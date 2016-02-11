@@ -12,6 +12,7 @@ angular.module('accessimapEditeurDerApp')
 
         this.drawMenu = function(target, mousePosition, scope) {
             var menu = scope.menu;
+            target.classed('blink', true);
             var type = getType.getType(target);
             if (type) {
                 scope.styleChoices = settings.STYLES[type];
