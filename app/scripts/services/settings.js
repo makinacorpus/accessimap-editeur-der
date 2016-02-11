@@ -1132,35 +1132,35 @@ angular.module('accessimapEditeurDerApp')
 
         var ACTIONS = {
             'point': [
-                { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject},
-                { icon: '../bower_components/material-design-icons/action/svg/production/ic_open_with_48px.svg', action: moveService.movePath },
-                { icon: '../bower_components/material-design-icons/action/svg/production/ic_autorenew_48px.svg', action: moveService.rotatePath },
-                //{ icon: '../bower_components/material-design-icons/image/svg/production/ic_color_lens_48px.svg', action: 'fill' },
-                { icon: '../bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: styleService.emptyNearFeature },
-                { icon: '../bower_components/material-design-icons/av/svg/production/ic_hearing_48px.svg', action: interactService.addInteraction }
+                { icon: '/bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject},
+                { icon: '/bower_components/material-design-icons/action/svg/production/ic_open_with_48px.svg', action: moveService.movePath },
+                { icon: '/bower_components/material-design-icons/action/svg/production/ic_autorenew_48px.svg', action: moveService.rotatePath },
+                //{ icon: '/bower_components/material-design-icons/image/svg/production/ic_color_lens_48px.svg', action: 'fill' },
+                { icon: '/bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: styleService.emptyNearFeature },
+                { icon: '/bower_components/material-design-icons/av/svg/production/ic_hearing_48px.svg', action: interactService.addInteraction }
             ],
             'line': [
-                { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject },
-                { icon: '../bower_components/material-design-icons/editor/svg/production/ic_linear_scale_48px.svg', action: moveService.movePoint },
-                { icon: '../bower_components/material-design-icons/action/svg/production/ic_trending_flat_48px.svg', action: styleService.toggleArrow },
-                { icon: '../bower_components/material-design-icons/action/svg/production/ic_rounded_corner_48px.svg', action: geometryService.lineToCardinal }
+                { icon: '/bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject },
+                { icon: '/bower_components/material-design-icons/editor/svg/production/ic_linear_scale_48px.svg', action: moveService.movePoint },
+                { icon: '/bower_components/material-design-icons/action/svg/production/ic_trending_flat_48px.svg', action: styleService.toggleArrow },
+                { icon: '/bower_components/material-design-icons/action/svg/production/ic_rounded_corner_48px.svg', action: geometryService.lineToCardinal }
             ],
             'polygon': [
-                { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject },
-                { icon: '../bower_components/material-design-icons/editor/svg/production/ic_linear_scale_48px.svg', action: moveService.movePoint },
-                { icon: '../bower_components/material-design-icons/image/svg/production/ic_texture_48px.svg', action: styleService.changePattern },
-                { icon: '../bower_components/material-design-icons/image/svg/production/ic_color_lens_48px.svg', action: styleService.changeColor },
-                { icon: '../bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: styleService.toggleStroke }
+                { icon: '/bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject },
+                { icon: '/bower_components/material-design-icons/editor/svg/production/ic_linear_scale_48px.svg', action: moveService.movePoint },
+                { icon: '/bower_components/material-design-icons/image/svg/production/ic_texture_48px.svg', action: styleService.changePattern },
+                { icon: '/bower_components/material-design-icons/image/svg/production/ic_color_lens_48px.svg', action: styleService.changeColor },
+                { icon: '/bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: styleService.toggleStroke }
             ],
             'circle': [
-                { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject },
-                { icon: '../bower_components/material-design-icons/image/svg/production/ic_texture_48px.svg', action: styleService.changePattern },
-                { icon: '../bower_components/material-design-icons/image/svg/production/ic_color_lens_48px.svg', action: styleService.changeColor },
-                { icon: '../bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: styleService.toggleStroke }
+                { icon: '/bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject },
+                { icon: '/bower_components/material-design-icons/image/svg/production/ic_texture_48px.svg', action: styleService.changePattern },
+                { icon: '/bower_components/material-design-icons/image/svg/production/ic_color_lens_48px.svg', action: styleService.changeColor },
+                { icon: '/bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: styleService.toggleStroke }
             ],
             'text': [
-                { icon: '../bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject },
-                { icon: '../bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: styleService.textEmptyNearFeature }
+                { icon: '/bower_components/material-design-icons/action/svg/production/ic_delete_48px.svg', action: deleteService.deleteObject },
+                { icon: '/bower_components/material-design-icons/image/svg/production/ic_crop_din_48px.svg', action: styleService.textEmptyNearFeature }
             ]
         };
 
