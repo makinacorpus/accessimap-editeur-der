@@ -58,6 +58,16 @@ angular.module('accessimapEditeurDerApp')
             return d;
         };
 
+        this.northOrientation = function(cx, cy, r) {
+            var d = 'M ' + (cx + r / 2) + ' ' + (cy + r / 2);
+                    d += ' h' + (-r);
+                    d += ' Z';
+                    d += 'M ' + cx + ' ' + (cy + r / 2);
+                    d += ' v' + (-r);
+                    d += ' Z';
+            return d;
+        };
+
         this.squareDiagPath = function(cx, cy, r) {
             var d = 'M ' + (cx - r / 2) + ' ' + (cy - r / 2);
                     d += ' v' + r;

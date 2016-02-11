@@ -1197,6 +1197,21 @@ angular.module('accessimapEditeurDerApp')
                 'k': 'fill',
                 'v': 'grey'
             }]
+        },{
+            id: 'northOrientation',
+            name: 'Flèche du Nord',
+            path: editSvg.northOrientation,
+            radius: 30,
+            style: [{
+                'k': 'stroke',
+                'v': 'black'
+            }, {
+                'k': 'stroke-width',
+                'v': '4'
+            },{
+                'k': 'fill',
+                'v': 'none'
+            }]
         }]};
 
 
