@@ -357,6 +357,11 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>'
         }, {
           expand: true,
+          cwd: '.',
+          src: 'bower_components/material-design-icons/*/svg/production/*.svg',
+          dest: '<%= yeoman.dist %>'
+        }, {
+          expand: true,
           cwd: 'bower_components/fontawesome/fonts/',
           src: '*',
           dest: '<%= yeoman.dist %>/fonts'
