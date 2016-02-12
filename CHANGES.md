@@ -8,7 +8,7 @@ CHANGELOG
 **New features**
 
 * Radial menu to interact with the objects
-* Optionnaly add an empty area surrounding a point
+* Optionnaly add an empty area surrounding any shape
 * Optionnaly add an empty area surrounding a text
 * Move a point
 * Rotate a point

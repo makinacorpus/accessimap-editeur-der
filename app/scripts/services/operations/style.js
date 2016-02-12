@@ -29,7 +29,7 @@ angular.module('accessimapEditeurDerApp')
 
         this.emptyNearFeature = function(feature, scope) {
 
-            var emptyCircleExists = d3.select('.c' + feature.attr('iid')).node();
+            var emptyCircleExists = d3.select('.c' + feature.attr('data-link')).node();
 
             if (emptyCircleExists) {
                 emptyCircleExists.remove();
@@ -41,11 +41,11 @@ angular.module('accessimapEditeurDerApp')
                 var bbox = el.getBBox();
 
                 d3.select(emptyArea)
-                    .classed('c' + feature.attr('iid'), true)
+                    .classed('c' + feature.attr('data-link'), true)
                     .classed('notDeletable', true)
                     .attr('transform', transformString)
                     .attr('iid', null)
-                    .attr('fill', 'white')
+                    .attr('fill', 'none')
                     .attr('stroke', 'white')
                     .attr('stroke-width', '20');
                 el.parentNode.insertBefore(emptyArea, el);
@@ -54,7 +54,7 @@ angular.module('accessimapEditeurDerApp')
 
         this.textEmptyNearFeature = function(feature, scope) {
 
-            var emptyCircleExists = d3.select('.c' + feature.attr('iid')).node();
+            var emptyCircleExists = d3.select('.c' + feature.attr('data-link')).node();
 
             if (emptyCircleExists) {
                 emptyCircleExists.remove();
@@ -65,7 +65,7 @@ angular.module('accessimapEditeurDerApp')
                 var radius = Math.max(bbox.height, bbox.width) / 2 + 14;
                 var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
                 d3.select(rect)
-                    .classed('c' + feature.attr('iid'), true)
+                    .classed('c' + feature.attr('data-link'), true)
                     .classed('notDeletable', true)
                     .attr('x', bbox.x - 7)
                     .attr('y', bbox.y - 7)

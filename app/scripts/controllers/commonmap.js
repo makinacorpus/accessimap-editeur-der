@@ -351,11 +351,13 @@ angular.module('accessimapEditeurDerApp')
                             if (!d3.event.defaultPrevented) {
                                 var coordinates = d3.mouse(this);
                                 var realCoordinates = geometryutils.realCoordinates(coordinates);
+                                var iid = $rootScope.getiid();
 
                                 var feature = d3.select('#points-layer')
                                     .append('path')
+                                    .classed('link_' + iid, true)
                                     .attr('d', $scope.styleChosen.path(realCoordinates[0], realCoordinates[1], $scope.styleChosen.radius))
-                                    .attr('iid', $rootScope.getiid());
+                                    .attr('data-link', iid);
                                 styleutils.applyStyle(feature, $scope.styleChosen.style, $scope.colorChosen);
                             }
                      });
@@ -372,19 +374,24 @@ angular.module('accessimapEditeurDerApp')
                                 var coordinates = d3.mouse(this);
                                 var realCoordinates = geometryutils.realCoordinates(coordinates);
                                 var feature;
-                                if (d3.select('.edition')[0][0]) {
+                                if (d3.select('.edition')[0][0]) { // second click
                                     feature = d3.select('.edition');
                                     var xOffset = realCoordinates[0] - feature.attr('cx');
                                     var yOffset = realCoordinates[1] - feature.attr('cy');
                                     var r = Math.sqrt(Math.pow(xOffset, 2) + Math.pow(yOffset, 2));
                                     feature.attr('r', r);
                                     feature.classed('edition', false);
-                                } else {
+                                } else { // first click
+                                    var iid = $rootScope.getiid();
                                     feature = d3.select('#polygons-layer')
                                         .append('circle')
                                         .attr('cx', realCoordinates[0])
                                         .attr('cy', realCoordinates[1])
-                                        .attr({'class': 'edition'});
+                                        .classed('link_' + iid, true)
+                                        .attr('data-link', iid)
+                                        .classed('edition', true);
+
+
                                     styleutils.applyStyle(feature, $scope.styleChosen.style, $scope.colorChosen);
 
                                     if ($scope.checkboxModel.contour && !feature.attr('stroke')) {
@@ -497,19 +504,19 @@ angular.module('accessimapEditeurDerApp')
                             }
                         })
                         .on('dblclick', function() {
-                            var uid = $rootScope.getiid();
+                            var iid = $rootScope.getiid();
 
                             if ($scope.mode === 'line') {
                                 d3.select('.edition.inner')
                                     .classed('edition', false)
-                                    .classed('link_' + uid, true)
-                                    .attr('data-link', uid);
+                                    .classed('link_' + iid, true)
+                                    .attr('data-link', iid);
                             }
 
                             d3.select('.edition')
                                 .classed('edition', false)
-                                .classed('link_' + uid, true)
-                                .attr('data-link', uid);
+                                .classed('link_' + iid, true)
+                                .attr('data-link', iid);
                             d3.select('.ongoing').remove();
                             lastPoint = null;
                         })
@@ -562,6 +569,8 @@ angular.module('accessimapEditeurDerApp')
                             var coordinates = d3.mouse(this);
                             var realCoordinates = geometryutils.realCoordinates(coordinates);
                             var d = 'Texte';
+                            var iid = $rootScope.getiid();
+
                             d3.select('#text-layer')
                                 .append('text')
                                 .attr('x', realCoordinates[0])
@@ -574,6 +583,8 @@ angular.module('accessimapEditeurDerApp')
                                 .attr('fill', $scope.fontColorChosen.color)
                                 .attr('id', 'finalText')
                                 .classed('edition', true)
+                                .classed('link_' + iid, true)
+                                .attr('data-link', iid)
                                 .text('');
                             d3.select('#text-layer').selectAll('foreignObject#textEdition')
                                 .data([d])

@@ -19,14 +19,9 @@ angular.module('accessimapEditeurDerApp')
             $scope.legendFormat = 'landscapeA4';
 
             $rootScope.iid = 1;
-            $rootScope.uid = 1;
 
             $rootScope.getiid = function() {
                 return $rootScope.iid++;
-            };
-
-            $rootScope.getuid = function() {
-                return $rootScope.uid++;
             };
 
             function createBlankSvg() {

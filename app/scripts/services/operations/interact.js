@@ -13,10 +13,10 @@ angular.module('accessimapEditeurDerApp')
         this.addInteraction = function(feature, scope) {
 
             var featureIid;
-            featureIid = feature.attr('iid');
+            featureIid = feature.attr('data-link');
             if (!featureIid) {
                 featureIid = $rootScope.getiid();
-                feature.attr('iid', featureIid);
+                feature.attr('data-link', featureIid);
             }
             // Add the highlight class to the relevant cells of the grid
             d3.selectAll('.poi-' + featureIid).classed('highlight', true);
