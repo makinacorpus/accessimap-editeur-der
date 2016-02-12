@@ -62,15 +62,15 @@ angular.module('accessimapEditeurDerApp')
                 var el = feature.node();
                 var bbox = el.getBBox();
 
-                var radius = Math.max(bbox.height, bbox.width) / 2 + 10;
+                var radius = Math.max(bbox.height, bbox.width) / 2 + 14;
                 var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
                 d3.select(rect)
                     .classed('c' + feature.attr('iid'), true)
                     .classed('notDeletable', true)
-                    .attr('x', bbox.x - 5)
-                    .attr('y', bbox.y - 5)
-                    .attr('width', bbox.width + 10)
-                    .attr('height', bbox.height + 10)
+                    .attr('x', bbox.x - 7)
+                    .attr('y', bbox.y - 7)
+                    .attr('width', bbox.width + 14)
+                    .attr('height', bbox.height + 14)
                     .attr('fill', 'white');
                 el.parentNode.insertBefore(rect, el);
             }
