@@ -37,18 +37,18 @@ angular.module('accessimapEditeurDerApp')
                 var el = feature.node();
                 var bbox = el.getBBox();
                 var transformString = null || feature.attr('transform');
+                var emptyArea = el.cloneNode(true);
+                var bbox = el.getBBox();
 
-                var radius = Math.max(bbox.height, bbox.width) / 2 + 10;
-                var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                d3.select(circle)
+                d3.select(emptyArea)
                     .classed('c' + feature.attr('iid'), true)
                     .classed('notDeletable', true)
-                    .attr('cx', bbox.x + bbox.width / 2)
-                    .attr('cy', bbox.y + bbox.height / 2)
-                    .attr('r', radius)
                     .attr('transform', transformString)
-                    .attr('fill', 'white');
-                el.parentNode.insertBefore(circle, el);
+                    .attr('iid', null)
+                    .attr('fill', 'white')
+                    .attr('stroke', 'white')
+                    .attr('stroke-width', '20');
+                el.parentNode.insertBefore(emptyArea, el);
             }
         };
 
