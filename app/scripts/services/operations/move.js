@@ -153,7 +153,7 @@ angular.module('accessimapEditeurDerApp')
                     .attr('fill', 'red')
                     .attr('stroke', 'none');
                 rotationMarker.append('svg:image')
-                    .attr('xlink:href', '../bower_components/material-design-icons/action/svg/production/ic_autorenew_48px.svg')
+                    .attr('xlink:href', 'bower_components/material-design-icons/action/svg/production/ic_autorenew_48px.svg')
                     .attr('width', 20)
                     .attr('height', 20)
                     .attr('x', -10)

@@ -24,7 +24,7 @@ CHANGELOG
 
 **Bug fixes**
 
-* Inner and outer paths of a same line are not tied together with a class (link_id) and an attribute (data-link)
+* Inner and outer paths of a same line are now tied together with a class (link_id) and an attribute (data-link)
 
 0.5
 -------------------
