@@ -21,6 +21,7 @@ CHANGELOG
 
 * Add a north orientation symbol
 * Vertical symbols are no more proposed as the vertical orientation can be achieved through the rotation tool
+* Fill the transparent symbols in white
 
 **Bug fixes**
 

@@ -796,7 +796,7 @@ angular.module('accessimapEditeurDerApp')
                 'v': '2'
             },{
                 'k': 'fill',
-                'v': 'none'
+                'v': 'white'
             }]
         },{
             id: 'bigcircleempty',
@@ -811,7 +811,7 @@ angular.module('accessimapEditeurDerApp')
                 'v': '2'
             },{
                 'k': 'fill',
-                'v': 'none'
+                'v': 'white'
             }]
         },{
             id: 'smallcircle',
@@ -856,7 +856,7 @@ angular.module('accessimapEditeurDerApp')
                 'v': '2'
             },{
                 'k': 'fill',
-                'v': 'none'
+                'v': 'white'
             }]
         },{
             id: 'ovalempty',
@@ -871,7 +871,7 @@ angular.module('accessimapEditeurDerApp')
                 'v': '2'
             },{
                 'k': 'fill',
-                'v': 'none'
+                'v': 'white'
             }]
         },{
             id: 'oval',
@@ -901,7 +901,7 @@ angular.module('accessimapEditeurDerApp')
                 'v': '2'
             },{
                 'k': 'fill',
-                'v': 'none'
+                'v': 'white'
             }]
         },{
             id: 'triangle',
@@ -931,7 +931,7 @@ angular.module('accessimapEditeurDerApp')
                 'v': '3'
             },{
                 'k': 'fill',
-                'v': 'none'
+                'v': 'white'
             }]
         },{
             id: 'square',
@@ -961,7 +961,7 @@ angular.module('accessimapEditeurDerApp')
                 'v': '2'
             },{
                 'k': 'fill',
-                'v': 'none'
+                'v': 'white'
             }]
         },{
             id: 'squareCross',
@@ -976,7 +976,7 @@ angular.module('accessimapEditeurDerApp')
                 'v': '2'
             },{
                 'k': 'fill',
-                'v': 'none'
+                'v': 'white'
             }]
         },{
             id: 'cross',
