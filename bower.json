@@ -24,7 +24,8 @@
     "angular-ui-utils": "~0.2.3",
     "angular-ui-grid": "~3.0.1",
     "pdfjs-dist": "~1.1.494",
-    "material-design-icons": "~2.1.3"
+    "material-design-icons": "~2.1.3",
+    "path-data-polyfill.js": "git@github.com:jarek-foksa/path-data-polyfill.js.git"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.x",

@@ -71,7 +71,10 @@ angular.module('accessimapEditeurDerApp')
 
             this.movePoint = function(feature, scope) {
                 var el = feature.node();
-                var pathSegList = el.pathSegList;
+                //var pathSegList = el.pathSegList;
+                var pathData = el.getPathData();
+
+                console.log(el.getPathData())
 
                 var featuresToUpdate = feature;
                 if (feature.attr('data-link')) {
@@ -83,15 +86,19 @@ angular.module('accessimapEditeurDerApp')
 
                 var drag = d3.behavior.drag();
 
-                angular.forEach(pathSegList, function(point, index) {
-                    if (point.x && point.y) {
-                        features.push([point.x, point.y, index]);
+                angular.forEach(pathData, function(point, index) {
+                        console.log(point)
+                    var pointValues = point.values;
+                    if (pointValues) {
+                        var px = pointValues[0],
+                            py = pointValues[1];
+                        features.push([px, py, index]);
                         d3.select('#points-layer')
                             .append('circle')
                             .classed('ongoing', true)
                             .attr('id', 'n' + index)
-                            .attr('cx', point.x)
-                            .attr('cy', point.y)
+                            .attr('cx', px)
+                            .attr('cy', py)
                             .attr('r', 10)
                             .attr('fill', 'red')
                             .call(drag);
@@ -113,9 +120,10 @@ angular.module('accessimapEditeurDerApp')
 
                     var vertexNumber = parseInt(d3.select(this).attr('id').replace('n', ''));
                     featuresToUpdate.each(function(d, i) {
-                        var pathSegListToUpdate = this.pathSegList;
-                        pathSegListToUpdate[vertexNumber].x = mousePosition[0];
-                        pathSegListToUpdate[vertexNumber].y = mousePosition[1];
+                        var pathDataToUpdate = this.getPathData();
+                        pathDataToUpdate[vertexNumber].values[0] = mousePosition[0];
+                        pathDataToUpdate[vertexNumber].values[1] = mousePosition[1];
+                        this.setPathData(pathDataToUpdate)
                     });
                 });
 
