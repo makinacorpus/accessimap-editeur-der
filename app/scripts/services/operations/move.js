@@ -27,7 +27,7 @@ angular.module('accessimapEditeurDerApp')
                             var realCoordinates = geometryutils.realCoordinates(coordinates);
                             var transX = realCoordinates[0] - bbox.x,
                                 transY = realCoordinates[1] - bbox.y;
-                            var emptyCircle = d3.select('.c' + feature.attr('iid'));
+                            var emptyCircle = d3.select('.c' + feature.attr('data-link'));
                             var emptyCircleExists = emptyCircle.node();
 
                             var transformString = '';
@@ -71,10 +71,7 @@ angular.module('accessimapEditeurDerApp')
 
             this.movePoint = function(feature, scope) {
                 var el = feature.node();
-                //var pathSegList = el.pathSegList;
                 var pathData = el.getPathData();
-
-                console.log(el.getPathData())
 
                 var featuresToUpdate = feature;
                 if (feature.attr('data-link')) {
@@ -87,7 +84,6 @@ angular.module('accessimapEditeurDerApp')
                 var drag = d3.behavior.drag();
 
                 angular.forEach(pathData, function(point, index) {
-                        console.log(point)
                     var pointValues = point.values;
                     if (pointValues) {
                         var px = pointValues[0],
@@ -123,7 +119,7 @@ angular.module('accessimapEditeurDerApp')
                         var pathDataToUpdate = this.getPathData();
                         pathDataToUpdate[vertexNumber].values[0] = mousePosition[0];
                         pathDataToUpdate[vertexNumber].values[1] = mousePosition[1];
-                        this.setPathData(pathDataToUpdate)
+                        this.setPathData(pathDataToUpdate);
                     });
                 });
 
@@ -134,6 +130,8 @@ angular.module('accessimapEditeurDerApp')
                 var bbox = el.getBBox();
                 var pathCenter = [bbox.x + bbox.width / 2, bbox.y + bbox.height / 2];
                 var pathCenterTranslate = [];
+                var emptyCircle = d3.select('.c' + feature.attr('data-link'));
+                var emptyCircleExists = emptyCircle.node();
                 pathCenterTranslate[0] = pathCenter[0];
                 pathCenterTranslate[1] = pathCenter[1];
                 if (feature.attr('transform')) {
@@ -186,7 +184,12 @@ angular.module('accessimapEditeurDerApp')
                     }
 
                     transformString += 'rotate(' + diffAngle + ' ' + pathCenter[0] + ' ' + pathCenter[1] + ')';
+
                     feature.attr('transform', transformString);
+                    if (emptyCircleExists) {
+                        emptyCircle.attr('transform', transformString);
+                    }
+
                     rotationMarker.attr('transform', 'translate(' + mouse[0] + ',' + mouse[1] + ')');
                 }).on('dragend', function() {
                     d3.select('#points-layer').on('mousedown.drag', null);
