@@ -49,9 +49,21 @@ angular.module('accessimapEditeurDerApp')
         };
 
         this.createDefs = function(target) {
-            target.append('defs')
-                    .append('marker')
-                    .attr('id', 'arrowmarker')
+            var defs = target.append('defs');
+
+            defs.append('marker')
+                    .attr('id', 'arrowStartMarker')
+                    .attr('refX', 5)
+                    .attr('refY', 5)
+                    .attr('markerWidth', 10)
+                    .attr('markerHeight', 10)
+                    .attr('orient', 'auto')
+                .append('path')
+                    .attr('d', 'M9,1 L5,5 9,9')
+                    .attr('style', 'fill:none;stroke:#000000;stroke-opacity:1');
+
+            defs.append('marker')
+                    .attr('id', 'arrowStopMarker')
                     .attr('refX', 5)
                     .attr('refY', 5)
                     .attr('markerWidth', 10)
@@ -59,6 +71,17 @@ angular.module('accessimapEditeurDerApp')
                     .attr('orient', 'auto')
                 .append('path')
                     .attr('d', 'M1,1 L5,5 1,9')
+                    .attr('style', 'fill:none;stroke:#000000;stroke-opacity:1');
+
+            defs.append('marker')
+                    .attr('id', 'straightMarker')
+                    .attr('refX', 1)
+                    .attr('refY', 5)
+                    .attr('markerWidth', 2)
+                    .attr('markerHeight', 10)
+                    .attr('orient', 'auto')
+                .append('path')
+                    .attr('d', 'M1,1 L1,9')
                     .attr('style', 'fill:none;stroke:#000000;stroke-opacity:1');
         };
 

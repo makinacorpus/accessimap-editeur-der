@@ -1128,6 +1128,31 @@ angular.module('accessimapEditeurDerApp')
         }]};
 
 
+
+        var markerStart = [{
+            id: 'null',
+            name: 'Aucun'
+        }, {
+            id: 'arrowStartMarker',
+            name: 'Flèche'
+        }, {
+            id: 'straightMarker',
+            name: 'Trait'
+        }];
+
+        var markerStop = [{
+            id: 'null',
+            name: 'Aucun'
+        }, {
+            id: 'arrowStopMarker',
+            name: 'Flèche'
+        }, {
+            id: 'straightMarker',
+            name: 'Trait'
+        }];
+
+
+
         var XAPI_URL = 'http://overpass-api.de/api/interpreter?data=';
 
         var ACTIONS = {
@@ -1177,6 +1202,8 @@ angular.module('accessimapEditeurDerApp')
             POLYGON_STYLES: POLYGON_STYLES,
             STYLES: STYLES,
             ACTIONS: ACTIONS,
+            markerStart: markerStart,
+            markerStop: markerStop,
             leaflet: leafletConf
         };
     }]);

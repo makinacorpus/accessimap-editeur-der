@@ -44,6 +44,8 @@ angular.module('accessimapEditeurDerApp')
             $scope.mode = 'default';
             $scope.styleChoices = [];
             $scope.styleChosen = $scope.styleChoices[0];
+            $scope.markerStartChoices = settings.markerStart;
+            $scope.markerStopChoices = settings.markerStop;
             $scope.deletedFeature = null;
             $scope.checkboxModel = {
                 contour: false
@@ -263,6 +265,16 @@ angular.module('accessimapEditeurDerApp')
                 var path = d3.select('.styleEdition');
                 $scope.$watch($scope.styleChosen, function() {
                     styleutils.applyStyle(path, $scope.styleChosen.style, $scope.colorChosen);
+                });
+            };
+
+            $scope.updateMarker = function() {
+                var path = d3.select('.styleEdition');
+                $scope.$watch($scope.markerStart, function() {
+                    path.attr('marker-start', 'url(#' + $scope.markerStart.id + ')');
+                });
+                $scope.$watch($scope.markerStop, function() {
+                    path.attr('marker-end', 'url(#' + $scope.markerStop.id + ')');
                 });
             };
 

@@ -9,6 +9,7 @@ development
 
 * Implement pathData instead of pathSegList because of Chrome 48 deprecation
 * Fixes the move and rotation of a point and its empty area
+* Add an arrow or straight marker at the extremity of a line
 
 0.6
 -------------------

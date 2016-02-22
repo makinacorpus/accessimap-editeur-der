@@ -20,11 +20,8 @@ angular.module('accessimapEditeurDerApp')
         };
 
         this.toggleArrow = function(feature, scope) {
-            if (feature.attr('marker-end')) {
-                feature.attr('marker-end', null);
-            } else {
-                feature.attr('marker-end', 'url(#arrowmarker)');
-            }
+            $('#changeArrowsModal').modal('show');
+            feature.classed('styleEdition', true);
         };
 
         this.emptyNearFeature = function(feature, scope) {
