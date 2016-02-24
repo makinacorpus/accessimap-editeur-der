@@ -90,7 +90,7 @@ angular.module('accessimapEditeurDerApp')
                         var bbox;
                         d3.select('#der').select('svg').selectAll('path')[0]
                             .forEach(function(shape) {
-                                if ('poi-' + d3.select(shape).attr('iid') === d.id) {
+                                if ('poi-' + d3.select(shape).attr('data-link') === d.id) {
                                     bbox = d3.select(shape).node().getBBox();
                                 }
                             });

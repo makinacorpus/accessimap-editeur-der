@@ -159,13 +159,13 @@
         <h4 class="modal-title">Choisissez un les extrémités de cette ligne</h4>
       </div>
       <div class="modal-body">
-        <ui-select ng-model="$parent.markerStart" ng-change="updateMarker('marker-start')" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
+        <ui-select ng-model="$parent.markerStart" ng-change="updateMarker()" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
           <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
           <ui-select-choices repeat="item in markerStartChoices | filter: $select.search">
             <div ng-bind-html="item.name | highlight: $select.search"></div>
           </ui-select-choices>
         </ui-select>
-        <ui-select ng-model="$parent.markerStop" ng-change="updateMarker('marker-stop')" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
+        <ui-select ng-model="$parent.markerStop" ng-change="updateMarker()" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;">
           <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
           <ui-select-choices repeat="item in markerStopChoices | filter: $select.search">
             <div ng-bind-html="item.name | highlight: $select.search"></div>
