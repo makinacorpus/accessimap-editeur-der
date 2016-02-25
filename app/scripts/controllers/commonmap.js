@@ -263,6 +263,8 @@ angular.module('accessimapEditeurDerApp')
 
             $scope.updatePolygonStyle = function() {
                 var path = d3.select('.styleEdition');
+                path.attr('e-style', $scope.styleChosen.id)
+                    .attr('e-color', $scope.colorChosen.color);
                 $scope.$watch($scope.styleChosen, function() {
                     styleutils.applyStyle(path, $scope.styleChosen.style, $scope.colorChosen);
                 });
@@ -525,10 +527,14 @@ angular.module('accessimapEditeurDerApp')
                                     .attr('data-link', iid);
                             }
 
+                            d3.select('.edition').attr('e-style', $scope.styleChosen.id)
+                                .attr('e-color', $scope.colorChosen.color);
+
                             d3.select('.edition')
                                 .classed('edition', false)
                                 .classed('link_' + iid, true)
                                 .attr('data-link', iid);
+
                             d3.select('.ongoing').remove();
                             lastPoint = null;
                         })

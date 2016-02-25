@@ -74,12 +74,28 @@ angular.module('accessimapEditeurDerApp')
         };
 
         this.changeColor = function(feature, scope) {
+            var style = $.grep(scope.styleChoices, function(style) {
+                return style.id == feature.attr('e-style');
+            });
+            var color = $.grep(scope.colors, function(color) {
+                return color.color == feature.attr('e-color');
+            });
+            scope.styleChosen = style[0];
+            scope.colorChosen = color[0];
 
             $('#changeColorModal').modal('show');
             feature.classed('styleEdition', true);
         };
 
         this.changePattern = function(feature, scope) {
+            var style = $.grep(scope.styleChoices, function(style) {
+                return style.id == feature.attr('e-style');
+            });
+            var color = $.grep(scope.colors, function(color) {
+                return color.color == feature.attr('e-color');
+            });
+            scope.styleChosen = style[0];
+            scope.colorChosen = color[0];
 
             $('#changePatternModal').modal('show');
             feature.classed('styleEdition', true);

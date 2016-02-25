@@ -495,6 +495,8 @@ angular.module('accessimapEditeurDerApp')
                             return d.properties.tags.name;
                         }
                     })
+                    .attr('e-style', $scope.styleChosen.id)
+                    .attr('e-color', $scope.colorChosen.color)
                     .append('svg:title')
                         .text(function(d) { return d.properties.tags.name; })
                     .attr('d', path)
