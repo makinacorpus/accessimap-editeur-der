@@ -32,7 +32,7 @@ describe('Service: svgicon', function () {
       var $injector = angular.injector(['ng', 'accessimapEditeurDerApp']);
       var settings = $injector.get('settings');
       var pointsettings = settings.STYLES.point[0];
-      expect(svgicon.featureIcon(pointsettings, 'point')).toBe('<svg height="40"><g><path d="M 20 20 m -10, 0 a 10,10 0 1,0 20,0 a 10,10 0 1,0 -20,0" stroke="black" stroke-width="2" fill="none"></path></g></svg>');
+      expect(svgicon.featureIcon(pointsettings, 'point')).toBe('<svg height="40"><g><path d="M 20 20 m -10, 0 a 10,10 0 1,0 20,0 a 10,10 0 1,0 -20,0" stroke="black" stroke-width="2" fill="white"></path></g></svg>');
     });
 
   });
