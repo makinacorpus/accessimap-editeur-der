@@ -8,6 +8,7 @@ development
 **Minor changes**
 
 * Background is now zoomed with the drawing, and a button allows to get back to the initial view
+* Add radial menu immediately after feature addition
 
 **Bug fixes**
 

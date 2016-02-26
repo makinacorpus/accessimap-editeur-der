@@ -381,6 +381,7 @@ angular.module('accessimapEditeurDerApp')
                                     .attr('d', $scope.styleChosen.path(realCoordinates[0], realCoordinates[1], $scope.styleChosen.radius))
                                     .attr('data-link', iid);
                                 styleutils.applyStyle(feature, $scope.styleChosen.style, $scope.colorChosen);
+                                addRadialMenu(feature);
                             }
                      });
                 }
@@ -422,6 +423,7 @@ angular.module('accessimapEditeurDerApp')
                                             .attr('stroke-width', '2');
                                     }
                                 }
+                                addRadialMenu(feature);
                             }
                         })
                         .on('mousemove', function() {
@@ -527,6 +529,8 @@ angular.module('accessimapEditeurDerApp')
                         })
                         .on('dblclick', function() {
                             var iid = $rootScope.getiid();
+                            
+                            addRadialMenu(d3.select('.edition'));
 
                             if ($scope.mode === 'line') {
                                 d3.select('.edition.inner')
@@ -657,7 +661,7 @@ angular.module('accessimapEditeurDerApp')
                                         }
                                     });
                                     d3.select(this.parentElement).remove();
-
+                                    addRadialMenu(d3.select('.edition'));
                                     d3.select('.edition').classed('edition', false);
                                     d3.select('#finalText').attr('id', null);
                                 });
