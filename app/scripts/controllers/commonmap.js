@@ -123,6 +123,13 @@ angular.module('accessimapEditeurDerApp')
                 return $scope.interactiveFilters.data[rowRenderIndex].id + ' highlight';
             };
 
+            $scope.initialView = function() {
+                zoom.scale(1)
+                    .translate([0, 0]);
+                d3.select('#map-layer').attr('transform', null);
+                d3.select('#frame-layer').attr('transform', null);
+            };
+
             function zoomed() {
 
                 if ($scope.menu) {
@@ -131,6 +138,7 @@ angular.module('accessimapEditeurDerApp')
                 }
                 d3.selectAll('.ongoing').remove();
                 d3.select('#map-layer').attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
+                d3.select('#frame-layer').attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
             }
 
             var zoom = d3.behavior.zoom()

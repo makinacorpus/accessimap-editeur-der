@@ -5,6 +5,10 @@ CHANGELOG
 development
 -------------------
 
+**Minor changes**
+
+* Background is now zoomed with the drawing, and a button allows to get back to the initial view
+
 **Bug fixes**
 
 * Implement pathData instead of pathSegList because of Chrome 48 deprecation
