@@ -42,6 +42,7 @@ angular.module('accessimapEditeurDerApp')
             $scope.fontColors = settings.COLORS;
             $scope.fontColorChosen = $scope.fontColors[$scope.fontChosen.color][0];
             $scope.mode = 'default';
+            $scope.styles = settings.STYLES;
             $scope.styleChoices = [];
             $scope.styleChosen = $scope.styleChoices[0];
             $scope.markerStartChoices = settings.markerStart;
@@ -402,7 +403,9 @@ angular.module('accessimapEditeurDerApp')
                                     var xOffset = realCoordinates[0] - feature.attr('cx');
                                     var yOffset = realCoordinates[1] - feature.attr('cy');
                                     var r = Math.sqrt(Math.pow(xOffset, 2) + Math.pow(yOffset, 2));
-                                    feature.attr('r', r);
+                                    feature.attr('r', r)
+                                        .attr('e-style', $scope.styleChosen.id)
+                                        .attr('e-color', $scope.colorChosen.color);
                                     feature.classed('edition', false);
                                 } else { // first click
                                     var iid = $rootScope.getiid();

@@ -74,11 +74,12 @@ angular.module('accessimapEditeurDerApp')
         };
 
         this.changeColor = function(feature, scope) {
-            var style = $.grep(scope.styleChoices, function(style) {
-                return style.id == feature.attr('e-style');
+            scope.styleChoices = scope.styles.polygon;
+            var style = $.grep(scope.styleChoices, function(s) {
+                return s.id == feature.attr('e-style');
             });
-            var color = $.grep(scope.colors, function(color) {
-                return color.color == feature.attr('e-color');
+            var color = $.grep(scope.colors, function(c) {
+                return c.color == feature.attr('e-color');
             });
             scope.styleChosen = style[0];
             scope.colorChosen = color[0];
@@ -88,6 +89,7 @@ angular.module('accessimapEditeurDerApp')
         };
 
         this.changePattern = function(feature, scope) {
+            scope.styleChoices = scope.styles.polygon;
             var style = $.grep(scope.styleChoices, function(style) {
                 return style.id == feature.attr('e-style');
             });
