@@ -63,6 +63,7 @@ angular.module('accessimapEditeurDerApp')
                 var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
                 d3.select(rect)
                     .classed('c' + feature.attr('data-link'), true)
+                    .classed('link_' + feature.attr('data-link'), true)
                     .classed('notDeletable', true)
                     .attr('x', bbox.x - 7)
                     .attr('y', bbox.y - 7)

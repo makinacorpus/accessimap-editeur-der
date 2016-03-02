@@ -16,6 +16,7 @@ development
 * Fixes the move and rotation of a point and its empty area
 * Add an arrow or straight marker at the extremity of a line
 * When changing a polygon style, the original color is preserved and vice-versa
+* Remove the empty area below a text when it is deleted
 
 0.6
 -------------------
