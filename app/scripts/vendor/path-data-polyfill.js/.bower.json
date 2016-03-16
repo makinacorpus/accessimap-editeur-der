@@ -1,0 +1,14 @@
+{
+  "name": "path-data-polyfill.js",
+  "homepage": "https://github.com/jarek-foksa/path-data-polyfill.js",
+  "_release": "53f4c0f8fc",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "53f4c0f8fcaeafb74c96585b10aa5b83116b4478"
+  },
+  "_source": "git@github.com:jarek-foksa/path-data-polyfill.js.git",
+  "_target": "*",
+  "_originalSource": "git@github.com:jarek-foksa/path-data-polyfill.js.git",
+  "_direct": true
+}
