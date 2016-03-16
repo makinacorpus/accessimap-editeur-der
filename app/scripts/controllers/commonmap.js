@@ -9,8 +9,8 @@
  */
 angular.module('accessimapEditeurDerApp')
     .controller('CommonmapCtrl', ['$rootScope', '$scope', '$location', 'settings', 'exportData',
-        'shareSvg', 'svgicon', 'geometryutils', 'styleutils', 'radialMenu', 'generators',
-        function($rootScope, $scope, $location, settings, exportData, shareSvg, svgicon, geometryutils, styleutils, radialMenu, generators) {
+        'shareSvg', 'svgicon', 'geometryutils', 'styleutils', 'radialMenu', 'generators', 'reset',
+        function($rootScope, $scope, $location, settings, exportData, shareSvg, svgicon, geometryutils, styleutils, radialMenu, generators, reset) {
             d3.select('#der')
                 .selectAll('svg')
                 .remove();
@@ -80,10 +80,10 @@ angular.module('accessimapEditeurDerApp')
             };
 
             $('#changeColorModal').on('hidden.bs.modal', function() {
-                resetActions();
+                reset.resetActions();
             });
             $('#changePatternModal').on('hidden.bs.modal', function() {
-                resetActions();
+                reset.resetActions();
             });
 
             $scope.rightMenuVisible = false;
@@ -289,32 +289,9 @@ angular.module('accessimapEditeurDerApp')
                 });
             };
 
-            function resetActions() {
-                d3.selectAll('path:not(.menu-segment)')
-                    .on('click', function() {
-                    });
-                d3.selectAll('svg')
-                    .on('click', function() {
-                    });
-                d3.select('body')
-                    .on('keydown', function() {
-                    });
-                d3.selectAll('path')
-                    .attr('marker-mid', null);
-                //$('#der').css('cursor', 'auto');
-
-                d3.selectAll('.ongoing').remove();
-
-                d3.selectAll('.blink').classed('blink', false);
-                d3.selectAll('.edition').classed('edition', false);
-                d3.selectAll('.styleEdition').classed('styleEdition', false);
-                d3.selectAll('.highlight').classed('highlight', false);
-            }
-
-
             d3.select('body').on('keyup', function() {
                 if (d3.event.keyCode === 27) {
-                    resetActions();
+                    reset.resetActions();
                 }
             });
 
@@ -326,32 +303,16 @@ angular.module('accessimapEditeurDerApp')
                     sel.addRange(range);
             }
 
-            function addRadialMenu(el) {
-                el.on('contextmenu', function() {
-                    $scope.$apply(function() {
-                        $scope.mode = 'default';
-                    });
-                    resetActions();
-                    d3.event.preventDefault();
-                    d3.event.stopPropagation();
-                    if ($scope.menu) {
-                        $scope.menu.hide();
-                    }
-                    var mapLayer = d3.select('#der').select('svg');
-                    $scope.menu = radialMenu.drawMenu(d3.select(this), d3.mouse(mapLayer.node()), $scope);
-                });
-            }
-
             $scope.$watch('mode', function() {
                 if ($scope.mode === 'default') {
-                    resetActions();
-                    addRadialMenu(d3.selectAll('path:not(.notDeletable)'));
-                    addRadialMenu(d3.selectAll('circle:not(.notDeletable)'));
-                    addRadialMenu(d3.selectAll('text:not(.notDeletable)'));
+                    reset.resetActions();
+                    radialMenu.addRadialMenu($scope, d3.selectAll('path:not(.notDeletable)'));
+                    radialMenu.addRadialMenu($scope, d3.selectAll('circle:not(.notDeletable)'));
+                    radialMenu.addRadialMenu($scope, d3.selectAll('text:not(.notDeletable)'));
                 }
 
                 if ($scope.mode === 'undo') {
-                    resetActions();
+                    reset.resetActions();
                     if ($scope.deletedFeature) {
                         var deletedElement = d3.select('#deletedElement').node();
                         var t = document.createElement('path');
@@ -365,7 +326,7 @@ angular.module('accessimapEditeurDerApp')
                 }
 
                 if ($scope.mode === 'point') {
-                    resetActions();
+                    reset.resetActions();
                     $('#der').css('cursor', 'crosshair');
                     $scope.styleChoices = settings.STYLES[$scope.mode];
                     $scope.styleChosen = $scope.styleChoices[0];
@@ -382,13 +343,13 @@ angular.module('accessimapEditeurDerApp')
                                     .attr('d', $scope.styleChosen.path(realCoordinates[0], realCoordinates[1], $scope.styleChosen.radius))
                                     .attr('data-link', iid);
                                 styleutils.applyStyle(feature, $scope.styleChosen.style, $scope.colorChosen);
-                                addRadialMenu(feature);
+                                radialMenu.addRadialMenu($scope, feature);
                             }
                      });
                 }
 
                 if ($scope.mode === 'circle') {
-                    resetActions();
+                    reset.resetActions();
                     $('#der').css('cursor', 'crosshair');
                     $scope.styleChoices = settings.STYLES.polygon;
                     $scope.styleChosen = $scope.styleChoices[0];
@@ -426,7 +387,7 @@ angular.module('accessimapEditeurDerApp')
                                             .attr('stroke-width', '2');
                                     }
                                 }
-                                addRadialMenu(feature);
+                                radialMenu.addRadialMenu($scope, feature);
                             }
                         })
                         .on('mousemove', function() {
@@ -442,7 +403,7 @@ angular.module('accessimapEditeurDerApp')
                         });
                 }
                 if ($scope.mode === 'line' || $scope.mode === 'polygon') {
-                    resetActions();
+                    reset.resetActions();
                     $('#der').css('cursor', 'crosshair');
                     $scope.styleChoices = settings.STYLES[$scope.mode];
                     $scope.styleChosen = $scope.styleChoices[0];
@@ -533,7 +494,7 @@ angular.module('accessimapEditeurDerApp')
                         .on('dblclick', function() {
                             var iid = $rootScope.getiid();
                             
-                            addRadialMenu(d3.select('.edition'));
+                            radialMenu.addRadialMenu($scope, d3.select('.edition'));
 
                             if ($scope.mode === 'line') {
                                 d3.select('.edition.inner')
@@ -593,7 +554,7 @@ angular.module('accessimapEditeurDerApp')
                         });
                 }
                 if ($scope.mode === 'addtext') {
-                    resetActions();
+                    reset.resetActions();
                     $('#der').css('cursor', 'crosshair');
                     d3.select('svg').on('click', function() {
                         if (!d3.event.defaultPrevented) {
@@ -664,7 +625,7 @@ angular.module('accessimapEditeurDerApp')
                                         }
                                     });
                                     d3.select(this.parentElement).remove();
-                                    addRadialMenu(d3.select('.edition'));
+                                    radialMenu.addRadialMenu($scope, d3.select('.edition'));
                                     d3.select('.edition').classed('edition', false);
                                     d3.select('#finalText').attr('id', null);
                                 });
@@ -674,7 +635,7 @@ angular.module('accessimapEditeurDerApp')
                                 $scope.$apply(function() {
                                     $scope.mode = 'default';
                                 });
-                                resetActions();
+                                reset.resetActions();
                         }
                     });
                 }

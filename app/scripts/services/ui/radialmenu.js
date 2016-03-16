@@ -8,7 +8,8 @@
  * Service in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
-  .service('radialMenu', ['settings', 'getType', function(settings, getType) {
+    .service('radialMenu', ['settings', 'getType', 'reset',
+    function(settings, getType, reset) {
 
         this.drawMenu = function(target, mousePosition, scope) {
             var menu = scope.menu;
@@ -35,6 +36,23 @@ angular.module('accessimapEditeurDerApp')
 
                 return m;
             }
+        };
+
+        this.addRadialMenu = function(scope, el) {
+            var that = this;
+            el.on('contextmenu', function() {
+                scope.$apply(function() {
+                    scope.mode = 'default';
+                });
+                reset.resetActions();
+                d3.event.preventDefault();
+                d3.event.stopPropagation();
+                if (scope.menu) {
+                    scope.menu.hide();
+                }
+                var mapLayer = d3.select('#der').select('svg');
+                scope.menu = that.drawMenu(d3.select(this), d3.mouse(mapLayer.node()), scope);
+            });
         };
 
   }]);
