@@ -32,8 +32,8 @@ module.exports = function(config) {
       'bower_components/d3/d3.js',
       'bower_components/angular-ui-select/dist/select.js',
       'bower_components/select2/select2.js',
-      'bower_components/bootstrap/dist/js/bootstrap.js',
-      'bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js',
+      // 'bower_components/bootstrap/dist/js/bootstrap.js',
+      // 'bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js',
       'bower_components/angular-bootstrap-slider/slider.js',
       'bower_components/angular-ui-grid/ui-grid.js',
       'app/scripts/vendor/d3.geo.tile.v0.min.js',
@@ -42,7 +42,7 @@ module.exports = function(config) {
       'app/scripts/app.js',
       'app/scripts/controllers/*.js',
       'app/scripts/services/**/*.js',
-      'test/mock/**/*.js',
+      // 'test/mock/**/*.js',
       'test/spec/**/*.js'
     ],
 

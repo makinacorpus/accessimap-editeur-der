@@ -5,3 +5,4 @@ bower_components
 !dist/bower_components
 npm-debug.log
 test/coverage
+dist
