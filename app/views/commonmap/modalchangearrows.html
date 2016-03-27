@@ -1,0 +1,60 @@
+<div 
+    class="modal fade" 
+    id="changeArrowsModal" 
+    tabindex="-1"
+    role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button 
+                    type="button" 
+                    class="close" 
+                    data-dismiss="modal" 
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Choisissez un les extrémités de cette ligne</h4>
+            </div>
+            <div class="modal-body">
+                <ui-select 
+                    ng-model="model.markerStart" 
+                    ng-change="methods.updateMarker()" 
+                    ng-disabled="disabled" 
+                    theme="bootstrap" 
+                    class="form-control style-selector" 
+                    style="width: 300px;">
+                    
+                    <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
+                    <ui-select-choices repeat="item in model.markerStartChoices | filter: $select.search">
+                        <div ng-bind-html="item.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+
+                </ui-select>
+                
+                <ui-select 
+                    ng-model="model.markerStop" 
+                    ng-change="methods.updateMarker()" 
+                    ng-disabled="disabled" 
+                    theme="bootstrap" 
+                    class="form-control style-selector" 
+                    style="width: 300px;">
+                    
+                    <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
+                    <ui-select-choices repeat="item in model.markerStopChoices | filter: $select.search">
+                        <div ng-bind-html="item.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+
+                </ui-select>
+
+            </div>
+            <div class="modal-footer">
+                <button 
+                    type="button" 
+                    class="btn btn-default" 
+                    data-dismiss="modal">
+                    Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

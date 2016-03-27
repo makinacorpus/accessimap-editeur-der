@@ -3,6 +3,7 @@
 /**
  * @ngdoc overview
  * @name accessimapEditeurDerApp
+ * @module
  * @description
  * # accessimapEditeurDerApp
  *
@@ -42,7 +43,7 @@ angular
                 controller: 'GlobalmapCtrl'
             })
             .when('/commonmap', {
-                templateUrl: 'views/commonmap.html',
+                templateUrl: 'views/commonmap/main.html',
                 controller: 'CommonmapCtrl'
             })
             .otherwise({

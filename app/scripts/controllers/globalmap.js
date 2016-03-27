@@ -2,38 +2,46 @@
 /*global PDFJS */
 
 /**
- * @ngdoc function
+ * @ngdoc controller
  * @name accessimapEditeurDerApp.controller:GlobalmapCtrl
  * @description
  * # GlobalmapCtrl
  * Controller of the accessimapEditeurDerApp
  */
 angular.module('accessimapEditeurDerApp')
-    .controller('GlobalmapCtrl', ['$scope', '$rootScope', '$http', '$location', 'usSpinnerService',
+    .controller('GlobalmapCtrl', ['$scope', '$location', 'usSpinnerService',
         'initSvg', 'settings', 'shareSvg',
-        function($scope, $rootScope, $http, $location, usSpinnerService,
+        function($scope, $location, usSpinnerService,
             initSvg, settings, shareSvg) {
 
-            $scope.mapCategories = [{
-                id: 'world',
-                name: 'Monde',
-                images: [{
-                    path: 'data/BlankMap-World6-Equirectangular.svg'
+            $scope.model = {
+                accordionStyle: '',
+
+                // TODO : put it in settings service ?
+                mapCategories: [{
+                    id: 'world',
+                    name: 'Monde',
+                    images: [{
+                        path: 'data/BlankMap-World6-Equirectangular.svg'
+                    }]
+                }, {
+                    id: 'france',
+                    name: 'France',
+                    images: [{
+                        path: 'data/France_all_regions_A4.svg'
+                    }]
                 }]
-            }, {
-                id: 'france',
-                name: 'France',
-                images: [{
-                    path: 'data/France_all_regions_A4.svg'
-                }]
-            }];
-            $scope.uploadSvg = function(element) {
+            };
+
+            $scope.methods = {};
+            
+            $scope.methods.uploadSvg = function(element) {
                 var svgFile = element.files[0];
                 var fileType = svgFile.type;
                 var reader = new FileReader();
                 reader.readAsDataURL(svgFile);
                 reader.onload = function(e) {
-                    $scope.accordionStyle = {display: 'none'};
+                    $scope.model.accordionStyle = {display: 'none'};
                     switch (fileType) {
                         case 'image/svg+xml':
                             appendSvg(e.target.result);
@@ -91,8 +99,8 @@ angular.module('accessimapEditeurDerApp')
 
                 var widthMm = settings.FORMATS[mapFormat].width,
                         heightMm = settings.FORMATS[mapFormat].height,
-                        widthSvg = widthMm / 0.283,
-                        heightSvg = heightMm / 0.283;
+                        widthSvg = widthMm / settings.ratioPixelPoint,
+                        heightSvg = heightMm / settings.ratioPixelPoint;
                 var svg = initSvg.createDetachedSvg(widthMm, heightMm);
                 var ratioSvg = heightSvg / widthSvg;
                 var img = new Image();
@@ -133,7 +141,7 @@ angular.module('accessimapEditeurDerApp')
                         .attr('height', h)
                         .attr('xlink:href', image);
 
-                    shareSvg.addMap(svg.node())
+                    shareSvg.setMap(svg.node())
                     .then(function() {
                         $location.path('/commonmap');
                     });
@@ -145,8 +153,8 @@ angular.module('accessimapEditeurDerApp')
 
                 var widthMm = settings.FORMATS[mapFormat].width,
                         heightMm = settings.FORMATS[mapFormat].height,
-                        widthSvg = widthMm / 0.283,
-                        heightSvg = heightMm / 0.283;
+                        widthSvg = widthMm / settings.ratioPixelPoint,
+                        heightSvg = heightMm / settings.ratioPixelPoint;
                 var svg = initSvg.createDetachedSvg(widthMm, heightMm);
 
                 d3.xml(path, function(xml) {
@@ -176,13 +184,13 @@ angular.module('accessimapEditeurDerApp')
                         sourceLayer.append(returnChildren);
                     }
 
-                    shareSvg.addMap(svg.node())
+                    shareSvg.setMap(svg.node())
                     .then(function() {
                         $location.path('/commonmap');
                     });
                 });
             }
 
-            $scope.appendSvg = appendSvg;
+            $scope.methods.appendSvg = appendSvg;
 
 }]);

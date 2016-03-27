@@ -1,11 +1,12 @@
 'use strict';
 
 /**
- * @ngdoc function
+ * @ngdoc controller
  * @name accessimapEditeurDerApp.controller:AboutCtrl
  * @description
- * # AboutCtrl
- * Controller of the accessimapEditeurDerApp
+ *
+ * Display informations about libraries used & mapping.
+ *
  */
 angular.module('accessimapEditeurDerApp')
   .controller('AboutCtrl', function($scope) {

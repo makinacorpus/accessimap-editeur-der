@@ -3,15 +3,15 @@
 var filter       = require('gulp-filter');
 
 var app = './app/',
-	dist = './dist/';
+    dist = './dist/';
 
 module.exports = {
     app: app,
     dist: dist,
-	compass: {
+    compass: {
         css: '.tmp/styles',
         sass: app + '/styles',
-        import_path: './bower_components',
+        import_path: 'bower_components',
     },
     autoprefixer: {
         browsers: ['last 1 version'],
@@ -27,6 +27,13 @@ module.exports = {
         jshint: {
             filter: filter([ app + 'scripts/**/*.js', '!' + app + 'scripts/vendor/**/*.js' ], {restore: true}),
             reporter: require('jshint-stylish')
+        }
+    },
+    doc: {
+        dest: './docs/',
+        options: {
+            title: 'Editeur Documents en reliefs (DER)',
+            html5Mode: false
         }
     }
 };

@@ -10,10 +10,10 @@
 angular.module('accessimapEditeurDerApp')
     .service('shareSvg', ['$q', function($q) {
         var map,
-                legend,
-                interactions;
+            legend,
+            interactions;
 
-        var addMap = function(newMap) {
+        var setMap = function(newMap) {
             var deferred = $q.defer();
             map = newMap;
 
@@ -30,7 +30,7 @@ angular.module('accessimapEditeurDerApp')
             return deferred.promise;
         };
 
-        var addLegend = function(newLegend) {
+        var setLegend = function(newLegend) {
             var deferred = $q.defer();
             legend = newLegend;
 
@@ -47,7 +47,7 @@ angular.module('accessimapEditeurDerApp')
             return deferred.promise;
         };
 
-        var addInteractions = function(newInteractions) {
+        var setInteractions = function(newInteractions) {
             var deferred = $q.defer();
             interactions = newInteractions;
 
@@ -65,11 +65,11 @@ angular.module('accessimapEditeurDerApp')
         };
 
         return {
-            addMap: addMap,
+            setMap: setMap,
             getMap: getMap,
-            addLegend: addLegend,
+            setLegend: setLegend,
             getLegend: getLegend,
-            addInteractions: addInteractions,
+            setInteractions: setInteractions,
             getInteractions: getInteractions
         };
     }]);

@@ -26,18 +26,29 @@
 - look your browser
 
 
-If you encounter a 'bug' like 'watching tasks too numerous', you'll have to increase your max user watch :
+If you encounter a 'bug' like 'watching tasks too numerous', or an error like 'Error: watch /home/user/workspaces/accessimap-editeur-der/app/scripts/directives ENOSPC' you'll have to increase your max user watch :
 
 https://github.com/guard/listen/wiki/Increasing-the-amount-of-inotify-watchers
 
 ~~~~
 
-$ sudo sysctl fs.inotify.max_user_watches=524288
+$ sysctl fs.inotify.max_user_watches
 
-$ sudo sysctl -p
+$ sudo sysctl fs.inotify.max_user_watches=32768
+
+$ sysctl fs.inotify.max_user_watches
 
 ~~~
 
+If after a reboot the problem is the same, and fs.inotify.max_user_watches return his old value, you can also modify /etc/sysctl.conf by adding this line at the end :
+
+~~~~
+
+fs.inotify.max_user_watches=32768
+
+~~~
+
+Normally, if you reboot, it will be ok.
 
 ### Publish on gh-pages
 ``` sh

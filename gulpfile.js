@@ -11,6 +11,8 @@ var gulp = require('gulp'),
     filter       = require('gulp-filter'),
     karma_runner = require('karma').Server,
     jshint       = require('gulp-jshint'),
+    jsdoc        = require('gulp-jsdoc3'),
+    ngdocs       = require('gulp-ngdocs'),
     print        = require('gulp-print'),
     rev          = require('gulp-rev'),
     uglify       = require('gulp-uglify'),
@@ -55,7 +57,7 @@ gulp.task('copy:js', function() {
                 .pipe(rev.manifest())
                 .pipe(gulp.dest(config.dist))
 
-                .pipe(connect.reload())
+                .pipe(connect.reload()) ;
 })
 
 gulp.task('usemin', function () {
@@ -97,12 +99,16 @@ gulp.task('connect', function() {
     livereload: true,
     middleware: function (connect) {
             return [
-              connect.static('.tmp'),
-              connect().use(
-                '/bower_components',
-                connect.static('./bower_components')
-              ),
-              connect.static(config.app)
+                connect.static('.tmp'),
+                connect().use(
+                    '/docs',
+                    connect.static('./docs')
+                ),
+                connect().use(
+                    '/bower_components',
+                    connect.static('./bower_components')
+                ),
+                connect.static(config.app)
              ];
           }
   });
@@ -118,16 +124,35 @@ gulp.task('test', function(done) {
 /**
  * Main task to launch the server
  */
-gulp.task('serve', ['clean:dist', 'compass', 'connect'], function() {
+gulp.task('serve', ['clean:dist', 'compass', 'connect', 'doc'], function() {
 
-    // gulp.watch(config.app + '/styles/*.scss', ['compass']);
+    gulp.watch(config.app + '/styles/*.scss', ['compass']);
+    gulp.watch(config.js.globs, ['doc']);
 
     return gulp.src(config.app + '/**/*')
-                // .pipe(watch(config.app + '/**/*'))
+                .pipe(watch(config.app + '/**/*'))
                 .pipe(gulp.dest(config.dist))
                 .pipe(connect.reload())
 });
 
 gulp.task('build', ['clean:dist', 'compass'], function() {
 
+})
+
+/**
+ * Documentation Angular
+ */
+gulp.task('doc', function() {
+    gulp.src(config.js.globs)
+        .pipe(ngdocs.process(config.doc.options))
+        .pipe(gulp.dest(config.doc.dest))
+})
+
+/**
+ * Documentation Angular
+ */
+gulp.task('jsdoc', function(cb) {
+    gulp.src(['app/scripts/**/app.js', 'README.md'])
+        .pipe(print())
+        .pipe(jsdoc())
 })

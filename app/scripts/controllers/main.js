@@ -1,77 +1,74 @@
 'use strict';
 
 /**
- * @ngdoc function
- * @name accessimapEditeurDer.controller:MainCtrl
+ * @ngdoc controller
+ * @name accessimapEditeurDerApp.controller:MainCtrl
+ * @requires accessimapEditeurDerApp.MainService
  * @description
  * # MainCtrl
- * Controller of the accessimapEditeurDer
+ * Controller of the accessimapEditeurDerApp
  */
 angular.module('accessimapEditeurDerApp')
-    .controller('MainCtrl', ['$scope', '$rootScope', '$location', 'settings', 'initSvg', 'shareSvg',
-        function($scope, $rootScope, $location, settings, initSvg, shareSvg) {
-            $scope.go = function(path) {
-                $location.path(path).search('mapFormat', $scope.mapFormat).search('legendFormat', $scope.legendFormat);
-            };
-
-            $scope.formats = settings.FORMATS;
-            $scope.mapFormat = 'landscapeA4';
+    .controller('MainCtrl', ['$scope', '$rootScope', '$location', 'MainService',
+        function($scope, $rootScope, $location, MainService) {
+            
+            $scope.mapFormat    = 'landscapeA4';
             $scope.legendFormat = 'landscapeA4';
+            $scope.formats      = MainService.settings.FORMATS;
 
             $rootScope.iid = 1;
-
             $rootScope.getiid = function() {
                 return $rootScope.iid++;
             };
 
-            function createBlankSvg() {
-                var mapFormat = $scope.mapFormat;
-                var legendFormat = $scope.legendFormat;
+            /**
+             * @ngdoc function
+             * @name  go
+             * @description
+             * Go to a specific path, by adding two parameters : mapFormat & legendFormat
+             */
+            var go = function(path) {
+                $location
+                    .path(path)
+                    .search('mapFormat', $scope.mapFormat)
+                    .search('legendFormat', $scope.legendFormat);
+            };
 
-                var widthMm = settings.FORMATS[mapFormat].width,
-                        legendWidthMm = settings.FORMATS[legendFormat].width,
-                        heightMm = settings.FORMATS[mapFormat].height,
-                        legendHeightMm = settings.FORMATS[legendFormat].height,
-                        margin = 40;
-
-                var mapsvg = initSvg.createDetachedSvg(widthMm, heightMm);
-                var legendsvg = initSvg.createDetachedSvg(widthMm, heightMm);
-                initSvg.createDefs(mapsvg);
-
-                // Load polygon fill styles taht will be used on common map
-                angular.forEach(settings.POLYGON_STYLES, function(key) {
-                        mapsvg.call(key);
-                        legendsvg.call(key);
-                });
-
-                var width = widthMm / 0.283,
-                        height = heightMm / 0.283,
-                        legendWidth = legendWidthMm / 0.283,
-                        legendHeight = legendHeightMm / 0.283;
-
-                var legendContainter = legendsvg.append('g')
-                        .attr('width', legendWidth)
-                        .attr('height', legendHeight);
-                initSvg.createLegendText(legendContainter, margin);
-
-                initSvg.createFrame(mapsvg, width, height);
-                var map = initSvg.createMapLayer(mapsvg, width, height);
-
-                initSvg.createSource(map);
-                initSvg.createDrawing(map);
-                initSvg.createMargin(mapsvg, width, height);
-
-                initSvg.createMargin(legendsvg, legendWidth, legendHeight);
-
-                shareSvg.addMap(mapsvg.node())
-                .then(function() {
-                    shareSvg.addLegend(legendsvg.node())
+            /**
+             * @ngdoc method
+             * @name  goToBlankPage
+             * @methodOf accessimapEditeurDerApp.controller:MainCtrl
+             * @description
+             * Go to '/commonmap' path, by creating a blank svg & adding two parameters : mapFormat & legendFormat
+             */
+            $scope.goToBlankPage = function() {
+                MainService.createBlankSvg($scope.mapFormat, $scope.legendFormat)
                     .then(function() {
-                            $location.path('/commonmap');
-                    });
-                });
+                        go('/commonmap');
+                    })
             }
 
-        $scope.createBlankSvg = createBlankSvg;
+            /**
+             * @ngdoc method
+             * @name  goToLocalMap
+             * @methodOf accessimapEditeurDerApp.controller:MainCtrl
+             * @description
+             * Go to '/localmap' path, by adding two parameters : mapFormat & legendFormat
+             */
+            $scope.goToLocalMap = function() {
+                go('/localmap');
+            }
+
+            /**
+             * @ngdoc method
+             * @name  goToExistingFile
+             * @methodOf accessimapEditeurDerApp.controller:MainCtrl
+             * @description
+             * Go to '/globalmap' path, by adding two parameters : mapFormat & legendFormat
+             */
+            $scope.goToExistingFile = function() {
+                go('/globalmap');
+            }
+
 
     }]);

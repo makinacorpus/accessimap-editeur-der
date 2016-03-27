@@ -4,6 +4,12 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.settings
+ * @requires accessimapEditeurDerApp.editSvg
+ * @requires accessimapEditeurDerApp.deleteService
+ * @requires accessimapEditeurDerApp.interactService
+ * @requires accessimapEditeurDerApp.styleService
+ * @requires accessimapEditeurDerApp.moveService
+ * @requires accessimapEditeurDerApp.geometryService
  * @description
  * # settings
  * Factory in the accessimapEditeurDerApp.
@@ -16,6 +22,15 @@ angular.module('accessimapEditeurDerApp')
                 GLOBAL_MAP_CENTER: [1.441019, 43.604268], // [lon, lat]
                 GLOBAL_MAP_DEFAULT_ZOOM: 13,
         };
+
+        /**
+         * @ngdoc property
+         * @name  ratioPixelPoint
+         * @propertyOf accessimapEditeurDerApp.settings
+         * @type {Number}
+         * @description Ratio between a pixel and a millimeter
+         */
+        var ratioPixelPoint = 0.283;
 
         var FONTS = [{
                 name: 'Braille',
@@ -74,6 +89,13 @@ angular.module('accessimapEditeurDerApp')
             }
         ]};
 
+        /**
+         * @ngdoc property
+         * @name  accessimapEditeurDerApp.settings.FORMATS
+         * @propertyOf accessimapEditeurDerApp.settings
+         * @description
+         * Formats availables for editing documents.
+         */
         var FORMATS = {
             'portraitA4': {
                 name: 'A4 Portrait',
@@ -1204,6 +1226,7 @@ angular.module('accessimapEditeurDerApp')
             ACTIONS: ACTIONS,
             markerStart: markerStart,
             markerStop: markerStop,
-            leaflet: leafletConf
+            leaflet: leafletConf,
+            ratioPixelPoint: ratioPixelPoint
         };
     }]);

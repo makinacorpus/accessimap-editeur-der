@@ -1,0 +1,48 @@
+<div 
+    class="modal fade" 
+    id="changePatternModal" 
+    tabindex="-1" 
+    role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button 
+                    type="button" 
+                    class="close" 
+                    data-dismiss="modal" 
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Choisissez un nouveau motif pour cet objet</h4>
+            </div>
+
+            <div class="modal-body">
+                <ui-select 
+                    ng-model="model.styleChosen" 
+                    ng-change="methods.updatePolygonStyle()" 
+                    ng-disabled="disabled" 
+                    theme="bootstrap" 
+                    class="form-control style-selector" 
+                    style="width: 300px;">
+                    
+                    <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
+                    <ui-select-choices repeat="item in model.styleChoices | filter: $select.search">
+                        <div ng-bind-html="item.name | highlight: $select.search"></div>
+                        <div ng-bind-html="methods.featureIcon(item, 'polygon')"></div>
+                    </ui-select-choices>
+
+                </ui-select>
+            </div>
+
+            <div class="modal-footer">
+                <button 
+                    type="button" 
+                    class="btn btn-default" 
+                    data-dismiss="modal">
+                    Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

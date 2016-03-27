@@ -11,8 +11,10 @@ angular.module('accessimapEditeurDerApp')
     .service('radialMenu', ['settings', 'getType', 'reset',
     function(settings, getType, reset) {
 
+        var menu = null;
+
         this.drawMenu = function(target, mousePosition, scope) {
-            var menu = scope.menu;
+
             target.classed('blink', true);
             var type = getType.getType(target);
             if (type) {
@@ -28,8 +30,8 @@ angular.module('accessimapEditeurDerApp')
                     .onClick(function(d) {
                         var action = d.data.action;
                         action(target, scope);
-                        scope.menu.hide();
-                        scope.menu = null;
+                        menu.hide();
+                        menu = null;
                     })
                     .appendTo(mapLayer.node())
                     .show(data);
@@ -47,11 +49,11 @@ angular.module('accessimapEditeurDerApp')
                 reset.resetActions();
                 d3.event.preventDefault();
                 d3.event.stopPropagation();
-                if (scope.menu) {
-                    scope.menu.hide();
+                if (menu) {
+                    menu.hide();
                 }
                 var mapLayer = d3.select('#der').select('svg');
-                scope.menu = that.drawMenu(d3.select(this), d3.mouse(mapLayer.node()), scope);
+                menu = that.drawMenu(d3.select(this), d3.mouse(mapLayer.node()), scope);
             });
         };
 
