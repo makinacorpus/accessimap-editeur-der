@@ -18,8 +18,8 @@ angular.module('accessimapEditeurDerApp')
             target.classed('blink', true);
             var type = getType.getType(target);
             if (type) {
-                scope.styleChoices = settings.STYLES[type];
-                var data = settings.ACTIONS[type];
+                scope.styleChoices = settings.STYLES;
+                var data = settings.ACTIONS;
                 var mapLayer = d3.select('#der').select('svg');
 
                 var m = new d3.radialMenu().radius(50)

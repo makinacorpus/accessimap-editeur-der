@@ -8,14 +8,14 @@
  * Service in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
-    .service('interact', ['$rootScope', function($rootScope) {
+    .service('interact', ['UtilService', function(UtilService) {
 
         this.addInteraction = function(feature, scope) {
 
             var featureIid;
             featureIid = feature.attr('data-link');
             if (!featureIid) {
-                featureIid = $rootScope.getiid();
+                featureIid = UtilService.getiid();
                 feature.attr('data-link', featureIid);
             }
             // Add the highlight class to the relevant cells of the grid

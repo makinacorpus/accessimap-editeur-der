@@ -3,105 +3,147 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.CommonmapService
- * @requires accessimapEditeurDerApp.settings
+ * @requires accessimapEditeurDerApp.exportData
+ * @requires accessimapEditeurDerApp.svgicon
  * @requires accessimapEditeurDerApp.shareSvg
+ * @requires accessimapEditeurDerApp.settings
  * @requires accessimapEditeurDerApp.reset
+ * @requires accessimapEditeurDerApp.toolbox
+ * @requires accessimapEditeurDerApp.interaction
  * @description
  * Service linked to the controller accessimapEditeurDerApp.controller:CommonmapCtrl
  */
 angular.module('accessimapEditeurDerApp')
-    .service('CommonmapService', ['$location', 'shareSvg', 'settings', 'reset',
-            function($location, shareSvg, settings, reset) {
+    .service('CommonmapService',
+        ['$location',
+        'exportData', 'svgicon', 'shareSvg',
+        'settings', 'reset', 'toolbox', 'interaction',
+        function($location,
+                exportData, svgicon, shareSvg,
+                settings, reset, toolbox, interaction) {
 
-        var _data = null;
+            var _data = null,
 
-        var zoomed = function() {
+                _zoomed = function() {
 
-            /*if ($scope.menu) {
-                $scope.menu.hide();
-                $scope.menu = null;
-            }*/
+                    /*if ($scope.menu) {
+                        $scope.menu.hide();
+                        $scope.menu = null;
+                    }*/
+                    
+                    d3.selectAll('.ongoing').remove();
+                    d3.select('#map-layer')
+                        .attr('transform',
+                            'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
+                    d3.select('#frame-layer')
+                        .attr('transform',
+                            'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
 
-            d3.selectAll('.ongoing').remove();
-            d3.select('#map-layer').attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
-            d3.select('#frame-layer').attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
+                },
 
-        }
+                _zoom = d3.behavior.zoom()
+                        .translate([0, 0])
+                        .scale(1)
+                        .scaleExtent([1, 8])
+                        .on('zoom', _zoomed),
 
-        var _zoom = d3.behavior.zoom()
-            .translate([0, 0])
-            .scale(1)
-            .scaleExtent([1, 8])
-            .on('zoom', zoomed);
+                /**
+                 * @ngdoc method
+                 * @name  resetView
+                 * @methodOf accessimapEditeurDerApp.CommonmapService
+                 * @description  reset the view to his initial state
+                 */
+                resetView = function() {
+                    _zoom.scale(1)
+                        .translate([0, 0]);
+                    d3.select('#map-layer').attr('transform', null);
+                    d3.select('#frame-layer').attr('transform', null);
+                },
 
-        /**
-         * @ngdoc method
-         * @name  resetView
-         * @methodOf accessimapEditeurDerApp.CommonmapService
-         * @description  reset the view to his initial state
-         */
-        var resetView = function() {
-            _zoom.scale(1)
-                .translate([0, 0]);
-            d3.select('#map-layer').attr('transform', null);
-            d3.select('#frame-layer').attr('transform', null);
-        };
+                /**
+                 * @ngdoc method
+                 * @name  init
+                 * @methodOf accessimapEditeurDerApp.CommonmapService
+                 * @description  init the view by retrieving stored map and legend
+                 */
+                init = function() {
 
-        var init = function() {
+                    d3.select('#der')
+                        .selectAll('svg')
+                        .remove();
 
-            d3.select('#der')
-                .selectAll('svg')
-                .remove();
+                    // Transform the images into base64 so they can be exported
+                    if (d3.select('.tiles').node()) {
+                        d3.select('.tiles')
+                            .selectAll('image')[0]
+                            .forEach(function(tile) {
+                                UtilService.convertImgToBase64(tile);
+                            });
 
-            // Transform the images into base64 so they can be exported
-            if (d3.select('.tiles').node()) {
-                d3.select('.tiles').selectAll('image')[0].forEach(function(tile) {
-                    UtilService.convertImgToBase64(tile);
-                });
-            }
+                    };
 
-            // retrieve map and display it
-            shareSvg
-                .getMap()
-                .then(function(data) {
-                    if (data) {
-                        _data = data;
+                    // retrieve map and display it
+                    shareSvg
+                        .getMap()
+                    .then(function(data) {
+                        if (data) {
+                            _data = data;
 
-                        d3.select('#der')
-                            .node()
-                            .appendChild(data);
+                            d3.select('#der')
+                                .node()
+                                .appendChild(data);
 
-                        d3.select('#der')
-                            .select('svg')
-                            .call(_zoom)
-                            .on('dblclick.zoom', null);
-                    } else {
-                        $location.path('/'); // ?
-                    }
-                });
+                            d3.select('#der')
+                                .select('svg')
+                                .call(_zoom)
+                                .on('dblclick.zoom', null);
+                        } else {
+                            $location.path('/'); // ?
+                        }
+                    });
 
-            // retrieve legend and display it
-            shareSvg
-                .getLegend()
-                .then(function(data) {
-                    if (data) {
-                        d3.select('#der-legend')
-                            .node()
-                            .appendChild(data);
-                    }
-                });
+                    // retrieve legend and display it
+                    shareSvg
+                        .getLegend()
+                    .then(function(data) {
+                        if (data) {
+                            d3.select('#der-legend')
+                                .node()
+                                .appendChild(data);
+                        }
+                    });
 
-            // listen to escape key and reset actions when fire up
-            d3.select('body').on('keyup', function() {
-                if (d3.event.keyCode === 27 /* ESC */) {
-                    reset.resetActions();
+                    // listen to escape key and reset actions when fire up
+                    d3.select('body').on('keyup', function() {
+                        if (d3.event.keyCode === 27 /* ESC */) {
+                            reset.resetActions();
+                        }
+                    });
                 }
-            });
-        }
         
-        return {
-            init: init,
-            resetView: resetView,
-            settings: settings
-        }
-    }]);
+            return {
+                init: init,
+                resetView: resetView,
+                settings: settings,
+                featureIcon: svgicon.featureIcon,
+                mapExport: exportData.mapExport,
+                resetActions: reset.resetActions,
+
+                // interactions
+                interactiveFilters: interaction.interactiveFilters,
+                addFilter: interaction.addFilter,
+                removeRow: interaction.removeRow,
+
+                // toolbox
+                changeTextColor: toolbox.changeTextColor,
+                updatePolygonStyle: toolbox.updatePolygonStyle,
+                updateMarker: toolbox.updateMarker,
+                addRadialMenus: toolbox.addRadialMenus,
+                undo: toolbox.undo,
+                enablePointMode: toolbox.enablePointMode,
+                enableCircleMode: toolbox.enableCircleMode,
+                enableLinePolygonMode: toolbox.enableLinePolygonMode,
+                enableTextMode: toolbox.enableTextMode
+
+            }
+        }]);

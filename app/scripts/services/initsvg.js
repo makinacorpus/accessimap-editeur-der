@@ -3,10 +3,7 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.initSvg
- * @description
- * 
- * Service allowing user to create svg elements 
- * 
+ * @description Service allowing user to create svg elements
  */
 angular.module('accessimapEditeurDerApp')
     .service('initSvg', ['settings', function(settings) {
@@ -15,10 +12,9 @@ angular.module('accessimapEditeurDerApp')
          * @ngdoc method
          * @name  accessimapEditeurDerApp.initSvg.createBlankSvg
          * @methodOf accessimapEditeurDerApp.initSvg
-         * 
-         * @description
-         * Create a blank svg in a dom element with specific size
-         * 
+         *
+         * @description Create a blank svg in a dom element with specific size
+         *
          * @param  {[type]} mapFormat    [description]
          * @param  {[type]} legendFormat [description]
          * @return {Object} Object with map & legend svgs
@@ -38,8 +34,8 @@ angular.module('accessimapEditeurDerApp')
 
             // Load polygon fill styles taht will be used on common map
             angular.forEach(settings.POLYGON_STYLES, function(key) {
-                    mapsvg.call(key);
-                    legendsvg.call(key);
+                mapsvg.call(key);
+                legendsvg.call(key);
             });
 
             var width = widthMm / settings.ratioPixelPoint,
@@ -72,10 +68,9 @@ angular.module('accessimapEditeurDerApp')
          * @ngdoc method
          * @name  accessimapEditeurDerApp.initSvg.createSvg
          * @methodOf accessimapEditeurDerApp.initSvg
-         * 
-         * @description
-         * Create a svg in a dom element with specific size
-         * 
+         *
+         * @description Create a svg in a dom element with specific size
+         *
          * @param  {string} id     id of element in which will be appended svg
          * @param  {integer} width  width of the svg created
          * @param  {integer} height height of the svg created
@@ -92,8 +87,6 @@ angular.module('accessimapEditeurDerApp')
          * @name  accessimapEditeurDerApp.initSvg.createDetachedSvg
          * @methodOf accessimapEditeurDerApp.initSvg
          *
-         * @description
-         * 
          * @param  {[type]} width  [description]
          * @param  {[type]} height [description]
          */
@@ -108,10 +101,9 @@ angular.module('accessimapEditeurDerApp')
          * @ngdoc method
          * @name  accessimapEditeurDerApp.initSvg.createMap
          * @methodOf accessimapEditeurDerApp.initSvg
-         * 
-         * @description
-         * Create a svg in the #map element with a specific size
-         * 
+         *
+         * @description Create a svg in the #map element with a specific size
+         *
          * @param  {integer} width  width of the svg created
          * @param  {integer} height height of the svg created
          */
@@ -123,10 +115,9 @@ angular.module('accessimapEditeurDerApp')
          * @ngdoc method
          * @name  accessimapEditeurDerApp.initSvg.createLegend
          * @methodOf accessimapEditeurDerApp.initSvg
-         * 
-         * @description
-         * Create a svg in the #legend element with a specific size
-         * 
+         *
+         * @description Create a svg in the #legend element with a specific size
+         *
          * @param  {integer} width  width of the svg created
          * @param  {integer} height height of the svg created
          */
@@ -139,8 +130,6 @@ angular.module('accessimapEditeurDerApp')
          * @name  accessimapEditeurDerApp.initSvg.createLegendText
          * @methodOf accessimapEditeurDerApp.initSvg
          *
-         * @description
-         * 
          * @param  {[type]} legendContainter  [description]
          * @param  {[type]} margin [description]
          */
@@ -148,16 +137,16 @@ angular.module('accessimapEditeurDerApp')
             legendContainter
                 .append('text')
                 .attr('x', function() {
-                        return margin;
+                    return margin;
                 })
                 .attr('y', function() {
-                        return margin * 2;
+                    return margin * 2;
                 })
                 .attr('class', 'braille')
                 .attr('font-family', 'Braille_2007')
                 .attr('font-size', '35px')
                 .text(function() {
-                        return 'Légende';
+                    return 'Légende';
                 });
         };
 
@@ -166,8 +155,6 @@ angular.module('accessimapEditeurDerApp')
          * @name  accessimapEditeurDerApp.initSvg.createDefs
          * @methodOf accessimapEditeurDerApp.initSvg
          *
-         * @description
-         * 
          * @param  {[type]} target  [description]
          */
         this.createDefs = function(target) {
@@ -212,8 +199,6 @@ angular.module('accessimapEditeurDerApp')
          * @name  accessimapEditeurDerApp.initSvg.createMargin
          * @methodOf accessimapEditeurDerApp.initSvg
          *
-         * @description
-         * 
          * @param  {[type]} target  [description]
          * @param  {[type]} width  [description]
          * @param  {[type]} height  [description]
@@ -231,6 +216,7 @@ angular.module('accessimapEditeurDerApp')
                 .attr('d', function() {
                     var outer = 'M 0 0 L 0 ' + height + ' L ' + width + ' ' + height + ' L ' + width + ' 0 L 0 0 z ';
                     var inner = 'M 40 40 L ' + w40 + ' 40 L ' + w40 + ' ' + h40 + ' L 40 ' + h40 + ' L 40 40 z';
+
                     return outer + inner;
                 })
                 .attr('style', 'opacity:1;fill:#ffffff;fill-opacity:1')
@@ -244,14 +230,12 @@ angular.module('accessimapEditeurDerApp')
          * @name  accessimapEditeurDerApp.initSvg.createDrawing
          * @methodOf accessimapEditeurDerApp.initSvg
          *
-         * @description
-         * 
          * @param  {[type]} target  [description]
          */
         this.createDrawing = function(target) {
             var drawingGroup = target.append('g')
                 .attr('id', 'drawing-layer');
-                //.classed('rotable', true);
+            //.classed('rotable', true);
 
             drawingGroup.append('g')
                 .attr('id', 'polygons-layer');
@@ -268,8 +252,6 @@ angular.module('accessimapEditeurDerApp')
          * @name  accessimapEditeurDerApp.initSvg.createFrame
          * @methodOf accessimapEditeurDerApp.initSvg
          *
-         * @description
-         * 
          * @param  {[type]} target  [description]
          * @param  {[type]} width  [description]
          * @param  {[type]} height  [description]
@@ -298,8 +280,6 @@ angular.module('accessimapEditeurDerApp')
          * @name  accessimapEditeurDerApp.initSvg.createSource
          * @methodOf accessimapEditeurDerApp.initSvg
          *
-         * @description
-         * 
          * @param  {[type]} target  [description]
          */
         this.createSource = function(target) {
@@ -313,8 +293,6 @@ angular.module('accessimapEditeurDerApp')
          * @name  accessimapEditeurDerApp.initSvg.createMapLayer
          * @methodOf accessimapEditeurDerApp.initSvg
          *
-         * @description
-         * 
          * @param  {[type]} target  [description]
          * @param  {[type]} width  [description]
          * @param  {[type]} height  [description]

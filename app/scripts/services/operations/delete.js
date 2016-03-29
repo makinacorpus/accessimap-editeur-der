@@ -9,8 +9,10 @@
  */
 angular.module('accessimapEditeurDerApp')
     .service('delete', function() {
+        
         var deleteFeature = function(feature, scope) {
             var featuresToUpdate = feature;
+
             if (feature.attr('data-link')) {
                 featuresToUpdate = d3.selectAll('.link_' + feature.attr('data-link'));
             }
@@ -31,18 +33,20 @@ angular.module('accessimapEditeurDerApp')
 
             // Some objects should not be deletable
             if (!d3.select(feature).node().classed('notDeletable')) {
-                var iid = d3.select(feature).node().attr('iid');
+                var iid = d3.select(feature).node().attr('iid'),
+                    featurePosition = scope.interactiveFilters.data.filter(function(row) {
+                        return row.id === 'poi-' + iid;
+                    }),
+                    featureInFilters = scope.interactiveFilters.data.indexOf(featurePosition[0]);
 
-                var featurePosition = scope.interactiveFilters.data.filter(function(row) {
-                    return row.id === 'poi-' + iid;
-                });
-                var featureInFilters = scope.interactiveFilters.data.indexOf(featurePosition[0]);
                 if (featureInFilters > -1) {
                     if (window.confirm('Ce point est interactif. Voules-vous vraiment le supprimer ?')) {
                         scope.removeRow(scope.interactiveFilters.data[featureInFilters]);
                         deleteFeature(feature, scope);
                     }
-                } else {
+                }
+
+                else {
                     deleteFeature(feature, scope);
                 }
             }

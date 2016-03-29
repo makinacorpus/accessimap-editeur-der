@@ -2,16 +2,16 @@
     <div class="form-group">
         <label >Carte</label>
         <select 
-            ng-model="mapFormat" 
+            ng-model="ctrl.mapFormat" 
             class="form-control" 
-            ng-options="format as data.name for (format, data) in formats">
+            ng-options="format as data.name for (format, data) in ctrl.formats">
         </select>
         
         <label >Légende</label>
         <select 
-            ng-model="legendFormat" 
+            ng-model="ctrl.legendFormat" 
             class="form-control" 
-            ng-options="format as data.name for (format, data) in formats">
+            ng-options="format as data.name for (format, data) in ctrl.formats">
         </select>
 
     </div>
@@ -22,16 +22,16 @@
         <button 
             type="button" 
             class="btn btn-default btn-lg" 
-            ng-click="goToBlankPage()">Page blanche</button>
+            ng-click="ctrl.goToBlankPage()">Page blanche</button>
 
         <button 
             type="button" 
             class="btn btn-default btn-lg" 
-            ng-click="goToLocalMap()">Carte locale</button>
+            ng-click="ctrl.goToLocalMap()">Carte locale</button>
 
         <button 
             type="button" 
             class="btn btn-default btn-lg" 
-            ng-click="goToExistingFile()">Utiliser un fichier existant</button>
+            ng-click="ctrl.goToExistingFile()">Utiliser un fichier existant</button>
     </div>
 </form>

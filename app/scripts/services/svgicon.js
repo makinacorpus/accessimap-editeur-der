@@ -4,8 +4,7 @@
  * @ngdoc service
  * @name accessimapEditeurDerApp.svgicon
  * @requires  accessimapEditeurDerApp.settings
- * @description
- * Service in the accessimapEditeurDerApp.
+ * @description  Service in the accessimapEditeurDerApp.
  */
 angular.module('accessimapEditeurDerApp')
     .service('svgicon', ['settings', function(settings) {
@@ -14,8 +13,7 @@ angular.module('accessimapEditeurDerApp')
          * @ngdoc method
          * @name  featureIcon
          * @methodOf accessimapEditeurDerApp.svgicon
-         * @description
-         * 
+         *
          * @param  {[type]} item [description]
          * @param  {[type]} type [description]
          * @return {[type]}      [description]
@@ -24,6 +22,7 @@ angular.module('accessimapEditeurDerApp')
             var iconSvg = document.createElement('svg');
             var iconContainer = d3.select(iconSvg).attr('height', 40).append('g');
             var symbol;
+
             switch(type) {
                 case 'line':
                     symbol = iconContainer.append('line')
@@ -43,18 +42,21 @@ angular.module('accessimapEditeurDerApp')
                     angular.forEach(item.styleInner, function(attribute) {
                         var k = attribute.k;
                         var v = attribute.v;
+
                         if (typeof(v) === 'function') {
                             v = v.url();
                         }
                         symbolInner.attr(k, v);
                     });
                     break;
+
                 case 'point':
                     symbol = iconContainer.append('path')
                             .attr('d', function() {
                                 return item.path(20, 20, item.radius);
                             });
                     break;
+
                 case 'polygon':
                 case 'editpolygon':
                 case 'circle':
@@ -70,6 +72,7 @@ angular.module('accessimapEditeurDerApp')
             angular.forEach(item.style, function(attribute) {
                 var k = attribute.k;
                 var v = attribute.v;
+
                 if (k === 'fill-pattern') {
                     symbol.attr('fill', settings.POLYGON_STYLES[v].url());
                 } else {

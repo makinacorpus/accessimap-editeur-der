@@ -28,7 +28,8 @@ angular
         $routeProvider
             .when('/', {
                 templateUrl: 'views/main.html',
-                controller: 'MainCtrl'
+                controller: 'MainCtrl',
+                controllerAs: 'ctrl'
             })
             .when('/about', {
                 templateUrl: 'views/about.html',
@@ -51,5 +52,5 @@ angular
             });
     })
     .config(function(uiSelectConfig) {
-      uiSelectConfig.dropdownPosition = 'down';
+        uiSelectConfig.dropdownPosition = 'down';
     });

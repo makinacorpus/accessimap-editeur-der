@@ -19,10 +19,12 @@ angular.module('accessimapEditeurDerApp')
                         toAdd = false;
                     }
                 });
+
                 if (toAdd) {
                     filteredLayers.push(layer);
                 }
             });
+
             return filteredLayers;
         };
     });

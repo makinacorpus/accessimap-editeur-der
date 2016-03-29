@@ -11,7 +11,7 @@
 angular.module('accessimapEditeurDerApp')
     .controller('GlobalmapCtrl', ['$scope', '$location', 'usSpinnerService',
         'initSvg', 'settings', 'shareSvg',
-        function($scope, $location, usSpinnerService,
+        function ($scope, $location, usSpinnerService,
             initSvg, settings, shareSvg) {
 
             $scope.model = {
@@ -22,36 +22,44 @@ angular.module('accessimapEditeurDerApp')
                     id: 'world',
                     name: 'Monde',
                     images: [{
-                        path: 'data/BlankMap-World6-Equirectangular.svg'
-                    }]
+                        path: 'data/BlankMap-World6-Equirectangular.svg',
+                    },
+                ],
                 }, {
                     id: 'france',
                     name: 'France',
                     images: [{
-                        path: 'data/France_all_regions_A4.svg'
-                    }]
-                }]
+                        path: 'data/France_all_regions_A4.svg',
+                    },
+                    ],
+                },
+                ],
             };
 
             $scope.methods = {};
-            
-            $scope.methods.uploadSvg = function(element) {
-                var svgFile = element.files[0];
-                var fileType = svgFile.type;
-                var reader = new FileReader();
+
+            $scope.methods.uploadSvg = function (element) {
+                var svgFile = element.files[0],
+                    fileType = svgFile.type,
+                    reader = new FileReader();
+                    
                 reader.readAsDataURL(svgFile);
-                reader.onload = function(e) {
-                    $scope.model.accordionStyle = {display: 'none'};
+                reader.onload = function (e) {
+                    $scope.model.accordionStyle = { display: 'none' };
+
                     switch (fileType) {
                         case 'image/svg+xml':
                             appendSvg(e.target.result);
                             break;
+
                         case 'image/png':
                             appendPng(e.target.result);
                             break;
+
                         case 'image/jpeg':
                             appendPng(e.target.result);
                             break;
+
                         case 'application/pdf':
                             appendPdf(e.target.result);
                             break;
@@ -62,32 +70,32 @@ angular.module('accessimapEditeurDerApp')
             };
 
             function appendPdf(dataURI) {
-                var BASE64_MARKER = ';base64,';
-                var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
-                var base64 = dataURI.substring(base64Index);
-                var raw = window.atob(base64);
-                var rawLength = raw.length;
-                var array = new Uint8Array(new ArrayBuffer(rawLength));
+                var BASE64_MARKER = ';base64,',
+                    base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length,
+                    base64 = dataURI.substring(base64Index),
+                    raw = window.atob(base64),
+                    rawLength = raw.length,
+                    array = new Uint8Array(new ArrayBuffer(rawLength));
 
                 for (var i = 0; i < rawLength; i++) {
                     array[i] = raw.charCodeAt(i);
                 }
-                PDFJS.getDocument(array)
-                .then(function(pdf) {
-                    pdf.getPage(1).then(function(page) {
-                        var scale = 1.5;
-                        var viewport = page.getViewport(scale);
 
-                        var canvas = document.getElementById('pdf-canvas');
-                        var context = canvas.getContext('2d');
+                PDFJS.getDocument(array)
+                .then(function (pdf) {
+                    pdf.getPage(1).then(function (page) {
+                        var scale = 1.5,
+                            viewport = page.getViewport(scale),
+                            canvas = document.getElementById('pdf-canvas'),
+                            context = canvas.getContext('2d');
                         canvas.height = viewport.height;
                         canvas.width = viewport.width;
 
                         var renderContext = {
                             canvasContext: context,
-                            viewport: viewport
+                            viewport: viewport,
                         };
-                        page.render(renderContext).then(function() {
+                        page.render(renderContext).then(function () {
                             appendPng(canvas.toDataURL());
                         });
                     });
@@ -95,21 +103,24 @@ angular.module('accessimapEditeurDerApp')
             }
 
             function appendPng(image) {
-                var mapFormat = $location.search().mapFormat;
+                var mapFormat = $location.search().mapFormat,
 
-                var widthMm = settings.FORMATS[mapFormat].width,
+                    widthMm = settings.FORMATS[mapFormat].width,
                         heightMm = settings.FORMATS[mapFormat].height,
                         widthSvg = widthMm / settings.ratioPixelPoint,
-                        heightSvg = heightMm / settings.ratioPixelPoint;
-                var svg = initSvg.createDetachedSvg(widthMm, heightMm);
-                var ratioSvg = heightSvg / widthSvg;
-                var img = new Image();
+                        heightSvg = heightMm / settings.ratioPixelPoint,
+
+                    svg = initSvg.createDetachedSvg(widthMm, heightMm),
+                    ratioSvg = heightSvg / widthSvg,
+                    img = new Image();
+
                 img.src = image;
-                img.onload = function() {
-                    var width = this.width;
-                    var height = this.height;
-                    var ratio = height / width;
-                    var w, h;
+                img.onload = function () {
+                    var width = this.width,
+                        height = this.height,
+                        ratio = height / width,
+                        w, h;
+
                     if (ratio > ratioSvg) {
                         h = heightSvg;
                         w = h / ratio;
@@ -117,8 +128,9 @@ angular.module('accessimapEditeurDerApp')
                         w = widthSvg;
                         h = w * ratio;
                     }
+
                     // Load polygon fill styles taht will be used on common map
-                    angular.forEach(settings.POLYGON_STYLES, function(key) {
+                    angular.forEach(settings.POLYGON_STYLES, function (key) {
                         svg.call(key);
                     });
 
@@ -126,9 +138,9 @@ angular.module('accessimapEditeurDerApp')
                     var map = svg.append('g')
                             .attr('id', 'map-layer')
                             .attr('width', widthSvg)
-                            .attr('height', heightSvg);
+                            .attr('height', heightSvg),
 
-                    var sourceLayer = initSvg.createSource(map);
+                        sourceLayer = initSvg.createSource(map);
                     initSvg.createDrawing(map);
                     initSvg.createMargin(svg, widthSvg, heightSvg);
 
@@ -142,42 +154,46 @@ angular.module('accessimapEditeurDerApp')
                         .attr('xlink:href', image);
 
                     shareSvg.setMap(svg.node())
-                    .then(function() {
+                    .then(function () {
                         $location.path('/commonmap');
                     });
                 };
             }
 
             function appendSvg(path) {
-                var mapFormat = $location.search().mapFormat;
 
-                var widthMm = settings.FORMATS[mapFormat].width,
+                var mapFormat = $location.search().mapFormat,
+
+                    widthMm = settings.FORMATS[mapFormat].width,
                         heightMm = settings.FORMATS[mapFormat].height,
                         widthSvg = widthMm / settings.ratioPixelPoint,
-                        heightSvg = heightMm / settings.ratioPixelPoint;
-                var svg = initSvg.createDetachedSvg(widthMm, heightMm);
+                        heightSvg = heightMm / settings.ratioPixelPoint,
+                    
+                    svg = initSvg.createDetachedSvg(widthMm, heightMm);
 
-                d3.xml(path, function(xml) {
+                d3.xml(path, function (xml) {
                     // Load polygon fill styles taht will be used on common map
-                    angular.forEach(settings.POLYGON_STYLES, function(key) {
+                    angular.forEach(settings.POLYGON_STYLES, function (key) {
                         svg.call(key);
                     });
+
                     initSvg.createFrame(svg, widthSvg, heightSvg);
                     var map = svg.append('g')
                             .attr('id', 'map-layer')
                             .attr('width', widthSvg)
-                            .attr('height', heightSvg);
+                            .attr('height', heightSvg),
 
-                    var sourceLayer = initSvg.createSource(map);
+                        sourceLayer = initSvg.createSource(map);
+
                     initSvg.createDrawing(map);
                     initSvg.createMargin(svg, widthSvg, heightSvg);
 
-                    var originalSvg = d3.select(xml.documentElement);
-                    var children = originalSvg[0][0].children;
+                    var originalSvg = d3.select(xml.documentElement),
+                        children = originalSvg[0][0].children,
 
-                    var returnChildren = function() {
-                        return children[i];
-                    };
+                        returnChildren = function () {
+                            return children[i];
+                        };
 
                     for (var i = 0; i < children.length; i++) {
                         d3.select(children[i]).classed('sourceDocument', true);
@@ -185,12 +201,13 @@ angular.module('accessimapEditeurDerApp')
                     }
 
                     shareSvg.setMap(svg.node())
-                    .then(function() {
-                        $location.path('/commonmap');
-                    });
+                        .then(function () {
+                            $location.path('/commonmap');
+                        });
                 });
             }
 
             $scope.methods.appendSvg = appendSvg;
 
-}]);
+        },
+        ]);

@@ -10,7 +10,7 @@
  * Controller of the accessimapEditeurDerApp
  */
 angular.module('accessimapEditeurDerApp')
-    .controller('LocalmapCtrl', 
+    .controller('LocalmapCtrl',
         ['$scope', '$location', 'LocalmapService',
         function($scope, $location, LocalmapService) {
             
@@ -51,7 +51,7 @@ angular.module('accessimapEditeurDerApp')
              * @description rotate element of rotationAngle property
              */
             $scope.rotateMap = function() {
-                LocalmapService.rotate($scope.rotationAngle)
+                LocalmapService.rotate($scope.rotationAngle);
             };
 
             $scope.checkboxModel = {
@@ -86,22 +86,23 @@ angular.module('accessimapEditeurDerApp')
             
             $scope.downloadData     = function(point) {
                 LocalmapService.downloadData(point, $scope.queryChosen, $scope.styleChosen, $scope.styleChoices, $scope.colorChosen, $scope.checkboxModel, $scope.rotationAngle);
-            }
+            };
 
             $scope.downloadPoi      = function() {
                 LocalmapService.downloadPoi($scope.queryChosen, $scope.styleChosen, $scope.styleChoices, $scope.colorChosen, $scope.checkboxModel, $scope.rotationAngle);
-            }
+            };
             
             $scope.simplifyFeatures = function(feature) {
                 LocalmapService.simplifyFeatures(feature, $scope.queryChosen, $scope.styleChosen, $scope.styleChoices, $scope.colorChosen, $scope.checkboxModel, $scope.rotationAngle);
-            }
+            };
+
             $scope.removeFeature    = LocalmapService.removeFeature;
             $scope.updateFeature    = LocalmapService.updateFeature;
             $scope.rotateFeature    = LocalmapService.rotateFeature;
 
             $scope.zoomOnPlace      = function(address) {
                 LocalmapService.zoomOnPlace(address, $scope.styleChosen, $scope.colorChosen, $scope.checkboxModel, $scope.rotationAngle);
-            }
+            };
 
             /**
              * @ngdoc method
@@ -113,10 +114,10 @@ angular.module('accessimapEditeurDerApp')
                 LocalmapService.storeMapAndLegend()
                     .then(function() {
                         $location.path('/commonmap');
-                    })
-            }
+                    });
+            };
 
-            LocalmapService.init($location.search().mapFormat, 
+            LocalmapService.init($location.search().mapFormat,
                                  $location.search().legendFormat);
 
-}]);
+        }, ]);
