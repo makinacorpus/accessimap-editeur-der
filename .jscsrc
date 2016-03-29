@@ -1,0 +1,28 @@
+{
+    "requireCurlyBraces": null,
+    "validateIndentation": 4,
+    "requireMultipleVarDecl": true,
+    "disallowTrailingWhitespace": "ignoreEmptyLines",
+    "requireSpacesInFunction": {
+        "beforeOpeningCurlyBrace": true
+    },
+    "maximumLineLength": 100,
+    "requirePaddingNewlinesBeforeKeywords": [
+        'do',
+        'for',
+        'if',
+        // 'else',
+        'switch',
+        'case',
+        'default',
+        'try',
+        // 'catch',
+        // 'finally',
+        'void',
+        'while',
+        'with',
+        'return',
+        'typeof',
+        'function'
+    ]
+}
