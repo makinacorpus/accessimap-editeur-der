@@ -1,4 +1,3 @@
-'use strict';
 
 /**
  * @ngdoc filter
@@ -8,8 +7,11 @@
  * # layerNotSelected
  * Filter in the accessimapEditeurDerApp.
  */
-angular.module('accessimapEditeurDerApp')
-    .filter('layerNotSelected', function() {
+(function() {
+    'use strict';
+
+    angular.module('accessimapEditeurDerApp')
+        .filter('layerNotSelected', function() {
         return function(layers, selectedLayers) {
             var filteredLayers = [];
             angular.forEach(layers, function(layer) {
@@ -28,3 +30,4 @@ angular.module('accessimapEditeurDerApp')
             return filteredLayers;
         };
     });
+})();

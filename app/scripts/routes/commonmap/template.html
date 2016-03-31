@@ -1,0 +1,66 @@
+<!-- toolbox -->
+<div ng-include="'scripts/routes/commonmap/toolbox.html'"></div>
+
+<!-- main part -->
+<div class="col-xs-12">
+
+    <div class="row">
+        <button 
+            class="btn btn-default pull-right" 
+            ng-hide="$ctrl.rightMenuVisible" 
+            ng-click="$ctrl.showMenu()" 
+            type="button">
+            Ajouter des interactions 
+            <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+        </button>
+    </div>
+
+    <!-- map / legend / comments containers -->
+    <div class="col-xs-6">
+        <div id="der"></div>
+        <div id="der-legend"></div>
+        <div class="form-group">
+            <label for="comment">Commentaires de transcription</label>
+            <textarea class="form-control" rows="5" id="comment"></textarea>
+        </div>
+    </div>
+
+    <!-- interactions menu -->
+    <div 
+        id="filters-container" 
+        class="col-xs-6 menu-right" 
+        ng-show="$ctrl.rightMenuVisible">
+        
+        <button 
+            class="btn btn-default pull-right" 
+            ng-click="$ctrl.hideMenu()" 
+            type="button">
+            <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+        </button>
+        
+        <button 
+            id="button_add" 
+            class="btn btn-success" 
+            ng-click="$ctrl.addFilter()">
+            Ajouter un filtre d'interaction
+        </button>
+
+        <div 
+            ui-grid="$ctrl.interactiveFilters" 
+            ui-grid-edit 
+            ui-grid-selection 
+            ui-grid-auto-resize 
+            class="filters-grid">
+        </div>
+    </div>
+
+</div>
+
+<!-- modal dialog changeColorModal -->
+<div ng-include="'scripts/routes/commonmap/modalchangecolor.html'"></div>
+
+<!-- modal dialog changePatternModal -->
+<div ng-include="'scripts/routes/commonmap/modalchangepattern.html'"></div>
+
+<!-- modal dialog changeArrowsModal -->
+<div ng-include="'scripts/routes/commonmap/modalchangearrows.html'"></div>

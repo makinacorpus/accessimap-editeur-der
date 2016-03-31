@@ -2,11 +2,10 @@
     "requireCurlyBraces": null,
     "validateIndentation": 4,
     "requireMultipleVarDecl": true,
-    "disallowTrailingWhitespace": "ignoreEmptyLines",
     "requireSpacesInFunction": {
         "beforeOpeningCurlyBrace": true
     },
-    "maximumLineLength": 100,
+    "maximumLineLength": 150,
     "requirePaddingNewlinesBeforeKeywords": [
         'do',
         'for',

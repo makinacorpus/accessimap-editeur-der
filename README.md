@@ -4,15 +4,16 @@
 
 ### Requirements
 
-`sudo apt-get install ruby-dev gem karma`
+`sudo apt-get install ruby-dev gem`
 
 - gem
 - ruby-dev (sudo apt-get install ruby-dev)
-- karma (sudo apt-get install karma)
 
 - npm (version > 1.2.10)
+- bower (npm install -g bower)
 - grunt (`npm install -g grunt-cli`)
 - gulp (`npm install -g gulp`)
+- karma (npm install -g karma)
 
 - sass / compass ? (sudo gem install compass) avec ruby-dev d'installé
 
@@ -38,7 +39,7 @@ $ sudo sysctl fs.inotify.max_user_watches=32768
 
 $ sysctl fs.inotify.max_user_watches
 
-~~~
+~~~~
 
 If after a reboot the problem is the same, and fs.inotify.max_user_watches return his old value, you can also modify /etc/sysctl.conf by adding this line at the end :
 
@@ -46,7 +47,7 @@ If after a reboot the problem is the same, and fs.inotify.max_user_watches retur
 
 fs.inotify.max_user_watches=32768
 
-~~~
+~~~~
 
 Normally, if you reboot, it will be ok.
 
