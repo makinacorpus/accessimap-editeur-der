@@ -16,6 +16,8 @@
         this.enableCircleMode      = enableCircleMode;
         this.enableTextMode        = enableTextMode;
         this.enableLinePolygonMode = enableLinePolygonMode;
+        this.updatePolygonStyle    = updatePolygonStyle;
+        this.updateMarker          = updateMarker;
         
         /**
          * @ngdoc method
@@ -450,7 +452,7 @@
             var path = d3.select('.styleEdition');
             path.attr('e-style', model.styleChosen.id)
                 .attr('e-color', model.colorChosen.color);
-            $scope.$watch(model.styleChosen, function () {
+            model.$watch(model.styleChosen, function () {
                 styleutils.applyStyle(path,
                                     model.styleChosen.style,
                                     model.colorChosen);
@@ -459,11 +461,11 @@
 
         function updateMarker(model) {
             var path = d3.select('.styleEdition');
-            $scope.$watch(model.markerStart, function () {
+            model.$watch(model.markerStart, function () {
                 path.attr('marker-start', 'url(#' + model.markerStart.id + ')');
             });
 
-            $scope.$watch(model.markerStop, function () {
+            model.$watch(model.markerStop, function () {
                 path.attr('marker-end', 'url(#' + model.markerStop.id + ')');
             });
         };

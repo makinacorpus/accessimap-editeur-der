@@ -20,13 +20,13 @@
                 id: 'world',
                 name: 'Monde',
                 images: [{
-                    path: 'data/BlankMap-World6-Equirectangular.svg',
+                    path: 'assets/data/BlankMap-World6-Equirectangular.svg',
                 }]
             }, {
                 id: 'france',
                 name: 'France',
                 images: [{
-                    path: 'data/France_all_regions_A4.svg',
+                    path: 'assets/data/France_all_regions_A4.svg',
                 }]
             }];
 

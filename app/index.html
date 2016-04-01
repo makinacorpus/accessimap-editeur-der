@@ -7,7 +7,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-        <!-- build:css(.) styles/vendor.css -->
+        <!-- build:css(.) assets/styles/vendor.css -->
         <!-- bower:css -->
         <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
         <link rel="stylesheet" href="bower_components/select2/select2.css" />
@@ -16,9 +16,9 @@
         <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
         <!-- endbower -->
         <!-- endbuild -->
-        <!-- build:css(.tmp) styles/main.css -->
-        <link rel="stylesheet" href="styles/main.css">
-        <link rel="stylesheet" href="styles/map.css">
+        <!-- build:css(.tmp) assets/styles/main.css -->
+        <link rel="stylesheet" href="assets/styles/main.css">
+        <link rel="stylesheet" href="assets/styles/map.css">
         <!-- endbuild -->
     </head>
 
@@ -38,7 +38,7 @@
                         <a ng-href="#/about">About</a>
                     </li>
                     <li>
-                        <a ng-href="https://github.com/makinacorpus/accessimap-editeur-der/issues">Github</a>
+                        <a ng-href="https://github.com/makinacorpus/accessimap-editeur-der/issues" target="_blank">Github</a>
                     </li>
                     <li>
                         <a ng-href="#/contact">Contact</a>
@@ -51,12 +51,12 @@
 
             <div class="footer col-xs-12">
                 <p>
-                    <a ng-href="http://makina-corpus.com/">Makina Corpus</a> - Projet Accessimap
+                    <a ng-href="http://makina-corpus.com/">Makina Corpus</a> - Projet Accessimap - <a href="docs/" target="_blank">Documentation technique</a>
                     <span class="pull-right">
-                        <img style="height: 40px;" src="images/logos/ija.jpg">
-                        <img style="height: 40px;" src="images/logos/irit.jpg">
-                        <img style="height: 40px;" src="images/logos/telecom.png">
-                        <img style="height: 40px;" src="images/logos/makinacorpus.png">
+                        <img style="height: 40px;" src="assets/images/logos/ija.jpg">
+                        <img style="height: 40px;" src="assets/images/logos/irit.jpg">
+                        <img style="height: 40px;" src="assets/images/logos/telecom.png">
+                        <img style="height: 40px;" src="assets/images/logos/makinacorpus.png">
                     </span>
                 </p>
             </div>
@@ -82,7 +82,7 @@
         <![endif]-->
         <!-- endbuild -->
 
-        <!-- build:js(.) scripts/vendor.js -->
+        <!-- build:js({.,app}) scripts/vendor.js -->
         <script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/angular/angular.js"></script>
         <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
@@ -94,28 +94,26 @@
         <script src="bower_components/angular-touch/angular-touch.js"></script>
         <script src="bower_components/spin.js/spin.js"></script>
         <script src="bower_components/angular-spinner/angular-spinner.js"></script>
-        <script src="bower_components/d3/d3.js"></script>
         <script src="bower_components/angular-ui-select/dist/select.js"></script>
         <script src="bower_components/select2/select2.js"></script>
         <script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script>
         <script src="bower_components/angular-bootstrap-slider/slider.js"></script>
+        <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
+        <script src="bower_components/angular-ui-grid/ui-grid.js"></script>
+
+        <script src="bower_components/d3/d3.js"></script>
         <script src="bower_components/jszip/dist/jszip.js"></script>
         <script src="bower_components/file-saver.js/FileSaver.js"></script>
         <script src="bower_components/turf/turf.min.js"></script>
-        <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
-        <script src="bower_components/angular-ui-grid/ui-grid.js"></script>
         <script src="bower_components/pdfjs-dist/build/pdf.combined.js"></script>
-        <!-- endbuild -->
-
-
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/vendor/d3.geo.tile.v0.min.js"></script>
         <script src="scripts/vendor/d3.radialmenu.js"></script>
         <script src='scripts/vendor/osmtogeojson.js'></script>
         <script src='scripts/vendor/textures.js'></script>
         <script src='scripts/vendor/path-data-polyfill.js/path-data-polyfill.js'></script>
-
+        <!-- endbuild -->
         
+        <!-- build:js({.tmp,app}) scripts/app.js -->
         <script src="scripts/app.js"></script>
         
         <script src="scripts/filters/layernotselected.js"></script>
@@ -160,6 +158,9 @@
         <script src="scripts/routes/commonmap/service.js"></script>
 
 
+        <script src="scripts/templates.js"></script>
+
         <!-- endbuild -->
+
     </body>
 </html>

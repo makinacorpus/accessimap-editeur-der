@@ -188,9 +188,7 @@
                 .attr('stroke', 'none');
 
             rotationMarker.append('svg:image')
-                // jscs:disable maximumLineLength
-                .attr('xlink:href', 'bower_components/material-design-icons/action/svg/production/ic_autorenew_48px.svg')
-                // jscs:enable maximumLineLength
+                .attr('xlink:href', 'assets/icons/autorenew.svg')
                 .attr('width', 20)
                 .attr('height', 20)
                 .attr('x', -10)

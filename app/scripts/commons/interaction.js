@@ -9,23 +9,21 @@
 
     function interaction(shareSvg) {
 
-        var cellTemplate = 
-                    `<input
-                        ng-if="row.entity.type === 'boolean'"
-                        type="checkbox"
-                        value="{{row.entity[col.field]}}"
-                        ng-model="row.entity[col.field]">
-                    <div ng-if="row.entity.type !== 'boolean'">
-                        {{row.entity[col.field]}}
-                    </div>`,
+        var cellTemplate = '<input\
+                            ng-if="row.entity.type === \'boolean\'" \
+                            type="checkbox"\
+                            value="{{row.entity[col.field]}}"\
+                            ng-model="row.entity[col.field]">\
+                            <div ng-if="row.entity.type !== \'boolean\'">\
+                                {{row.entity[col.field]}}\
+                            </div>',
 
-            removeTemplate = 
-                    `<button
-                        ng-if="row.entity.deletable"
-                        class="btn btn-danger"
-                        ng-click="grid.appScope.$ctrl.removeRow(row.entity)">
-                        <i class="glyphicon glyphicon-remove"></i>
-                    </button>`,
+            removeTemplate = '<button\
+                                ng-if="row.entity.deletable"\
+                                class="btn btn-danger"\
+                                ng-click="grid.appScope.$ctrl.removeRow(row.entity)">\
+                                <i class="glyphicon glyphicon-remove"></i>\
+                                </button>',
 
             interactiveFiltersInit =
                 // TODO : put in settings service ?
