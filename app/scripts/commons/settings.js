@@ -4,11 +4,11 @@
  * @ngdoc service
  * @name accessimapEditeurDerApp.settings
  * @requires accessimapEditeurDerApp.editSvg
- * @requires accessimapEditeurDerApp.removeService
- * @requires accessimapEditeurDerApp.interactService
- * @requires accessimapEditeurDerApp.styleService
- * @requires accessimapEditeurDerApp.moveService
- * @requires accessimapEditeurDerApp.geometryService
+ * @requires accessimapEditeurDerApp.remove
+ * @requires accessimapEditeurDerApp.interact
+ * @requires accessimapEditeurDerApp.style
+ * @requires accessimapEditeurDerApp.move
+ * @requires accessimapEditeurDerApp.geometry
  * @description
  * # settings
  * Factory in the accessimapEditeurDerApp.
@@ -16,8 +16,8 @@
 (function() {
     'use strict';
 
-    function settings (editSvg, removeService, interactService, 
-                        styleService, moveService, geometryService) {
+    function settings (editSvg, remove, interact, 
+                        style, move, geometry) {
 
         var leafletConf = {
                 GLOBAL_MAP_CENTER: [1.441019, 43.604268], // [lon, lat]
@@ -1175,60 +1175,60 @@
         ACTIONS = {
             'point': [
                 { icon: 'assets/icons/delete.svg', 
-                    action: removeService.removeObject},
+                    action: remove.removeObject},
                 { icon: 'assets/icons/open_with.svg', 
-                    action: moveService.movePath },
+                    action: move.movePath },
                 { icon: 'assets/icons/autorenew.svg', 
-                    action: moveService.rotatePath },
+                    action: move.rotatePath },
                 //{ icon: 'assets/icons/palette.svg', action: 'fill' },
                 { icon: 'assets/icons/radio_button_checked.svg', 
-                    action: styleService.emptyNearFeature },
+                    action: style.emptyNearFeature },
                 { icon: 'assets/icons/hearing.svg', 
-                    action: interactService.addInteraction }
+                    action: interact.addInteraction }
             ],
             'line': [
                 { icon: 'assets/icons/delete.svg', 
-                    action: removeService.removeObject },
+                    action: remove.removeObject },
                 { icon: 'assets/icons/linear_scale.svg', 
-                    action: moveService.movePoint },
+                    action: move.movePoint },
                 { icon: 'assets/icons/trending_flat.svg', 
-                    action: styleService.toggleArrow },
+                    action: style.toggleArrow },
                 { icon: 'assets/icons/radio_button_checked.svg', 
-                    action: styleService.emptyNearFeature },
+                    action: style.emptyNearFeature },
                 { icon: 'assets/icons/rounded_corner.svg', 
-                    action: geometryService.lineToCardinal }
+                    action: geometry.lineToCardinal }
             ],
             'polygon': [
                 { icon: 'assets/icons/delete.svg', 
-                    action: removeService.removeObject },
+                    action: remove.removeObject },
                 { icon: 'assets/icons/linear_scale.svg', 
-                    action: moveService.movePoint },
+                    action: move.movePoint },
                 { icon: 'assets/icons/texture.svg', 
-                    action: styleService.changePattern },
+                    action: style.changePattern },
                 { icon: 'assets/icons/palette.svg', 
-                    action: styleService.changeColor },
+                    action: style.changeColor },
                 { icon: 'assets/icons/radio_button_checked.svg', 
-                    action: styleService.emptyNearFeature },
+                    action: style.emptyNearFeature },
                 { icon: 'assets/icons/crop_din.svg', 
-                    action: styleService.toggleStroke }
+                    action: style.toggleStroke }
             ],
             'circle': [
                 { icon: 'assets/icons/delete.svg', 
-                    action: removeService.removeObject },
+                    action: remove.removeObject },
                 { icon: 'assets/icons/texture.svg', 
-                    action: styleService.changePattern },
+                    action: style.changePattern },
                 { icon: 'assets/icons/palette.svg', 
-                    action: styleService.changeColor },
+                    action: style.changeColor },
                 { icon: 'assets/icons/radio_button_checked.svg', 
-                    action: styleService.emptyNearFeature },
+                    action: style.emptyNearFeature },
                 { icon: 'assets/icons/crop_din.svg', 
-                    action: styleService.toggleStroke }
+                    action: style.toggleStroke }
             ],
             'text': [
                 { icon: 'assets/icons/delete.svg', 
-                    action: removeService.removeObject },
+                    action: remove.removeObject },
                 { icon: 'assets/icons/radio_button_checked.svg', 
-                    action: styleService.textEmptyNearFeature }
+                    action: style.textEmptyNearFeature }
             ]
         };
 

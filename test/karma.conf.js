@@ -40,8 +40,9 @@ module.exports = function(config) {
           'app/scripts/vendor/osmtogeojson.js',
           'app/scripts/vendor/textures.js',
           'app/scripts/app.js',
-          'app/scripts/controllers/*.js',
-          'app/scripts/services/**/*.js',
+          'app/scripts/commons/**/*.js',
+          'app/scripts/filters/**/*.js',
+          'app/scripts/routes/**/*.js',
           // 'test/mock/**/*.js',
           'test/spec/**/*.js'
         ],
@@ -67,9 +68,10 @@ module.exports = function(config) {
         // Code coverage report
         reporters: ['progress', 'coverage', 'coveralls'],
         preprocessors: {
-            'app/scripts/controllers/*.js': ['coverage'],
+            'app/scripts/app.js': ['coverage'],
+            'app/scripts/commons/*.js': ['coverage'],
             'app/scripts/filters/*.js': ['coverage'],
-            'app/scripts/services/*.js': ['coverage']
+            'app/scripts/routes/*.js': ['coverage']
         },
         coverageReporter: {
             type: 'lcov',
@@ -92,7 +94,7 @@ module.exports = function(config) {
 
         // level of logging
         // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-        logLevel: config.LOG_INFO,
+        logLevel: config.LOG_DEBUG,
 
         // Uncomment the following lines if you are using grunt's server to run the tests
         // proxies: {
