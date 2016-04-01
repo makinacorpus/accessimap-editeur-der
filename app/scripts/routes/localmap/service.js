@@ -468,7 +468,8 @@
          * @param  {Object} colorChosen   [description]
          * @param  {Object} checkboxModel [description]
          */
-        function simplifyFeatures(feature, queryChosen, styleChosen, styleChoices, colorChosen, checkboxModel, rotationAngle) {
+        function simplifyFeatures(feature, queryChosen, styleChosen, styleChoices, 
+            colorChosen, checkboxModel, rotationAngle) {
             //if (feature.simplification > 0) {
             d3.select('.vector#' + feature.id).remove();
 
@@ -499,7 +500,8 @@
          * @param  {Object} feature       [description]
          * @param  {Object} optionalClass [description]
          */
-        function drawFeature(data, feature, optionalClass, styleChosen, colorChosen, checkboxModel, rotationAngle) {
+        function drawFeature(data, feature, optionalClass, styleChosen, colorChosen, 
+            checkboxModel, rotationAngle) {
             var featureGroup,
                 geometryType = feature[0].geometryType,
                 drawingLayer = d3.select('#' + geometryType + 's-layer');
@@ -596,9 +598,11 @@
                         if (colorChosen && colorChosen.color !== 'none') {
                             v += '_' + colorChosen.color;
                         }
-                        d3.select('.' + optionalClass + '#' + feature[0].id).attr('fill', settings.POLYGON_STYLES[v].url());
+                        d3.select('.' + optionalClass + '#' + feature[0].id)
+                            .attr('fill', settings.POLYGON_STYLES[v].url());
                     } else {
-                        d3.select('.' + optionalClass + '#' + feature[0].id).attr(k, v);
+                        d3.select('.' + optionalClass + '#' + feature[0].id)
+                            .attr(k, v);
                     }
                 });
             }
@@ -651,7 +655,8 @@
          * @param  {Object} feature       [description]
          * @param  {Object} optionalClass [description]
          */
-        function geojsonToSvg(data, simplification, id, poi, queryChosen, styleChosen, styleChoices, colorChosen, checkboxModel, rotationAngle) {
+        function geojsonToSvg(data, simplification, id, poi, queryChosen, styleChosen, 
+            styleChoices, colorChosen, checkboxModel, rotationAngle) {
             if (data) {
                 data.features.forEach(function(feature, index) {
                     if (simplification) {
@@ -686,7 +691,11 @@
                             styleChoices: styleChoices,
                             rotation: 0
                         };
-                        addToLegend({'type': 'point', 'name': name, 'id': id}, styleChosen, _geojson.length, colorChosen, checkboxModel);
+                        addToLegend({'type': 'point', 'name': name, 'id': id}, 
+                                    styleChosen, 
+                                    _geojson.length, 
+                                    colorChosen, 
+                                    checkboxModel);
                     } else {
                         obj = {
                             id: queryChosen.id,
@@ -711,7 +720,13 @@
                     drawFeature(data, featureExists, null, styleChosen, colorChosen, checkboxModel, rotationAngle);
 
                     if (styleChosen.styleInner) {
-                        drawFeature(data, featureExists, 'inner', styleChosen, colorChosen, checkboxModel, rotationAngle);
+                        drawFeature(data, 
+                            featureExists, 
+                            'inner', 
+                            styleChosen, 
+                            colorChosen, 
+                            checkboxModel, 
+                            rotationAngle);
                     }
                 }
 
@@ -738,7 +753,13 @@
                 .on('click', function() {
                     var coordinates = d3.mouse(this),
                         point = _projection.invert(coordinates);
-                    downloadData(point, queryChosen, styleChosen, styleChoices, colorChosen, checkboxModel, rotationAngle);
+                    downloadData(point, 
+                            queryChosen, 
+                            styleChosen, 
+                            styleChoices, 
+                            colorChosen, 
+                            checkboxModel, 
+                            rotationAngle);
                 });
         }
 
@@ -756,7 +777,8 @@
          * @param  {Object} checkboxModel [description]
          * @param  {Object} rotationAngle [description]
          */
-        function downloadData(point, queryChosen, styleChosen, styleChoices, colorChosen, checkboxModel, rotationAngle) {
+        function downloadData(point, queryChosen, styleChosen, styleChoices, colorChosen, 
+            checkboxModel, rotationAngle) {
             usSpinnerService.spin('spinner-1');
             var mapS,
                     mapW,
@@ -941,10 +963,22 @@
 
                                 _geojson.push(objStart);
                                 var featuresStart = turf.featurecollection([pointStart]);
-                                drawFeature(featuresStart, [objStart], null, styleChosen, colorChosen, checkboxModel, rotationAngle);
+                                drawFeature(featuresStart, 
+                                            [objStart], 
+                                            null, 
+                                            styleChosen, 
+                                            colorChosen, 
+                                            checkboxModel, 
+                                            rotationAngle);
                                 _geojson.push(objStop);
                                 var featuresStop = turf.featurecollection([pointStop]);
-                                drawFeature(featuresStop, [objStop], null, styleChosen, colorChosen, checkboxModel, rotationAngle);
+                                drawFeature(featuresStop, 
+                                            [objStop], 
+                                            null, 
+                                            styleChosen, 
+                                            colorChosen, 
+                                            checkboxModel, 
+                                            rotationAngle);
                             }
                         });
                     }
@@ -1100,6 +1134,7 @@
     angular.module('accessimapEditeurDerApp')
         .service('LocalmapService', LocalmapService);
 
-    LocalmapService.$inject = ['$rootScope', '$http', '$q', 'usSpinnerService', 'settings', 'initSvg', 'shareSvg', 'svgicon'];
+    LocalmapService.$inject = 
+        ['$rootScope', '$http', '$q', 'usSpinnerService', 'settings', 'initSvg', 'shareSvg', 'svgicon'];
 
 })();

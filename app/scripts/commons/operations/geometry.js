@@ -15,7 +15,8 @@
                 featuresToUpdate = feature;
 
             if (feature.attr('data-link')) {
-                featuresToUpdate = d3.selectAll('.link_' + feature.attr('data-link'));
+                featuresToUpdate = 
+                    d3.selectAll('.link_' + feature.attr('data-link'));
             }
             var coords = undefined;
 
@@ -35,7 +36,8 @@
                         return parseFloat(ca);
                     });
                 });
-                featuresToUpdate.attr('d', generators.cardinalLineFunction(coords));
+                featuresToUpdate.attr('d', 
+                                generators.cardinalLineFunction(coords));
             }
 
             else { // line's type is cardinal

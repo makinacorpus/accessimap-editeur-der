@@ -1,5 +1,5 @@
 /*global textures */
-
+// jscs:disable maximumLineLength
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.settings
@@ -16,7 +16,8 @@
 (function() {
     'use strict';
 
-    function settings (editSvg, removeService, interactService, styleService, moveService, geometryService) {
+    function settings (editSvg, removeService, interactService, 
+                        styleService, moveService, geometryService) {
 
         var leafletConf = {
                 GLOBAL_MAP_CENTER: [1.441019, 43.604268], // [lon, lat]

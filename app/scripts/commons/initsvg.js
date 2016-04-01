@@ -81,7 +81,10 @@
             return d3.select(id).append('svg')
                      .attr('width', width + 'mm')
                      .attr('height', height + 'mm')
-                     .attr('viewBox', '0 0 ' + (width / settings.ratioPixelPoint) + ' ' + (height / settings.ratioPixelPoint));
+                     .attr('viewBox', '0 0 ' 
+                                        + (width / settings.ratioPixelPoint) 
+                                        + ' ' 
+                                        + (height / settings.ratioPixelPoint));
         };
 
         /**
@@ -96,7 +99,10 @@
             return d3.select(document.createElementNS(d3.ns.prefix.svg, 'svg'))
                 .attr('width', width + 'mm')
                 .attr('height', height + 'mm')
-                .attr('viewBox', '0 0 ' + (width / settings.ratioPixelPoint) + ' ' + (height / settings.ratioPixelPoint));
+                .attr('viewBox', '0 0 ' 
+                                    + (width / settings.ratioPixelPoint) 
+                                    + ' ' 
+                                    + (height / settings.ratioPixelPoint));
         };
 
         /**
@@ -215,8 +221,24 @@
 
             marginGroup.append('path')
                 .attr('d', function() {
-                    var outer = 'M 0 0 L 0 ' + height + ' L ' + width + ' ' + height + ' L ' + width + ' 0 L 0 0 z ',
-                        inner = 'M 40 40 L ' + w40 + ' 40 L ' + w40 + ' ' + h40 + ' L 40 ' + h40 + ' L 40 40 z';
+                    var outer = 'M 0 0 L 0 ' 
+                                    + height 
+                                    + ' L ' 
+                                    + width 
+                                    + ' ' 
+                                    + height 
+                                    + ' L ' 
+                                    + width 
+                                    + ' 0 L 0 0 z ',
+                        inner = 'M 40 40 L ' 
+                                    + w40 
+                                    + ' 40 L ' 
+                                    + w40 
+                                    + ' ' 
+                                    + h40 
+                                    + ' L 40 ' 
+                                    + h40 
+                                    + ' L 40 40 z';
 
                     return outer + inner;
                 })
@@ -265,7 +287,15 @@
 
             frameGroup.append('path')
                 .attr('d', function() {
-                    return 'M 40 40 L ' + w40 + ' 40 L ' + w40 + ' ' + h40 + ' L 40 ' + h40 + ' L 40 40 z';
+                    return 'M 40 40 L ' 
+                                    + w40 
+                                    + ' 40 L ' 
+                                    + w40 
+                                    + ' ' 
+                                    + h40 
+                                    + ' L 40 ' 
+                                    + h40 
+                                    + ' L 40 40 z';
                 })
                 .attr('fill', 'none')
                 .attr('stroke', '#000000')

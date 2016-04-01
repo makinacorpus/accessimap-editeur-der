@@ -5,7 +5,7 @@
     "requireSpacesInFunction": {
         "beforeOpeningCurlyBrace": true
     },
-    "maximumLineLength": 150,
+    "maximumLineLength": 120,
     "requirePaddingNewlinesBeforeKeywords": [
         'do',
         'for',

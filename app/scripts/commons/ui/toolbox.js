@@ -7,7 +7,8 @@
 (function() {
     'use strict';
 
-    function toolbox(generators, geometryutils, styleutils, radialMenu, settings, UtilService) {
+    function toolbox(generators, geometryutils, styleutils, 
+                        radialMenu, settings, UtilService) {
 
         this.addRadialMenus        = addRadialMenus;
         this.undo                  = undo;
@@ -32,9 +33,12 @@
          * @param {Object} model [description]
          */
         function addRadialMenus(model) {
-            radialMenu.addRadialMenu(model, d3.selectAll('path:not(.notDeletable)'));
-            radialMenu.addRadialMenu(model, d3.selectAll('circle:not(.notDeletable)'));
-            radialMenu.addRadialMenu(model, d3.selectAll('text:not(.notDeletable)'));
+            radialMenu.addRadialMenu(model, 
+                        d3.selectAll('path:not(.notDeletable)'));
+            radialMenu.addRadialMenu(model, 
+                        d3.selectAll('circle:not(.notDeletable)'));
+            radialMenu.addRadialMenu(model, 
+                        d3.selectAll('text:not(.notDeletable)'));
         }
 
         function undo(model) {
@@ -64,15 +68,17 @@
                 .on('click', function() {
                     if (!d3.event.defaultPrevented) {
                         var coordinates = d3.mouse(this),
-                            realCoordinates = geometryutils.realCoordinates(coordinates),
+                            realCoordinates = 
+                                geometryutils.realCoordinates(coordinates),
                             iid = UtilService.getiid(),
 
                             feature = d3.select('#points-layer')
                                 .append('path')
                                 .classed('link_' + iid, true)
-                                .attr('d', model.styleChosen.path(realCoordinates[0],
-                                                                    realCoordinates[1],
-                                                                    model.styleChosen.radius))
+                                .attr('d', model.styleChosen
+                                                .path(realCoordinates[0],
+                                                    realCoordinates[1],
+                                                    model.styleChosen.radius))
                                 .attr('data-link', iid);
 
                         styleutils.applyStyle(feature,
@@ -91,14 +97,18 @@
                 .on('click', function() {
                     if (!d3.event.defaultPrevented) {
                         var coordinates = d3.mouse(this),
-                            realCoordinates = geometryutils.realCoordinates(coordinates),
+                            realCoordinates = geometryutils
+                                                .realCoordinates(coordinates),
                             feature;
 
                         if (d3.select('.edition')[0][0]) { // second click
                             feature = d3.select('.edition');
-                            var xOffset = realCoordinates[0] - feature.attr('cx'),
-                                yOffset = realCoordinates[1] - feature.attr('cy'),
-                                r = Math.sqrt(Math.pow(xOffset, 2) + Math.pow(yOffset, 2));
+                            var xOffset = 
+                                    realCoordinates[0] - feature.attr('cx'),
+                                yOffset = 
+                                    realCoordinates[1] - feature.attr('cy'),
+                                r = Math.sqrt(Math.pow(xOffset, 2) 
+                                            + Math.pow(yOffset, 2));
                             feature.attr('r', r)
                                 .attr('e-style', model.styleChosen.id)
                                 .attr('e-color', model.colorChosen.color);
@@ -114,9 +124,12 @@
                                 .classed('edition', true);
 
 
-                            styleutils.applyStyle(feature, model.styleChosen.style, model.colorChosen);
+                            styleutils.applyStyle(feature, 
+                                                    model.styleChosen.style, 
+                                                    model.colorChosen);
 
-                            if (model.checkboxModel.contour && !feature.attr('stroke')) {
+                            if (model.checkboxModel.contour 
+                                    && !feature.attr('stroke')) {
                                 feature
                                     .attr('stroke', 'black')
                                     .attr('stroke-width', '2');
@@ -130,10 +143,12 @@
 
                     if (feature[0][0]) {
                         var coordinates = d3.mouse(this),
-                            realCoordinates = geometryutils.realCoordinates(coordinates),
+                            realCoordinates = 
+                                geometryutils.realCoordinates(coordinates),
                             xOffset = realCoordinates[0] - feature.attr('cx'),
                             yOffset = realCoordinates[1] - feature.attr('cy'),
-                            r = Math.sqrt(Math.pow(xOffset, 2) + Math.pow(yOffset, 2));
+                            r = Math.sqrt(Math.pow(xOffset, 2) 
+                                        + Math.pow(yOffset, 2));
                         feature.attr('r', r);
                     }
                 });
@@ -155,7 +170,8 @@
 
             d3.select('svg')
                 .on('click', function() {
-                    // d3.event.detail is used to check is the click is not a double click
+                    // d3.event.detail is used to check 
+                    // if the click is not a double click
                     if (!d3.event.defaultPrevented
                         && d3.event.detail !== 2) {
                         var path,
@@ -172,9 +188,12 @@
                             path = drawingLayer
                                 .append('path')
                                 .attr({'class': 'edition'});
-                            styleutils.applyStyle(path, model.styleChosen.style, model.colorChosen);
+                            styleutils.applyStyle(path, 
+                                                    model.styleChosen.style, 
+                                                    model.colorChosen);
 
-                            if (model.checkboxModel.contour && !path.attr('stroke')) {
+                            if (model.checkboxModel.contour 
+                                    && !path.attr('stroke')) {
                                 path
                                     .attr('stroke', 'black')
                                     .attr('stroke-width', '2');
@@ -184,22 +203,29 @@
                                 pathInner = drawingLayer
                                     .append('path')
                                     .attr({'class': 'edition inner'});
-                                styleutils.applyStyle(pathInner, model.styleChosen.styleInner, model.colorChosen);
+                                styleutils
+                                    .applyStyle(pathInner, 
+                                                model.styleChosen.styleInner,
+                                                model.colorChosen);
                             }
                         }
 
                         var coordinates = d3.mouse(this),
-                            realCoordinates = geometryutils.realCoordinates(coordinates);
+                            realCoordinates = geometryutils
+                                                .realCoordinates(coordinates);
 
                         if (lastPoint) {
-                            var tanAngle = Math.abs((realCoordinates[1] - lastPoint[1]) /
-                                            (realCoordinates[0] - lastPoint[0])),
+                            var tanAngle = 
+                                Math.abs((realCoordinates[1] - lastPoint[1]) /
+                                         (realCoordinates[0] - lastPoint[0])),
                                 tan5 = Math.tan((5 * 2 * Math.PI) / 360),
                                 tan85 = Math.tan((85 * 2 * Math.PI) / 360);
 
                             // If the ctrlKey is pressed
-                            // draw horizontal or vertical lines with a tolerance of 5°
-                            if (d3.event.ctrlKey && (tanAngle < tan5 || tanAngle > tan85)) {
+                            // draw horizontal or vertical lines 
+                            // with a tolerance of 5°
+                            if (d3.event.ctrlKey 
+                                && (tanAngle < tan5 || tanAngle > tan85)) {
                                 if (tanAngle < tan5) {
                                     realCoordinates[1] = lastPoint[1];
                                 } else {
@@ -219,9 +245,12 @@
                                 d: generators.pathFunction[model.mode](lineEdit)
                             });
                         }
-                        styleutils.applyStyle(path, model.styleChosen.style, model.colorChosen);
+                        styleutils.applyStyle(path, 
+                                            model.styleChosen.style, 
+                                            model.colorChosen);
 
-                        if (model.checkboxModel.contour && !path.attr('stroke')) {
+                        if (model.checkboxModel.contour 
+                            && !path.attr('stroke')) {
                             path
                                 .attr('stroke', 'black')
                                 .attr('stroke-width', '2');
@@ -229,8 +258,8 @@
 
                         if (model.mode === 'line') {
                             styleutils.applyStyle(pathInner,
-                                                    model.styleChosen.styleInner,
-                                                    model.colorChosen);
+                                                model.styleChosen.styleInner,
+                                                model.colorChosen);
                         }
                     }
                 })
@@ -271,7 +300,8 @@
                                                 model.styleChosen.style,
                                                 model.colorChosen);
 
-                            if (model.checkboxModel.contour && !line.attr('stroke')) {
+                            if (model.checkboxModel.contour 
+                                    && !line.attr('stroke')) {
                                 line
                                     .attr('stroke', 'black')
                                     .attr('stroke-width', '2');
@@ -279,14 +309,17 @@
                         }
                         var coordinates = d3.mouse(this),
                             realCoordinates = geometryutils.realCoordinates(coordinates),
-                            tanAngle = Math.abs((realCoordinates[1] - lastPoint[1]) /
-                                 (realCoordinates[0] - lastPoint[0])),
+                            tanAngle = 
+                                Math.abs((realCoordinates[1] - lastPoint[1]) /
+                                         (realCoordinates[0] - lastPoint[0])),
                             tan5 = Math.tan((5 * 2 * Math.PI) / 360),
                             tan85 = Math.tan((85 * 2 * Math.PI) / 360);
 
                         // If the ctrlKey is pressed
-                        // draw horizontal or vertical lines with a tolerance of 5°
-                        if (d3.event.ctrlKey && (tanAngle < tan5 || tanAngle > tan85)) {
+                        // draw horizontal or vertical lines 
+                        // with a tolerance of 5°
+                        if (d3.event.ctrlKey 
+                            && (tanAngle < tan5 || tanAngle > tan85)) {
                             if (tanAngle < tan5) {
                                 realCoordinates[1] = lastPoint[1];
                             } else {
@@ -319,7 +352,8 @@
                     d3.select('.edition').classed('edition', false);
 
                     var coordinates = d3.mouse(this),
-                        realCoordinates = geometryutils.realCoordinates(coordinates),
+                        realCoordinates = geometryutils
+                                            .realCoordinates(coordinates),
                         d = 'Texte',
                         iid = UtilService.getiid();
 
@@ -339,7 +373,8 @@
                         .attr('data-link', iid)
                         .text('');
 
-                    d3.select('#text-layer').selectAll('foreignObject#textEdition')
+                    d3.select('#text-layer')
+                        .selectAll('foreignObject#textEdition')
                         .data([d])
                         .enter()
                         .append('foreignObject')
@@ -379,22 +414,24 @@
                                         .append('tspan')
                                         .attr('text-anchor', 'start')
                                         .attr('x', function() {
-                                            return d3.select(this.parentNode).attr('x');
+                                            return d3.select(this.parentNode)
+                                                    .attr('x');
                                         })
                                         .attr('dy', 35)
                                         .text(data);
                                 }
                             });
                             d3.select(this.parentElement).remove();
-                            radialMenu.addRadialMenu(model, d3.select('.edition'));
+                            radialMenu
+                                .addRadialMenu(model, d3.select('.edition'));
                             d3.select('.edition').classed('edition', false);
                             d3.select('#finalText').attr('id', null);
                         });
 
-                    selectElementContents(d3
-                                            .selectAll('foreignObject#textEdition')
-                                            .selectAll('p')
-                                            .node());
+                    selectElementContents(
+                        d3.selectAll('foreignObject#textEdition')
+                            .selectAll('p')
+                            .node());
 
                     // TODO: FIX, we mustn't act on the controller...
                     model.enableEditionMode('default'); 

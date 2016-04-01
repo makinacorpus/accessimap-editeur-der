@@ -21,7 +21,8 @@
          */
         var featureIcon = function(item, type) {
             var iconSvg = document.createElement('svg'),
-                iconContainer = d3.select(iconSvg).attr('height', 40).append('g'),
+                iconContainer = d3.select(iconSvg)
+                                .attr('height', 40).append('g'),
                 symbol;
 
             switch(type) {

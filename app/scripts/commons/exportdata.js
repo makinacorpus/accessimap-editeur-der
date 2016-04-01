@@ -20,15 +20,29 @@
                 mapNode = d3.select('#der').select('svg').node(),
                 exportNode = mapNode.cloneNode(true);
 
-            zip.file('carte_avec_source.svg', (new XMLSerializer()).serializeToString(exportNode));
-            d3.select(exportNode).selectAll('.tiles').selectAll('*').remove();
-            d3.select(exportNode).selectAll('.sourceDocument').remove();
-            d3.select(exportNode).selectAll('.sourceDocument').selectAll('*').remove();
-            zip.file('carte_sans_source.svg', (new XMLSerializer()).serializeToString(exportNode));
+            zip.file('carte_avec_source.svg', (new XMLSerializer())
+                                                .serializeToString(exportNode));
+            d3.select(exportNode)
+                .selectAll('.tiles')
+                .selectAll('*')
+                .remove();
+            d3.select(exportNode)
+                .selectAll('.sourceDocument')
+                .remove();
+            d3.select(exportNode)
+                .selectAll('.sourceDocument')
+                .selectAll('*')
+                .remove();
+            zip.file('carte_sans_source.svg', (new XMLSerializer())
+                                                .serializeToString(exportNode));
 
             if (d3.select('#der-legend').selectAll('svg').node()) {
-                var legendNode = d3.select('#der-legend').selectAll('svg').node();
-                zip.file('legende.svg', (new XMLSerializer()).serializeToString(legendNode));
+                var legendNode = d3
+                                .select('#der-legend')
+                                .selectAll('svg')
+                                .node();
+                zip.file('legende.svg', (new XMLSerializer())
+                                                .serializeToString(legendNode));
             }
             zip.file('commentaires.txt', $('#comment').val());
 
@@ -93,7 +107,8 @@
                         var bbox;
                         d3.select('#der').select('svg').selectAll('path')[0]
                             .forEach(function(shape) {
-                                if ('poi-' + d3.select(shape).attr('data-link') === d.id) {
+                                if ('poi-' + d3.select(shape).attr('data-link') 
+                                        === d.id) {
                                     bbox = d3.select(shape).node().getBBox();
                                 }
                             });
@@ -109,14 +124,18 @@
                         var actions = poi.append('actions');
                         // loop through the keys - this assumes no extra data
                         d3.keys(d).forEach(function(key) {
-                            if (key !== '$$hashKey' && key !== 'deletable' && key !== 'id') {
+                            if (key !== '$$hashKey' 
+                                    && key !== 'deletable' 
+                                    && key !== 'id') {
                                 actions.append('action')
                                 .attr('gesture', 'double_tap')
                                 .attr('filter', key)
                                 .attr('value', d[key])
                                 .attr('protocol', function() {
                                     if (d[key]) {
-                                        var extension = d[key] && d[key].split('.')[d[key].split('.').length - 1];
+                                        var split = d[key].split('.'),
+                                            extension = d[key] 
+                                                && split[split.length - 1];
 
                                         if (extension === 'mp3') {
                                             return 'mp3';
@@ -132,7 +151,8 @@
                 var interactionsNode = d3.select('#der').select('xml').node(),
                     xmlToExport = '<?xml version="1.0" encoding="UTF-8"?>';
 
-                xmlToExport += (new XMLSerializer()).serializeToString(interactionsNode);
+                xmlToExport += (new XMLSerializer())
+                                    .serializeToString(interactionsNode);
                 xmlToExport = xmlToExport.replace(/<xml.*<config>/, '<config>');
                 xmlToExport = xmlToExport.replace('</xml>', '');
                 zip.file('interactions.xml', xmlToExport);

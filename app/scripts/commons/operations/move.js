@@ -25,22 +25,27 @@
                 .on('click', function() {
                     if (d3.select(temporaryPath).classed('moved')) {
                         var coordinates = d3.mouse(this),
-                            realCoordinates = geometryutils.realCoordinates(coordinates),
+                            realCoordinates = 
+                                geometryutils.realCoordinates(coordinates),
                             transX = realCoordinates[0] - bbox.x,
                             transY = realCoordinates[1] - bbox.y,
-                            emptyCircle = d3.select('.c' + feature.attr('data-link')),
+                            emptyCircle = 
+                                d3.select('.c' + feature.attr('data-link')),
                             emptyCircleExists = emptyCircle.node(),
 
                             transformString = '',
-                            hasRotate = /rotate\((.*?)(?: |,)(.*?)(?: |,)(.*?)\)/.exec(feature.attr('transform'));
+                            hasRotate = 
+                                /rotate\((.*?)(?: |,)(.*?)(?: |,)(.*?)\)/
+                                .exec(feature.attr('transform'));
 
                         if (hasRotate) {
                             transformString += 
                                 'rotate(' + [hasRotate[1], 
-                                        (parseFloat(hasRotate[2]) + transX), 
-                                        (parseFloat(hasRotate[3]) + transY)] + ')';
+                                    (parseFloat(hasRotate[2]) + transX), 
+                                    (parseFloat(hasRotate[3]) + transY)] + ')';
                         }
-                        transformString += 'translate(' + [transX, transY] + ')';
+                        transformString += 
+                            'translate(' + [transX, transY] + ')';
 
                         feature.attr('transform', transformString);
 
@@ -56,14 +61,19 @@
                 })
                 .on('mousemove', function() {
                     var coordinates = d3.mouse(this),
-                        realCoordinates = geometryutils.realCoordinates(coordinates),
+                        realCoordinates = 
+                            geometryutils.realCoordinates(coordinates),
                         transX = realCoordinates[0] - bbox.x,
                         transY = realCoordinates[1] - bbox.y,
                         transformString = '',
-                        hasRotate = /rotate\((.*?)(?: |,)(.*?)(?: |,)(.*?)\)/.exec(feature.attr('transform'));
+                        hasRotate = /rotate\((.*?)(?: |,)(.*?)(?: |,)(.*?)\)/
+                            .exec(feature.attr('transform'));
 
                     if (hasRotate) {
-                        transformString += 'rotate(' + [hasRotate[1], (parseFloat(hasRotate[2]) + transX), (parseFloat(hasRotate[3]) + transY)] + ')';
+                        transformString += 'rotate(' 
+                            + [hasRotate[1], 
+                            (parseFloat(hasRotate[2]) + transX), 
+                            (parseFloat(hasRotate[3]) + transY)] + ')';
                     }
                     transformString += 'translate(' + [transX, transY] + ')';
 
@@ -79,7 +89,8 @@
                 featuresToUpdate = feature;
 
             if (feature.attr('data-link')) {
-                featuresToUpdate = d3.selectAll('.link_' + feature.attr('data-link'));
+                featuresToUpdate = 
+                    d3.selectAll('.link_' + feature.attr('data-link'));
             }
 
             // draw temporary node at all path breaks
@@ -108,7 +119,8 @@
             var nearest = null;
 
             drag.on('dragstart', function(e) {
-                d3.event.sourceEvent.stopPropagation(); // silence other listeners
+                // silence other listeners
+                d3.event.sourceEvent.stopPropagation();
                 nearest = geometryutils.nearest(d3.mouse(this), features);
             });
 
@@ -118,7 +130,8 @@
                     .attr('cx', mousePosition[0])
                     .attr('cy', mousePosition[1]);
 
-                var vertexNumber = parseInt(d3.select(this).attr('id').replace('n', ''));
+                var vertexNumber = 
+                    parseInt(d3.select(this).attr('id').replace('n', ''));
                 featuresToUpdate.each(function(d, i) {
                     var pathDataToUpdate = this.getPathData();
                     pathDataToUpdate[vertexNumber].values[0] = mousePosition[0];
@@ -132,7 +145,8 @@
         this.rotatePath = function(feature, scope) {
             var el = feature.node(),
                 bbox = el.getBBox(),
-                pathCenter = [bbox.x + bbox.width / 2, bbox.y + bbox.height / 2],
+                pathCenter = [bbox.x + bbox.width / 2, 
+                                bbox.y + bbox.height / 2],
                 pathCenterTranslate = [],
                 emptyCircle = d3.select('.c' + feature.attr('data-link')),
                 emptyCircleExists = emptyCircle.node();
@@ -140,11 +154,14 @@
             pathCenterTranslate[1] = pathCenter[1];
 
             if (feature.attr('transform')) {
-                var pathHasTranslate = /translate\((.*?)(?: |,)(.*?)\)/.exec(feature.attr('transform'));
+                var pathHasTranslate = /translate\((.*?)(?: |,)(.*?)\)/
+                                    .exec(feature.attr('transform'));
 
                 if (pathHasTranslate) {
-                    pathCenterTranslate[0] = pathCenter[0] + parseFloat(pathHasTranslate[1]);
-                    pathCenterTranslate[1] = pathCenter[1] + parseFloat(pathHasTranslate[2]);
+                    pathCenterTranslate[0] = pathCenter[0] 
+                                        + parseFloat(pathHasTranslate[1]);
+                    pathCenterTranslate[1] = pathCenter[1] 
+                                        + parseFloat(pathHasTranslate[2]);
                 }
             }
 
@@ -153,7 +170,12 @@
             rotationMarker = d3.select('#points-layer')
                 .append('g')
                 .classed('ongoing', true)
-                .attr('transform', 'translate(' + pathCenterTranslate[0] + ',' + (pathCenterTranslate[1] + bbox.height * 2) + ')')
+                .attr('transform', 'translate(' 
+                                    + pathCenterTranslate[0] 
+                                    + ',' 
+                                    + (pathCenterTranslate[1] 
+                                    + bbox.height * 2) 
+                                    + ')')
                 .attr('pathCenter', pathCenter)
                 .attr('pathCenterTranslate', pathCenterTranslate)
                 .call(drag);
@@ -166,7 +188,9 @@
                 .attr('stroke', 'none');
 
             rotationMarker.append('svg:image')
+                // jscs:disable maximumLineLength
                 .attr('xlink:href', 'bower_components/material-design-icons/action/svg/production/ic_autorenew_48px.svg')
+                // jscs:enable maximumLineLength
                 .attr('width', 20)
                 .attr('height', 20)
                 .attr('x', -10)
@@ -175,22 +199,36 @@
             var initialAngle = 0;
 
             drag.on('dragstart', function() {
-                d3.event.sourceEvent.stopPropagation(); // silence other listeners
+                // silence other listeners
+                d3.event.sourceEvent.stopPropagation(); 
                 var mouse = d3.mouse(d3.select('#points-layer').node());
-                initialAngle = geometryutils.angle(pathCenterTranslate[0], pathCenterTranslate[1], mouse[0], mouse[1]);
+                initialAngle = geometryutils.angle(pathCenterTranslate[0], 
+                                        pathCenterTranslate[1], 
+                                        mouse[0], 
+                                        mouse[1]);
             }).on('drag', function() {
                 var mouse = d3.mouse(d3.select('#points-layer').node()),
-                    currentAngle = geometryutils.angle(pathCenterTranslate[0], pathCenterTranslate[1], mouse[0], mouse[1]),
+                    currentAngle = geometryutils.angle(pathCenterTranslate[0], 
+                                        pathCenterTranslate[1], 
+                                        mouse[0], 
+                                        mouse[1]),
                     diffAngle = currentAngle - initialAngle,
 
                     transformString = '',
-                    hasTranslate = /translate\((.*?)\)/.exec(feature.attr('transform'));
+                    hasTranslate = /translate\((.*?)\)/
+                                    .exec(feature.attr('transform'));
 
                 if (hasTranslate) {
                     transformString += hasTranslate[0];
                 }
 
-                transformString += 'rotate(' + diffAngle + ' ' + pathCenter[0] + ' ' + pathCenter[1] + ')';
+                transformString += 'rotate(' 
+                                + diffAngle 
+                                + ' ' 
+                                + pathCenter[0] 
+                                + ' ' 
+                                + pathCenter[1] 
+                                + ')';
 
                 feature.attr('transform', transformString);
 
@@ -198,7 +236,11 @@
                     emptyCircle.attr('transform', transformString);
                 }
 
-                rotationMarker.attr('transform', 'translate(' + mouse[0] + ',' + mouse[1] + ')');
+                rotationMarker.attr('transform', 'translate(' 
+                                                    + mouse[0] 
+                                                    + ',' 
+                                                    + mouse[1] 
+                                                    + ')');
             }).on('dragend', function() {
                 d3.select('#points-layer').on('mousedown.drag', null);
                 $('#der').css('cursor', 'auto');

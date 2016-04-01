@@ -27,7 +27,8 @@
                 scope.interactiveFilters.data.filter(function(row) {
                     return row.id === 'poi-' + featureIid;
                 }),
-                featureToAdd = scope.interactiveFilters.data.indexOf(featurePosition[0]) < 0;
+                featureToAdd = scope.interactiveFilters
+                                .data.indexOf(featurePosition[0]) < 0;
 
             if (featureToAdd) {
                 scope.$apply(function() {

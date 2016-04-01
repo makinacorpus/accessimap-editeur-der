@@ -11,7 +11,8 @@
      */
     function geometryutils() {
         this.distance = function(point1, point2) {
-            var distance = Math.sqrt(Math.pow((point1[0] - point2[0]), 2) + Math.pow((point1[1] - point2[1]), 2));
+            var distance = Math.sqrt(Math.pow((point1[0] - point2[0]), 2) 
+                                    + Math.pow((point1[1] - point2[1]), 2));
 
             return distance;
         };
@@ -54,7 +55,8 @@
         };
 
         this.realCoordinates = function(coordinates) {
-            var transform = d3.transform(d3.select('#map-layer').attr('transform')),
+            var transform = d3.transform(d3.select('#map-layer')
+                                            .attr('transform')),
                 translate = transform.translate,
                 scale = transform.scale[0],
                 realCoordinates = [];
