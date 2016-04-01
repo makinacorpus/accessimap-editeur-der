@@ -9,9 +9,12 @@ var gulp = require('gulp'),
     concat       = require('gulp-concat'),
     connect      = require('gulp-connect'),
     filter       = require('gulp-filter'),
-    karma_runner = require('karma').Server,
+    karmaRunner = require('karma').Server,
     jscs         = require('gulp-jscs'),
+    minifyHTML   = require('gulp-minify-html'),
+    minifyCss    = require('gulp-minify-css'),
     ngdocs       = require('gulp-ngdocs'),
+    ngTemplate   = require('gulp-ng-template'),
     open         = require('gulp-open'),
     print        = require('gulp-print'),
     rev          = require('gulp-rev'),
@@ -35,14 +38,18 @@ gulp.task('clean:dist', function() {
 gulp.task('clean:css', function() {
     return gulp.src('.tmp/styles/*').pipe(clean())
 });
+gulp.task('clean:js', function() {
+    return gulp.src(config.js.dest).pipe(clean())
+});
 gulp.task('clean:doc', function() {
     return gulp.src(config.doc.dest).pipe(clean())
 });
 
 /**
- * Copy files to dist, with specific transformations, depending on file's type
+ * Copy JS files to dist
+ * with style checking
  */
-gulp.task('copy:js', function() {
+gulp.task('copy:js', ['clean:js'], function() {
 
     var localFilter = filter(config.js.jscs.filter, {restore: true});
 
@@ -53,39 +60,58 @@ gulp.task('copy:js', function() {
                 .pipe(jscs.reporter())
                 // .pipe(jscs.reporter('fail'))
                 .pipe(localFilter.restore)
-                .pipe(gulp.dest(config.dist))
+                .pipe(gulp.dest(config.js.dest))
                 .pipe(connect.reload()) ;
 })
 
-gulp.task('copy:else', function() {
-    return gulp.src([ config.app + '/**/*',
-                    '!' + config.js.globs,
-                    '!' + config.compass.globs])
-                .pipe(gulp.dest(config.dist))
+/**
+ * Copy project's files to dist
+ */
+gulp.task('copy:assets', ['copy:bower'], function() {
+    return gulp.src(config.assets.globs, {base: config.assets.base})
+                .pipe(gulp.dest(config.assets.dest))
+                .pipe(connect.reload())
+})
+gulp.task('copy:bower', function() {
+    return gulp.src(config.bower_components.globs, {base: config.bower_components.base})
+                .pipe(gulp.dest(config.bower_components.dest))
                 .pipe(connect.reload())
 })
 
-gulp.task('usemin', ['compass'], function () {
-    return gulp
-                .src('./app/index.html')
-                .pipe(usemin(config.usemin))
-                .pipe(print())
-                .pipe(rev())
-                .pipe(print())
-                .pipe(gulp.dest(config.dist))
-});
+gulp.task('check:jscs', function() {
+
+    var localFilter = filter(config.js.jscs.filter, {restore: true});
+
+    return gulp.src(config.js.globs)
+                // jscs
+                .pipe(localFilter)
+                .pipe(jscs())
+                .pipe(jscs.reporter('fail'));
+})
+
+gulp.task('build:templatejs', function() {
+    gulp.src(config.templates.globs)
+        .pipe(minifyHTML({empty: true, quotes: true}))
+        .pipe(ngTemplate({
+            moduleName: config.templates.moduleName,
+            standalone: false,
+            filePath: config.templates.filePath,
+            prefix: 'scripts/'
+        }))
+        .pipe(gulp.dest('.tmp'));
+})
 
 /**
  * Compile SASS files into CSS
  * Use of autoprefixer to be compatible with prefix vendor
  */
-gulp.task('compass', ['clean:css'], function() {
+gulp.task('build:css', ['clean:css'], function() {
     return gulp.src(config.compass.globs)
             .pipe(compass(config.compass.options))
             .pipe(autoprefixer(config.autoprefixer))
-            .pipe(gulp.dest('.tmp/styles'))
+            .pipe(gulp.dest('.tmp/assets/styles'))
             .pipe(connect.reload());
-});
+})
 
 /**
  * Launch an express server pointing a local directory, mainly ./dist
@@ -108,42 +134,21 @@ gulp.task('connect', function() {
                     '/bower_components',
                     connect.static('./bower_components')
                 ),
-                connect.static(config.app)
+                connect.static(config.dist)
              ];
         }
     });
-});
+})
 
 /**
  * Task for running test configured by test/karma.conf.js
  */
 gulp.task('test', function(done) {
-    new karma_runner(config.karma, done).start();
+    new karmaRunner(config.karma, done).start();
 })
 
-/**
- * Main task to launch the server
- */
-gulp.task('serve', ['compass', 'connect', 'copy:js', 'copy:else', 'doc'], function() {
-
-    // wachers configuration
-    gulp.watch(config.compass.globs, ['compass']);
-    gulp.watch(config.js.globs, ['copy:js']);
-    gulp.watch([ config.app + '/**/*',
-                    '!' + config.js.globs,
-                    '!' + config.compass.globs], ['copy:else']);
-
-    return gulp.src(config.homepage)
-                .pipe(open({ uri: 'http://' + config.connect.host + ':' + config.connect.port }));
-
-});
-
-/**
- * Build task for packaging purposes
- * Will uglify / concat / rev files
- */
-gulp.task('build', ['clean:dist', 'usemin', 'doc'], function() {
-
+gulp.task('watch:test',['test'], function() {
+    gulp.watch([ config.js.globs, 'test/spec/**'], ['test']);
 })
 
 /**
@@ -152,4 +157,34 @@ gulp.task('build', ['clean:dist', 'usemin', 'doc'], function() {
 gulp.task('doc', ['clean:doc'], function() {
     return gulp.src(config.js.globs)
                 .pipe(ngdocs.process(config.doc.options))
+                .pipe(gulp.dest(config.doc.dest))
+})
+
+/**
+ * Main task to launch the server
+ */
+gulp.task('serve', ['build:css', 'connect', 'copy:js', 'copy:assets', 'build:templatejs', 'doc'], function() {
+
+    // wachers configuration
+    gulp.watch(config.compass.globs, ['build:css']);
+    gulp.watch(config.js.globs, ['copy:js']);
+    gulp.watch(config.templates.globs, ['build:templatejs']);
+    gulp.watch(config.assets.globs, ['copy:assets']);
+
+    return gulp.src(config.homepage)
+                .pipe(open({ uri: 'http://' + config.connect.host + ':' + config.connect.port }));
+
+})
+
+/**
+ * Build task for packaging purposes
+ * Will uglify / concat / rev files
+ */
+gulp.task('build', ['clean:dist', 'check:jscs', 'build:css', 'build:templatejs', 'copy:assets', 'doc'], function () {
+    return gulp.src('./app/index.html')
+                .pipe(usemin({
+                    css: [rev, minifyCss],
+                    js: [rev],
+                }))
+                .pipe(gulp.dest(config.dist))
 })
