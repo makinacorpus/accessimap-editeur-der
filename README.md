@@ -23,7 +23,7 @@
 - 'gem install compass'
 - 'bower install'
 - `npm install`
-- `grunt serve`
+- `gulp`
 - look your browser
 
 
@@ -31,23 +31,18 @@ If you encounter a 'bug' like 'watching tasks too numerous', or an error like 'E
 
 https://github.com/guard/listen/wiki/Increasing-the-amount-of-inotify-watchers
 
-~~~~
-
-$ sysctl fs.inotify.max_user_watches
-
-$ sudo sysctl fs.inotify.max_user_watches=32768
-
-$ sysctl fs.inotify.max_user_watches
-
-~~~~
+``` sh
+sysctl fs.inotify.max_user_watches
+sudo sysctl fs.inotify.max_user_watches=32768
+sysctl fs.inotify.max_user_watches
+```
 
 If after a reboot the problem is the same, and fs.inotify.max_user_watches return his old value, you can also modify /etc/sysctl.conf by adding this line at the end :
 
-~~~~
-
+``` sh
 fs.inotify.max_user_watches=32768
 
-~~~~
+```
 
 Normally, if you reboot, it will be ok.
 

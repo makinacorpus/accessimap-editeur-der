@@ -32,13 +32,12 @@
     "karma-coveralls": "^1.1.2",
     "karma-jasmine": "^0.3.6",
     "karma-phantomjs-launcher": "^0.1.4",
-    "time-grunt": "^0.3.1",
     "wiredep": "^4.0.0"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=4.4.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "gulp test"
   }
 }
