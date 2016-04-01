@@ -64,6 +64,9 @@
 
         // BAD THING !... but used in service...
         $ctrl.updateView = function() { $scope.$apply() };
+        $ctrl.$watch = function(objectWatched, f) {
+            $scope.$watch(objectWatched, f);
+        }
         
         // editor's part
         function changeColor() {
