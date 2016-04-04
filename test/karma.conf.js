@@ -36,6 +36,7 @@ module.exports = function(config) {
           // 'bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js',
           'bower_components/angular-bootstrap-slider/slider.js',
           'bower_components/angular-ui-grid/ui-grid.js',
+          
           'app/scripts/vendor/d3.geo.tile.v0.min.js',
           'app/scripts/vendor/osmtogeojson.js',
           'app/scripts/vendor/textures.js',
@@ -67,15 +68,16 @@ module.exports = function(config) {
 
         // Code coverage report
         reporters: ['progress', 'coverage', 'coveralls'],
+
         preprocessors: {
             'app/scripts/app.js': ['coverage'],
-            'app/scripts/commons/*.js': ['coverage'],
-            'app/scripts/filters/*.js': ['coverage'],
-            'app/scripts/routes/*.js': ['coverage']
+            'app/scripts/{commons,components,routes,filters}/**/*.js': ['coverage']
         },
+
         coverageReporter: {
             type: 'lcov',
-            dir: 'test/coverage'
+            dir: 'test/coverage',
+            file: 'coverage.txt'
         },
 
         // Which plugins to enable

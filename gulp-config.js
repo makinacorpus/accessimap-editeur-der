@@ -22,8 +22,7 @@ module.exports = {
     },
     karma: {
         configFile: __dirname + '/test/karma.conf.js',
-        singleRun: true,
-        reporters: ['progress']
+        singleRun: true
     },
     js: {
         globs: app + 'scripts/**/*.js',
