@@ -59,7 +59,7 @@ module.exports = function(config) {
         ],
 
         // Code coverage report
-        reporters: ['progress', 'coverage'/*, 'coveralls'*/],
+        reporters: ['progress', 'coverage', 'coveralls'],
 
         preprocessors: {
             'app/scripts/app.js': ['progress', 'coverage'],
