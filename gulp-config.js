@@ -21,8 +21,7 @@ module.exports = {
         cascade: true
     },
     karma: {
-        configFile: __dirname + '/test/karma.conf.js',
-        singleRun: true
+        configFile: __dirname + '/karma.conf.js'
     },
     js: {
         globs: app + 'scripts/**/*.js',

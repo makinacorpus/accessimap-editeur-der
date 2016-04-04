@@ -11,15 +11,15 @@ module.exports = function(config) {
         autoWatch: true,
 
         // base path, that will be used to resolve files and exclude
-        basePath: '../',
+        basePath: './',
 
         // testing framework to use (jasmine/mocha/qunit/...)
         frameworks: ['jasmine'],
 
         // list of files / patterns to load in the browser
         files: [
-          'bower_components/angular/angular.js',
           'bower_components/jquery/dist/jquery.js',
+          'bower_components/angular/angular.js',
           'bower_components/angular-mocks/angular-mocks.js',
           'bower_components/angular-animate/angular-animate.js',
           'bower_components/angular-cookies/angular-cookies.js',
@@ -32,18 +32,10 @@ module.exports = function(config) {
           'bower_components/d3/d3.js',
           'bower_components/angular-ui-select/dist/select.js',
           'bower_components/select2/select2.js',
-          // 'bower_components/bootstrap/dist/js/bootstrap.js',
-          // 'bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js',
           'bower_components/angular-bootstrap-slider/slider.js',
           'bower_components/angular-ui-grid/ui-grid.js',
           
-          'app/scripts/vendor/d3.geo.tile.v0.min.js',
-          'app/scripts/vendor/osmtogeojson.js',
-          'app/scripts/vendor/textures.js',
-          'app/scripts/app.js',
-          'app/scripts/commons/**/*.js',
-          'app/scripts/filters/**/*.js',
-          'app/scripts/routes/**/*.js',
+          'app/scripts/**/*.js',
           // 'test/mock/**/*.js',
           'test/spec/**/*.js'
         ],
@@ -63,15 +55,15 @@ module.exports = function(config) {
         // - PhantomJS
         // - IE (only Windows)
         browsers: [
-          'PhantomJS'
+          'PhantomJS', 'Chrome'
         ],
 
         // Code coverage report
-        reporters: ['progress', 'coverage', 'coveralls'],
+        reporters: ['progress', 'coverage'/*, 'coveralls'*/],
 
         preprocessors: {
-            'app/scripts/app.js': ['coverage'],
-            'app/scripts/{commons,components,routes,filters}/**/*.js': ['coverage']
+            'app/scripts/app.js': ['progress', 'coverage'],
+            'app/scripts/{commons,components,routes,filters}/**/*.js': ['progress', 'coverage']
         },
 
         coverageReporter: {
@@ -89,7 +81,7 @@ module.exports = function(config) {
 
         // Continuous Integration mode
         // if true, it capture browsers, run tests and exit
-        singleRun: false,
+        singleRun: true,
 
         colors: true,
 

@@ -12,7 +12,6 @@ describe('Service: styleutils', function () {
     }));
 
     it('should do something', function () {
-        console.log(styleutils)
         expect(!!styleutils).toBe(true);
     });
 

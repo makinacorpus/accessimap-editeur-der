@@ -4,8 +4,8 @@
  * @name accessimapEditeurDerApp.filter:layerNotSelected
  * @function
  * @description
- * # layerNotSelected
- * Filter in the accessimapEditeurDerApp.
+ * Return all the layers not selected from an array of layers & another of selected layers
+ * Intersection between layers'set and selectedLayer'set
  */
 (function() {
     'use strict';
@@ -14,6 +14,7 @@
         .filter('layerNotSelected', function() {
         return function(layers, selectedLayers) {
             var filteredLayers = [];
+
             angular.forEach(layers, function(layer) {
                 var toAdd = true;
                 angular.forEach(selectedLayers, function(selectedLayer) {

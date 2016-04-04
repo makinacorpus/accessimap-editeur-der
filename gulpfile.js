@@ -144,11 +144,18 @@ gulp.task('connect', function() {
  * Task for running test configured by test/karma.conf.js
  */
 gulp.task('test', function(done) {
-    new karmaRunner(config.karma, done).start();
+    new karmaRunner({
+        configFile: config.karma.configFile,
+        singleRun: true
+    }, done).start();
 })
 
-gulp.task('watch:test',['test'], function() {
-    gulp.watch([ config.js.globs, 'test/spec/**'], ['test']);
+
+gulp.task('watch:test', function(done) {
+    new karmaRunner({
+        configFile: config.karma.configFile,
+        singleRun: false
+    }, done).start();
 })
 
 /**
