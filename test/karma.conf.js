@@ -76,8 +76,7 @@ module.exports = function(config) {
 
         coverageReporter: {
             type: 'lcov',
-            dir: 'test/coverage',
-            file: 'coverage.txt'
+            dir: 'test/coverage'
         },
 
         // Which plugins to enable
