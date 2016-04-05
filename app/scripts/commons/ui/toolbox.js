@@ -70,8 +70,10 @@
                 .on('click', function() {
                     if (!d3.event.defaultPrevented) {
                         var coordinates = d3.mouse(this),
+                            transform = d3.transform(d3.select('#map-layer')
+                                            .attr('transform')),
                             realCoordinates = 
-                                geometryutils.realCoordinates(coordinates),
+                                geometryutils.realCoordinates(transform, coordinates),
                             iid = UtilService.getiid(),
 
                             feature = d3.select('#points-layer')
@@ -99,8 +101,10 @@
                 .on('click', function() {
                     if (!d3.event.defaultPrevented) {
                         var coordinates = d3.mouse(this),
+                            transform = d3.transform(d3.select('#map-layer')
+                                            .attr('transform')),
                             realCoordinates = geometryutils
-                                                .realCoordinates(coordinates),
+                                                .realCoordinates(transform, coordinates),
                             feature;
 
                         if (d3.select('.edition')[0][0]) { // second click
@@ -145,8 +149,10 @@
 
                     if (feature[0][0]) {
                         var coordinates = d3.mouse(this),
+                            transform = d3.transform(d3.select('#map-layer')
+                                            .attr('transform')),
                             realCoordinates = 
-                                geometryutils.realCoordinates(coordinates),
+                                geometryutils.realCoordinates(transform, coordinates),
                             xOffset = realCoordinates[0] - feature.attr('cx'),
                             yOffset = realCoordinates[1] - feature.attr('cy'),
                             r = Math.sqrt(Math.pow(xOffset, 2) 
@@ -213,8 +219,10 @@
                         }
 
                         var coordinates = d3.mouse(this),
+                            transform = d3.transform(d3.select('#map-layer')
+                                            .attr('transform')),
                             realCoordinates = geometryutils
-                                                .realCoordinates(coordinates);
+                                                .realCoordinates(transform, coordinates);
 
                         if (lastPoint) {
                             var tanAngle = 
@@ -310,7 +318,9 @@
                             }
                         }
                         var coordinates = d3.mouse(this),
-                            realCoordinates = geometryutils.realCoordinates(coordinates),
+                            transform = d3.transform(d3.select('#map-layer')
+                                            .attr('transform')),
+                            realCoordinates = geometryutils.realCoordinates(transform, coordinates),
                             tanAngle = 
                                 Math.abs((realCoordinates[1] - lastPoint[1]) /
                                          (realCoordinates[0] - lastPoint[0])),
@@ -354,8 +364,10 @@
                     d3.select('.edition').classed('edition', false);
 
                     var coordinates = d3.mouse(this),
+                        transform = d3.transform(d3.select('#map-layer')
+                                            .attr('transform')),
                         realCoordinates = geometryutils
-                                            .realCoordinates(coordinates),
+                                            .realCoordinates(transform, coordinates),
                         d = 'Texte',
                         iid = UtilService.getiid();
 

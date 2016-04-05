@@ -18,26 +18,32 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-          'bower_components/jquery/dist/jquery.js',
-          'bower_components/angular/angular.js',
-          'bower_components/angular-mocks/angular-mocks.js',
-          'bower_components/angular-animate/angular-animate.js',
-          'bower_components/angular-cookies/angular-cookies.js',
-          'bower_components/angular-resource/angular-resource.js',
-          'bower_components/angular-route/angular-route.js',
-          'bower_components/angular-sanitize/angular-sanitize.js',
-          'bower_components/angular-touch/angular-touch.js',
-          'bower_components/spin.js/spin.js',
-          'bower_components/angular-spinner/angular-spinner.js',
-          'bower_components/d3/d3.js',
-          'bower_components/angular-ui-select/dist/select.js',
-          'bower_components/select2/select2.js',
-          'bower_components/angular-bootstrap-slider/slider.js',
-          'bower_components/angular-ui-grid/ui-grid.js',
-          
-          'app/scripts/**/*.js',
-          // 'test/mock/**/*.js',
-          'test/spec/**/*.js'
+            'bower_components/jquery/dist/jquery.js',
+            'bower_components/angular/angular.js',
+            'bower_components/angular-mocks/angular-mocks.js',
+            'bower_components/angular-animate/angular-animate.js',
+            'bower_components/angular-cookies/angular-cookies.js',
+            'bower_components/angular-resource/angular-resource.js',
+            'bower_components/angular-route/angular-route.js',
+            'bower_components/angular-sanitize/angular-sanitize.js',
+            'bower_components/angular-touch/angular-touch.js',
+            'bower_components/spin.js/spin.js',
+            'bower_components/angular-spinner/angular-spinner.js',
+            'bower_components/d3/d3.js',
+            'bower_components/angular-ui-select/dist/select.js',
+            'bower_components/select2/select2.js',
+            'bower_components/angular-bootstrap-slider/slider.js',
+            'bower_components/angular-ui-grid/ui-grid.js',
+
+            'bower_components/jszip/dist/jszip.js',
+            'bower_components/file-saver.js/FileSaver.js',
+            'bower_components/turf/turf.min.js',
+            // 'bower_components/pdfjs-dist/build/pdf.combined.js',
+
+
+            'app/scripts/**/*.js',
+            // 'test/mock/**/*.js',
+            'test/spec/**/*.js'
         ],
 
         // list of files / patterns to exclude

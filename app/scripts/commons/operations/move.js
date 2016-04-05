@@ -25,8 +25,10 @@
                 .on('click', function() {
                     if (d3.select(temporaryPath).classed('moved')) {
                         var coordinates = d3.mouse(this),
+                            transform = d3.transform(d3.select('#map-layer')
+                                            .attr('transform')),
                             realCoordinates = 
-                                geometryutils.realCoordinates(coordinates),
+                                geometryutils.realCoordinates(transform, coordinates),
                             transX = realCoordinates[0] - bbox.x,
                             transY = realCoordinates[1] - bbox.y,
                             emptyCircle = 
@@ -61,8 +63,10 @@
                 })
                 .on('mousemove', function() {
                     var coordinates = d3.mouse(this),
+                            transform = d3.transform(d3.select('#map-layer')
+                                            .attr('transform')),
                         realCoordinates = 
-                            geometryutils.realCoordinates(coordinates),
+                            geometryutils.realCoordinates(transform, coordinates),
                         transX = realCoordinates[0] - bbox.x,
                         transY = realCoordinates[1] - bbox.y,
                         transformString = '',

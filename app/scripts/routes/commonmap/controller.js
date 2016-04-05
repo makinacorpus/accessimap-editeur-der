@@ -40,12 +40,12 @@
         $ctrl.colorChosen           = $ctrl.colors[0];
         
         $ctrl.containerStyleChoices = CommonmapService.settings.STYLES.polygon;
+        $ctrl.containerStyle        = $ctrl.containerStyleChoices[0];
         
         $ctrl.rightMenuVisible      = false;
         
         $ctrl.interactiveFilters    = CommonmapService.interactiveFilters;
         
-        $ctrl.containerStyle        = $ctrl.containerStyleChoices[0];
 
         // methods
         $ctrl.addFilter            = CommonmapService.addFilter;
@@ -74,7 +74,8 @@
             $ctrl.updatePolygonStyle();
         };
 
-        function changeContainerStyle(style) {
+        function changeContainerStyle() {
+            var style = $ctrl.containerStyle;
             angular.forEach(style.style, function (attribute) {
                 var k = attribute.k, v = attribute.v;
 

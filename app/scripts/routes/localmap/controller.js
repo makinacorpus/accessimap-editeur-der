@@ -11,7 +11,7 @@
 (function() {
     'use strict';
 
-    function LocalmapController($scope, $location, LocalmapService) {
+    function LocalmapController($location, LocalmapService) {
         
         var $ctrl = this;
 
@@ -79,10 +79,6 @@
                                 .concat(LocalmapService.settings.COLORS.other);
         $ctrl.colorChosen  = $ctrl.colors[0];
 
-        $ctrl.changeColor = function() {
-            $ctrl.colorChosen  = this.$parent.colorChosen;
-        };
-
         $ctrl.featureIcon      = LocalmapService.featureIcon;
         
         $ctrl.downloadData     = function(point) {
@@ -118,8 +114,8 @@
         $ctrl.updateFeature    = LocalmapService.updateFeature;
         $ctrl.rotateFeature    = LocalmapService.rotateFeature;
 
-        $ctrl.zoomOnPlace      = function(address) {
-            LocalmapService.zoomOnPlace(address,
+        $ctrl.zoomOnPlace      = function() {
+            LocalmapService.zoomOnPlace($ctrl.address,
                                         $ctrl.styleChosen,
                                         $ctrl.colorChosen,
                                         $ctrl.checkboxModel,
@@ -139,14 +135,14 @@
                 });
         };
 
-        LocalmapService.init($location.search().mapFormat,
-                             $location.search().legendFormat);
+        LocalmapService.init($location.search().mapFormat ? $location.search().mapFormat : 'landscapeA4',
+                             $location.search().legendFormat ? $location.search().legendFormat : 'landscapeA4');
 
     }
 
     angular.module('accessimapEditeurDerApp')
         .controller('LocalmapController', LocalmapController);
 
-    LocalmapController.$inject = ['$scope', '$location', 'LocalmapService'];
+    LocalmapController.$inject = ['$location', 'LocalmapService'];
 
 })();

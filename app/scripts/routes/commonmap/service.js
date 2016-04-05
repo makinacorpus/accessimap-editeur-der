@@ -98,7 +98,6 @@
                     .forEach(function(tile) {
                         UtilService.convertImgToBase64(tile);
                     });
-
             };
 
             // retrieve map and display it

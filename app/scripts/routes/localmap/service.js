@@ -1039,6 +1039,9 @@
          */
         function init(mapFormat, legendFormat) {
 
+            if (!mapFormat && !legendFormat) 
+                throw new Error('Missing parameters')
+
             var widthMm        = settings.FORMATS[mapFormat].width,
                 legendWidthMm  = settings.FORMATS[legendFormat].width,
                 heightMm       = settings.FORMATS[mapFormat].height,

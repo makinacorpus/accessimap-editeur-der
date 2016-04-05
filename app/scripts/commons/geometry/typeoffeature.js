@@ -32,10 +32,10 @@
                             return 'line';
                             break;
 
-                        case 'polygons-layer':
+                        /*case 'polygons-layer':
                             return 'polygon';
                             break;
-
+                        */
                         default:
                             return 'polygon';
                     }
