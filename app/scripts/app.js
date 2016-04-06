@@ -28,11 +28,6 @@
                     controller: 'MainController',
                     controllerAs: '$ctrl'
                 })
-                .when('/about', {
-                    templateUrl: 'scripts/views/about/template.html',
-                    controller: 'AboutController',
-                    controllerAs: '$ctrl'
-                })
                 .when('/localmap', {
                     templateUrl: 'scripts/views/localmap/template.html',
                     controller: 'LocalmapController',
