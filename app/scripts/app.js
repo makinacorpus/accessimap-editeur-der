@@ -24,27 +24,27 @@
         .config(function($routeProvider) {
             $routeProvider
                 .when('/', {
-                    templateUrl: 'scripts/routes/main/template.html',
+                    templateUrl: 'scripts/views/main/template.html',
                     controller: 'MainController',
                     controllerAs: '$ctrl'
                 })
                 .when('/about', {
-                    templateUrl: 'scripts/routes/about/template.html',
+                    templateUrl: 'scripts/views/about/template.html',
                     controller: 'AboutController',
                     controllerAs: '$ctrl'
                 })
                 .when('/localmap', {
-                    templateUrl: 'scripts/routes/localmap/template.html',
+                    templateUrl: 'scripts/views/localmap/template.html',
                     controller: 'LocalmapController',
                     controllerAs: '$ctrl'
                 })
                 .when('/globalmap', {
-                    templateUrl: 'scripts/routes/globalmap/template.html',
+                    templateUrl: 'scripts/views/globalmap/template.html',
                     controller: 'GlobalmapController',
                     controllerAs: '$ctrl'
                 })
                 .when('/commonmap', {
-                    templateUrl: 'scripts/routes/commonmap/template.html',
+                    templateUrl: 'scripts/views/commonmap/template.html',
                     controller: 'CommonmapController',
                     controllerAs: '$ctrl'
                 })

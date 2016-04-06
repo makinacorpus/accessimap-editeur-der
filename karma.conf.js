@@ -69,7 +69,7 @@ module.exports = function(config) {
 
         preprocessors: {
             'app/scripts/app.js': ['progress', 'coverage'],
-            'app/scripts/{commons,components,routes,filters}/**/*.js': ['progress', 'coverage']
+            'app/scripts/{commons,components,views,filters}/**/*.js': ['progress', 'coverage']
         },
 
         coverageReporter: {

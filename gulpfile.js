@@ -98,7 +98,8 @@ gulp.task('build:templatejs', function() {
             filePath: config.templates.filePath,
             prefix: 'scripts/'
         }))
-        .pipe(gulp.dest('.tmp'));
+        .pipe(gulp.dest('.tmp'))
+        .pipe(connect.reload());
 })
 
 /**
