@@ -27,42 +27,70 @@
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <!-- Add your site or application content here -->
-        <div class="container-fluid">
-            <div class="header">
-                <ul class="nav nav-pills pull-right">
-                    <li class="active">
-                        <a ng-href="#/">Home</a>
-                    </li>
-                    <li>
-                        <a ng-href="#/about">About</a>
-                    </li>
-                    <li>
-                        <a ng-href="https://github.com/makinacorpus/accessimap-editeur-der/issues" target="_blank">Github</a>
-                    </li>
-                    <li>
-                        <a ng-href="#/contact">Contact</a>
-                    </li>
-                </ul>
-                <h3 class="text-muted">Editeur de Dessins En Reliefs (DER)</h3>
+        <header>
+            
+            <h3>
+                <a ng-href="#/">
+                    <span class="fa fa-home"></span>
+                    Accueil
+                </a>
+            </h3>
+
+            <h3 class="text-muted">Editeur de Dessins En Reliefs (DER)</h3>
+
+        </header>
+
+        <main ng-view></main>
+
+        <footer>
+
+            <div>
+                <p>ProjetAccessimap - Partenaires</p>
+                <table>
+                    <tr>
+                        <td>
+                            <a href="http://www.ijatoulouse.org/">
+                                <span><img src="assets/images/logos/ija.jpg"></span>
+                                IJA Toulouse
+                            </a>
+                        </td>
+                        <td>
+                            <a href="https://www.irit.fr/">
+                                <img src="assets/images/logos/irit.jpg">
+                                <span>IRIT</span>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="http://www.telecom-paristech.fr/">
+                                <img src="assets/images/logos/telecom.png">
+                                <span>Télécom ParisTech</span>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="http://makina-corpus.com/">
+                                <span><img src="assets/images/logos/makinacorpus.png"></span>
+                                Makina Corpus
+                            </a>
+                        </td>
+                    </tr>
+                </table>
             </div>
 
-            <div ng-view></div>
-
-            <div class="footer col-xs-12">
+            <div>
                 <p>
-                    <a ng-href="http://makina-corpus.com/">Makina Corpus</a> - Projet Accessimap - <a href="docs/" target="_blank">Documentation technique</a>
-                    <span class="pull-right">
-                        <img style="height: 40px;" src="assets/images/logos/ija.jpg">
-                        <img style="height: 40px;" src="assets/images/logos/irit.jpg">
-                        <img style="height: 40px;" src="assets/images/logos/telecom.png">
-                        <img style="height: 40px;" src="assets/images/logos/makinacorpus.png">
-                    </span>
+                    Pour toutes questions, n'hésitez pas à <a href="mailto:contact@makina-corpus.com">nous contacter</a>
+                </p>
+                <p>
+                    Vous souhaitez contribuer au projet, accédez à <a href="https://github.com/makinacorpus/accessimap-editeur-der/issues" target="_blank">notre dépôt Github</a> ou à <a href="docs/" target="_blank">la documentation technique</a>.
+                </p>
+                <p>
+                    Map tiles and data: © OpenStreetMap contributors
                 </p>
             </div>
 
-        </div>
-
+        </footer>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
         <script>

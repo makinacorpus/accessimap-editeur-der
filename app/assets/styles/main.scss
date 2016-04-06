@@ -10,22 +10,103 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   padding: 0.2em 0;
 }
 
+html, body {
+  height: 100%;
+  max-height: 100%;
+}
+
 /* Space out content a bit */
 body {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+
+  header{
+    flex: 1 1 auto;
+  }
+
+  footer {
+    flex: 1 1 200px;
+  }
+
+  main {
+    flex: 4 1 90%;
+  }
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
+.header, header, 
 .marketing,
-.footer {
+.footer, footer,
+main{
   padding-left: 15px;
   padding-right: 15px;
 }
 
+main {
+  padding-top: 15px;
+  overflow: auto;
+}
+
+footer {
+
+  display: flex;
+
+  div:first-child {
+    border-right: 1px solid #e5e5e5;
+    margin-right: 1em;
+  }
+
+  div {
+    flex: 0 1 50%;
+    width: 50%;
+
+    span {
+      width: 5em;
+    }
+
+    img {
+      max-height: 4em;
+      max-width: 6em;
+      width: auto;
+      height: auto;
+      vertical-align: middle;
+    }
+  
+    ul, ul > li {
+      list-style: none;
+      margin: 0;
+      padding:0;
+    }
+
+    table {
+      width: 100%;
+      max-width: 500px;
+      margin: auto;
+      td {
+        width: 50%;
+        padding-bottom: 1em;
+      }
+    }
+  }
+
+
+}
+
+header {
+
+  display: flex;
+  padding-top: 1em;
+
+  h3 {
+    flex: 1 0 auto;
+  }
+  ul {
+    flex: 0 1 150px;
+  }
+}
+
 /* Custom page header */
-.header {
+.header, header {
   border-bottom: 1px solid #e5e5e5;
 
   /* Make the masthead heading the same height as the navigation */
@@ -38,7 +119,7 @@ body {
 }
 
 /* Custom page footer */
-.footer {
+.footer, footer {
   padding-top: 19px;
   color: #777;
   border-top: 1px solid #e5e5e5;
@@ -69,20 +150,21 @@ body {
 }
 
 /* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 768px) {
   .container {
     max-width: 730px;
   }
 
   /* Remove the padding we set earlier */
-  .header,
+  .header, header,
   .marketing,
-  .footer {
+  .footer, footer,
+  main {
     padding-left: 0;
     padding-right: 0;
   }
   /* Space out the masthead */
-  .header {
+  .header, header {
     margin-bottom: 30px;
   }
   /* Remove the bottom border on the jumbotron for visual effect */
