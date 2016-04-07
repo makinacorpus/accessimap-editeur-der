@@ -49,15 +49,9 @@
                     .translate([0, 0])
                     .scale(1)
                     .scaleExtent([1, 8])
-                    .on('zoom', _zoomed),
-
-            _ctrl;
+                    .on('zoom', _zoomed);
 
         function _zoomed() {
-            /*if ($scope.menu) {
-                _ctrl.menu.hide();
-                _ctrl.menu = null;
-            }*/
 
             toolbox.hideRadialMenu();
             
@@ -89,9 +83,7 @@
          * @methodOf accessimapEditeurDerApp.CommonmapService
          * @description  init the view by retrieving stored map and legend
          */
-        function init(_$ctrl_) {
-
-            _ctrl = _$ctrl_;
+        function init() {
 
             d3.select('#der')
                 .selectAll('svg')
