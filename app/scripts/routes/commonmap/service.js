@@ -17,7 +17,7 @@
     'use strict';
 
     function CommonmapService(
-        $location, exportData, svgicon, shareSvg, settings, reset, toolbox, interaction) {
+        $location, exportData, svgicon, shareSvg, settings, reset, toolbox, interaction, UtilService) {
 
         this.init                  = init;
         this.resetView             = resetView;
@@ -145,6 +145,6 @@
             .service('CommonmapService',CommonmapService);
 
     CommonmapService.$inject = ['$location', 'exportData', 'svgicon',
-                        'shareSvg', 'settings', 'reset', 'toolbox', 'interaction'];
+                        'shareSvg', 'settings', 'reset', 'toolbox', 'interaction', 'UtilService'];
 
 })();

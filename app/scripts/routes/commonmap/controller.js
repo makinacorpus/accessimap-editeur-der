@@ -11,8 +11,6 @@
 
     function CommonmapController($scope, CommonmapService) {
 
-        CommonmapService.init();
-
         var $ctrl = this;
 
         // model
@@ -64,6 +62,7 @@
 
         // BAD THING !... but used in service...
         $ctrl.updateView = function() { $scope.$apply() };
+        $ctrl.$apply = function(callback) { $scope.$apply(callback) }
         $ctrl.$watch = function(objectWatched, f) {
             $scope.$watch(objectWatched, f);
         }
@@ -161,6 +160,9 @@
             }
 
         }
+
+        CommonmapService.init();
+        enableEditionMode($ctrl.mode);
 
     }
 
