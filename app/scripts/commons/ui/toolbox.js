@@ -18,6 +18,7 @@
         this.enableLinePolygonMode = enableLinePolygonMode;
         this.updatePolygonStyle    = updatePolygonStyle;
         this.updateMarker          = updateMarker;
+        this.changeTextColor       = changeTextColor;
         
         /**
          * @ngdoc method
@@ -474,11 +475,15 @@
         function updateMarker(model) {
             var path = d3.select('.styleEdition');
             model.$watch(model.markerStart, function () {
-                path.attr('marker-start', 'url(#' + model.markerStart.id + ')');
+                if (model.markerStart) {
+                    path.attr('marker-start', 'url(#' + model.markerStart.id + ')');
+                }
             });
 
             model.$watch(model.markerStop, function () {
-                path.attr('marker-end', 'url(#' + model.markerStop.id + ')');
+                if (model.markerStop) {
+                    path.attr('marker-end', 'url(#' + model.markerStop.id + ')');
+                }
             });
         };
 

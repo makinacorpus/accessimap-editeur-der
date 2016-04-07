@@ -104,7 +104,7 @@
             angular.forEach(pathData, function(point, index) {
                 var pointValues = point.values;
 
-                if (pointValues) {
+                if (pointValues && pointValues.length === 2) {
                     var px = pointValues[0],
                         py = pointValues[1];
                     features.push([px, py, index]);
