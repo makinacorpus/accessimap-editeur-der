@@ -52,10 +52,8 @@
                     .on('zoom', _zoomed);
 
         function _zoomed() {
-            /*if ($scope.menu) {
-                $scope.menu.hide();
-                $scope.menu = null;
-            }*/
+
+            toolbox.hideRadialMenu();
             
             d3.selectAll('.ongoing').remove();
             d3.select('#map-layer')

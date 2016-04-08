@@ -12,6 +12,7 @@
 
         this.drawMenu = drawMenu;
         this.addRadialMenu = addRadialMenu;
+        this.hideRadialMenu = hideRadialMenu;
 
         var menu = null;
 
@@ -71,6 +72,20 @@
                             d3.mouse(d3.select('#der').select('svg').node()),
                             ctrl);
             });
+        }
+
+        /**
+         * @ngdoc method
+         * @name  hideRadialMenu
+         * @methodOf accessimapEditeurDerApp.radialMenu
+         * @description
+         * Remove the menu if exists
+         */
+        function hideRadialMenu() {
+            if (menu) {
+                menu.hide();
+                menu = null
+            }
         }
 
     }

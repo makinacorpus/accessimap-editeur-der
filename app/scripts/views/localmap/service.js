@@ -740,26 +740,21 @@
          * @name  downloadPoi
          * @methodOf accessimapEditeurDerApp.LocalmapService
          * @description Add an event to the click on the svg dom element
-         * @param  {Object} queryChosen   [description]
-         * @param  {Object} styleChosen   [description]
-         * @param  {Object} styleChoices  [description]
-         * @param  {Object} colorChosen   [description]
-         * @param  {Object} checkboxModel [description]
-         * @param  {Object} rotationAngle [description]
+         * @param  {Object} model Controller/model
          */
-        function downloadPoi(queryChosen, styleChosen, styleChoices, colorChosen, checkboxModel, rotationAngle) {
+        function downloadPoi(model) {
             $(_mapSelector).css('cursor', 'crosshair');
             d3.select('svg')
                 .on('click', function() {
                     var coordinates = d3.mouse(this),
                         point = _projection.invert(coordinates);
                     downloadData(point, 
-                            queryChosen, 
-                            styleChosen, 
-                            styleChoices, 
-                            colorChosen, 
-                            checkboxModel, 
-                            rotationAngle);
+                            model.queryChosen, 
+                            model.styleChosen, 
+                            model.styleChoices, 
+                            model.colorChosen, 
+                            model.checkboxModel, 
+                            model.rotationAngle);
                 });
         }
 

@@ -11,6 +11,7 @@
                         radialMenu, settings, UtilService) {
 
         this.addRadialMenus        = addRadialMenus;
+        this.hideRadialMenu        = radialMenu.hideRadialMenu;
         this.undo                  = undo;
         this.enablePointMode       = enablePointMode;
         this.enableCircleMode      = enableCircleMode;

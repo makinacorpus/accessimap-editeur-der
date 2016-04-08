@@ -92,12 +92,7 @@
         };
 
         $ctrl.downloadPoi      = function() {
-            LocalmapService.downloadPoi($ctrl.queryChosen,
-                                        $ctrl.styleChosen,
-                                        $ctrl.styleChoices,
-                                        $ctrl.colorChosen,
-                                        $ctrl.checkboxModel,
-                                        $ctrl.rotationAngle);
+            LocalmapService.downloadPoi($ctrl);
         };
         
         $ctrl.simplifyFeatures = function(feature) {
