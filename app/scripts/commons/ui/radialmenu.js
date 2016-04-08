@@ -78,6 +78,7 @@
          * @ngdoc method
          * @name  hideRadialMenu
          * @methodOf accessimapEditeurDerApp.radialMenu
+         * @description
          * Remove the menu if exists
          */
         function hideRadialMenu() {

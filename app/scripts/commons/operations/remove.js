@@ -35,7 +35,7 @@
 
             // Some objects should not be deletable
             if (!d3.select(feature).node().classed('notDeletable')) {
-                var iid = d3.select(feature).node().attr('iid'),
+                var iid = d3.select(feature).node().attr('data-link'),
                     featurePosition = scope.interactiveFilters.data.filter(function(row) {
                         return row.id === 'poi-' + iid;
                     }),
