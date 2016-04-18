@@ -66,7 +66,7 @@
             }
         };
     }
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .service('geometry', geometry);
 
     geometry.$inject = ['generators'];

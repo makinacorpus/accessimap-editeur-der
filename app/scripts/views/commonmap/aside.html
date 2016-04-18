@@ -1,0 +1,45 @@
+<div>
+    <h3 style="display:inline">Edition des POI</h3>
+
+    <button class="btn btn-default pull-right" 
+            ng-click="$ctrl.hideAside()" >
+        <span class="fa fa-lg fa-chevron-left"></span>
+    </button>
+
+    <div>
+        <!-- styles selectbox -->
+        <h4>Trame de fond</h4>
+
+        <ui-select 
+            ng-model="$ctrl.containerStyle" 
+            ng-change="$ctrl.changeContainerStyle()" 
+            ng-disabled="disabled" 
+            theme="bootstrap" 
+            class="form-control style-selector">
+
+            <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
+            <ui-select-choices repeat="item in $ctrl.containerStyleChoices | filter: $select.search">
+                <div ng-bind-html="item.name | highlight: $select.search"></div>
+                <div ng-bind-html="$ctrl.featureIcon(item, 'polygon')"></div>
+            </ui-select-choices>
+
+        </ui-select>
+
+    </div>
+    
+    <div>
+        <h4>Interactions</h4>
+        <div ui-grid="$ctrl.interactiveFilters" 
+            ui-grid-edit 
+            ui-grid-selection 
+            ui-grid-auto-resize 
+            class="filters-grid">
+        </div>
+        <button 
+            id="button_add" 
+            class="btn btn-primary btn-block" 
+            ng-click="$ctrl.addFilter()">
+            Ajouter un filtre d'interaction
+        </button>
+    </div>
+</div> 

@@ -335,7 +335,7 @@
         };
     }
 
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .service('initSvg', initSvg);
 
     initSvg.$inject = ['settings', ];

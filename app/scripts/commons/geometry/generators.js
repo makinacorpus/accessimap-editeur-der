@@ -33,7 +33,7 @@
 
     }
 
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
           .service('generators', generators);
 
 })();

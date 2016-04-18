@@ -90,7 +90,7 @@
 
     }
 
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .service('radialMenu', radialMenu);
 
     radialMenu.$inject = ['settings', 'typeOfFeature', 'reset'];

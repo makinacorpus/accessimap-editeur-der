@@ -1,0 +1,79 @@
+<h4>Gérer les points d'intérêts existants</h4>
+<p ng-if="$ctrl.geojson.length === 0">
+    Pas encore de POI !<br/>
+    Vous verrez ici les points que vous allez créer via la boîte de création juste au dessus !
+</p>
+<ul class="features-list">
+    <li ng-repeat="feature in $ctrl.geojson">
+        {{feature.name}}
+        <slider 
+            class="form-control slider-container" 
+            ng-model="feature.simplification" 
+            ng-show="feature.geometryType !== 'point'" 
+            ng-change="$ctrl.simplifyFeatures(feature)" 
+            min="0" 
+            max="100">
+        </slider>
+
+        <ui-select 
+            ng-model="feature.style" 
+            ng-disabled="$ctrl.disabled" 
+            ng-change="$ctrl.updateFeature(feature.id, feature.style)" 
+            theme="bootstrap" 
+            class="form-control style-selector" 
+            style="width: 150px;">
+            
+            <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
+            <ui-select-choices repeat="item in feature.styleChoices | filter: $select.search">
+                <div ng-bind-html="item.name | highlight: $select.search"></div>
+                <div style="max-height:30px" ng-bind-html="$ctrl.featureIcon(item, feature.geometryType)"></div>
+            </ui-select-choices>
+
+        </ui-select>
+
+        <slider 
+            ng-if="feature.geometryType === 'point'" 
+            class="form-control slider-container" 
+            ng-model="feature.rotation" 
+            ng-change="$ctrl.rotateFeature(feature)" 
+            min="0" 
+            max="360">
+        </slider>
+        
+        <ui-select 
+            ng-if="feature.geometryType === 'polygon'" 
+            ng-model="feature.color" 
+            ng-change="$ctrl.updateFeature(feature.id, feature.style)" 
+            ng-disabled="$ctrl.disabled" 
+            theme="bootstrap" 
+            class="form-control style-selector" 
+            style="width: 300px;">
+            
+            <ui-select-match placeholder="Couleur de fond">{{$select.selected.name}}</ui-select-match>
+            <ui-select-choices repeat="item in colors | filter: $select.search" style="max-height: 500px;">
+                <span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span>
+            </ui-select-choices>
+            
+        </ui-select>
+
+        <span 
+            ng-if="feature.geometryType === 'polygon'" 
+            class="input-group-addon">
+
+            <input 
+                type="checkbox" 
+                ng-model="feature.contour" 
+                ng-change="$ctrl.updateFeature(feature.id, feature.style)">
+
+            <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
+
+        </span>
+
+        <button 
+            class="btn btn-default" 
+            type="button" 
+            ng-click="$ctrl.removeFeature(feature.id)">
+            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+        </button>
+    </li>
+</ul>

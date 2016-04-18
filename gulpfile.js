@@ -110,7 +110,7 @@ gulp.task('build:css', ['clean:css'], function() {
     return gulp.src(config.compass.globs)
             .pipe(compass(config.compass.options))
             .pipe(autoprefixer(config.autoprefixer))
-            .pipe(gulp.dest('.tmp/assets/styles'))
+            .pipe(gulp.dest(config.compass.dest))
             .pipe(connect.reload());
 })
 
@@ -134,6 +134,10 @@ gulp.task('connect', function() {
                 connect().use(
                     '/bower_components',
                     connect.static('./bower_components')
+                ),
+                connect().use(
+                    '/node_modules',
+                    connect.static('./node_modules')
                 ),
                 connect.static(config.dist)
              ];
@@ -175,7 +179,7 @@ gulp.task('serve', ['build:css', 'connect', 'copy:js', 'copy:assets', 'build:tem
 
     // wachers configuration
     gulp.watch(config.compass.globs, ['build:css']);
-    gulp.watch(config.js.globs, ['copy:js']);
+    gulp.watch(config.js.globs, ['copy:js', 'doc']);
     gulp.watch(config.templates.globs, ['build:templatejs']);
     gulp.watch(config.assets.globs, ['copy:assets']);
 

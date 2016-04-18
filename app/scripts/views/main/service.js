@@ -44,7 +44,7 @@
         }
     }
     
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .service('MainService', MainService);
 
     MainService.$inject = ['$q', 'initSvg', 'shareSvg', 'settings']

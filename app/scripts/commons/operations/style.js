@@ -106,6 +106,6 @@
 
     }
 
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .service('style', style);
 })();

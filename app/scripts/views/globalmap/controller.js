@@ -205,7 +205,7 @@
 
     }
     
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
             .controller('GlobalmapController', GlobalmapController);
 
     GlobalmapController.$inject = ['$location', 'initSvg', 'settings', 'shareSvg'];

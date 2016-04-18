@@ -1,0 +1,20 @@
+<div>
+
+    <!-- parameters form -->
+    <div ng-if="$ctrl.isParametersVisible"
+        ng-include="'scripts/views/edit/aside_parameters.html'"></div>
+    
+    <!-- address form -->
+    <div ng-if="$ctrl.isAddressVisible" 
+        ng-include="'scripts/views/edit/aside_address.html'"></div>
+    
+    <!-- POI form -->
+    <div ng-if="$ctrl.isPoiCreationVisible" 
+        ng-include="'scripts/views/edit/aside_poi_creation.html'"></div>
+    
+    <!-- Feature edition -->
+    <div ng-if="$ctrl.isPoiManagementVisible" 
+        ng-include="'scripts/views/edit/aside_poi_management.html'"></div>
+    
+</div>
+

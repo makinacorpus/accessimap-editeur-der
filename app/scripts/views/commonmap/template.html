@@ -1,22 +1,49 @@
-<!-- toolbox -->
-<div ng-include="'scripts/views/commonmap/toolbox.html'"></div>
+<!-- aside -->
+<aside class="col-lg-3 col-md-4 col-sm-4 right-side" ng-show="$ctrl.isAsideVisible">
+    <div class="aside-content" 
+        ng-include="'scripts/views/commonmap/aside.html'"></div>
+    <div class="aside-footer">
+
+        <!-- export file -->
+        <div class="input-group">
+            <input 
+                type="text" 
+                class="form-control" 
+                ng-model="$ctrl.filename" 
+                placeholder="Nom du fichier">
+            
+            <span class="input-group-addon" id="basic-addon2">.zip</span>
+        </div>
+        
+        <span class="input-group-btn">
+            <button 
+                class="btn btn-primary btn-block" 
+                ng-click="$ctrl.mapExport($ctrl.filename)" 
+                type="button">
+                <span class="fa fa-download" aria-hidden="true"></span> 
+                Exporter
+            </button>
+        </span>
+    </div>
+</aside>
+
 
 <!-- main part -->
-<div class="col-xs-12">
-
-    <div class="row">
+<main class="commonmap">
+    <div class="pull-left">
         <button 
-            class="btn btn-default pull-right" 
-            ng-hide="$ctrl.rightMenuVisible" 
-            ng-click="$ctrl.showMenu()" 
-            type="button">
-            Ajouter des interactions 
-            <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+            class="btn btn-default" 
+            ng-click="$ctrl.showAside()" 
+            ng-show="!$ctrl.isAsideVisible">
+            <span class="fa fa-lg fa-bars"></span>
         </button>
     </div>
 
+    <!-- toolbox -->
+    <div ng-include="'scripts/views/commonmap/toolbox.html'" class="toolbox"></div>
+
     <!-- map / legend / comments containers -->
-    <div class="col-xs-6">
+    <div>
         <div id="der"></div>
         <div id="der-legend"></div>
         <div class="form-group">
@@ -26,35 +53,8 @@
     </div>
 
     <!-- interactions menu -->
-    <div 
-        id="filters-container" 
-        class="col-xs-6 menu-right" 
-        ng-show="$ctrl.rightMenuVisible">
-        
-        <button 
-            class="btn btn-default pull-right" 
-            ng-click="$ctrl.hideMenu()" 
-            type="button">
-            <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-        </button>
-        
-        <button 
-            id="button_add" 
-            class="btn btn-success" 
-            ng-click="$ctrl.addFilter()">
-            Ajouter un filtre d'interaction
-        </button>
-
-        <div 
-            ui-grid="$ctrl.interactiveFilters" 
-            ui-grid-edit 
-            ui-grid-selection 
-            ui-grid-auto-resize 
-            class="filters-grid">
-        </div>
-    </div>
-
-</div>
+    
+</main>
 
 <!-- modal dialog changeColorModal -->
 <div ng-include="'scripts/views/commonmap/modalchangecolor.html'"></div>

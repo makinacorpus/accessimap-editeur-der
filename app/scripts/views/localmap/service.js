@@ -67,14 +67,15 @@
          */
         _legendSelector = '#legend',
 
-
         _legendContainer = null;
 
         /**
          * @ngdoc method
          * @name zoomed
          * @methodOf accessimapEditeurDerApp.LocalmapService
-         * @description Event function triggered when a zoom is made on the map (mousewheel, dbl click, ...)
+         * @description 
+         * Event function triggered when a zoom is made on the map 
+         * (mousewheel, dbl click, ...)
          */
         function zoomed() {
 
@@ -1061,7 +1062,7 @@
 
             _path = d3.geo.path().projection(_projection);
 
-            var center = _projection(settings.leaflet.GLOBAL_MAP_CENTER);
+            var center = _projection(settings.leaflet.GLOBAL_MAP_CENTER1);
             _zoom = d3.behavior.zoom()
                     .scale(_projection.scale() * 2 * Math.PI)
                     .scaleExtent([Math.pow(2, 11), Math.pow(2, 27)])
@@ -1129,7 +1130,7 @@
         }
     }
 
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .service('LocalmapService', LocalmapService);
 
     LocalmapService.$inject = 

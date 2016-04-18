@@ -75,7 +75,7 @@
         };
     }
 
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .service('shareSvg', shareSvg);
 
     shareSvg.$inject = ['$q'];

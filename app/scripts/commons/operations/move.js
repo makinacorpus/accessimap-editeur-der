@@ -251,7 +251,7 @@
 
     }
 
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .service('move', move);
 
     move.$inject = ['geometryutils'];

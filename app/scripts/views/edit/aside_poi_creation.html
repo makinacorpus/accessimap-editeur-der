@@ -1,0 +1,87 @@
+<h3>
+    <span class="fa fa-plus-circle" aria-hidden="true"></span>
+    Ajouter POI
+</h3>
+
+<form>
+
+    <!-- rotate slider -->
+    <div class="form-group">
+        <label>Type de POI</label>
+        <ui-select 
+            ng-model="$ctrl.queryChosen" 
+            ng-disabled="$ctrl.disabled" 
+            theme="bootstrap" 
+            ng-change="$ctrl.changeStyle()" 
+            class="form-control style-selector">
+
+            <ui-select-match placeholder="Sélectionnez un élément">{{$select.selected.name}}</ui-select-match>
+
+            <ui-select-choices repeat="item in $ctrl.queryChoices | filter: $select.search | layerNotSelected:this.geojson | orderBy:['icon','type']">
+                <i class="icon-15px fa fa-{{item.icon}}"></i>
+                <i ng-if="item.type === 'point'" class="icon-15px fa fa-map-marker"></i>
+                <i ng-if="item.type === 'line'" class="icon-15px fa fa-minus"></i>
+                <i ng-if="item.type === 'polygon'" class="icon-15px fa fa-square-o"></i>
+                <span ng-bind-html="item.name | highlight: $select.search"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+    <div class="form-group">
+        <label>Style</label>
+        <ui-select 
+            ng-model="$ctrl.styleChosen" 
+            ng-disabled="$ctrl.disabled" 
+            theme="bootstrap" 
+            class="form-control style-selector" >
+            
+            <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
+            <ui-select-choices repeat="item in $ctrl.styleChoices | filter: $select.search" style="max-height: 500px;">
+                <span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span>
+                <span  style="max-height:30px" style="display:inline-block;" ng-bind-html="$ctrl.featureIcon(item, $ctrl.queryChosen.type)"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+    <div class="form-group" ng-if="$ctrl.queryChosen.type === 'polygon'">
+        <label>Couleur</label>
+        <ui-select 
+            ng-model="$ctrl.colorChosen" 
+            ng-disabled="$ctrl.disabled" 
+            theme="bootstrap" 
+            class="form-control style-selector">
+            
+            <ui-select-match placeholder="Couleur de fond">{{$select.selected.name}}</ui-select-match>
+            <ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" style="max-height: 500px;">
+                <span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span>
+            </ui-select-choices>
+        
+        </ui-select>
+    </div>
+
+    <div class="form-group" ng-if="$ctrl.queryChosen.type === 'polygon'">
+        <span class="input-group-addon">
+            Contour de forme
+            <input type="checkbox" ng-model="$ctrl.checkboxModel.contour">
+        </span>
+    </div>
+
+    <button 
+        ng-if="$ctrl.queryChosen.id !== 'poi'" 
+        class="btn btn-primary btn-block" 
+        ng-click="$ctrl.downloadData()" 
+        type="button">
+        <span class="fa fa-cloud-download" aria-hidden="true"></span> 
+        Insérer les données d'OSM
+    </button>
+
+    <button 
+        ng-if="$ctrl.queryChosen.id === 'poi'" 
+        class="btn btn-primary btn-block" 
+        ng-click="$ctrl.downloadPoi()" 
+        type="button">
+        <span class="fa fa-plus-circle" aria-hidden="true"></span>
+        Ajouter POI
+    </button>
+
+</form>

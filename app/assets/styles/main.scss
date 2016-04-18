@@ -28,23 +28,52 @@ body {
     flex: 1 1 200px;
   }
 
-  main {
+  div[ng-view] {
     flex: 4 1 90%;
   }
 }
 
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header, header, 
-.marketing,
-.footer, footer,
-main{
-  padding-left: 15px;
-  padding-right: 15px;
+.btn,
+.form-control {
+  border-radius: 2px;
 }
 
-main {
-  padding-top: 15px;
+div[ng-view] {
   overflow: auto;
+  display: flex;
+  // max-height: 100%;
+
+  aside, main {
+    max-height: 100%;
+    max-width: 100%;
+    overflow: auto;
+  }
+
+  main {
+    flex: 1 1 100%;
+  }
+
+  aside.right-side {
+    border-right: 1px solid #e5e5e5;
+    display: flex;
+    flex-direction: column;
+    transition: visibility .5s ease 0;
+
+    div.aside-content {
+      flex: 1 1 100%;
+      overflow: auto;
+
+      h4 {
+        margin-top: 1em;
+        border-bottom: 1px solid #e5e5e5;
+      }
+    }
+    div.aside-footer {
+      border-top: 1px solid #e5e5e5;
+      text-align: right;
+      padding: .5em 0 .5em 0;
+    }
+  }
 }
 
 footer {
@@ -60,12 +89,8 @@ footer {
     flex: 0 1 50%;
     width: 50%;
 
-    span {
-      width: 5em;
-    }
-
     img {
-      max-height: 4em;
+      max-height: 3em;
       max-width: 6em;
       width: auto;
       height: auto;
@@ -88,21 +113,23 @@ footer {
       }
     }
   }
-
-
 }
 
 header {
 
   display: flex;
-  padding-top: 1em;
 
-  h3 {
+  h1, h2, h3, h4 {
+    display: inline-block;
+  }
+
+  h1 {
+    flex: 10 0 auto;
+  }
+  h2, h3, h4 {
     flex: 1 0 auto;
   }
-  ul {
-    flex: 0 1 150px;
-  }
+
 }
 
 /* Custom page header */
@@ -132,7 +159,9 @@ header {
 /* Main marketing message and sign up button */
 .jumbotron {
   text-align: center;
-  border-bottom: 1px solid #e5e5e5;
+  background-color: transparent;
+  height: auto;
+  margin: auto;
 
   .btn {
     font-size: 21px;
@@ -159,7 +188,7 @@ header {
   .header, header,
   .marketing,
   .footer, footer,
-  main {
+  div[ng-view] {
     padding-left: 0;
     padding-right: 0;
   }

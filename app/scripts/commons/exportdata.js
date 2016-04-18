@@ -178,7 +178,7 @@
 
     }
 
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .service('exportData', exportData);
 
     exportData.$inject = ['shareSvg'];

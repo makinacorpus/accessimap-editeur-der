@@ -12,11 +12,14 @@
     function MainController($scope, $rootScope, $location, MainService) {
 
         var $ctrl = this;
+
+        $rootScope.displayFooter  = true;
     
         $ctrl.mapFormat        = 'landscapeA4';
         $ctrl.legendFormat     = 'landscapeA4';
         $ctrl.formats          = MainService.settings.FORMATS;
     
+        $ctrl.goToEdit         = goToEdit;
         $ctrl.goToBlankPage    = goToBlankPage;
         $ctrl.goToLocalMap     = goToLocalMap;
         $ctrl.goToExistingFile = goToExistingFile;
@@ -31,6 +34,7 @@
          * - legendFormat
          */
         function go(path) {
+            $rootScope.displayFooter  = false;
             $location
                 .path(path)
                 .search('mapFormat', $ctrl.mapFormat)
@@ -79,9 +83,13 @@
         function goToExistingFile() {
             go('/globalmap');
         }
+
+        function goToEdit() {
+            go('/edit');
+        }
     }
 
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
            .controller('MainController', MainController);
 
     MainController.$inject = ['$scope', '$rootScope', '$location', 'MainService'];

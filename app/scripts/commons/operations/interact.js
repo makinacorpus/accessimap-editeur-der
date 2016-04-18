@@ -42,7 +42,7 @@
 
         };
     }
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .service('interact', interact);
 
     interact.$inject = ['UtilService'];

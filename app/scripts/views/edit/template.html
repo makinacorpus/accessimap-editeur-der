@@ -1,0 +1,73 @@
+<!-- aside -->
+<aside class="col-lg-3 col-md-4 col-sm-4 right-side" ng-show="$ctrl.isAsideVisible">
+    <div class="aside-content" 
+        ng-include="'scripts/views/edit/aside.html'"></div>
+    <div class="aside-footer">
+        <button 
+            class="btn btn-success btn-block" 
+            ng-click="$ctrl.export()" 
+            type="button">
+            <span class="fa fa-floppy-o" aria-hidden="true"></span>
+            Exporter le dessin          
+        </button>
+    </div>
+
+</aside>
+
+<!-- drawing & legend divs -->
+<main>
+    <aside class="toolbox">
+        <!--<div class="pull-left">
+            <button 
+                class="btn btn-default" 
+                ng-click="$ctrl.showAside()" 
+                ng-show="!$ctrl.isAsideVisible">
+                <span class="fa fa-lg fa-bars"></span>
+            </button>
+        </div>-->
+        <div class="btn-group pull-left">
+            <button class="btn btn-primary" 
+                    ng-class="{ 'active' : $ctrl.isPoiCreationVisible }" 
+                    ng-click="$ctrl.displayAddPOIForm()">
+                <span class="fa fa-plus-circle" aria-hidden="true"></span>
+                Ajouter POI
+            </button>
+            <button class="btn btn-primary" 
+                    ng-class="{ 'active' : $ctrl.isAddressVisible }"
+                    ng-click="$ctrl.displaySearchAddressForm()">
+                <span class="fa fa-search" aria-hidden="true"></span>
+                Chercher une adresse
+            </button>
+            <button class="btn btn-primary" 
+                    ng-class="{ 'active' : $ctrl.isPoiCreationVisible }"
+                    ng-click="$ctrl.displayGetDataFromOSMForm()">
+                <span class="fa fa-cloud-download" aria-hidden="true"></span> 
+                Obtenir des données d'OSM 
+            </button>
+            <button class="btn btn-primary" 
+                    ng-class="{ 'active' : $ctrl.isParametersVisible }"
+                    ng-click="$ctrl.displayParameters()">
+                <span class="fa fa-cog" aria-hidden="true"></span> 
+                Paramètres
+            </button>
+        </div>
+
+        <div class="btn-group pull-right">
+            <button class="btn btn-default" 
+                    ng-class="{ 'active' : $ctrl.isDrawingVisible }" 
+                    ng-click="$ctrl.showDrawing()">
+                Dessin
+            </button>
+            <button class="btn btn-default" 
+                    ng-class="{ 'active' : $ctrl.isLegendVisible }"
+                    ng-click="$ctrl.showLegend()">
+                Légende
+            </button>
+        </div>
+
+    </aside>
+    <div id="drawing" ng-show="$ctrl.isDrawingVisible"></div>
+    <div id="legend" ng-show="$ctrl.isLegendVisible"></div>
+</main>
+
+<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>

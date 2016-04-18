@@ -490,7 +490,7 @@
 
     }
     
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .service('toolbox', toolbox);
 
     toolbox.$inject = ['generators', 'geometryutils', 'styleutils',

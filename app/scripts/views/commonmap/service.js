@@ -139,7 +139,7 @@
     
     }
 
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
             .service('CommonmapService',CommonmapService);
 
     CommonmapService.$inject = ['$location', 'exportData', 'svgicon',

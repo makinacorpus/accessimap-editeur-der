@@ -5,85 +5,96 @@
         <meta charset="utf-8">
         <title></title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css(.) assets/styles/vendor.css -->
         <!-- bower:css -->
         <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
         <link rel="stylesheet" href="bower_components/select2/select2.css" />
         <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
-        <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css" />
+        <link rel="stylesheet" href="assets/fonts/font-awesome-4.5.0/css/font-awesome.css" />
         <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
+        <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css(.tmp) assets/styles/main.css -->
         <link rel="stylesheet" href="assets/styles/main.css">
         <link rel="stylesheet" href="assets/styles/map.css">
+        <link rel="stylesheet" href="scripts/views/commonmap/styles.css">
         <!-- endbuild -->
     </head>
 
-    <body ng-app="accessimapEditeurDerApp">
+    <body ng-app="accessimapEditeurDerApp" class="container-fluid">
         <!--[if lt IE 7]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
         <header>
             
-            <h3>
+            <h2>
                 <a ng-href="#/">
                     <span class="fa fa-home"></span>
                     Accueil
                 </a>
-            </h3>
+            </h2>
 
-            <h3 class="text-muted">Editeur de Dessins En Reliefs (DER)</h3>
+            <h1 class="text-muted text-center">Accessimap - éditeur de dessins en relief (DER)</h1>
 
         </header>
 
-        <main ng-view></main>
 
-        <footer>
+        <div class="row" ng-view></div>
+
+        <footer ng-if="displayFooter">
 
             <div>
-                <p>ProjetAccessimap - Partenaires</p>
                 <table>
-                    <tr>
-                        <td>
-                            <a href="http://www.ijatoulouse.org/">
-                                <span><img src="assets/images/logos/ija.jpg"></span>
-                                IJA Toulouse
-                            </a>
-                        </td>
-                        <td>
-                            <a href="https://www.irit.fr/">
-                                <img src="assets/images/logos/irit.jpg">
-                                <span>IRIT</span>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="http://www.telecom-paristech.fr/">
-                                <img src="assets/images/logos/telecom.png">
-                                <span>Télécom ParisTech</span>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="http://makina-corpus.com/">
-                                <span><img src="assets/images/logos/makinacorpus.png"></span>
-                                Makina Corpus
-                            </a>
-                        </td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <td colspan=2>
+                                Projet Accessimap - Partenaires
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a href="http://www.ijatoulouse.org/">
+                                   <img src="assets/images/logos/ija.jpg">
+                                    IJA Toulouse
+                                </a>
+                            </td>
+                            <td>
+                                <a href="https://www.irit.fr/">
+                                   <img src="assets/images/logos/irit.jpg">
+                                    IRIT
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="http://www.telecom-paristech.fr/">
+                                   <img src="assets/images/logos/telecom.png">
+                                    Télécom ParisTech
+                                </a>
+                            </td>
+                            <td>
+                                <a href="http://makina-corpus.com/">
+                                   <img src="assets/images/logos/makinacorpus.png">
+                                    Makina Corpus
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
 
             <div>
                 <p>
-                    Pour toutes questions, n'hésitez pas à <a href="mailto:contact@makina-corpus.com">nous contacter</a>
+                    <span class="fa fa-question"></span>&nbsp;Pour toutes questions, n'hésitez pas à <a href="mailto:contact@makina-corpus.com">nous contacter</a>
                 </p>
                 <p>
-                    Vous souhaitez contribuer au projet, accédez à <a href="https://github.com/makinacorpus/accessimap-editeur-der/issues" target="_blank">notre dépôt Github</a> ou à <a href="docs/" target="_blank">la documentation technique</a>.
+                    <span class="fa fa-github"></span>&nbsp;Vous souhaitez contribuer au projet, accédez à <a href="https://github.com/makinacorpus/accessimap-editeur-der/issues" target="_blank">notre dépôt Github</a> ou à <a href="docs/" target="_blank">la documentation technique</a>.
                 </p>
                 <p>
                     Map tiles and data: © OpenStreetMap contributors
@@ -134,6 +145,7 @@
         <script src="bower_components/file-saver.js/FileSaver.js"></script>
         <script src="bower_components/turf/turf.min.js"></script>
         <script src="bower_components/pdfjs-dist/build/pdf.combined.js"></script>
+        <script src="bower_components/leaflet/dist/leaflet.js"></script>
         <script src="scripts/vendor/d3.geo.tile.v0.min.js"></script>
         <script src="scripts/vendor/d3.radialmenu.js"></script>
         <script src='scripts/vendor/osmtogeojson.js'></script>
@@ -146,8 +158,17 @@
         
         <script src="scripts/filters/layernotselected.js"></script>
 
-        <script src="scripts/commons/editsvg.js"></script>
         <script src="scripts/commons/settings.js"></script>
+
+        <script src="scripts/commons/map/map.leaflet.js"></script>
+        <script src="scripts/commons/map/map.nominatim.js"></script>
+
+        <script src="scripts/commons/d3/d3.drawing.js"></script>
+        <script src="scripts/commons/d3/d3.legend.js"></script>
+        <script src="scripts/commons/d3/d3.projection.js"></script>
+        <script src="scripts/commons/d3/d3.layer.js"></script>
+        
+        <script src="scripts/commons/editsvg.js"></script>
         <script src="scripts/commons/exportdata.js"></script>
         <script src="scripts/commons/geometryutils.js"></script>
         <script src="scripts/commons/initsvg.js"></script>
@@ -155,6 +176,7 @@
         <script src="scripts/commons/sharesvg.js"></script>
         <script src="scripts/commons/svgicon.js"></script>
         <script src="scripts/commons/styleutils.js"></script>
+
 
         <script src="scripts/commons/ui/radialmenu.js"></script>
         <script src="scripts/commons/ui/toolbox.js"></script>
@@ -171,6 +193,8 @@
 
         <script src="scripts/commons/utils/util.js"></script>
 
+        <script src="scripts/views/edit/controller.js"></script>
+        <script src="scripts/views/edit/service.js"></script>
 
         <script src="scripts/views/main/controller.js"></script>
         <script src="scripts/views/main/service.js"></script>

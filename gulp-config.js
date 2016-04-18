@@ -9,10 +9,11 @@ module.exports = {
     dist: dist,
     homepage: dist + 'index.html',
     compass: {
-        globs: app + 'assets/styles/*.scss',
+        globs: [ app + 'assets/styles/*.scss', app + 'scripts/**/*.scss'],
+        dest: '.tmp',
         options: {
-            css: '.tmp/styles',
-            sass: app + 'assets/styles',
+            css: '.tmp',
+            sass: app ,
             import_path: 'bower_components'
         }
     },

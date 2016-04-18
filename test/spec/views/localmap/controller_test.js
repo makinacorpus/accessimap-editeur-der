@@ -52,8 +52,8 @@ describe('Controller: LocalmapController', function () {
 
         it('should create the LocalmapController with default parameters', function () {
             expect(LocalmapController).toBeDefined();
-            expect(LocalmapController.hideMenu).toBeDefined();
-            expect(LocalmapController.showMenu).toBeDefined();
+            expect(LocalmapController.hideAside).toBeDefined();
+            expect(LocalmapController.showAside).toBeDefined();
             expect(LocalmapController.rotateMap).toBeDefined();
             expect(LocalmapController.changeStyle).toBeDefined();
             expect(LocalmapController.downloadData).toBeDefined();
@@ -63,17 +63,17 @@ describe('Controller: LocalmapController', function () {
             expect(LocalmapController.nextStep).toBeDefined();
         });
 
-        describe('when the hideMenu function is called, it', function() {
-            it('should change the leftMenuVisible attribute', function() {
-                LocalmapController.hideMenu();
-                expect(LocalmapController.leftMenuVisible).toBe(false);
+        describe('when the hideAside function is called, it', function() {
+            it('should change the isAsideVisible attribute', function() {
+                LocalmapController.hideAside();
+                expect(LocalmapController.isAsideVisible).toBe(false);
             });
         })
 
-        describe('when the showMenu function is called, it', function() {
-            it('should change the leftMenuVisible attribute', function() {
-                LocalmapController.showMenu();
-                expect(LocalmapController.leftMenuVisible).toBe(true);
+        describe('when the showAside function is called, it', function() {
+            it('should change the isAsideVisible attribute', function() {
+                LocalmapController.showAside();
+                expect(LocalmapController.isAsideVisible).toBe(true);
             });
         })
 

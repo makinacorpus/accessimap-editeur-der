@@ -175,7 +175,7 @@
 
     }
 
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .service('interaction', interaction);
     
     interaction.$inject = ['shareSvg'];

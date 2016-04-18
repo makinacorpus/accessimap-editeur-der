@@ -27,7 +27,7 @@
         };
     }
     
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .service('styleutils', styleutils)
     
     styleutils.$inject = ['settings'];

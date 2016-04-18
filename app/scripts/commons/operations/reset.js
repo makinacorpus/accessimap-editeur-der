@@ -35,7 +35,7 @@
 
     }
 
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .service('reset', reset);
         
 })();

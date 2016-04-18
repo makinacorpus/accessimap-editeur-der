@@ -91,7 +91,7 @@
 
     }
     
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .service('svgicon', svgicon);
     
     svgicon.$inject = ['settings'];

@@ -67,6 +67,27 @@
             $scope.$watch(objectWatched, f);
         }
         
+        /**
+         * @ngdoc method
+         * @name  hideAside
+         * @methodOf accessimapEditeurDerApp.controller:LocalmapController
+         * @description hide the left Aside
+         */
+        $ctrl.hideAside = function() {
+            $ctrl.isAsideVisible = false;
+        };
+
+        /**
+         * @ngdoc method
+         * @name  showAside
+         * @methodOf accessimapEditeurDerApp.controller:LocalmapController
+         * @description show the left Aside
+         */
+        $ctrl.showAside = function() {
+            $ctrl.isAsideVisible = true;
+        };
+        $ctrl.showAside();
+
         // editor's part
         function changeColor() {
             // $ctrl.colorChosen = $ctrl.$parent.colorChosen;
@@ -166,7 +187,7 @@
 
     }
 
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
             .controller('CommonmapController', CommonmapController);
 
     CommonmapController.$inject = ['$scope', 'CommonmapService'];

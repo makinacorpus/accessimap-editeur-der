@@ -17,23 +17,46 @@
 
         /**
          * @ngdoc method
-         * @name  hideMenu
+         * @name  hideAside
          * @methodOf accessimapEditeurDerApp.controller:LocalmapController
-         * @description hide the left menu
+         * @description hide the left Aside
          */
-        $ctrl.hideMenu = function() {
-            $ctrl.leftMenuVisible = false;
+        $ctrl.hideAside = function() {
+            $ctrl.isAsideVisible = false;
         };
-        $ctrl.hideMenu();
 
         /**
          * @ngdoc method
-         * @name  showMenu
+         * @name  showAside
          * @methodOf accessimapEditeurDerApp.controller:LocalmapController
-         * @description show the left menu
+         * @description show the left Aside
          */
-        $ctrl.showMenu = function() {
-            $ctrl.leftMenuVisible = true;
+        $ctrl.showAside = function() {
+            $ctrl.isAsideVisible = true;
+        };
+        $ctrl.showAside();
+
+        /**
+         * @ngdoc method
+         * @name  showMap
+         * @methodOf accessimapEditeurDerApp.controller:LocalmapController
+         * @description hide the left Aside
+         */
+        $ctrl.showMap = function() {
+            $ctrl.isMapVisible = true;
+            $ctrl.isLegendVisible = false;
+        };
+        $ctrl.showMap();
+
+        /**
+         * @ngdoc method
+         * @name  showLegend
+         * @methodOf accessimapEditeurDerApp.controller:LocalmapController
+         * @description show the left Aside
+         */
+        $ctrl.showLegend = function() {
+            $ctrl.isMapVisible = false;
+            $ctrl.isLegendVisible = true;
         };
 
         /**
@@ -135,7 +158,7 @@
 
     }
 
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .controller('LocalmapController', LocalmapController);
 
     LocalmapController.$inject = ['$location', 'LocalmapService'];

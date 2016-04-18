@@ -6,8 +6,12 @@
      * @description
      * Main module of the application.
      */
+    var moduleApp = 'accessimapEditeurDerApp';
+
+    window.moduleApp = moduleApp;
+
     angular
-        .module('accessimapEditeurDerApp', [
+        .module(moduleApp, [
             'ngAnimate',
             'ngCookies',
             'ngResource',
@@ -26,6 +30,11 @@
                 .when('/', {
                     templateUrl: 'scripts/views/main/template.html',
                     controller: 'MainController',
+                    controllerAs: '$ctrl'
+                })
+                .when('/edit', {
+                    templateUrl: 'scripts/views/edit/template.html',
+                    controller: 'EditController',
                     controllerAs: '$ctrl'
                 })
                 .when('/localmap', {

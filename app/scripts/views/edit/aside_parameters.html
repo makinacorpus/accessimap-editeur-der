@@ -1,0 +1,113 @@
+<h3>
+    <span class="fa fa-cog" aria-hidden="true"></span>
+    Paramètres
+</h3>
+
+<form>
+    
+    <div class="form-group">
+        <label>Titre</label>
+        <input type="text" class="form-control input-lg">
+    </div>
+
+    <!-- rotate slider -->
+    <div class="form-group">
+        <label>Rotation</label>
+        <div class="input-group">
+            <span class="input-group-addon">
+            <span class="fa fa-repeat" aria-hidden="true"></span>
+            </span>
+            <slider class="form-control slider-container" ng-model="$ctrl.rotationAngle" ng-change="$ctrl.rotateMap()" min="0" max="360"></slider>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Trame de fond</label>
+        <ui-select 
+            ng-model="$ctrl.containerStyle" 
+            ng-change="$ctrl.changeContainerStyle()" 
+            ng-disabled="disabled" 
+            theme="bootstrap" 
+            class="form-control style-selector">
+
+            <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
+            <ui-select-choices repeat="item in $ctrl.containerStyleChoices | filter: $select.search">
+                <span ng-bind-html="item.name | highlight: $select.search"></span>
+                <span ng-bind-html="$ctrl.featureIcon(item, 'polygon')"></span>
+            </ui-select-choices>
+
+        </ui-select>
+    </div>
+
+    <div class="form-group">
+        <label>Couleur de fond</label>
+        <ui-select 
+            ng-model="$ctrl.mapFillColor" 
+            theme="bootstrap" 
+            class="form-control style-selector">
+
+            <ui-select-match placeholder="Sélectionnez une couleur de fond">{{$ctrl.mapFillColor.name}}</ui-select-match>
+            <ui-select-choices repeat="item in $ctrl.colors">
+                <div ng-bind-html="item.name | highlight: $select.search"></div>
+            </ui-select-choices>
+
+        </ui-select>
+    </div>
+
+    <div class="form-group">
+        <label>Format du dessin en relief</label>
+        <select 
+            ng-model="$ctrl.mapFormat" 
+            class="form-control" 
+            ng-options="format as data.name for (format, data) in $ctrl.formats">
+        </select>
+<!--
+        <ui-select 
+            ng-model="$ctrl.mapFormat" 
+            theme="bootstrap" 
+            class="form-control style-selector">
+
+            <ui-select-match placeholder="Sélectionnez un format">{{$ctrl.mapFormat.name}}</ui-select-match>
+            <ui-select-choices repeat="item in $ctrl.formats">
+                <div ng-bind-html="item.name | highlight: $select.search"></div>
+            </ui-select-choices>
+
+        </ui-select>
+-->
+    </div>
+
+    <div class="form-group">
+        <label>Format de légende en braile</label>
+        <select 
+            ng-model="$ctrl.legendFormat" 
+            class="form-control" 
+            ng-options="format as data.name for (format, data) in $ctrl.formats">
+        </select>
+<!--
+        <ui-select 
+            ng-model="$ctrl.legendFormat" 
+            theme="bootstrap" 
+            class="form-control style-selector">
+
+            <ui-select-match placeholder="Sélectionnez un format">{{$ctrl.legendFormat.name}}</ui-select-match>
+            <ui-select-choices repeat="item in $ctrl.formats">
+                <div ng-bind-html="item.name | highlight: $select.search"></div>
+            </ui-select-choices>
+
+        </ui-select>
+-->
+    </div>
+
+    <div class="form-group">
+        <label>Fond de carte OSM</label>
+        <span class="input-group-addon">
+            Afficher la carte
+            <input type="checkbox" ng-model="$ctrl.mapEnabled">
+        </span>
+        <span class="input-group-addon">
+            Figer la carte
+            <input type="checkbox" ng-model="$ctrl.mapFreezed">
+        </span>
+    </div>
+
+</form>

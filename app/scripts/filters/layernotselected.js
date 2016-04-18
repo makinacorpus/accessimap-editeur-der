@@ -10,7 +10,7 @@
 (function() {
     'use strict';
 
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .filter('layerNotSelected', function() {
         return function(layers, selectedLayers) {
             var filteredLayers = [];

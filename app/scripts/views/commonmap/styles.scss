@@ -1,0 +1,15 @@
+div.toolbox, aside.toolbox {
+    background-color: rgba(128, 128, 128, 0.47);
+    width: 100%;
+    padding: .5em;
+
+    .main-level {
+        div:first-child {
+            margin-left: 1em;
+        }
+
+        div {
+            margin: .5em 1em .5em 0em;
+        }
+    }
+}

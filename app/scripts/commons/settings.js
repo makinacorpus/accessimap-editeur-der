@@ -16,11 +16,11 @@
 (function() {
     'use strict';
 
-    function settings (editSvg, remove, interact, 
-                        style, move, geometry) {
+    function settings (editSvg, remove, interact, style, move, geometry) {
 
         var leafletConf = {
-                GLOBAL_MAP_CENTER: [1.441019, 43.604268], // [lon, lat]
+                GLOBAL_MAP_CENTER1: [1.441019, 43.604268], // [lon, lat]
+                GLOBAL_MAP_CENTER: [43.604268, 1.441019], // [lon, lat]
                 GLOBAL_MAP_DEFAULT_ZOOM: 13,
             },
 
@@ -32,6 +32,8 @@
          * @description Ratio between a pixel and a millimeter
          */
         ratioPixelPoint = 0.283,
+
+        margin = 40,
 
         FONTS = [{
                 name: 'Braille',
@@ -1238,6 +1240,8 @@
             FONTS: FONTS,
             COLORS: COLORS,
             FORMATS: FORMATS,
+            DEFAULT_DRAWING_FORMAT: 'landscapeA4',
+            DEFAULT_LEGEND_FORMAT: 'landscapeA4',
             QUERY_LIST: QUERY_LIST,
             POLYGON_STYLES: POLYGON_STYLES,
             STYLES: STYLES,
@@ -1245,11 +1249,12 @@
             markerStart: markerStart,
             markerStop: markerStop,
             leaflet: leafletConf,
-            ratioPixelPoint: ratioPixelPoint
+            ratioPixelPoint: ratioPixelPoint,
+            margin: margin
         };
     }
 
-    angular.module('accessimapEditeurDerApp')
+    angular.module(moduleApp)
         .factory('settings', settings);
 
     settings.$inject = ['editSvg', 'remove', 'interact', 'style', 'move', 'geometry'];
