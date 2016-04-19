@@ -1243,6 +1243,7 @@
             DEFAULT_DRAWING_FORMAT: 'landscapeA4',
             DEFAULT_LEGEND_FORMAT: 'landscapeA4',
             QUERY_LIST: QUERY_LIST,
+            QUERY_DEFAULT: QUERY_LIST[4],
             POLYGON_STYLES: POLYGON_STYLES,
             STYLES: STYLES,
             ACTIONS: ACTIONS,

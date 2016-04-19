@@ -26,6 +26,7 @@
          * @ngdoc property
          * @name  queryChoices
          * @propertyOf accessimapEditeurDerApp.controller:EditController
+         * 
          * @description
          * Options of POI and area to add on the map
          */
@@ -35,15 +36,17 @@
          * @ngdoc property
          * @name  queryChosen
          * @propertyOf accessimapEditeurDerApp.controller:EditController
+         * 
          * @description
          * POI / area selected 
          */
-        $ctrl.queryChosen  = $ctrl.queryChoices[0];
+        $ctrl.queryChosen  = EditService.settings.QUERY_DEFAULT; // $ctrl.queryChoices[1];
         
         /**
          * @ngdoc property
          * @name  styleChoices
          * @propertyOf accessimapEditeurDerApp.controller:EditController
+         * 
          * @description
          * Options of styling for the queryChosen' type
          */
@@ -78,6 +81,7 @@
         $ctrl.mapFormat             = $location.search().mapFormat ? $location.search().mapFormat : 'landscapeA4';
         $ctrl.legendFormat          = $location.search().legendFormat ? $location.search().legendFormat : 'landscapeA4';
         $ctrl.mapFillColor          = $ctrl.colors[0];
+        $ctrl.checkboxModel         = { contour: false};
 
         $ctrl.isParametersVisible    = true;
         $ctrl.isAddressVisible       = false;
@@ -129,10 +133,11 @@
         };
 
         $ctrl.displayAddPOIForm = function() {
-            $ctrl.isParametersVisible    = false;
-            $ctrl.isAddressVisible       = false;
-            $ctrl.isPoiCreationVisible   = true;
-            $ctrl.isPoiManagementVisible = false;
+            $ctrl.isParametersVisible      = false;
+            $ctrl.isAddressVisible         = false;
+            $ctrl.isPoiCreationVisible     = true;
+            $ctrl.isFeatureCreationVisible = false;
+            $ctrl.isPoiManagementVisible   = false;
 
             EditService
                 .enableAddPOI(function successCallback(osmGeojson) {
@@ -170,23 +175,50 @@
                     console.log(error);
                 });
         }
+
+        $ctrl.insertOSMData = function()  {
+
+            EditService.insertOSMData($ctrl.queryChosen,
+                function successCallback(osmGeojson) {
+
+                    console.log(osmGeojson)
+                    
+                    EditService.geojsonToSvg(osmGeojson, 
+                            null, 
+                            'node_' + osmGeojson.features[0].properties.id, 
+                            false, 
+                            $ctrl.queryChosen, 
+                            $ctrl.styleChosen, 
+                            $ctrl.styleChoices, 
+                            $ctrl.colorChosen, 
+                            $ctrl.checkboxModel, 
+                            $ctrl.rotationAngle)
+
+                }, function errorCallback(error) {
+                    console.log(error);
+                })
+        }
+
         $ctrl.displaySearchAddressForm = function() {
-            $ctrl.isParametersVisible    = false;
-            $ctrl.isAddressVisible       = true;
-            $ctrl.isPoiCreationVisible   = false;
-            $ctrl.isPoiManagementVisible = false;
+            $ctrl.isParametersVisible      = false;
+            $ctrl.isAddressVisible         = true;
+            $ctrl.isPoiCreationVisible     = false;
+            $ctrl.isFeatureCreationVisible = false;
+            $ctrl.isPoiManagementVisible   = false;
         }
         $ctrl.displayGetDataFromOSMForm = function() {
-            $ctrl.isParametersVisible    = false;
-            $ctrl.isAddressVisible       = false;
-            $ctrl.isPoiCreationVisible   = false;
-            $ctrl.isPoiManagementVisible = true;
+            $ctrl.isParametersVisible      = false;
+            $ctrl.isAddressVisible         = false;
+            $ctrl.isPoiCreationVisible     = false;
+            $ctrl.isFeatureCreationVisible = true;
+            $ctrl.isPoiManagementVisible   = false;
         }
         $ctrl.displayParameters = function() {
-            $ctrl.isParametersVisible    = true;
-            $ctrl.isAddressVisible       = false;
-            $ctrl.isPoiCreationVisible   = false;
-            $ctrl.isPoiManagementVisible = false;
+            $ctrl.isParametersVisible      = true;
+            $ctrl.isAddressVisible         = false;
+            $ctrl.isPoiCreationVisible     = false;
+            $ctrl.isFeatureCreationVisible = false;
+            $ctrl.isPoiManagementVisible   = false;
         }
 
         EditService.init(EditService.settings.FORMATS[$ctrl.mapFormat], 

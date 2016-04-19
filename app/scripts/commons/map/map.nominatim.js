@@ -2,9 +2,11 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.NominatimService
+ * 
  * @requires $http
  * @requires $q
  * @requires accessimapEditeurDerApp.settings
+ * 
  * @description
  * Provide functions to get information on nominatim
  */
@@ -19,30 +21,40 @@
          * @ngdoc method
          * @name  retrieveData
          * @methodOf accessimapEditeurDerApp.NominatimService
+         * 
          * @description 
-         * Retrieve data from OSM for a specific point, and display the information on the svg element
-         * @param  {Object} point         Geographic point [lng, lat]
-         * @param  {Object} queryChosen   Query to ask to nominatim : shop, park, ...
-         * @return {Promise} Promise with data for successCallback
+         * Retrieve data from OSM for a specific point, 
+         * and display the information on the svg element
+         * 
+         * @param  {Object} point         
+         * Geographic point [lng, lat]
+         * 
+         * @param  {Object} queryChosen   
+         * Query to ask to nominatim : shop, park, ...
+         * 
+         * @return {Promise} 
+         * Promise with data for successCallback
          */
         function retrieveData(point, queryChosen) {
 
             var deferred = $q.defer(),
                 mapS, mapW, mapN, mapE;
 
-            if (point) {
+            if (Array.isArray(point) && point.length === 2) {
                 mapS = parseFloat(point[1]) - 0.00005;
                 mapW = parseFloat(point[0]) - 0.00005;
                 mapN = parseFloat(point[1]) + 0.00005;
                 mapE = parseFloat(point[0]) + 0.00005;
+            } else if (point._southWest && point._northEast) {
+                mapS = point._southWest.lat;
+                mapW = point._southWest.lng;
+                mapN = point._northEast.lat;
+                mapE = point._northEast.lng;
             } else {
-                var boundsNW = _projection.invert([0, 0]),
-                    boundsSE = _projection.invert([_width, _height]);
-                mapS = boundsSE[1];
-                mapW = boundsNW[0];
-                mapN = boundsNW[1];
-                mapE = boundsSE[0];
+                throw new Error('Parameter "point" is unacceptable. ' +
+                    'Please see the docs to provide an array[x,y] or an object {_southWest,_northEast}.')
             }
+
             var url = settings.XAPI_URL + '[out:xml];(';
 
             for (var i = 0; i < queryChosen.query.length; i++) {
