@@ -1,0 +1,27 @@
+<button class="btn btn-primary" 
+        ng-class="{ 'active' : $ctrl.isPoiCreationVisible }" 
+        ng-click="$ctrl.displayAddPOIForm()">
+    <span class="fa fa-plus-circle" aria-hidden="true"></span>
+    Ajouter POI
+</button>
+
+<button class="btn btn-primary" 
+        ng-class="{ 'active' : $ctrl.isAddressVisible }"
+        ng-click="$ctrl.displaySearchAddressForm()">
+    <span class="fa fa-search" aria-hidden="true"></span>
+    Chercher une adresse
+</button>
+
+<button class="btn btn-primary" 
+        ng-class="{ 'active' : $ctrl.isFeatureCreationVisible }"
+        ng-click="$ctrl.displayGetDataFromOSMForm()">
+    <span class="fa fa-cloud-download" aria-hidden="true"></span> 
+    Obtenir des données d'OSM 
+</button>
+
+<button class="btn btn-primary" 
+        ng-class="{ 'active' : $ctrl.isFeatureManagementVisible }"
+        ng-click="$ctrl.displayFeatureManagement()">
+    <span class="fa fa-pencil" aria-hidden="true"></span> 
+    Editer les points/régions
+</button>

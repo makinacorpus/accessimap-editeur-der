@@ -1,0 +1,52 @@
+<div 
+    class="modal fade" 
+    id="changeColorModal" 
+    tabindex="-1" 
+    role="dialog">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button 
+                    type="button" 
+                    class="close" 
+                    data-dismiss="modal" 
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Choisissez une couleur de fond pour cet objet</h4>
+            </div>
+
+            <div class="modal-body">
+                <ui-select 
+                    ng-model="$ctrl.colorChosen" 
+                    ng-change="$ctrl.updateColor($ctrl.colorChosen)" 
+                    ng-disabled="disabled" 
+                    theme="bootstrap" 
+                    class="form-control style-selector" 
+                    style="width: 300px;">
+                    
+                    <ui-select-match placeholder="Couleur de fond">{{$select.selected.name}}</ui-select-match>
+                    <ui-select-choices 
+                        repeat="item in $ctrl.colors | filter: $select.search" 
+                        style="max-height: 500px;">
+                        <span 
+                            style="display:inline-block;" 
+                            ng-bind-html="item.name | highlight: $select.search">
+                        </span>
+                    </ui-select-choices>
+
+                </ui-select>
+            </div>
+
+            <div class="modal-footer">
+                <button 
+                    type="button" 
+                    class="btn btn-primary" 
+                    data-dismiss="modal">
+                    Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
