@@ -3,8 +3,11 @@
  * @ngdoc filter
  * @name accessimapEditeurDerApp.filter:layerNotSelected
  * @function
+ * 
  * @description
- * Return all the layers not selected from an array of layers & another of selected layers
+ * Return all the layers not selected from an array of layers 
+ * & another of selected layers
+ * 
  * Intersection between layers'set and selectedLayer'set
  */
 (function() {

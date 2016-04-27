@@ -18,7 +18,7 @@
 (function() {
     'use strict';
 
-    function EditController(EditService, $location) {
+    function EditController(EditService, ToasterService, $location, $q) {
         
         var $ctrl = this;
 
@@ -41,7 +41,6 @@
          * POI / area selected 
          */
         $ctrl.queryChosen  = EditService.settings.QUERY_DEFAULT; // $ctrl.queryChoices[1];
-        
         /**
          * @ngdoc property
          * @name  styleChoices
@@ -71,22 +70,81 @@
             $ctrl.styleChoices = EditService.settings.STYLES[$ctrl.queryChosen.type];
             $ctrl.styleChosen  = $ctrl.styleChoices[0];
         };
-        
-        $ctrl.colors                = (EditService.settings.COLORS.transparent)
-                                            .concat(EditService.settings.COLORS.other);
-        $ctrl.colorChosen           = $ctrl.colors[0];
-        $ctrl.featureIcon           = EditService.featureIcon;
-        $ctrl.formats               = EditService.settings.FORMATS;
-        $ctrl.containerStyleChoices = EditService.settings.STYLES.polygon;
-        $ctrl.mapFormat             = $location.search().mapFormat ? $location.search().mapFormat : 'landscapeA4';
-        $ctrl.legendFormat          = $location.search().legendFormat ? $location.search().legendFormat : 'landscapeA4';
-        $ctrl.mapFillColor          = $ctrl.colors[0];
-        $ctrl.checkboxModel         = { contour: false};
 
-        $ctrl.isParametersVisible    = true;
-        $ctrl.isAddressVisible       = false;
-        $ctrl.isPoiCreationVisible   = false;
-        $ctrl.isPoiManagementVisible = false;
+        $ctrl.comment                    = "";
+        
+        $ctrl.fonts                      = EditService.settings.FONTS;
+        $ctrl.fontChosen                 = $ctrl.fonts[0];
+        $ctrl.fontColors                 = EditService.settings.COLORS;
+        $ctrl.fontColorChosen            = $ctrl.fontColors[$ctrl.fontChosen.color][0];
+        
+        $ctrl.colors                     = (EditService.settings.COLORS.transparent)
+                                                .concat(EditService.settings.COLORS.other);
+        $ctrl.colorChosen                = $ctrl.colors[0];
+        $ctrl.featureIcon                = EditService.featureIcon;
+        $ctrl.formats                    = EditService.settings.FORMATS;
+        $ctrl.backgroundColor            = EditService.settings.COLORS.transparent[0]; // transparent
+        $ctrl.backgroundStyle            = EditService.settings.STYLES.polygon[EditService.settings.STYLES.polygon - 1]; // solid
+        $ctrl.backgroundStyleChoices     = EditService.settings.STYLES.polygon;
+        $ctrl.mapFormat                  = $location.search().mapFormat ? $location.search().mapFormat : 'landscapeA4';
+        $ctrl.legendFormat               = $location.search().legendFormat ? $location.search().legendFormat : 'landscapeA4';
+        $ctrl.checkboxModel              = { contour: false};
+        $ctrl.geojson                    = EditService.getFeatures();
+        
+        $ctrl.isParametersVisible        = true; // initial state = parameters
+        
+        $ctrl.isAddressVisible           = false;
+        $ctrl.isPoiCreationVisible       = false;
+        $ctrl.isFeatureCreationVisible   = false;
+        $ctrl.isFeatureManagementVisible = false;
+        
+        $ctrl.isMapToolboxVisible        = false;
+        $ctrl.isDrawingToolboxVisible    = false;
+        
+        $ctrl.isMapVisible               = false;
+        $ctrl.isMapFreezed               = false;
+
+        $ctrl.markerStartChoices         = EditService.settings.markerStart;
+        $ctrl.markerStopChoices          = EditService.settings.markerStop;
+
+        $ctrl.isUndoAvailable            = EditService.isUndoAvailable;
+
+        $ctrl.exportData                 = EditService.exportData;
+
+        /**
+         * @ngdoc method
+         * @name  showMap
+         * @methodOf accessimapEditeurDerApp.controller:EditController
+         * 
+         * @description
+         * Show the map layer
+         */
+        $ctrl.showMap = function() {
+            $ctrl.isMapVisible = true;
+            EditService.showMapLayer();
+        }
+        
+        /**
+         * @ngdoc method
+         * @name  hideMap
+         * @methodOf accessimapEditeurDerApp.controller:EditController
+         * 
+         * @description
+         * Hide the map layer
+         */
+        $ctrl.hideMap = function() {
+            $ctrl.isMapVisible = false;
+            EditService.hideMapLayer()
+        }
+        
+        $ctrl.freezeMap = function() {
+            $ctrl.isMapFreezed = true;
+            EditService.freezeMap();
+        }
+        $ctrl.unFreezeMap = function() {
+            $ctrl.isMapFreezed = false;
+            EditService.unFreezeMap();
+        }
 
         /**
          * @ngdoc method
@@ -132,138 +190,229 @@
             $ctrl.isLegendVisible = true;
         };
 
+        // Insert POI from OSM/nominatim
         $ctrl.displayAddPOIForm = function() {
-            $ctrl.isParametersVisible      = false;
-            $ctrl.isAddressVisible         = false;
-            $ctrl.isPoiCreationVisible     = true;
-            $ctrl.isFeatureCreationVisible = false;
-            $ctrl.isPoiManagementVisible   = false;
+            $ctrl.isParametersVisible        = false;
+            $ctrl.isAddressVisible           = false;
+            $ctrl.isPoiCreationVisible       = true;
+            $ctrl.isFeatureCreationVisible   = false;
+            $ctrl.isFeatureManagementVisible = false;
 
-            EditService
-                .enableAddPOI(function successCallback(osmGeojson) {
+            $ctrl.queryChosen  = EditService.settings.QUERY_POI;
+            $ctrl.styleChoices = EditService.settings.STYLES[$ctrl.queryChosen.type];
+            $ctrl.styleChosen  = $ctrl.styleChoices[0];
 
-                    console.log(osmGeojson)
-                    
-                    EditService.geojsonToSvg(osmGeojson, 
-                            null, 
-                            'node_' + osmGeojson.features[0].properties.id, 
-                            true, 
-                            $ctrl.queryChosen, 
-                            $ctrl.styleChosen, 
-                            $ctrl.styleChoices, 
-                            $ctrl.colorChosen, 
-                            $ctrl.checkboxModel, 
-                            $ctrl.rotationAngle)
-/*
-                    osmGeojson.features = [osmGeojson.features[0]];
-
-                    if (osmGeojson.features[0]) {
-                        geojsonToSvg(osmGeojson, 
-                                        undefined, 
-                                        'node_' + osmGeojson.features[0].properties.id, 
-                                        true, 
-                                        queryChosen, 
-                                        styleChosen, 
-                                        styleChoices, 
-                                        colorChosen, 
-                                        checkboxModel, 
-                                        0);
-                    }
-                    */
-
-                }, function errorCallback(error) {
-                    console.log(error);
-                });
+            EditService.enableAddPOI(drawGeoJSON, ToasterService.displayError);
         }
 
-        $ctrl.insertOSMData = function()  {
-
-            EditService.insertOSMData($ctrl.queryChosen,
-                function successCallback(osmGeojson) {
-
-                    console.log(osmGeojson)
-                    
-                    EditService.geojsonToSvg(osmGeojson, 
-                            null, 
-                            'node_' + osmGeojson.features[0].properties.id, 
-                            false, 
-                            $ctrl.queryChosen, 
-                            $ctrl.styleChosen, 
-                            $ctrl.styleChoices, 
-                            $ctrl.colorChosen, 
-                            $ctrl.checkboxModel, 
-                            $ctrl.rotationAngle)
-
-                }, function errorCallback(error) {
-                    console.log(error);
-                })
+        function drawGeoJSON(osmGeojson) {
+            
+            if (! osmGeojson) {
+                throw new Error('Parameter osmGeojson undefined. Please provide it before calling this function.')
+            }
+            
+            if (osmGeojson.features && osmGeojson.features.length > 0) {
+                EditService.geojsonToSvg(osmGeojson, 
+                        null, 
+                        'node_' + osmGeojson.features[0].properties.id, 
+                        false, 
+                        $ctrl.queryChosen, 
+                        $ctrl.styleChosen, 
+                        $ctrl.styleChoices, 
+                        $ctrl.colorChosen, 
+                        $ctrl.checkboxModel, 
+                        $ctrl.rotationAngle)
+            }
+            else {
+                // TODO: soft error, with a toaster or something to explain to the user we haven't find anything...
+                throw new Error('No feature to display... Please click again, maybe not at the same place ?')
+            }
         }
 
+        // Search address from OSM / Nominatim
         $ctrl.displaySearchAddressForm = function() {
-            $ctrl.isParametersVisible      = false;
-            $ctrl.isAddressVisible         = true;
-            $ctrl.isPoiCreationVisible     = false;
-            $ctrl.isFeatureCreationVisible = false;
-            $ctrl.isPoiManagementVisible   = false;
-        }
-        $ctrl.displayGetDataFromOSMForm = function() {
-            $ctrl.isParametersVisible      = false;
-            $ctrl.isAddressVisible         = false;
-            $ctrl.isPoiCreationVisible     = false;
-            $ctrl.isFeatureCreationVisible = true;
-            $ctrl.isPoiManagementVisible   = false;
-        }
-        $ctrl.displayParameters = function() {
-            $ctrl.isParametersVisible      = true;
-            $ctrl.isAddressVisible         = false;
-            $ctrl.isPoiCreationVisible     = false;
-            $ctrl.isFeatureCreationVisible = false;
-            $ctrl.isPoiManagementVisible   = false;
+            $ctrl.isParametersVisible        = false;
+            $ctrl.isAddressVisible           = true;
+            $ctrl.isPoiCreationVisible       = false;
+            $ctrl.isFeatureCreationVisible   = false;
+            $ctrl.isFeatureManagementVisible = false;
         }
 
+        // Insert data from OSM / Nominatim
+        $ctrl.displayGetDataFromOSMForm = function() {
+            $ctrl.isParametersVisible        = false;
+            $ctrl.isAddressVisible           = false;
+            $ctrl.isPoiCreationVisible       = false;
+            $ctrl.isFeatureCreationVisible   = true;
+            $ctrl.isFeatureManagementVisible = false;
+        }
+        $ctrl.insertOSMData = function()  {
+            EditService.insertOSMData($ctrl.queryChosen, drawGeoJSON, ToasterService.displayError)
+        }
+
+        // Parameters
+        $ctrl.displayParameters = function() {
+            $ctrl.isParametersVisible        = true;
+            $ctrl.isAddressVisible           = false;
+            $ctrl.isPoiCreationVisible       = false;
+            $ctrl.isFeatureCreationVisible   = false;
+            $ctrl.isFeatureManagementVisible = false;
+            $ctrl.isDrawingToolboxVisible    = false;
+        }
+
+        // Management of features
+        $ctrl.displayFeatureManagement = function() {
+            $ctrl.isParametersVisible        = false;
+            $ctrl.isAddressVisible           = false;
+            $ctrl.isPoiCreationVisible       = false;
+            $ctrl.isFeatureCreationVisible   = false;
+            $ctrl.isFeatureManagementVisible = true;
+            $ctrl.isDrawingToolboxVisible    = false;
+        }
+
+        $ctrl.isDrawingToolboxVisible = false;
+        $ctrl.isMapToolboxVisible = false;
+        $ctrl.displayMapToolbox = function() {
+            $ctrl.isDrawingToolboxVisible = false;
+            $ctrl.isMapToolboxVisible     = true;
+            $ctrl.showMap();
+            EditService.resetActions();
+        }
+        $ctrl.displayDrawingToolbox = function() {
+            $ctrl.isDrawingToolboxVisible = true;
+            $ctrl.isMapToolboxVisible     = false;
+            $ctrl.isParametersVisible     = false;
+            $ctrl.enableDrawingMode('default');
+            $ctrl.freezeMap();
+        }
+
+        $ctrl.removeFeature = EditService.removeFeature;
+        $ctrl.updateFeature = EditService.updateFeature;
+        $ctrl.rotateFeature = EditService.rotateFeature;
+
+        $ctrl.updateMarker  = EditService.updateMarker;
+
+        $ctrl.updateColor = function(color) {
+            EditService.updateFeatureStyleAndColor(null, color);
+        }
+
+        $ctrl.updateStyle = function(style) {
+            EditService.updateFeatureStyleAndColor(style, null);
+        }
+
+        $ctrl.updateBackgroundColor = function(color) {
+            EditService.updateBackgroundStyleAndColor(null, color);
+        }
+
+        $ctrl.updateBackgroundStyle = function(style) {
+            EditService.updateBackgroundStyleAndColor(style, null);
+        }
+        
+        // switch of editor's mode
+        // adapt user's interactions
+        $ctrl.enableDrawingMode = function(mode) {
+
+            EditService.resetActions();
+
+            $ctrl.mode = mode;
+
+            function setStyles(styleSetting) {
+                $ctrl.styleChoices = EditService.settings.STYLES[styleSetting];
+                $ctrl.styleChosen  = $ctrl.styleChoices[0];
+            }
+
+            function getDrawingParameter() {
+                return {
+                    style: $ctrl.styleChosen,
+                    color: $ctrl.colorChosen,
+                    font: $ctrl.fontChosen,
+                    fontColor: $ctrl.fontColorChosen,
+                    contour: $ctrl.checkboxModel ? $ctrl.checkboxModel.contour : false,
+                    mode: $ctrl.mode
+                }
+            }
+
+            switch ($ctrl.mode) {
+
+                case 'default':
+                    EditService.addRadialMenus();
+                    break;
+
+                case 'undo':
+                    EditService.undo();
+                    break;
+
+                case 'point':
+                    setStyles($ctrl.mode);
+                    EditService.enablePointMode(getDrawingParameter);
+                    break;
+
+                case 'circle':
+                    setStyles('polygon');
+                    EditService.enableCircleMode(getDrawingParameter);
+                    break;
+
+                case 'line':
+                case 'polygon':
+                    setStyles($ctrl.mode);
+                    EditService.enableLineOrPolygonMode(getDrawingParameter);
+                    break;
+
+                case 'addtext':
+                    EditService.enableTextMode(getDrawingParameter);
+                    break;
+            }
+
+        }
+
+        $ctrl.centerView = EditService.resetZoom;
+
+        $ctrl.searchAddress      = function() {
+            
+            var promises = [];
+
+            if($ctrl.address.start) {
+                promises.push(
+                    EditService.searchAndDisplayAddress($ctrl.address.start,
+                                        'startPoint',
+                                        $ctrl.styleChosen,
+                                        $ctrl.colorChosen));
+            }
+
+            if($ctrl.address.stop) {
+                promises.push(
+                    EditService.searchAndDisplayAddress($ctrl.address.stop,
+                                        'stopPoint',
+                                        $ctrl.styleChosen,
+                                        $ctrl.colorChosen));
+            }
+
+            // center the map or display both of addresses
+            $q.all(promises)
+                .then(function(results) {
+                    if (results.length > 1) {
+                        // fitBounds
+                        EditService.fitBounds([
+                                [results[0].lat, results[0].lon],
+                                [results[1].lat, results[1].lon],
+                            ])
+                    } else {
+                        // pan
+                        EditService.panTo([results[0].lat, results[0].lon])
+                    }
+                })
+                .catch(function(error) {
+                    ToasterService.displayError(error);
+                })
+        };
+
+        // Initialisation of the view
         EditService.init(EditService.settings.FORMATS[$ctrl.mapFormat], 
                         EditService.settings.FORMATS[$ctrl.legendFormat]);
         
-        $ctrl.displayParameters();
-
-        /*
-        var data = {
-            "type":"FeatureCollection",
-            "features":[
-                {
-                    "type":"Feature",
-                    "id":"node/455444970",
-                    "properties":{
-                        "type":"node",
-                        "id":"455444970",
-                        "tags":{
-                            "amenity":"pub",
-                            "name":"Ô Boudu Pont"
-                        },
-                        "relations":[],
-                        "meta":{}
-                    },
-                    "geometry":{
-                        "type":"Point",
-                        "coordinates":[1.4363842,43.5989145]
-                    }
-                }]
-        }
-        
-        EditService.geojsonToSvg(data, 
-                            null, 
-                            'node_' + data.features[0].properties.id, 
-                            true, 
-                            $ctrl.queryChosen, 
-                            $ctrl.styleChosen, 
-                            $ctrl.styleChoices, 
-                            $ctrl.colorChosen, 
-                            $ctrl.checkboxModel, 
-                            $ctrl.rotationAngle)
-        */
     }
 
     angular.module(moduleApp).controller('EditController', EditController);
 
-    EditController.$inject = ['EditService', '$location']
+    EditController.$inject = ['EditService', 'ToasterService', '$location', '$q']
 })();

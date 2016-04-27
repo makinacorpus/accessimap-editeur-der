@@ -17,8 +17,12 @@
         ng-include="'scripts/views/edit/aside_feature_creation.html'"></div>
     
     <!-- Feature edition -->
-    <div ng-if="$ctrl.isPoiManagementVisible" 
-        ng-include="'scripts/views/edit/aside_poi_management.html'"></div>
+    <div ng-if="$ctrl.isFeatureManagementVisible" 
+        ng-include="'scripts/views/edit/aside_feature_management.html'"></div>
+    
+    <!-- Drawing features -->
+    <div ng-if="$ctrl.isDrawingToolboxVisible" 
+        ng-include="'scripts/views/edit/aside_toolbox_drawing.html'"></div>
     
 </div>
 

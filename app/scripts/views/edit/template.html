@@ -5,7 +5,7 @@
     <div class="aside-footer">
         <button 
             class="btn btn-success btn-block" 
-            ng-click="$ctrl.export()" 
+            ng-click="$ctrl.exportData()" 
             type="button">
             <span class="fa fa-floppy-o" aria-hidden="true"></span>
             Exporter le dessin          
@@ -25,49 +25,47 @@
                 <span class="fa fa-lg fa-bars"></span>
             </button>
         </div>-->
-        <div class="btn-group pull-left">
-            <button class="btn btn-primary" 
-                    ng-class="{ 'active' : $ctrl.isPoiCreationVisible }" 
-                    ng-click="$ctrl.displayAddPOIForm()">
-                <span class="fa fa-plus-circle" aria-hidden="true"></span>
-                Ajouter POI
-            </button>
-            <button class="btn btn-primary" 
-                    ng-class="{ 'active' : $ctrl.isAddressVisible }"
-                    ng-click="$ctrl.displaySearchAddressForm()">
-                <span class="fa fa-search" aria-hidden="true"></span>
-                Chercher une adresse
-            </button>
-            <button class="btn btn-primary" 
-                    ng-class="{ 'active' : $ctrl.isFeatureCreationVisible }"
-                    ng-click="$ctrl.displayGetDataFromOSMForm()">
-                <span class="fa fa-cloud-download" aria-hidden="true"></span> 
-                Obtenir des données d'OSM 
-            </button>
-            <button class="btn btn-primary" 
-                    ng-class="{ 'active' : $ctrl.isParametersVisible }"
-                    ng-click="$ctrl.displayParameters()">
-                <span class="fa fa-cog" aria-hidden="true"></span> 
-                Paramètres
-            </button>
-        </div>
+
+        <div ng-if="$ctrl.isDrawingToolboxVisible" class="btn-group pull-left"
+            ng-include="'scripts/views/edit/toolbox_drawing.html'"></div>
+
+        <div ng-if="$ctrl.isMapToolboxVisible" class="btn-group pull-left"
+            ng-include="'scripts/views/edit/toolbox_map.html'"></div>
 
         <div class="btn-group pull-right">
+            <!-- Drawing -->
             <button class="btn btn-default" 
                     ng-class="{ 'active' : $ctrl.isDrawingVisible }" 
                     ng-click="$ctrl.showDrawing()">
                 Dessin
             </button>
+            <!-- Legend -->
             <button class="btn btn-default" 
                     ng-class="{ 'active' : $ctrl.isLegendVisible }"
                     ng-click="$ctrl.showLegend()">
                 Légende
             </button>
+            <!-- Parameters -->
+            <button class="btn btn-primary" 
+                    ng-click="$ctrl.displayParameters()">
+                <span class="fa fa-cog" aria-hidden="true"></span> 
+            </button>
         </div>
 
     </aside>
+    
     <div id="drawing" ng-show="$ctrl.isDrawingVisible"></div>
     <div id="legend" ng-show="$ctrl.isLegendVisible"></div>
 </main>
 
 <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
+
+
+<!-- modal dialog changeColorModal -->
+<div ng-include="'scripts/views/edit/modalchangecolor.html'"></div>
+
+<!-- modal dialog changePatternModal -->
+<div ng-include="'scripts/views/edit/modalchangepattern.html'"></div>
+
+<!-- modal dialog changeArrowsModal -->
+<div ng-include="'scripts/views/edit/modalchangearrows.html'"></div>

@@ -1,7 +1,6 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.DrawingService
- * @requires accessimapEditeurDerApp.ProjectionService
  * @requires accessimapEditeurDerApp.LayerService
  * @description
  * Service providing drawing functions
@@ -12,82 +11,75 @@
 (function() {
     'use strict';
 
-    function DrawingService(ProjectionService, LayerService, settings) {
-
-        this.initDrawing  = initDrawing;
-        this.resetView    = resetView;
-        this.mapMoved     = mapMoved;
-        this._path        = _path;
-        this.geojsonToSvg = geojsonToSvg;
+    function DrawingService(LayerService, ToolboxService, settings, FeatureService, EventService, ExportService, shareSvg) {
 
         var _width,
             _height,
+            _x,
+            _y,
             _margin,
-            _ratioPixelPoint,
             _geojson = [],
             _path,
-            _map,
             _drawingDOM,
-            _feature,
-            _projectPoint,
             _projection,
-            _collection = {
-                "type":"FeatureCollection",
-                "features":[
-                    {
-                        "type":"Feature",
-                        "id":"node/455444970",
-                        "properties": {
-                            "type":"node",
-                            "id":"455444970",
-                            "tags": {
-                                "amenity":"pub",
-                                "name":"Ô Boudu Pont"
-                            },
-                            "relations":[],
-                            "meta":{}
-                        },
-                        "geometry":{
-                            "type":"Point",
-                            "coordinates":[1.4363842,43.5989145]
-                        }
-                    },
-                    {
-                        "type": "Feature",
-                        "properties": {},
-                        "geometry": {
-                            "type": "Polygon",
-                            "coordinates": [
-                            [
-                              [
-                                1.43633633852005,
-                                43.598928233215055
-                              ],
-                              [
-                                1.4362987875938416,
-                                43.59889132732073
-                              ],
-                              [
-                                1.4363336563110352,
-                                43.59887190315674
-                              ],
-                              [
-                                1.4363658428192139,
-                                43.5988971545687
-                              ],
-                              [
-                                1.43633633852005,
-                                43.598928233215055
-                              ]
-                            ]
-                          ]
-                        }
-                    }]
-            },
             _svg,
-            _overlay,
+            _container,
             _g,
-            _transform;
+            _transform,
+            _idSVG = 'd3drawing',
+            states = {
+                DRAWING: 0,
+                MAPPING: 1
+            },
+            _state = states.DRAWING,
+            _zoom;
+
+        this.initDrawing   = initDrawing;
+        this.resetView     = resetView;
+        this.mapMoved      = mapMoved;
+        this._path         = _path;
+        this.geojsonToSvg  = geojsonToSvg;
+        this.removeFeature = removeFeature;
+        this.updateFeature = updateFeature;
+        this.rotateFeature = rotateFeature;
+        this.drawAddress   = drawAddress;
+        this.getFeatures   = function() { return _geojson }
+
+        // ToolboxService
+        this.changeTextColor               = ToolboxService.changeTextColor;
+        this.updateFeatureStyleAndColor    = ToolboxService.updateFeatureStyleAndColor;
+        this.updateBackgroundStyleAndColor = ToolboxService.updateBackgroundStyleAndColor;
+        this.updateMarker                  = ToolboxService.updateMarker;
+        this.addRadialMenus                = ToolboxService.addRadialMenus
+        this.isUndoAvailable               = FeatureService.isUndoAvailable;
+        this.undo                          = FeatureService.undo;
+        
+        this.drawPoint                     = ToolboxService.drawPoint;
+        
+        this.drawCircle                    = ToolboxService.drawCircle;
+        this.updateCircleRadius            = ToolboxService.updateCircleRadius;
+        
+        this.beginLineOrPolygon            = ToolboxService.beginLineOrPolygon;
+        this.drawHelpLineOrPolygon         = ToolboxService.drawHelpLineOrPolygon;
+        this.finishLineOrPolygon           = ToolboxService.finishLineOrPolygon;
+        
+        this.writeText                     = ToolboxService.writeText;
+
+        this.enableZoomHandler = enableZoomHandler;
+
+        this.exportData                    = function(filename) {
+            shareSvg.getInteractions()
+                .then(function(interactionData) {
+                    ExportService.exportData(filename, 
+                            _svg.node(), 
+                            d3.select('.leaflet-tile-container.leaflet-zoom-animated').node(),
+                            d3.select('#der-legend').selectAll('svg').node(),
+                            $('#comment').val(),
+                            interactionData);
+                })
+        }
+
+        this.resetZoom = resetZoom;
 
         /**
          * @ngdoc method
@@ -100,89 +92,140 @@
          * @param  {string} id     
          * id of element in which will be appended svg
          * 
-         * @param  {integer} widthMM
-         * width in millimeters of the svg created
+         * @param  {integer} width
+         * width in pixels of the svg created
          * 
-         * @param  {integer} heightMM
-         * height in millimeters of the svg created
+         * @param  {integer} height
+         * height in pixels of the svg created
          * 
          * @param  {integer} margin 
          * margin of border in millimeters of the svg created
          * 
          * @param  {integer} ratioPixelPoint 
-         * ratioPixelPoint ? TODO please explain it...
+         * Ratio to use to transform millimeters into pixels
          * 
          * @param  {function} projectPoint 
          * Function used to project point's coordinates from LatLng to layer points
          * 
-         * @param  {Object} map 
-         * Reference to leaflet map... TODO please remove it !
-         * 
          * @param  {Object} fillPatterns 
          * object providing patterns svg to add for filling purposes
          */
-        function initDrawing(id, widthMM, heightMM, margin, ratioPixelPoint, projectPoint, map, fillPatterns) {
+        function initDrawing(id, element, width, height, margin, projectPoint, fillPatterns) {
             
-            _width           = widthMM / ratioPixelPoint;
-            _height          = heightMM / ratioPixelPoint;
+            _width           = width;
+            _height          = height;
             _margin          = margin;
-            _ratioPixelPoint = ratioPixelPoint;
 
-            _projectPoint    = projectPoint;
             _projection      = projectPoint;
 
-            _map = map;
             _svg = d3.select(id).append("svg")
-                .attr("width", _map.getSize().x)
-                .attr("height", _map.getSize().y)
+            // _svg = element.append("svg")
+                .attr("id", _idSVG)
+                .attr("width", _width)
+                .attr("height", _height)
+                // .style("pointer-events", "none")
+                .attr('e-style', settings.STYLES.polygon[settings.STYLES.polygon.length - 1].id)
+                .attr('e-color', settings.COLORS.transparent[0].color);
             
             // Add defs to svg for fill patterns
-            angular.forEach(fillPatterns, function(key) {
-                _svg.call(key);
-                // legendsvg.call(key);
+            var _defs = _svg.append("defs");
+            Object.keys(fillPatterns).forEach(function(value, index, array) {
+                _defs.call(fillPatterns[value]);
+                // legendsvg.call(fillPatterns[value]);
             });
 
-            _g = _svg.append("g")
+            _container = _svg
+                .append("svg")
+                    .attr("id", "drawing")
+                    .attr("width", _width - margin * 2)
+                    .attr("height", _height - margin * 2)
+                    .attr("x", margin)
+                    .attr("y", margin)
+                
+            // _g = element
+            _g = _container.append("g")
                     .attr("class", "leaflet-zoom-hide")
                     .attr("id", "drawing-layer");
+            //         
 
             _transform = d3.geo.transform({point: projectPoint}),
             _path = d3.geo.path().projection(_transform);
 
-            // var _projection = d3.geo.mercator()
-            //         .scale(Math.pow(2, 22) / 2 / Math.PI)
-            //         .translate([_width / 2, _height / 2]);
+            LayerService.addLayers(_svg, _g, _defs, _width, _height, _margin);
 
-            // _path = d3.geo.path().projection(_projection);
-
-            _feature = _g.selectAll("path")
-                        .data(_collection.features)
-                        .enter().append("path");
+            ToolboxService.init(_svg, _geojson);
             
-            LayerService.createDefs(_svg);
-            LayerService.createDrawing(_g);
-            LayerService.createSource(_svg);
-            
-            _overlay = d3.select(id).append('svg')
-                    .attr("width", _width)
-                    .attr("height", _height);
+            /*_zoom = d3.behavior.zoom()
+                    .translate([_x, _y])
+                    .scale(1)
+                    .scaleExtent([1 - 18, 18 - settings.leaflet.GLOBAL_MAP_DEFAULT_ZOOM])
+                    .on('zoom', _zoomed);
 
-            LayerService.createMargin(_overlay, _width, _height, _margin);
-            LayerService.createFrame(_overlay, _width, _height);
+            function _zoomed() {
+                console.log('_zoomed')
+                var transform = 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')'
 
+                _svg.attr("width", _width * d3.event.scale)
+                _svg.attr("height", _height * d3.event.scale)
+
+                _g.attr('transform', transform);
+
+                d3.select('#margin-layer').attr('transform', transform);
+                d3.select('#frame-layer').attr('transform', transform);
+                d3.select('#d3drawing').attr('transform', transform);
+            }
+
+            _svg.call(_zoom)*/
+
+        }
+        
+        function enableZoomHandler() {
+
+            _zoom = d3.behavior.zoom()
+                    .translate([_x, _y])
+                    .scale(1)
+                    .scaleExtent([1 - 18, 18 - settings.leaflet.GLOBAL_MAP_DEFAULT_ZOOM])
+                    .on('zoom', _zoomed);
+
+            function _zoomed() {
+                console.log('_zoomed')
+                var transform = 'translate(' + d3.event.translate[0] + ',' + d3.event.translate[1] + ')scale(' + d3.event.scale + ')'
+
+                _svg.attr("width", _width * d3.event.scale)
+                _svg.attr("height", _height * d3.event.scale)
+
+                _g.attr('transform', transform);
+
+                d3.select('#margin-layer').attr('transform', transform);
+                d3.select('#frame-layer').attr('transform', transform);
+                d3.select('#d3drawing').attr('transform', transform);
+            }
+
+            _svg.call(_zoom)
+
+        }
+
+        function resetZoom() {
+            _zoom.scale(1)
+                .translate([0, 0]);
+            _g.attr('transform', null);
+            d3.select('#margin-layer').attr('transform', null);
+            d3.select('#frame-layer').attr('transform', null);
+            d3.select('#d3drawing').attr('transform', null);
         }
 
         /**
          * @ngdoc method
-         * @name zoomed
+         * @name project
          * @methodOf accessimapEditeurDerApp.DrawingService
+         * 
          * @description 
-         * Event function triggered when a zoom is made on the drawing 
-         * (mousewheel, dbl click, ...)
+         * Project all paths from _geojson
          */
-        function zoomed() {
+        function project() {
 
-            angular.forEach(_geojson, function(geojson) {
+            _geojson.forEach(function (geojson) {
+
                 d3.selectAll('path.' + geojson.id)
                         .filter(function(d) {
                             return d.geometry.type !== 'Point'; })
@@ -208,18 +251,20 @@
                             return geojson.style.path(coords.x, coords.y, geojson.style.radius);
                         })
                         .attr('transform', function(d) {
+                            var result = '';
+
                             if (this.transform.baseVal.length > 0) {
                                 var coords = _projection(d.geometry.coordinates);
 
-                                return 'rotate(' + geojson.rotation + ' ' + coords[0] + ' ' + coords[1] + ')';
+                                result += 'rotate(' + geojson.rotation + ' ' + coords[0] + ' ' + coords[1] + ');';
                             }
+
+                            // result+= 'scale(' + scale + ');';
+
+                            return result;
                         });
             });
-
-            // _projection
-            //     .scale(_zoom.scale() / 2 / Math.PI)
-            //     .translate(_zoom.translate());
-
+            
         }
 
         /**
@@ -228,35 +273,24 @@
          * TODO: clear the dependencies to map... maybe, give the responsability to the map
          * and so, thanks to a 'class', we could 'freeze' the overlay thanks to this calc
          */
-        function resetView() {
+        var firstZoom = null,
+            actualZoom = 0;
 
-            var translationX = 0,
-                translationY = ( _map.getSize().y / 2 ),
-            
-            x = 
-                // to get x, we calc the space between left and the overlay
-                // and we substract the difference between the original point of the map 
-                // and the actual bounding topleft point
-                - (_map.getPixelOrigin().x - _map.getPixelBounds().min.x),
+        function resetView(event, pixelOrigin, zoom) {
 
-                y = 
-                // to get y, we calc the space between the middle axe and the top of the overlay
-                _map.getSize().y / -2 
-                // and we substract the difference between the original point of the map
-                // and the actual bounding topleft point
-                - (_map.getPixelOrigin().y - _map.getPixelBounds().min.y - _map.getSize().y / 2);
+            console.log(event.target._zoom);
 
-            _svg
-                .style("left", x + "px")
-                .style("top",  y + "px");
-            
-            // _g  .attr("transform", "translate(" + translationX + "," + translationY + ")");
-            // _g  .attr("transform", "translate(0," + ( _map.getSize().y / -2 ) + ")");
-            _g  .attr("transform", "translate(" + x*-1 + "," + y*-1 + ")");
+            if (! firstZoom) 
+                firstZoom = event.target._zoom;
 
-            zoomed();
+            actualZoom = event.target._zoom - firstZoom + 1;
 
-            _feature.attr("d", _path);
+            console.log(actualZoom)
+
+            project()
+            console.log((1 << 8 + zoom) / 2 / Math.PI)
+            // reset(pixelOrigin, zoom)
+            // zoomed((event.target._zoom - firstZoom) + 1);
         }
 
         /**
@@ -264,46 +298,47 @@
          * TODO: clear the dependencies to map... maybe, give the responsability to the map
          * and so, thanks to a 'class', we could 'freeze' the overlay thanks to this calc
          */
-        function mapMoved() {
+        function mapMoved(size, pixelOrigin, pixelBoundMin) {
 
             // x,y are coordinates to position overlay
             // coordinates 0,0 are not the top left, but the point at the middle left
-            var x = 
+            _x = 
                 // to get x, we calc the space between left and the overlay
-                ( ( _map.getSize().x - _width) / 2 ) 
+                ( ( size.x - _width) / 2 ) 
                 // and we substract the difference between the original point of the map 
                 // and the actual bounding topleft point
-                - (_map.getPixelOrigin().x - _map.getPixelBounds().min.x),
+                - (pixelOrigin.x - pixelBoundMin.x);
 
-                y = 
+            _y = 
                 // to get y, we calc the space between the middle axe and the top of the overlay
                 _height / -2 
                 // and we substract the difference between the original point of the map
                 // and the actual bounding topleft point
-                - (_map.getPixelOrigin().y - _map.getPixelBounds().min.y - _map.getSize().y / 2);
-
-            _overlay.style("left", x + "px")
-                    .style("top", y + "px");
-
-            x = - (_map.getPixelOrigin().x - _map.getPixelBounds().min.x);
-            y = _map.getSize().y / -2 
-                - (_map.getPixelOrigin().y - _map.getPixelBounds().min.y - _map.getSize().y / 2);
+                - (pixelOrigin.y - pixelBoundMin.y - size.y / 2);
 
             _svg
-                .style("left", x + "px")
-                .style("top",  y + "px");
+                .style("left", _x + "px")
+                .style("top",  _y + "px");
 
-            _g  .attr("transform", "translate(" + x*-1 + "," + y*-1 + ")");
+            _g  .attr("transform", "translate(" + (_x*-1 - _margin) + "," + (_y*-1 - _margin) + ")");
         }
 
         /**
          * @ngdoc method
          * @name  geojsonToSvg
-         * @methodOf accessimapEditeurDerApp.LocalmapService
-         * @description simplify... ?
-         * @param  {Object} data       [description]
-         * @param  {Object} feature       [description]
-         * @param  {Object} optionalClass [description]
+         * @methodOf accessimapEditeurDerApp.DrawingService
+         * 
+         * @description 
+         * simplify... ?
+         * 
+         * @param  {Object} data       
+         * [description]
+         * 
+         * @param  {Object} feature       
+         * [description]
+         * 
+         * @param  {Object} optionalClass 
+         * [description]
          */
         function geojsonToSvg(data, simplification, id, poi, queryChosen, styleChosen, 
             styleChoices, colorChosen, checkboxModel, rotationAngle) {
@@ -385,12 +420,83 @@
 
         /**
          * @ngdoc method
+         * @name  drawAddress
+         * @methodOf accessimapEditeurDerApp.DrawingService
+         *
+         * @description 
+         * draw a circle for an address
+         * 
+         * @param  {Object} data
+         * data returned by a nominatim server, containing geometry & other stuff
+         * to display the poi
+         * 
+         * @param  {string} id
+         * specific string identifying this address
+         * useful to erase the d3 node
+         * 
+         * @param  {settings.STYLES} style
+         * style of the point ... ?
+         * 
+         * @param  {settings.COLORS} color 
+         * Color of the POI
+         * 
+         */
+        function drawAddress(data, id, style, color) {
+            var lon = data.lon,
+                lat = data.lat,
+                point = turf.point([lon, lat]);
+
+            // Draw a point
+            if (d3.select(id).node()) {
+                d3.select(id).remove();
+            }
+
+            var obj = {
+                id: id,
+                name: id,
+                geometryType: 'point',
+                layer: $.extend(true, {}, point), //deep copy,
+                originallayer: $.extend(true, {}, point), //deep copy
+                style: settings.STYLES.point[0],
+                styleChoices: settings.STYLES.point,
+                rotation: 0
+            };
+
+            _geojson.push(obj);
+
+            var features = turf.featurecollection([point]);
+            drawFeature(features, [obj], null, style, color, null, 0);
+
+        }
+
+        /**
+         * @ngdoc method
          * @name  drawFeature
-         * @methodOf accessimapEditeurDerApp.LocalmapService
-         * @description simplify... ?
-         * @param  {Object} data       [description]
-         * @param  {Object} feature       [description]
-         * @param  {Object} optionalClass [description]
+         * @methodOf accessimapEditeurDerApp.DrawingService
+         * 
+         * @description 
+         * Draw the features
+         * 
+         * @param  {Object} data       
+         * [description]
+         * 
+         * @param  {Object} feature       
+         * [description]
+         * 
+         * @param  {Object} optionalClass 
+         * [description]
+         * 
+         * @param  {Object} styleChosen 
+         * [description]
+         * 
+         * @param  {Object} colorChosen 
+         * [description]
+         * 
+         * @param  {Object} checkboxModel 
+         * [description]
+         * 
+         * @param  {Object} rotationAngle 
+         * [description]
          */
         function drawFeature(data, feature, optionalClass, styleChosen, 
             colorChosen, checkboxModel, rotationAngle) {
@@ -463,13 +569,13 @@
                     }
                 })
                 .attr('cx', function(d) {
-                    return _projectPoint(d.geometry.coordinates[0], d.geometry.coordinates[1]).x;
+                    return _projection(d.geometry.coordinates[0], d.geometry.coordinates[1]).x;
                 })
                 .attr('cy', function(d) {
-                    return _projectPoint(d.geometry.coordinates[0], d.geometry.coordinates[1]).y;
+                    return _projection(d.geometry.coordinates[0], d.geometry.coordinates[1]).y;
                 })
                 .attr('d', function(d) {
-                    var coords = _projectPoint(d.geometry.coordinates[0], d.geometry.coordinates[1]);
+                    var coords = _projection(d.geometry.coordinates[0], d.geometry.coordinates[1]);
 
                     return feature[0].style.path(coords.x, coords.y, feature[0].style.radius);
                 });
@@ -507,11 +613,13 @@
                 });
             }
 
-            // if (checkboxModel.contour && !d3.select('#' + feature[0].id).attr('stroke')) {
-            //     d3.select('#' + feature[0].id)
-            //         .attr('stroke', 'black')
-            //         .attr('stroke-width', '2');
-            // }
+            if (checkboxModel 
+                && checkboxModel.contour 
+                && !d3.select('#' + feature[0].id).attr('stroke')) {
+                d3.select('#' + feature[0].id)
+                    .attr('stroke', 'black')
+                    .attr('stroke-width', '2');
+            }
 
             if (optionalClass) {
                 angular.forEach(feature[0].style['style_' + optionalClass], function(attribute) {
@@ -530,11 +638,170 @@
             // rotate(rotationAngle);
         }
         
+        /**
+         * @ngdoc method
+         * @name  updateFeature
+         * @methodOf accessimapEditeurDerApp.DrawingService
+         * 
+         * @description  
+         * update the style of a 'feature' = item of '_geojson' collection.
+         *
+         * @param  {Object} id 
+         * id of the feature
+         */
+        function updateFeature(id, style) {
+            console.log('updateFeature')
+            var result = _geojson.filter(function(obj) {
+                    return obj.id === id;
+                }),
+                objectId = _geojson.indexOf(result[0]);
+
+            if (_geojson[objectId].contour) {
+                d3.select('#' + id)
+                    .attr('stroke', 'black')
+                    .attr('stroke-width', '2');
+            } else {
+                d3.select('#' + id)
+                    .attr('stroke', null)
+                    .attr('stroke-width', null);
+            }
+
+            angular.forEach(style.style, function(attribute) {
+                var k = attribute.k,
+                    v = attribute.v;
+
+                if (k === 'fill-pattern') {
+                    if (_geojson[objectId].color && _geojson[objectId].color.color !== 'none') {
+                        v += '_' + _geojson[objectId].color.color;
+                    }
+                    d3.select('#' + id)
+                        .attr('fill', settings.POLYGON_STYLES[v].url());
+                } else {
+                    d3.select('#' + id)
+                        .attr(k, v);
+                }
+            });
+
+            if (style.styleInner) {
+                angular.forEach(style.styleInner, function(attribute) {
+                    var k = attribute.k,
+                        v = attribute.v;
+
+                    if (k === 'fill-pattern') {
+                        d3.select('.inner#' + id).attr('fill', settings.POLYGON_STYLES[v].url());
+                    } else {
+                        d3.select('.inner#' + id).attr(k, v);
+                    }
+                });
+            }
+
+            if (style.path) {
+                _geojson[objectId].style.path = style.path;
+                zoomed();
+            }
+
+            var symbol = d3.select('.legend#' + id).select('.symbol');
+
+            if (_geojson[objectId].contour) {
+                symbol
+                    .attr('stroke', 'black')
+                    .attr('stroke-width', '2');
+            } else {
+                symbol
+                    .attr('stroke', null)
+                    .attr('stroke-width', null);
+            }
+            angular.forEach(style.style, function(attribute) {
+                var k = attribute.k,
+                    v = attribute.v;
+
+                if (k === 'fill-pattern') {
+                    if (_geojson[objectId].color && _geojson[objectId].color.color !== 'none') {
+                        v += '_' + _geojson[objectId].color.color;
+                    }
+                    symbol.attr('fill', settings.POLYGON_STYLES[v].url());
+                } else {
+                    symbol.attr(k, v);
+                }
+            });
+
+            if (style.styleInner) {
+                var symbolInner = d3.select('.legend#' + id).select('.inner');
+                angular.forEach(style.styleInner, function(attribute) {
+                    var k = attribute.k,
+                        v = attribute.v;
+
+                    if (k === 'fill-pattern') {
+                        symbol.attr('fill', settings.POLYGON_STYLES[v].url());
+                    } else {
+                        symbolInner.attr(k, v);
+                    }
+                });
+            }
+
+            if (style.path) {
+                symbol.attr('d', function() {
+                    return style.path(symbol.attr('cx'), symbol.attr('cy'), style.radius);
+                });
+            }
+        }
  
+        /**
+         * @ngdoc method
+         * @name  removeFeature
+         * @methodOf accessimapEditeurDerApp.DrawingService
+         * 
+         * @description  
+         * remove a 'feature' = item of '_geojson' collection.
+         *
+         * Remove it from the array and from the map / legend
+         * 
+         * @param  {Object} id 
+         * id of the feature
+         */
+        function removeFeature(id) {
+            // Remove object from _geojson
+            var result = _geojson.filter(function(obj) {
+                    return obj.id === id;
+                }),
+                index = _geojson.indexOf(result[0]);
+            _geojson.splice(index, 1);
+
+            // Remove object from map
+            d3.select('.vector#' + id).remove();
+
+            if (d3.select('.vector.inner#' + id)) {
+                d3.select('.vector.inner#' + id).remove();
+            }
+
+            // Remove object from legend
+            d3.select('.legend#' + id).remove();
+        }
+
+        /**
+         * @ngdoc method
+         * @name  rotateFeature
+         * @methodOf accessimapEditeurDerApp.DrawingService
+         * 
+         * @description 
+         * rotate a feature element (feature.id) of a feature.rotation
+         * 
+         * @param  {Object} feature       
+         * Object with id & rotation properties
+         */
+        function rotateFeature(feature) {
+            var features = d3.selectAll('.' + feature.id);
+            angular.forEach(features[0], function(featurei) {
+                var cx = d3.select(featurei).attr('cx'),
+                    cy = d3.select(featurei).attr('cy');
+                d3.select(featurei).attr('transform', 'rotate(' + feature.rotation + ' ' + cx + ' ' + cy + ')');
+            });
+        };
+
     }
 
     angular.module(moduleApp).service('DrawingService', DrawingService);
 
-    DrawingService.$inject = ['ProjectionService', 'LayerService', 'settings'];
+    DrawingService.$inject = ['LayerService', 'ToolboxService', 'settings', 'FeatureService', 'EventService', 'ExportService', 'shareSvg'];
 
 })();

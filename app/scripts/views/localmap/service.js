@@ -884,9 +884,13 @@
          * @ngdoc method
          * @name  zoomOnPlace
          * @methodOf accessimapEditeurDerApp.LocalmapService
+         * 
          * @description  
          * Locate addresses, add POI on the map, and zoom on it.
-         * @param  {Object} address Contains two sub objects, start & stop, representing two places to locate
+         * 
+         * @param  {Object} address 
+         * Contains two sub objects, start & stop, 
+         * representing two places to locate
          */
         function zoomOnPlace(address, styleChosen, colorChosen, checkboxModel, rotationAngle) {
             var start = address.start !== '' && address.start,

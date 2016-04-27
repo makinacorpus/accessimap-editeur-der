@@ -4,11 +4,8 @@
  * @ngdoc service
  * @name accessimapEditeurDerApp.settings
  * @requires accessimapEditeurDerApp.editSvg
- * @requires accessimapEditeurDerApp.remove
- * @requires accessimapEditeurDerApp.interact
- * @requires accessimapEditeurDerApp.style
- * @requires accessimapEditeurDerApp.move
- * @requires accessimapEditeurDerApp.geometry
+ * @requires accessimapEditeurDerApp.FeatureService
+ * @requires accessimapEditeurDerApp.InteractionService
  * @description
  * # settings
  * Factory in the accessimapEditeurDerApp.
@@ -16,7 +13,7 @@
 (function() {
     'use strict';
 
-    function settings (editSvg, remove, interact, style, move, geometry) {
+    function settings (editSvg, FeatureService, InteractionService) {
 
         var leafletConf = {
                 GLOBAL_MAP_CENTER1: [1.441019, 43.604268], // [lon, lat]
@@ -84,11 +81,20 @@
                 name: 'Bleu',
                 color: 'blue',
             }, {
+                name: 'Cyan',
+                color: 'cyan',
+            }, {
                 name: 'Rouge',
                 color: 'red',
             }, {
                 name: 'Jaune',
                 color: 'yellow',
+            }, {
+                name: 'Vert',
+                color: 'limegreen',
+            }, {
+                name: 'Violet',
+                color: 'purple',
             }
         ]},
 
@@ -250,6 +256,22 @@
             'caps_blue': textures.paths().d('caps').background('blue'),
             'woven_blue': textures.paths().d('woven').background('blue'),
             'solid_blue': textures.lines().strokeWidth(0).background('blue'),
+            'bighash_cyan': textures.lines().orientation('vertical').background('cyan'),
+            'bighashm45_cyan': textures.lines().orientation('6/8').background('cyan'),
+            'bighash45_cyan': textures.lines().orientation('2/8').background('cyan'),
+            'smallhash_cyan': textures.lines().orientation('vertical').thicker().background('cyan'),
+            'smallhashm45_cyan': textures.lines().orientation('6/8').thicker().background('cyan'),
+            'smallhash45_cyan': textures.lines().orientation('2/8').thicker().background('cyan'),
+            'waves_cyan': textures.paths().d('waves').background('cyan'),
+            'smalldots_cyan': textures.circles().complement().background('cyan'),
+            'smalldotsline_cyan': textures.circles().lighter().thicker().complement().strokeWidth(1.1).background('cyan'),
+            'smalldotsthicker_cyan': textures.circles().lighter().thicker().complement().strokeWidth(1.1).background('cyan'),
+            'smalldotsthicker2_cyan': textures.circles().lighter().thicker().complement().strokeWidth(1.3).background('cyan'),
+            'bigdots_cyan': textures.circles().fill('grey').heavier().complement().background('cyan'),
+            'squares45_cyan': textures.lines().orientation('2/8', '6/8').size(20).strokeWidth(1).background('cyan'),
+            'caps_cyan': textures.paths().d('caps').background('cyan'),
+            'woven_cyan': textures.paths().d('woven').background('cyan'),
+            'solid_cyan': textures.lines().strokeWidth(0).background('cyan'),
             'bighash_red': textures.lines().orientation('vertical').background('red'),
             'bighashm45_red': textures.lines().orientation('6/8').background('red'),
             'bighash45_red': textures.lines().orientation('2/8').background('red'),
@@ -282,6 +304,38 @@
             'caps_yellow': textures.paths().d('caps').background('yellow'),
             'woven_yellow': textures.paths().d('woven').background('yellow'),
             'solid_yellow': textures.lines().strokeWidth(0).background('yellow'),
+            'bighash_limegreen': textures.lines().orientation('vertical').background('limegreen'),
+            'bighashm45_limegreen': textures.lines().orientation('6/8').background('limegreen'),
+            'bighash45_limegreen': textures.lines().orientation('2/8').background('limegreen'),
+            'smallhash_limegreen': textures.lines().orientation('vertical').thicker().background('limegreen'),
+            'smallhashm45_limegreen': textures.lines().orientation('6/8').thicker().background('limegreen'),
+            'smallhash45_limegreen': textures.lines().orientation('2/8').thicker().background('limegreen'),
+            'waves_limegreen': textures.paths().d('waves').background('limegreen'),
+            'smalldots_limegreen': textures.circles().complement().background('limegreen'),
+            'smalldotsline_limegreen': textures.circles().lighter().thicker().complement().strokeWidth(1.1).background('limegreen'),
+            'smalldotsthicker_limegreen': textures.circles().lighter().thicker().complement().strokeWidth(1.1).background('limegreen'),
+            'smalldotsthicker2_limegreen': textures.circles().lighter().thicker().complement().strokeWidth(1.3).background('limegreen'),
+            'bigdots_limegreen': textures.circles().fill('grey').heavier().complement().background('limegreen'),
+            'squares45_limegreen': textures.lines().orientation('2/8', '6/8').size(20).strokeWidth(1).background('limegreen'),
+            'caps_limegreen': textures.paths().d('caps').background('limegreen'),
+            'woven_limegreen': textures.paths().d('woven').background('limegreen'),
+            'solid_limegreen': textures.lines().strokeWidth(0).background('limegreen'),
+            'bighash_purple': textures.lines().orientation('vertical').background('purple'),
+            'bighashm45_purple': textures.lines().orientation('6/8').background('purple'),
+            'bighash45_purple': textures.lines().orientation('2/8').background('purple'),
+            'smallhash_purple': textures.lines().orientation('vertical').thicker().background('purple'),
+            'smallhashm45_purple': textures.lines().orientation('6/8').thicker().background('purple'),
+            'smallhash45_purple': textures.lines().orientation('2/8').thicker().background('purple'),
+            'waves_purple': textures.paths().d('waves').background('purple'),
+            'smalldots_purple': textures.circles().complement().background('purple'),
+            'smalldotsline_purple': textures.circles().lighter().thicker().complement().strokeWidth(1.1).background('purple'),
+            'smalldotsthicker_purple': textures.circles().lighter().thicker().complement().strokeWidth(1.1).background('purple'),
+            'smalldotsthicker2_purple': textures.circles().lighter().thicker().complement().strokeWidth(1.3).background('purple'),
+            'bigdots_purple': textures.circles().fill('grey').heavier().complement().background('purple'),
+            'squares45_purple': textures.lines().orientation('2/8', '6/8').size(20).strokeWidth(1).background('purple'),
+            'caps_purple': textures.paths().d('caps').background('purple'),
+            'woven_purple': textures.paths().d('woven').background('purple'),
+            'solid_purple': textures.lines().strokeWidth(0).background('purple'),
         },
 
         STYLES = {
@@ -1172,71 +1226,74 @@
             name: 'Trait'
         }],
 
-        XAPI_URL = 'http://overpass-api.de/api/interpreter?data=',
+        // XAPI_URL = 'http://overpass-api.de/api/interpreter?data=',
+        XAPI_URL = 'http://api.openstreetmap.fr/oapi/interpreter/?data=',
+        NOMINATIM_URL = 'http://nominatim.openstreetmap.org/search/',
 
         ACTIONS = {
             'point': [
                 { icon: 'assets/icons/delete.svg', 
-                    action: remove.removeObject},
+                    action: FeatureService.removeObject},
                 { icon: 'assets/icons/open_with.svg', 
-                    action: move.movePath },
+                    action: FeatureService.movePath },
                 { icon: 'assets/icons/autorenew.svg', 
-                    action: move.rotatePath },
+                    action: FeatureService.rotatePath },
                 //{ icon: 'assets/icons/palette.svg', action: 'fill' },
                 { icon: 'assets/icons/radio_button_checked.svg', 
-                    action: style.emptyNearFeature },
+                    action: FeatureService.emptyNearFeature },
                 { icon: 'assets/icons/hearing.svg', 
-                    action: interact.addInteraction }
+                    action: InteractionService.addInteraction }
             ],
             'line': [
                 { icon: 'assets/icons/delete.svg', 
-                    action: remove.removeObject },
+                    action: FeatureService.removeObject },
                 { icon: 'assets/icons/linear_scale.svg', 
-                    action: move.movePoint },
+                    action: FeatureService.movePoint },
                 { icon: 'assets/icons/trending_flat.svg', 
-                    action: style.toggleArrow },
+                    action: FeatureService.toggleArrow },
                 { icon: 'assets/icons/radio_button_checked.svg', 
-                    action: style.emptyNearFeature },
+                    action: FeatureService.emptyNearFeature },
                 { icon: 'assets/icons/rounded_corner.svg', 
-                    action: geometry.lineToCardinal }
+                    action: FeatureService.lineToCardinal }
             ],
             'polygon': [
                 { icon: 'assets/icons/delete.svg', 
-                    action: remove.removeObject },
+                    action: FeatureService.removeObject },
                 { icon: 'assets/icons/linear_scale.svg', 
-                    action: move.movePoint },
+                    action: FeatureService.movePoint },
                 { icon: 'assets/icons/texture.svg', 
-                    action: style.changePattern },
+                    action: FeatureService.changePattern },
                 { icon: 'assets/icons/palette.svg', 
-                    action: style.changeColor },
+                    action: FeatureService.changeColor },
                 { icon: 'assets/icons/radio_button_checked.svg', 
-                    action: style.emptyNearFeature },
+                    action: FeatureService.emptyNearFeature },
                 { icon: 'assets/icons/crop_din.svg', 
-                    action: style.toggleStroke }
+                    action: FeatureService.toggleStroke }
             ],
             'circle': [
                 { icon: 'assets/icons/delete.svg', 
-                    action: remove.removeObject },
+                    action: FeatureService.removeObject },
                 { icon: 'assets/icons/texture.svg', 
-                    action: style.changePattern },
+                    action: FeatureService.changePattern },
                 { icon: 'assets/icons/palette.svg', 
-                    action: style.changeColor },
+                    action: FeatureService.changeColor },
                 { icon: 'assets/icons/radio_button_checked.svg', 
-                    action: style.emptyNearFeature },
+                    action: FeatureService.emptyNearFeature },
                 { icon: 'assets/icons/crop_din.svg', 
-                    action: style.toggleStroke }
+                    action: FeatureService.toggleStroke }
             ],
             'text': [
                 { icon: 'assets/icons/delete.svg', 
-                    action: remove.removeObject },
+                    action: FeatureService.removeObject },
                 { icon: 'assets/icons/radio_button_checked.svg', 
-                    action: style.textEmptyNearFeature }
+                    action: FeatureService.textEmptyNearFeature }
             ]
         };
 
         // Public API here
         return {
             XAPI_URL: XAPI_URL,
+            NOMINATIM_URL: NOMINATIM_URL,
             FONTS: FONTS,
             COLORS: COLORS,
             FORMATS: FORMATS,
@@ -1244,6 +1301,7 @@
             DEFAULT_LEGEND_FORMAT: 'landscapeA4',
             QUERY_LIST: QUERY_LIST,
             QUERY_DEFAULT: QUERY_LIST[4],
+            QUERY_POI: QUERY_LIST[0],
             POLYGON_STYLES: POLYGON_STYLES,
             STYLES: STYLES,
             ACTIONS: ACTIONS,
@@ -1258,6 +1316,6 @@
     angular.module(moduleApp)
         .factory('settings', settings);
 
-    settings.$inject = ['editSvg', 'remove', 'interact', 'style', 'move', 'geometry'];
+    settings.$inject = ['editSvg', 'FeatureService', 'InteractionService'];
 
 })();

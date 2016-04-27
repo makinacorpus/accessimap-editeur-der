@@ -2,11 +2,12 @@
 
     <h3>Ajoutez de l'interaction à vos dessins en reliefs (DER)</h3>
     
-    <h3>Configurez et personnalisez facilement vos documents avant de les exporter !</h3>
+    <h3>Configurez et personnalisez facilement vos documents avant de les imprimer !</h3>
     <br>
 
-    <form name="map-format-input" class="form-inline">
+    <!-- <form name="map-format-input" class="form-inline">
         <div class="form-group">
+            (futures anciennes actions)<br/>
             <label style="width:20em;text-align: left">Format du dessin en relief&nbsp;</label>
             <select 
                 ng-model="$ctrl.mapFormat" 
@@ -22,11 +23,11 @@
             </select>
 
         </div>
-    </form>
+        
+        <br>
+        <br>
 
-    <form class="form-inline">
         <div class="form-group">
-            (futures anciennes actions)<br/>
             <button 
                 type="button" 
                 class="btn btn-primary btn-lg btn-block" 
@@ -43,15 +44,17 @@
                 class="btn btn-primary btn-lg btn-block" 
                 ng-click="$ctrl.goToExistingFile()">Importer un dessin SVG existant</button>
         </div>
-    </form>
+    </form> -->
 
     <form class="form-inline">
-        (future action principale)<br/>
-        <button 
-            type="button" 
-            class="btn btn-primary btn-lg" 
-            ng-click="$ctrl.goToEdit()">Créer un nouveau DER</button>
-
+        <div class="form-group">
+            <!-- (future action principale)<br/> -->
+            <button 
+                type="button" 
+                class="btn btn-primary btn-lg btn-block" 
+                ng-click="$ctrl.goToEdit()">Créer un nouveau DER
+            </button>
+        </div>
     </form>
 
 </div>

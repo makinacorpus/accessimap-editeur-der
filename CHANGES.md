@@ -5,10 +5,15 @@ CHANGELOG
 development
 -------------------
 
+**Major changes**
+* Merge of steps for drawing : choosing a map & adding draw are now one step
+* Add of leafletJS library for displaying maps & layer of Mapbox (Street)
+
 **Minor changes**
 
 * Background is now zoomed with the drawing, and a button allows to get back to the initial view
 * Add radial menu immediately after feature addition
+* Changing API overpass to http://api.openstreetmap.fr/
 
 **Bug fixes**
 

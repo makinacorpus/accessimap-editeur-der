@@ -32,11 +32,18 @@
          * @ngdoc method
          * @name  nearest
          * @methodOf accessimapEditeurDerApp.geometryutils
+         * 
          * @description 
          * Return the nearest point of a targetPoint 
-         * @param  {Point} targetPoint  Coordinates [x,y]
-         * @param  {[Point]} points     Array of coordinates
-         * @return {Point}              Coordinates [x,y] of the nearest point
+         * 
+         * @param  {Point} targetPoint  
+         * Coordinates [x,y]
+         * 
+         * @param  {[Point]} points
+         * Array of coordinates
+         * 
+         * @return {Point}
+         * Coordinates [x,y] of the nearest point
          */
         this.nearest = function(targetPoint, points) {
             var nearestPoint,
