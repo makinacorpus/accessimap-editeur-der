@@ -1,7 +1,76 @@
 <h3>
+    <button class="btn btn-link" 
+            ng-click="$ctrl.displayParameters()">
+        <span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span>
+    </button>
+    
+    <span class="fa fa-pencil" aria-hidden="true"></span>
     Dessin
 </h3>
 
+<!-- editing modes -->
+<div class="btn-group">
+    <a 
+        ng-click="$ctrl.enableDrawingMode('default')" 
+        ng-class="{ 'active' : $ctrl.mode == 'default' }" 
+        class="btn btn-default active">
+        <span class="fa fa-hand-paper-o" aria-hidden="true"></span> 
+        Consulter
+    </a>
+    <a 
+        ng-click="$ctrl.enableDrawingMode('undo')" 
+        ng-class="{ 'active' : $ctrl.mode == 'undo', 'disabled' : !$ctrl.isUndoAvailable() }" 
+        class="btn btn-default">
+        <span class="fa fa-undo" aria-hidden="true"></span> 
+        Annuler
+    </a>
+</div>
+
+<div class="btn-group">
+   <a 
+        ng-click="$ctrl.enableDrawingMode('point')" 
+        ng-class="{ 'active' : $ctrl.mode == 'point' }" 
+        class="btn btn-default">
+        <span class="fa fa-map-marker" aria-hidden="true"></span> 
+        Point
+    </a>
+    <a 
+        ng-click="$ctrl.enableDrawingMode('line')" 
+        ng-class="{ 'active' : $ctrl.mode == 'line' }" 
+        class="btn btn-default">
+        <span class="fa fa-pencil" aria-hidden="true"></span> 
+        Ligne
+    </a>
+    <a 
+        ng-click="$ctrl.enableDrawingMode('circle')" 
+        ng-class="{ 'active' : $ctrl.mode == 'circle' }" 
+        class="btn btn-default">
+        <span class="fa fa-pencil" aria-hidden="true"></span> 
+        Cercle
+    </a>
+    <a 
+        ng-click="$ctrl.enableDrawingMode('polygon')" 
+        ng-class="{ 'active' : $ctrl.mode == 'polygon' }" 
+        class="btn btn-default">
+        <span class="fa fa-pencil" aria-hidden="true"></span> 
+        Polygone
+    </a>
+    <a 
+        ng-click="$ctrl.enableDrawingMode('addtext')" 
+        ng-class="{ 'active' : $ctrl.mode == 'addtext' }" 
+        class="btn btn-default">
+        <span class="fa fa-font" aria-hidden="true"></span> 
+        Texte
+    </a>
+</div>
+
+<!-- reset view -->
+<div class="btn-group">
+    <a ng-click="$ctrl.centerView()" class="btn btn-default">
+        <span class="fa fa-arrows-alt" aria-hidden="true"></span> 
+        Recentrer
+    </a>
+</div>
 <form>
 
     <p ng-if="$ctrl.mode !== 'point' && $ctrl.mode !== 'line' && $ctrl.mode !== 'polygon' && $ctrl.mode !== 'circle'">

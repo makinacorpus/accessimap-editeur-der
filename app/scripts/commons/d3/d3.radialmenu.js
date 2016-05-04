@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    function RadialMenuService(settings, FeatureService) {
+    function RadialMenuService(settings, FeatureService, MapService) {
 
         this.drawMenu       = drawMenu;
         this.addRadialMenu  = addRadialMenu;
@@ -17,10 +17,11 @@
         this.init = init;
 
         var menu = null,
-            svg;
+            svg, getCurrentZoom;
 
-        function init(_svg) {
+        function init(_svg, _getCurrentZoom) {
             svg = _svg;
+            getCurrentZoom = _getCurrentZoom;
         }
 
         /**
@@ -54,8 +55,9 @@
                     .animationDuration(100)
                     .iconSize(40)
                     .translation(mousePosition[0] + ' ' + mousePosition[1])
+                    .scale(1/getCurrentZoom() + "," + 1/getCurrentZoom())
                     .onClick(function(d) {
-                
+
                         d3.event.preventDefault();
                         d3.event.stopPropagation();
                 
@@ -65,12 +67,19 @@
                         menu = null;
                     })
                     .appendTo(svg.node())
-                    .show(data),
+                    .show(data);
 
-                    clickOutsideMenu = svg.on('click', function(d) {
-                        d3.event.stopPropagation();
-                        hideRadialMenu()
-                    });
+                MapService.addClickListener(function(e) {
+                    console.log('click outside menu map')
+                    e.originalEvent.preventDefault();
+                    e.originalEvent.stopPropagation();
+                    hideRadialMenu();
+                })
+
+                var clickOutsideMenu = svg.on('click', function(e) {
+                    console.log('click outside menu d3')
+                    hideRadialMenu();
+                });
 
                 return m;
             }
@@ -101,19 +110,19 @@
                 menu = that.drawMenu(
                             d3.select(this), 
                             d3.mouse(svg.node()),
-                            svg);
+                            1);
             });
 
             // useful if we want to add a visual helper to the user
             // for seeing which feature he's going to edit
-            elements.on('mouseover', function(event) {
-                console.log('mouseover')
-            })
+            // elements.on('mouseover', function(event) {
+            //     console.log('mouseover')
+            // })
 
             // useful if we want to display properties of this element
-            elements.on('click', function(event) {
-                console.log('click')
-            })
+            // elements.on('click', function(event) {
+            //     console.log('click')
+            // })
         }
 
         /**
@@ -135,6 +144,6 @@
 
     angular.module(moduleApp).service('RadialMenuService', RadialMenuService);
 
-    RadialMenuService.$inject = ['settings', 'FeatureService'];
+    RadialMenuService.$inject = ['settings', 'FeatureService', 'MapService'];
 
 })();

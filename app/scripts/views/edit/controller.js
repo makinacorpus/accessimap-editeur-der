@@ -88,7 +88,7 @@
         $ctrl.backgroundStyleChoices     = EditService.settings.STYLES.polygon;
         $ctrl.mapFormat                  = $location.search().mapFormat ? $location.search().mapFormat : 'landscapeA4';
         $ctrl.legendFormat               = $location.search().legendFormat ? $location.search().legendFormat : 'landscapeA4';
-        $ctrl.checkboxModel              = { contour: false};
+        $ctrl.checkboxModel              = { contour: true};
         $ctrl.geojson                    = EditService.getFeatures();
         
         $ctrl.isParametersVisible        = true; // initial state = parameters
@@ -99,6 +99,7 @@
         $ctrl.isFeatureManagementVisible = false;
         
         $ctrl.isMapToolboxVisible        = false;
+        $ctrl.isMapParametersVisible     = false;
         $ctrl.isDrawingToolboxVisible    = false;
         
         $ctrl.isMapVisible               = false;
@@ -110,6 +111,10 @@
         $ctrl.isUndoAvailable            = EditService.isUndoAvailable;
 
         $ctrl.exportData                 = EditService.exportData;
+        $ctrl.rotateMap                  = EditService.rotateMap;
+
+        $ctrl.changeDrawingFormat        = EditService.changeDrawingFormat;
+        $ctrl.changeLegendFormat         = EditService.changeLegendFormat;
 
         /**
          * @ngdoc method
@@ -135,15 +140,6 @@
         $ctrl.hideMap = function() {
             $ctrl.isMapVisible = false;
             EditService.hideMapLayer()
-        }
-        
-        $ctrl.freezeMap = function() {
-            $ctrl.isMapFreezed = true;
-            EditService.freezeMap();
-        }
-        $ctrl.unFreezeMap = function() {
-            $ctrl.isMapFreezed = false;
-            EditService.unFreezeMap();
         }
 
         /**
@@ -174,7 +170,7 @@
          * @description show the map and hide the legend
          */
         $ctrl.showDrawing = function() {
-            $ctrl.isDrawingVisible = true;
+            $ctrl.isWorkspaceVisible = true;
             $ctrl.isLegendVisible = false;
         };
         $ctrl.showDrawing();
@@ -186,7 +182,7 @@
          * @description show the legend and hide the map
          */
         $ctrl.showLegend = function() {
-            $ctrl.isDrawingVisible = false;
+            $ctrl.isWorkspaceVisible = false;
             $ctrl.isLegendVisible = true;
         };
 
@@ -236,6 +232,7 @@
             $ctrl.isPoiCreationVisible       = false;
             $ctrl.isFeatureCreationVisible   = false;
             $ctrl.isFeatureManagementVisible = false;
+            $ctrl.isLegendVisible     = false;
         }
 
         // Insert data from OSM / Nominatim
@@ -245,6 +242,8 @@
             $ctrl.isPoiCreationVisible       = false;
             $ctrl.isFeatureCreationVisible   = true;
             $ctrl.isFeatureManagementVisible = false;
+            $ctrl.isLegendVisible     = false;
+
         }
         $ctrl.insertOSMData = function()  {
             EditService.insertOSMData($ctrl.queryChosen, drawGeoJSON, ToasterService.displayError)
@@ -253,11 +252,13 @@
         // Parameters
         $ctrl.displayParameters = function() {
             $ctrl.isParametersVisible        = true;
+            $ctrl.isMapParametersVisible     = false;
             $ctrl.isAddressVisible           = false;
             $ctrl.isPoiCreationVisible       = false;
             $ctrl.isFeatureCreationVisible   = false;
             $ctrl.isFeatureManagementVisible = false;
             $ctrl.isDrawingToolboxVisible    = false;
+            // $ctrl.isLegendVisible            = false;
         }
 
         // Management of features
@@ -268,22 +269,38 @@
             $ctrl.isFeatureCreationVisible   = false;
             $ctrl.isFeatureManagementVisible = true;
             $ctrl.isDrawingToolboxVisible    = false;
+            $ctrl.isLegendVisible     = false;
         }
 
         $ctrl.isDrawingToolboxVisible = false;
         $ctrl.isMapToolboxVisible = false;
         $ctrl.displayMapToolbox = function() {
-            $ctrl.isDrawingToolboxVisible = false;
-            $ctrl.isMapToolboxVisible     = true;
-            $ctrl.showMap();
-            EditService.resetActions();
+            $ctrl.isParametersVisible        = false;
+            $ctrl.isMapParametersVisible     = true;
+            $ctrl.isAddressVisible           = false;
+            $ctrl.isPoiCreationVisible       = false;
+            $ctrl.isFeatureCreationVisible   = false;
+            $ctrl.isFeatureManagementVisible = true;
+            $ctrl.isDrawingToolboxVisible    = false;
+            $ctrl.isLegendVisible     = false;
+            // EditService.resetActions();
         }
         $ctrl.displayDrawingToolbox = function() {
             $ctrl.isDrawingToolboxVisible = true;
             $ctrl.isMapToolboxVisible     = false;
+            $ctrl.isLegendVisible     = false;
             $ctrl.isParametersVisible     = false;
             $ctrl.enableDrawingMode('default');
-            $ctrl.freezeMap();
+            $ctrl.isMapFreezed = true;
+            EditService.freezeMap();
+        }
+
+        $ctrl.displayLegendToolbox = function() {
+            $ctrl.isDrawingToolboxVisible = false;
+            $ctrl.isMapToolboxVisible     = false;
+            $ctrl.isLegendVisible     = true;
+            $ctrl.isWorkspaceVisible     = false;
+            $ctrl.isParametersVisible     = false;
         }
 
         $ctrl.removeFeature = EditService.removeFeature;
@@ -291,6 +308,7 @@
         $ctrl.rotateFeature = EditService.rotateFeature;
 
         $ctrl.updateMarker  = EditService.updateMarker;
+        $ctrl.toggleLegendFontBraille  = EditService.toggleLegendFontBraille;
 
         $ctrl.updateColor = function(color) {
             EditService.updateFeatureStyleAndColor(null, color);

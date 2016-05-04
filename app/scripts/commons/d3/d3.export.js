@@ -17,15 +17,26 @@
         // TODO: add parameters to not have to use DOM selectors.
         // this function have to be independant from the DOM
         // To be added : drawingNode, legendNode, interactions
-        function exportData(filename, drawingNode, tilesNode, legendNode, comment, interactionsData) {
+        function exportData(filename, drawingNode, tilesNode, legendNode, comment, interactionsData, width, height) {
             if (!filename) {
                 filename = 'der';
             }
 
             var zip    = new JSZip(),
-            exportNode = drawingNode ? drawingNode.cloneNode(true) : null;
+            exportNode = drawingNode ? drawingNode.cloneNode(true) : null,
+            svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            d3.select(svg)
+                .attr('width', width)
+                .attr('height', height)
+                .attr('viewBox', '0 0 ' + width + ' ' + height)
+                // .style('left', '100')
+                // .style('top', '100')
 
-            zip.file('carte_avec_source.svg', (new XMLSerializer()).serializeToString(exportNode));
+            svg.appendChild(exportNode);
+
+            console.log(svg);
+            
+            zip.file('carte_avec_source.svg', (new XMLSerializer()).serializeToString(svg));
 
             if (tilesNode)
                 zip.file('tiles.svg', (new XMLSerializer()).serializeToString(tilesNode.cloneNode(true)));

@@ -1,3 +1,7 @@
+svg:not(:root) {
+  overflow: visible;
+}
+
 .features-list {
   padding-left: 0;
 }

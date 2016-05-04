@@ -1,11 +1,11 @@
-<h3>
-    <span class="fa fa-pencil" aria-hidden="true"></span>
-    Editer les points/régions
-</h3>
+<h4>
+    <span class="fa fa-list"></span>
+    Listing des éléments
+</h4>
 
 <p ng-if="!$ctrl.geojson || $ctrl.geojson.length === 0">
-    Pas encore de POI !<br/>
-    Vous verrez ici les points que vous allez créer via la boîte de création juste au dessus !
+    Pas encore d'éléments !<br/>
+    Vous verrez ici les éléments que vous allez créer via les boutons d'ajouts de POI, d'adresse ou de données OSM !
 </p>
 
 <div ng-repeat="feature in $ctrl.geojson" class="features-list">

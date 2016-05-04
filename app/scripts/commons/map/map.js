@@ -39,6 +39,7 @@
         this.changeCursor           = changeCursor;
         this.resetCursor            = resetCursor;
         this.projectPoint           = projectPoint;
+        this.latLngToLayerPoint     = latLngToLayerPoint;
         
         this.showMapLayer           = showMapLayer;
         this.hideMapLayer           = hideMapLayer;
@@ -48,6 +49,7 @@
         
         this.searchAddress          = SearchService.searchAddress
         this.resetZoom = resetZoom;
+        this.setMinimumSize = setMinimumSize;
 
         /**
          * @ngdoc method
@@ -73,11 +75,9 @@
         function initMap(_selectorDOM, _minWidthMM, _minHeightMM, _ratioPixelPoint, _resizeFunction) {
 
             selectorDOM = _selectorDOM;
-            minWidth    = _minWidthMM / _ratioPixelPoint;
-            minHeight   = _minHeightMM / _ratioPixelPoint;
+            setMinimumSize(_minWidthMM / _ratioPixelPoint, _minHeightMM / _ratioPixelPoint)
 
             map = L.map(selectorDOM).setView(settings.leaflet.GLOBAL_MAP_CENTER, settings.leaflet.GLOBAL_MAP_DEFAULT_ZOOM);
-            // map = L.map(selectorDOM, {center: [37.8, -96.9], zoom: 4});
             var access_token = "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw";
             
             layer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + access_token, {
@@ -92,10 +92,14 @@
             //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             // }).addTo(map);
             // 
-            layerGroup = L.layerGroup().addTo(map);
-
+            
             // Use Leaflet to implement a D3 geometric transformation.
             $(window).on("resize", _resizeFunction).trigger("resize");
+        }
+
+        function setMinimumSize(width, height) {
+            minWidth = width;
+            minHeight = height;
         }
 
         /**
@@ -124,6 +128,10 @@
             } else {
                 return point;
             }
+        }
+
+        function latLngToLayerPoint(point) {
+            return map.latLngToLayerPoint(point);
         }
 
         /**
@@ -214,8 +222,7 @@
          */
         function removeEventListeners() {
             listeners.forEach(function(currentValue) {
-                console.log(currentValue)
-                console.log('removing ' + currentValue.event + ' listener')
+                console.log('removing ' + currentValue.event + ' listener from map')
                 map.removeEventListener(currentValue.event, currentValue.function)
             })
         }
@@ -280,11 +287,11 @@
         }
 
         function showMapLayer() {
-            layerGroup.addLayer(layer);
+            map.addLayer(layer);
         }
 
         function hideMapLayer() {
-            layerGroup.removeLayer(layer);
+            map.removeLayer(layer);
         }
 
         function freezeMap() {

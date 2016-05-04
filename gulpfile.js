@@ -56,8 +56,8 @@ gulp.task('copy:js', ['clean:js'], function() {
     return gulp.src(config.js.globs)
                 // jscs
                 .pipe(localFilter)
-                .pipe(jscs())
-                .pipe(jscs.reporter())
+                // .pipe(jscs())
+                // .pipe(jscs.reporter())
                 // .pipe(jscs.reporter('fail'))
                 .pipe(localFilter.restore)
                 .pipe(gulp.dest(config.js.dest))

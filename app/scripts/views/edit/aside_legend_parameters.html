@@ -1,0 +1,24 @@
+<h3>
+    <button class="btn btn-link" 
+            ng-click="$ctrl.displayParameters()">
+        <span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span>
+    </button>
+    
+    <span class="fa fa-braille" aria-hidden="true"></span>
+    Légende
+</h3>
+
+
+<form class="row">
+    
+    <div class="form-group col-md-6">
+        <button class="btn btn-default btn-tile" 
+                ng-disabled="! $ctrl.isLegendVisible"
+                ng-click="$ctrl.toggleLegendFontBraille()">
+            <span class="fa fa-lg fa-font" aria-hidden="true"></span> 
+            <br/>
+            Toggle Braille
+        </button>
+    </div>
+
+</form>

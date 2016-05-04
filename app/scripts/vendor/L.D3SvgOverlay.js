@@ -42,6 +42,7 @@ L.D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
         }
         options.zoomHide = this._undef(options.zoomHide) ? false : options.zoomHide;
         options.zoomDraw = this._undef(options.zoomDraw) ? true : options.zoomDraw;
+        options.name = this._undef(options.name) ? 'unknown' : options.name;
 
         return this.options = options;
     },
@@ -68,20 +69,32 @@ L.D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
 
     // Handler for "viewreset"-like events, updates scale and shift after the animation
     _zoomChange: function (evt) {
-        this._disableLeafletRounding();
-        var newZoom = this._undef(evt.zoom) ? this.map._zoom : evt.zoom; // "viewreset" event in Leaflet has not zoom/center parameters like zoomanim
-        this._zoomDiff = newZoom - this._zoom;
-        this._scale = Math.pow(2, this._zoomDiff);
-        this.projection.scale = this._scale;
-        this._shift = this.map.latLngToLayerPoint(this._wgsOrigin)
-            ._subtract(this._wgsInitialShift.multiplyBy(this._scale));
+        if (this._freezeScaling !== true) {
+            this._disableLeafletRounding();
+            var newZoom = this._undef(evt.zoom) ? this.map._zoom : evt.zoom; // "viewreset" event in Leaflet has not zoom/center parameters like zoomanim
+            this._zoomDiff = newZoom - this._zoom;
+            this._scale = Math.pow(2, this._zoomDiff);
+            this.projection.scale = this._scale;
+            this._shift = this.map.latLngToLayerPoint(this._wgsOrigin)
+                ._subtract(this._wgsInitialShift.multiplyBy(this._scale));
 
-        var shift = ["translate(", this._shift.x, ",", this._shift.y, ") "];
-        var scale = ["scale(", this._scale, ",", this._scale,") "];
-        this._rootGroup.attr("transform", shift.concat(scale).join(""));
+            var shift = ["translate(", this._shift.x, ",", this._shift.y, ") "];
+            var scale = ["scale(", this._scale, ",", this._scale,") "];
+            this._rootGroup.attr("transform", shift.concat(scale).join(""));
 
-        if (this.options.zoomDraw) { this.draw() }
-        this._enableLeafletRounding();
+            if (this.options.zoomDraw) { this.draw() }
+            this._enableLeafletRounding();
+        } else {
+            this._pixelOrigin = this.map.getPixelOrigin();
+            this._wgsOrigin = L.latLng([0, 0]);
+            this._wgsInitialShift = this.map.latLngToLayerPoint(this._wgsOrigin);
+            this._zoom = this.map.getZoom();
+            this._shift = L.point(0, 0);
+            this._scale = 1;
+
+            if (this.options.zoomDraw) { this.draw() }
+        }
+
     },
 
     onAdd: function (map) {
@@ -92,7 +105,9 @@ L.D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
         if (L.version < "1.0") {
             map._initPathRoot();
             this._svg = d3.select(map._panes.overlayPane)
-                .select("svg");
+                .select("svg")
+                .append("svg")
+                .attr("data-name", this.options.name);
             this._rootGroup = this._svg.append("g");
         } else {
             this._svg = L.svg();
@@ -103,7 +118,7 @@ L.D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
         this.selection = this._rootGroup;
 
         // Init shift/scale invariance helper values
-        this._pixelOrigin = map.getPixelOrigin();
+        this._pixelOrigin = this.map.getPixelOrigin();
         this._wgsOrigin = L.latLng([0, 0]);
         this._wgsInitialShift = this.map.latLngToLayerPoint(this._wgsOrigin);
         this._zoom = this.map.getZoom();
@@ -142,6 +157,9 @@ L.D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
 
         if (L.version < "1.0") map.on("viewreset", this._zoomChange, this);
 
+        // Adding an option to freeze scaling
+        this._freezeScaling = false;
+
         // Initial draw
         this.draw();
     },
@@ -161,8 +179,15 @@ L.D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
     addTo: function (map) {
         map.addLayer(this);
         return this;
-    }
+    },
 
+    freezeScaling: function() {
+        this._freezeScaling = true;
+    },
+
+    unFreezeScaling: function() {
+        this._freezeScaling = false;
+    }
 });
 
 L.D3SvgOverlay.version = "2.2";

@@ -18,11 +18,11 @@
 (function() {
     'use strict';
 
-    function EditService($q, settings, svgicon, MapService, DrawingService, LegendService) {
+    function EditService($q, settings, MapService, DrawingService, LegendService) {
 
         this.init          = init;
         this.settings      = settings;
-        this.featureIcon   = svgicon.featureIcon;
+        this.featureIcon   = DrawingService.toolbox.featureIcon;
         this.enableAddPOI  = enableAddPOI;
         this.insertOSMData = insertOSMData;
         this.disableAddPOI = disableAddPOI;
@@ -56,17 +56,17 @@
         }
 
         // Toolbox
-        this.changeTextColor               = DrawingService.changeTextColor;
-        this.updateBackgroundStyleAndColor = DrawingService.updateBackgroundStyleAndColor;
-        this.updateFeatureStyleAndColor    = DrawingService.updateFeatureStyleAndColor;
-        this.updateMarker                  = DrawingService.updateMarker;
-        this.addRadialMenus                = DrawingService.addRadialMenus;
+        this.changeTextColor               = DrawingService.toolbox.changeTextColor;
+        this.updateBackgroundStyleAndColor = DrawingService.toolbox.updateBackgroundStyleAndColor;
+        this.updateFeatureStyleAndColor    = DrawingService.toolbox.updateFeatureStyleAndColor;
+        this.updateMarker                  = DrawingService.toolbox.updateMarker;
+        this.addRadialMenus                = DrawingService.toolbox.addRadialMenus;
         this.isUndoAvailable               = DrawingService.isUndoAvailable;
         this.undo                          = DrawingService.undo;
         this.enablePointMode               = enablePointMode;
-        this.drawPoint                     = DrawingService.drawPoint;
+        this.drawPoint                     = DrawingService.toolbox.drawPoint;
         this.enableCircleMode              = enableCircleMode;
-        this.drawCircle                    = DrawingService.drawCircle;
+        this.drawCircle                    = DrawingService.toolbox.drawCircle;
         this.enableLineOrPolygonMode       = enableLineOrPolygonMode;
         this.enableTextMode                = enableTextMode;
         this.exportData                    = DrawingService.exportData;
@@ -75,45 +75,73 @@
         this.showMapLayer                  = MapService.showMapLayer;
         this.hideMapLayer                  = MapService.hideMapLayer;
 
-        this.geojsonToSvg                  = DrawingService.geojsonToSvg;
-        this.getFeatures                   = DrawingService.getFeatures;
+        this.geojsonToSvg                  = DrawingService.layers.geojson.geojsonToSvg;
+        this.getFeatures                   = DrawingService.layers.geojson.getFeatures;
         
-        this.removeFeature                 = DrawingService.removeFeature;
-        this.updateFeature                 = DrawingService.updateFeature;
-        this.rotateFeature                 = DrawingService.rotateFeature;
+        this.removeFeature                 = DrawingService.layers.geojson.removeFeature;
+        this.updateFeature                 = DrawingService.layers.geojson.updateFeature;
+        this.rotateFeature                 = DrawingService.layers.geojson.rotateFeature;
         
         this.searchAndDisplayAddress       = searchAndDisplayAddress;
         this.fitBounds                     = fitBounds;
         this.panTo                         = panTo;
 
         this.freezeMap                     = freezeMap;
-        this.unFreezeMap                   = unFreezeMap;
 
         this.resetZoom                     = resetZoom;
 
-        function freezeMap() {
-            MapService.removeMoveHandler();
-            DrawingService.enableZoomHandler();
-            // MapService.removeViewResetHandler();
-        }
+        this.rotateMap                     = rotateMap;
 
-        function unFreezeMap() {
-            MapService.addMoveHandler(DrawingService.mapMoved)
+        this.changeDrawingFormat = changeDrawingFormat;
+        this.changeLegendFormat = changeLegendFormat;
+        this.toggleLegendFontBraille = LegendService.toggleFontBraille;
+
+        var d3Element = null, 
+            overlayDrawing, 
+            overlayGeoJSON, 
+            overlay, 
+            center = null,
+            zoom = null,
+            referenceBounds, // useful to remember where to center view
+            // useful to know if the map is 'freezed', 
+            // that is to say it's not moving anymore inside the 'format overlay'
+            mapFreezed, 
+            // indicates if the initial scaled have been defined
+            // to be used in d3svgoverlay
+            // if true, we don't need to init overlay anymore
+            scaleDefined = false;
+
+        function freezeMap() {
+            mapFreezed = true;
+            MapService.removeMoveHandler();
+            // MapService.removeViewResetHandler();
+            if (scaleDefined!==true){
+                scaleDefined = true;
+            }
+
+            overlay.unFreezeScaling();
+            overlayGeoJSON.unFreezeScaling();
+            overlayDrawing.unFreezeScaling();
+
+            center = ( center === null ) ? MapService.getMap().getCenter() : center ;
+            zoom = ( zoom === null ) ? MapService.getMap().getZoom() : zoom;
+
         }
         
         function initMode() {
             MapService.changeCursor('crosshair');
             MapService.removeEventListeners();
         }
+        
 
         function enablePointMode(getDrawingParameter) {
 
             initMode();
 
             MapService.addClickListener(function(e) {
-                var p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
+                var p = projDrawing.latLngToLayerPoint(e.latlng),
                     drawingParameters = getDrawingParameter();
-                DrawingService.drawPoint(p.x, p.y, drawingParameters.style, drawingParameters.color);
+                DrawingService.toolbox.drawPoint(p.x, p.y, drawingParameters.style, drawingParameters.color);
             })
 
         }
@@ -123,9 +151,10 @@
             initMode();
 
             MapService.addClickListener(function(e) {
-                var p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
+                var p = projDrawing.latLngToLayerPoint(e.latlng),
+                    // p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
                     drawingParameters = getDrawingParameter();
-                DrawingService.drawCircle(p.x, 
+                DrawingService.toolbox.drawCircle(p.x, 
                                         p.y, 
                                         drawingParameters.style, 
                                         drawingParameters.color, 
@@ -133,9 +162,10 @@
             })
 
             MapService.addMouseMoveListener(function(e) {
-                var p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
+                var p = projDrawing.latLngToLayerPoint(e.latlng),
+                    // p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
                     drawingParameters = getDrawingParameter();
-                DrawingService.updateCircleRadius(p.x, p.y);
+                DrawingService.toolbox.updateCircleRadius(p.x, p.y);
             })
 
         }
@@ -148,9 +178,10 @@
                 lineEdit = [];
 
             MapService.addClickListener(function(e) {
-                var p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
+                var p = projDrawing.latLngToLayerPoint(e.latlng),
+                    // p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
                     drawingParameters = getDrawingParameter();
-                DrawingService.beginLineOrPolygon(p.x, 
+                DrawingService.toolbox.beginLineOrPolygon(p.x, 
                                                 p.y, 
                                                 drawingParameters.style, 
                                                 drawingParameters.color, 
@@ -162,9 +193,10 @@
             })
 
             MapService.addMouseMoveListener(function(e) {
-                var p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
+                var p = projDrawing.latLngToLayerPoint(e.latlng),
+                    // p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
                     drawingParameters = getDrawingParameter();
-                DrawingService.drawHelpLineOrPolygon(p.x, 
+                DrawingService.toolbox.drawHelpLineOrPolygon(p.x, 
                                                     p.y, 
                                                     drawingParameters.style, 
                                                     drawingParameters.color, 
@@ -174,9 +206,10 @@
             })
 
             MapService.addDoubleClickListener(function(e) {
-                var p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
+                var p = projDrawing.latLngToLayerPoint(e.latlng),
+                    // p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
                     drawingParameters = getDrawingParameter();
-                DrawingService.finishLineOrPolygon(p.x, 
+                DrawingService.toolbox.finishLineOrPolygon(p.x, 
                                                     p.y, 
                                                     drawingParameters.style, 
                                                     drawingParameters.color, 
@@ -192,9 +225,10 @@
             initMode();
 
             MapService.addClickListener(function(e) {
-                var p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
+                var p = projDrawing.latLngToLayerPoint(e.latlng),
+                    // p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
                     drawingParameters = getDrawingParameter();
-                DrawingService.writeText(p.x, p.y, drawingParameters.font, drawingParameters.fontColor);
+                DrawingService.toolbox.writeText(p.x, p.y, drawingParameters.font, drawingParameters.fontColor);
             })
 
         }
@@ -218,6 +252,9 @@
          * @param  {[type]} legendFormat
          * Printing format of the legend container
          */
+        var selOverlay, selDrawing, selGeoJSON, 
+                projOverlay, projDrawing, projGeoJSON ;
+
         function init(drawingFormat, legendFormat) {
 
             if (drawingFormat === undefined) 
@@ -226,42 +263,64 @@
             if (legendFormat === undefined) 
                 legendFormat = settings.FORMATS[settings.DEFAULT_LEGEND_FORMAT];
 
-            MapService.initMap('drawing', 
+            MapService.initMap('workspace', 
                             drawingFormat.width, 
                             drawingFormat.height, 
                             settings.ratioPixelPoint,
                             MapService.resizeFunction);
 
-            MapService.showMapLayer();
 
-            var d3Element = null, d3Proj,
-                overlay = L.d3SvgOverlay(function(sel, proj) {
-                d3Element = sel;
-                d3Proj = proj;
-                // var upd = sel.selectAll('path').data(countries);
-                // upd.enter()
-                //   .append('path')
-                //   .attr('d', proj.pathFromGeojson)
-                //   .attr('stroke', 'black')
-                //   .attr('fill', function() { return d3.hsl(Math.random() * 360, 0.9, 0.5) })
-                //   .attr('fill-opacity', '0.5');
+            overlayGeoJSON = L.d3SvgOverlay(function(sel, proj) {
+                selGeoJSON = sel;
+                projGeoJSON = proj;
 
-                // upd.attr('stroke-width', 1 / proj.scale);
-            });
+                // if map is freezed, we just use the translate / zoom from d3svgoverlay
+                // if not, we re draw the geojson features with reverse scaling
+                if (mapFreezed !== true){
+                    DrawingService.layers.geojson.refresh(proj);
+                }
+
+            }, { zoomDraw: true, zoomHide: false, name: 'geojson'});
+
+
+            overlayGeoJSON.addTo(MapService.getMap())
+
+            overlayGeoJSON.freezeScaling();
+
+            overlayDrawing = L.d3SvgOverlay(function(sel, proj) {
+                selDrawing = sel;
+                projDrawing = proj;
+            }, { zoomDraw: true, zoomHide: false, name: 'drawing'});
+
+            overlayDrawing.addTo(MapService.getMap())
+            
+            overlayDrawing.freezeScaling();
+
+            overlay = L.d3SvgOverlay(function(sel, proj) {
+                selOverlay = sel;
+                projOverlay = proj;
+            }, { zoomDraw: false, zoomHide: false, name: 'overlay'});
 
             overlay.addTo(MapService.getMap())
 
-            DrawingService.initDrawing(MapService.getMap().getPanes().overlayPane, 
-                        d3Element, 
+            overlay.freezeScaling();
+
+            DrawingService.initDrawing({
+                            overlay: {sel: selOverlay, proj: projOverlay },
+                            drawing: {sel: selDrawing, proj: projDrawing },
+                            geojson: {sel: selGeoJSON, proj: projGeoJSON }
+                        }, 
                         drawingFormat.width / settings.ratioPixelPoint, 
                         drawingFormat.height / settings.ratioPixelPoint, 
-                        settings.margin, 
-                        MapService.projectPoint,
-                        settings.POLYGON_STYLES)
-            
+                        settings.margin)
 
-            unFreezeMap();
-            MapService.addViewResetHandler(DrawingService.resetView)
+            mapFreezed = false;
+            MapService.addMoveHandler(function(size, pixelOrigin, pixelBoundMin) {
+                // if scale is not defined, we have to re draw the overlay to keep the initial format
+                if (scaleDefined!==true) {
+                    DrawingService.layers.overlay.refresh(size, pixelOrigin, pixelBoundMin);
+                }
+            })
 
             LegendService.initLegend('#legend', 
                                     legendFormat.width, 
@@ -269,6 +328,23 @@
                                     settings.margin, 
                                     settings.ratioPixelPoint);
 
+        }
+
+        function changeDrawingFormat(format) {
+            resetZoom()
+            DrawingService.layers.overlay.draw(settings.FORMATS[format].width / settings.ratioPixelPoint, 
+                                                settings.FORMATS[format].height / settings.ratioPixelPoint);
+            MapService.setMinimumSize(settings.FORMATS[format].width / settings.ratioPixelPoint,
+                                        settings.FORMATS[format].height / settings.ratioPixelPoint);
+            MapService.resizeFunction();
+            center = DrawingService.layers.overlay.getCenter();
+            console.log(center)
+            resetZoom();
+            // MapService.getMap().invalidateSize()
+        }
+
+        function changeLegendFormat(format) {
+            
         }
 
         /**
@@ -287,7 +363,9 @@
          * Callback function called when an error occured, error is passed in first argument
          */
         function enableAddPOI(_successCallback, _errorCallback) {
-            MapService.changeCursor('crosshair');
+
+            initMode();
+
             MapService.addClickListener(function(e) {
                 // TODO: prevent any future click 
                 // user has to wait before click again
@@ -348,7 +426,7 @@
 
         /**
          * @ngdoc method
-         * @name  rotate
+         * @name  rotateMap
          * @methodOf accessimapEditeurDerApp.EditService
          * 
          * @description 
@@ -357,9 +435,12 @@
          * @param  {Object} angle 
          * Angle in degree of the rotation
          */
-        function rotate(angle) {
-            d3.selectAll('.rotable')
-                .attr('transform', 'rotate(' + angle + ' ' + _width / 2 + ' ' + _height / 2 + ')');
+        function rotateMap(angle) {
+            var size = MapService.getMap().getSize();
+
+            $('.leaflet-layer').css('transform', 'rotate(' + angle + 'deg)'); //' ' + size.x / 2 + ' ' + size.y / 2 + ')');
+            // d3.selectAll('.rotable')
+                // .attr('transform', 'rotate(' + angle + ' ' + _width / 2 + ' ' + _height / 2 + ')');
         }
 
         /**
@@ -389,7 +470,7 @@
                     // display something to allow user choose an option ?
                     // } else {
                     if (results.length > 0)
-                        DrawingService.drawAddress(results[0], id, style, color);
+                        DrawingService.layers.geojson.drawAddress(results[0], id, style, color);
                     // }
                     deferred.resolve(results[0]);
                 })
@@ -405,8 +486,12 @@
         }
 
         function resetZoom() {
-            DrawingService.resetZoom();
-            MapService.resetZoom();
+            console.log(center)
+            if (center !== null && zoom !== null)
+                MapService.getMap().setView(center, zoom)
+            // if (referenceBounds !== null && referenceBounds !== undefined) {
+            //     MapService.getMap().fitBounds(referenceBounds);
+            // }
         }
 
     }
@@ -415,7 +500,6 @@
 
     EditService.$inject = ['$q',
                             'settings', 
-                            'svgicon', 
                             'MapService', 
                             'DrawingService', 
                             'LegendService',

@@ -1,4 +1,6 @@
-<div>
+<div class="col-xs-12">
+    <div ng-if="$ctrl.isMapParametersVisible" class="btn-group pull-left"
+        ng-include="'scripts/views/edit/aside_map_parameters.html'"></div>
 
     <!-- parameters form -->
     <div ng-if="$ctrl.isParametersVisible"
@@ -16,13 +18,17 @@
     <div ng-if="$ctrl.isFeatureCreationVisible" 
         ng-include="'scripts/views/edit/aside_feature_creation.html'"></div>
     
-    <!-- Feature edition -->
+    <!-- Feature management -->
     <div ng-if="$ctrl.isFeatureManagementVisible" 
         ng-include="'scripts/views/edit/aside_feature_management.html'"></div>
-    
+
     <!-- Drawing features -->
     <div ng-if="$ctrl.isDrawingToolboxVisible" 
         ng-include="'scripts/views/edit/aside_toolbox_drawing.html'"></div>
-    
+
+    <!-- Legend features -->
+    <div ng-if="$ctrl.isLegendVisible" 
+        ng-include="'scripts/views/edit/aside_legend_parameters.html'"></div>
+
 </div>
 

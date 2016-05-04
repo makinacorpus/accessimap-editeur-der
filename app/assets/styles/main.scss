@@ -38,6 +38,13 @@ body {
   border-radius: 2px;
 }
 
+.btn.btn-tile {
+  height: 4em;
+  width: 6em;
+  font-size: 1.2em;
+  padding: 0.5em;
+}
+
 div[ng-view] {
   overflow: auto;
   display: flex;

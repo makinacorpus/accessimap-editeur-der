@@ -25,11 +25,26 @@
         this.changeColor          = changeColor;
         this.changePattern        = changePattern;
         this.lineToCardinal       = lineToCardinal;
+
+        this.init                  = init;
         
         // this var retain the last feature deleted
         // useful for cancel this deletion
         // TODO: need to be improved to integrate the history pattern (undo/redo)
-        var removedFeature        = null;
+        var removedFeature        = null,
+            pointsLayer,
+            polygonsLayer,
+            linesLayer,
+            textLayer,
+            svgDrawing;
+
+        function init(_svgDrawing) {
+            svgDrawing = _svgDrawing;
+            pointsLayer   = d3.select(svgDrawing).node().select('g[data-name="points-layer"]');
+            polygonsLayer = d3.select(svgDrawing).node().select('g[data-name="polygons-layer"]');
+            linesLayer    = d3.select(svgDrawing).node().select('g[data-name="lines-layer"]');
+            textLayer     = d3.select(svgDrawing).node().select('g[data-name="text-layer"]');
+        }
 
         function isUndoAvailable() {
             return removedFeature !== null;
@@ -162,13 +177,17 @@
             d3.select(temporaryPath)
                 .attr('id', 'temporaryPath')
                 .attr('opacity', 0.5);
-            d3.select('#points-layer').node().appendChild(temporaryPath);
+            pointsLayer.node().appendChild(temporaryPath);
 
-            d3.select('svg')
+            d3.select(svgDrawing)
                 .on('click', function() {
+                    
+                    d3.event.preventDefault();
+                    d3.event.stopPropagation();
+
                     if (d3.select(temporaryPath).classed('moved')) {
                         var coordinates = d3.mouse(this),
-                            transform = d3.transform(d3.select('#drawing-layer')
+                            transform = d3.transform(d3.select(svgDrawing)
                                             .attr('transform')),
                             realCoordinates = 
                                 geometryutils.realCoordinates(transform, coordinates),
@@ -198,15 +217,15 @@
                             emptyCircle.attr('transform', transformString);
                         }
 
-                        d3.select('svg').on('click', null);
-                        d3.select('svg').on('mousemove', null);
+                        d3.select(svgDrawing).on('click', null);
+                        d3.select(svgDrawing).on('mousemove', null);
 
                         d3.select(temporaryPath).remove();
                     }
                 })
                 .on('mousemove', function() {
                     var coordinates = d3.mouse(this),
-                            transform = d3.transform(d3.select('#drawing-layer')
+                            transform = d3.transform(d3.select(svgDrawing)
                                             .attr('transform')),
                         realCoordinates = 
                             geometryutils.realCoordinates(transform, coordinates),
@@ -250,7 +269,7 @@
                     var px = pointValues[0],
                         py = pointValues[1];
                     features.push([px, py, index]);
-                    d3.select('#points-layer')
+                    pointsLayer
                         .append('circle')
                         .classed('ongoing', true)
                         .attr('id', 'n' + index)
@@ -313,7 +332,7 @@
 
             var drag = d3.behavior.drag(),
 
-            rotationMarker = d3.select('#points-layer')
+            rotationMarker = pointsLayer
                 .append('g')
                 .classed('ongoing', true)
                 .attr('transform', 'translate(' 
@@ -345,13 +364,13 @@
             drag.on('dragstart', function() {
                 // silence other listeners
                 d3.event.sourceEvent.stopPropagation(); 
-                var mouse = d3.mouse(d3.select('#points-layer').node());
+                var mouse = d3.mouse(pointsLayer.node());
                 initialAngle = geometryutils.angle(pathCenterTranslate[0], 
                                         pathCenterTranslate[1], 
                                         mouse[0], 
                                         mouse[1]);
             }).on('drag', function() {
-                var mouse = d3.mouse(d3.select('#points-layer').node()),
+                var mouse = d3.mouse(pointsLayer.node()),
                     currentAngle = geometryutils.angle(pathCenterTranslate[0], 
                                         pathCenterTranslate[1], 
                                         mouse[0], 
@@ -386,7 +405,7 @@
                                                     + mouse[1] 
                                                     + ')');
             }).on('dragend', function() {
-                d3.select('#points-layer').on('mousedown.drag', null);
+                pointsLayer.on('mousedown.drag', null);
                 $('#der').css('cursor', 'auto');
             });
         };

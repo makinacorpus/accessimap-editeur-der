@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
         <link rel="stylesheet" href="bower_components/select2/select2.css" />
         <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
-        <link rel="stylesheet" href="assets/fonts/font-awesome-4.5.0/css/font-awesome.css" />
+        <link rel="stylesheet" href="assets/fonts/font-awesome-4.6.1/css/font-awesome.css" />
         <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
         <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
         <!-- endbower -->
@@ -33,7 +33,6 @@
             
             <h2>
                 <a ng-href="#/">
-                    <span class="fa fa-home"></span>
                     Accueil
                 </a>
             </h2>
@@ -125,6 +124,7 @@
             // useful for export map leaflet into an image
             // must be before including leaflet
             // PLEASE DON'T TOUCH THIS !
+            // arf... doesn't work with d3svgoverlay ?
             // L_PREFER_CANVAS = true;
         </script>
 
@@ -180,7 +180,10 @@
         <script src="scripts/commons/d3/d3.feature.js"></script>
         <script src="scripts/commons/d3/d3.generator.js"></script>
         <script src="scripts/commons/d3/d3.interaction.js"></script>
-        <script src="scripts/commons/d3/d3.layer.js"></script>
+        <script src="scripts/commons/d3/d3.layers.js"></script>
+        <script src="scripts/commons/d3/d3.layer.drawing.js"></script>
+        <script src="scripts/commons/d3/d3.layer.geojson.js"></script>
+        <script src="scripts/commons/d3/d3.layer.overlay.js"></script>
         <script src="scripts/commons/d3/d3.legend.js"></script>
         <script src="scripts/commons/d3/d3.radialmenu.js"></script>
         <script src="scripts/commons/d3/d3.toolbox.js"></script>

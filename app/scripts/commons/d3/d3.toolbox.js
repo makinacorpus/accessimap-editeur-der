@@ -29,12 +29,37 @@
         this.updateBackgroundStyleAndColor = updateBackgroundStyleAndColor;
         this.updateFeatureStyleAndColor    = updateFeatureStyleAndColor;
         this.updateMarker                  = updateMarker;
-        
-        var _features = null;
 
-        function init(svg, features) {
-            RadialMenuService.init(svg);
-            _features = features;
+        this.featureIcon                   = featureIcon;
+
+        this.drawing = {
+            drawPoint                     : drawPoint,
+            writeText                     : writeText,
+            beginLineOrPolygon            : beginLineOrPolygon,
+            drawHelpLineOrPolygon         : drawHelpLineOrPolygon,
+            finishLineOrPolygon           : finishLineOrPolygon,
+            
+            drawCircle                    : drawCircle,
+            updateCircleRadius            : updateCircleRadius,
+            
+            changeTextColor               : changeTextColor,
+            updateBackgroundStyleAndColor : updateBackgroundStyleAndColor,
+            updateFeatureStyleAndColor    : updateFeatureStyleAndColor,
+            updateMarker                  : updateMarker,
+        }
+        
+        var pointsLayer,
+            polygonsLayer,
+            linesLayer,
+            textLayer;
+
+        function init(svgDrawing, svgMenu, getCurrentZoom) {
+            RadialMenuService.init(svgMenu, getCurrentZoom);
+
+            pointsLayer   = d3.select(svgDrawing).node().select('g[data-name="points-layer"]');
+            polygonsLayer = d3.select(svgDrawing).node().select('g[data-name="polygons-layer"]');
+            linesLayer    = d3.select(svgDrawing).node().select('g[data-name="lines-layer"]');
+            textLayer     = d3.select(svgDrawing).node().select('g[data-name="text-layer"]');
         }
 
         /**
@@ -83,17 +108,12 @@
 
             var iid = UtilService.getiid(),
 
-                feature = d3.select('#points-layer')
+                feature = pointsLayer
                     .append('path')
                     .classed('link_' + iid, true)
                     .attr('d', style.path(x,y,style.radius))
                     .attr('data-link', iid);
-            _features.push({
-                id: 'link_' + iid,
-                geometryType: 'Point',
-                style: style,
-                color: color
-            })
+            
             applyStyle(feature, style.style, color);
 
             RadialMenuService.addRadialMenu(feature);
@@ -138,7 +158,7 @@
                 feature.classed('edition', false);
             } else { // first click
                 var iid = UtilService.getiid();
-                feature = d3.select('#polygons-layer')
+                feature = polygonsLayer 
                     .append('circle')
                     .attr('cx', x)
                     .attr('cy', y)
@@ -185,7 +205,7 @@
         }
 
         function beginLineOrPolygon(x, y, style, color, contour, mode, lastPoint, lineEdit) {
-            var drawingLayer = ( mode === 'line' ? d3.select('#lines-layer') : d3.select('#polygons-layer') ),
+            var drawingLayer = ( mode === 'line' ? linesLayer /* d3.select('#lines-layer') */ : polygonsLayer /* d3.select('#polygons-layer') */),
                 path,
                 pathInner;
 
@@ -259,7 +279,7 @@
 
         function drawHelpLineOrPolygon(x, y, style, color, contour, mode, lastPoint) {
             if (lastPoint) {
-                var drawingLayer = ( mode === 'line' ? d3.select('#lines-layer') : d3.select('#polygons-layer') ),
+                var drawingLayer = ( mode === 'line' ? linesLayer /* d3.select('#lines-layer') */ : polygonsLayer /* d3.select('#polygons-layer') */),
                     line;
 
                 if (d3.select('.ongoing')[0][0]) {
@@ -338,7 +358,7 @@
             var d = 'Texte',
                 iid = UtilService.getiid();
 
-            d3.select('#text-layer')
+            textLayer // d3.select('#text-layer')
                 .append('text')
                 .attr('x', x)
                 .attr('y', y - 35)
@@ -354,7 +374,7 @@
                 .attr('data-link', iid)
                 .text('');
 
-            d3.select('#text-layer')
+            textLayer // d3.select('#text-layer')
                 .selectAll('foreignObject#textEdition')
                 .data([d])
                 .enter()
@@ -487,6 +507,81 @@
                     path.attr(k, v);
                 }
             });
+        };
+
+        /**
+         * @ngdoc method
+         * @name  featureIcon
+         * @methodOf accessimapEditeurDerApp.ToolboxService
+         *
+         * @param  {Object} item [description]
+         * @param  {Object} type [description]
+         * @return {string}      [description]
+         */
+        function featureIcon(item, type) {
+            var iconSvg = document.createElement('svg'),
+                iconContainer = d3.select(iconSvg)
+                                .attr('height', 40).append('g'),
+                symbol;
+
+            switch(type) {
+                case 'line':
+                    symbol = iconContainer.append('line')
+                        .attr('x1', 0)
+                        .attr('y1', 15)
+                        .attr('x2', 250)
+                        .attr('y2', 15)
+                        .attr('fill', 'red');
+
+                    var symbolInner = iconContainer.append('line')
+                        .attr('x1', 0)
+                        .attr('y1', 15)
+                        .attr('x2', 250)
+                        .attr('y2', 15)
+                        .attr('fill', 'red');
+                        
+                    angular.forEach(item.styleInner, function(attribute) {
+                        var k = attribute.k,
+                            v = attribute.v;
+
+                        if (typeof(v) === 'function') {
+                            v = v.url();
+                        }
+                        symbolInner.attr(k, v);
+                    });
+                    break;
+
+                case 'point':
+                    symbol = iconContainer.append('path')
+                            .attr('d', function() {
+                                return item.path(20, 20, item.radius);
+                            });
+                    break;
+
+                case 'polygon':
+                case 'editpolygon':
+                case 'circle':
+                    symbol = iconContainer.append('rect')
+                                .attr('x', 0)
+                                .attr('y', 0)
+                                .attr('width', 250)
+                                .attr('height', 30)
+                                .attr('fill', 'red');
+                    break;
+            }
+
+            angular.forEach(item.style, function(attribute) {
+                var k = attribute.k,
+                    v = attribute.v;
+
+                if (k === 'fill-pattern') {
+                    symbol.attr('fill', settings.POLYGON_STYLES[v].url());
+                } else {
+                    symbol.attr(k, v);
+                }
+            });
+
+            return (new XMLSerializer()).serializeToString(iconSvg);
         };
 
     }

@@ -85,7 +85,8 @@
         }
 
         function goToEdit() {
-            go('/edit');
+            $rootScope.displayFooter  = false;
+            $location.path('/edit');
         }
     }
 

@@ -14,6 +14,7 @@ d3.radialMenu = function() {
     var thickness = 20;
     var iconSize = 16;
     var translation = '0 0';
+    var scale = '1,1';
     var animationDuration = 250;                // The duration to run animations for
     var onClick = function(a) { alert(a); };
 
@@ -80,6 +81,17 @@ d3.radialMenu = function() {
     control.translation = function (_) {
         if (!arguments.length) return translation;
         translation = _;
+        return control;
+    };
+    
+    /**
+     * Scale to apply to the radial menu
+     * @param {object} scale
+     * @returns {text}
+     */
+    control.scale = function (_) {
+        if (!arguments.length) return scale;
+        scale = _;
         return control;
     };
     
@@ -155,7 +167,7 @@ d3.radialMenu = function() {
 
          // Create the visualiziation   
         segmentLayer = target.append("g")
-                             .attr("transform", "translate(" + translation + ") rotate(" + offsetAngleDeg + ")");
+                             .attr("transform", "translate(" + translation + ") rotate(" + offsetAngleDeg + ") scale(" + scale + ")");
         
         return control;
     };
@@ -170,7 +182,7 @@ d3.radialMenu = function() {
         // then rotate the menu to re-centre the first segment
         data = _;
         offsetAngleDeg = -180 / data.length;
-        segmentLayer.attr("transform", "translate(" + translation + ") rotate(" + offsetAngleDeg + ")");
+        segmentLayer.attr("transform", "translate(" + translation + ") rotate(" + offsetAngleDeg + ") scale(" + scale + ")");
                
         // Join the data to the elements
         var dataJoin = segmentLayer .selectAll(".menu-segment-container")
