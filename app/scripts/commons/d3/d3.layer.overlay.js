@@ -15,6 +15,9 @@
         this.draw        = draw;
         this.getCenter   = getCenter;
 
+        this.getTranslationX = function() { return _lastTranslationX }
+        this.getTranslationY = function() { return _lastTranslationY }
+
         var marginGroup,
             frameGroup,
             _width,
@@ -36,8 +39,8 @@
             marginGroup = _target.append('g').attr('id', 'margin-layer')
             frameGroup  = _target.append('g').attr('id', 'frame-layer');
 
-            createMarginPath();
-            createFramePath();
+            draw(_width, _height)
+
         }
 
         /**
@@ -214,9 +217,13 @@
                 // and the actual bounding topleft point
                 - (pixelOrigin.y - pixelBoundMin.y - size.y / 2);
 
-            // marginGroup.attr("transform", "translate(" + (_x ) +"," + (_y ) + ")")
-            // frameGroup.attr("transform", "translate(" + (_x ) +"," + (_y ) + ")")
-            _target.attr("transform", "translate(" + (_lastTranslationX ) +"," + (_lastTranslationY) + ")")
+            console.log(_height)
+            console.log(pixelOrigin.y)
+            console.log(pixelBoundMin.y)
+            console.log(size.y)
+            console.log((pixelOrigin.y - pixelBoundMin.y - size.y / 2))
+            marginGroup.attr("transform", "translate(" + (_lastTranslationX ) +"," + (_lastTranslationY) + ")")
+            frameGroup.attr("transform", "translate(" + (_lastTranslationX ) +"," + (_lastTranslationY) + ")")
         }
 
     }

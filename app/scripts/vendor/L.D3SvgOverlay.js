@@ -181,12 +181,35 @@ L.D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
         return this;
     },
 
+    init: function() {
+
+        // Init shift/scale invariance helper values
+        this._pixelOrigin = this.map.getPixelOrigin();
+        this._wgsOrigin = L.latLng([0, 0]);
+        this._wgsInitialShift = this.map.latLngToLayerPoint(this._wgsOrigin);
+        this._zoom = this.map.getZoom();
+        this._shift = L.point(0, 0);
+        this._scale = 1;
+
+    },
+
     freezeScaling: function() {
         this._freezeScaling = true;
     },
 
     unFreezeScaling: function() {
         this._freezeScaling = false;
+    },
+
+    set: function(x, y) {
+        this._wgsInitialShift = L.point(this.map.latLngToLayerPoint(this._wgsOrigin).x - x, this.map.latLngToLayerPoint(this._wgsOrigin).y - y);
+        
+        this._shift = this.map.latLngToLayerPoint(this._wgsOrigin)
+            ._subtract(this._wgsInitialShift.multiplyBy(this._scale));
+
+        var shift = ["translate(", this._shift.x, ",", this._shift.y, ") "];
+        var scale = ["scale(", this._scale, ",", this._scale,") "];
+        this._rootGroup.attr("transform", shift.concat(scale).join(""));
     }
 });
 

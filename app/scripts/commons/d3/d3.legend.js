@@ -11,19 +11,22 @@
 (function() {
     'use strict';
 
-    function LegendService() {
+    function LegendService(settings) {
 
         this.initLegend        = initLegend;
-        this.toggleFontBraille = toggleFontBraille;
+        this.showFontBraille   = showFontBraille;
+        this.hideFontBraille   = hideFontBraille;
         this.addToLegend       = addToLegend;
-        this.removeFromLegend  = removeFromLegend;
+        this.draw              = draw;
+        this.getNode           = function() { return _svg.node();}
 
         var _width,
             _height,
             _margin,
             _ratioPixelPoint,
-            _fontBraille = false,
-            _svg;
+            _fontBraille,
+            _svg,
+            frameGroup;
 
         /**
          * @ngdoc method
@@ -50,18 +53,16 @@
          */
         function initLegend(id, width, height, margin, ratioPixelPoint) {
             
-            _width = width;
-            _height = height;
+            _width = width / ratioPixelPoint;
+            _height = height / ratioPixelPoint;
             _margin = margin;
             _ratioPixelPoint = ratioPixelPoint;
             
-            _svg = d3.select(id).append('svg')
-                    .attr('width', _width + 'mm')
-                    .attr('height', _height + 'mm')
-                    .attr('viewBox', '0 0 ' 
-                                + (_width / _ratioPixelPoint) 
-                                + ' ' 
-                                + (_height / _ratioPixelPoint));
+            _svg = d3.select(id).append('svg');
+
+            frameGroup  = _svg.append('g');
+
+            draw(_width, _height);
 
             _svg.append('text')
                     .attr('x', function() {
@@ -70,29 +71,109 @@
                     .attr('y', function() {
                         return _margin * 2;
                     })
-                    // .attr('class', 'braille')
-                    // .attr('font-family', 'Braille_2007')
                     .attr('font-size', '35px')
                     .text(function() {
                         return 'Légende';
                     })
 
-            toggleFontBraille();
+            showFontBraille();
 
             return _svg;
         }
 
-        function toggleFontBraille() {
-            if (_fontBraille === true) {
-                _svg.classed('braille', false)
-                    .attr('font-family', 'Arial');
-                _fontBraille = false;
-            } else {
-                _svg.classed('braille', true)
-                    .attr('font-family', 'Braille_2007');
-                _fontBraille = true;
-            }
+        /**
+         * @ngdoc method
+         * @name  showFontBraille
+         * @methodOf accessimapEditeurDerApp.LegendService
+         *
+         * @description 
+         * Show the 'braille' font on the legend's svg.
+         */
+        function showFontBraille() {
+
+            _svg.classed('braille', true)
+                .attr('font-family', 'Braille_2007');
+
         }
+
+        /**
+         * @ngdoc method
+         * @name  hideFontBraille
+         * @methodOf accessimapEditeurDerApp.LegendService
+         *
+         * @description 
+         * Hide the 'braille' font on the legend's svg and display it in Arial
+         */
+        function hideFontBraille() {
+
+            _svg.classed('braille', false)
+                .attr('font-family', 'Arial');
+
+        }
+
+        /**
+         * @ngdoc method
+         * @name  draw
+         * @methodOf accessimapEditeurDerApp.LegendService
+         *
+         * @description 
+         * Draw a frame linked to the width & height arguments
+         * 
+         * @param  {integer} width  
+         * Width in pixel of the printing format
+         * 
+         * @param  {integer} height 
+         * Height in pixel of the printing format
+         */
+        function draw(width, height) {
+
+            _width = width;
+            _height = height;
+
+            _svg.attr('width', _width)
+                .attr('height', _height)
+                .attr('viewBox', '0 0 ' + _width + ' ' + _height);
+
+            createFramePath();
+
+        }
+
+
+
+        /**
+         * @ngdoc method
+         * @name  createFramePath
+         * @methodOf accessimapEditeurDerApp.LegendService
+         *
+         * @description 
+         * Create a frame of the legend, telling user about the print format
+         */
+        function createFramePath() {
+            var w40 = _width - _margin,
+                h40 = _height - _margin;
+
+            frameGroup.selectAll("*").remove();
+
+            frameGroup.append('path')
+                .attr('d', function() {
+                    return 'M ' + _margin + ' ' + _margin + ' L ' 
+                                    + w40 
+                                    + ' ' + _margin + ' L ' 
+                                    + w40 
+                                    + ' ' 
+                                    + h40 
+                                    + ' L ' + _margin + ' ' 
+                                    + h40 
+                                    + ' L ' + _margin + ' ' + _margin + ' z';
+                })
+                .attr('fill', 'none')
+                .attr('opacity', '.75')
+                .attr('stroke', '#000000')
+                .attr('stroke-width', '2px')
+                .attr('stroke-opacity', '1')
+                .attr('id', 'svgContainer')
+                .classed('notDeletable', true);
+        };
 
         /**
          * @ngdoc method
@@ -102,9 +183,14 @@
          * @description 
          * Add a text in the legend
          * 
-         * @param {Object} query    [description]
-         * @param {Object} style    [description]
-         * @param {Object} position [description]
+         * @param {Object} query    
+         * [description]
+         * 
+         * @param {Object} style    
+         * [description]
+         * 
+         * @param {Object} position 
+         * [description]
          */
         function addToLegend(query, style, position, colorChosen, checkboxModel) {
             var legendGroup = _svg.append('g')
@@ -119,13 +205,13 @@
                             return _margin * 2;
                         })
                         .attr('y1', function() {
-                            return position * 40 +_margin * 2;
+                            return ( position + 1 ) * 40 +_margin * 2;
                         })
                         .attr('x2', function() {
                             return _margin * 2 + 40;
                         })
                         .attr('y2', function() {
-                            return position * 40 +_margin * 2;
+                            return ( position + 1 ) * 40 +_margin * 2;
                         })
                         .attr('class', 'symbol')
                         .attr('fill', 'red');
@@ -135,13 +221,13 @@
                             return _margin * 2;
                         })
                         .attr('y1', function() {
-                            return position * 40 +_margin * 2;
+                            return ( position + 1 ) * 40 +_margin * 2;
                         })
                         .attr('x2', function() {
                             return _margin * 2 + 40;
                         })
                         .attr('y2', function() {
-                            return position * 40 +_margin * 2;
+                            return ( position + 1 ) * 40 +_margin * 2;
                         })
                         .attr('class', 'symbol')
                         .attr('class', 'inner')
@@ -173,7 +259,7 @@
                 case 'point':
                     symbol = legendGroup.append('path')
                         .attr('cx',_margin * 2 + 20)
-                        .attr('cy', position * 40 +_margin * 2 + style.radius / 2)
+                        .attr('cy', ( position + 1 ) * 40 +_margin * 2 + style.radius / 2)
                         .attr('d', function() {
                             var x = parseFloat(d3.select(this).attr('cx')),
                                     y = parseFloat(d3.select(this).attr('cy'));
@@ -190,7 +276,7 @@
                             return _margin * 2;
                         })
                         .attr('y', function() {
-                            return position * 40 +_margin * 2;
+                            return ( position + 1 ) * 40 +_margin * 2 - 15;
                         })
                         .attr('width', function() {
                             return 40;
@@ -229,24 +315,18 @@
                     return _margin * 2 + 50;
                 })
                 .attr('y', function() {
-                    return position * 40 +_margin * 2 + 20;
+                    return ( position + 1 )* 40 +_margin * 2 ;
                 })
-                // .attr('font-family', 'Braille_2007')
                 .attr('font-size', '35px')
-                // .attr('class', 'braille')
                 .text(function() {
                     return query.name;
                 });
-        }
-
-        function removeFromLegend() {
-
         }
 
     }
 
     angular.module(moduleApp).service('LegendService', LegendService);
 
-    LegendService.$inject = [];
+    LegendService.$inject = ['settings'];
 
 })();

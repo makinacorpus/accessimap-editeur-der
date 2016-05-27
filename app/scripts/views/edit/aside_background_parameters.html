@@ -1,0 +1,88 @@
+<h3>
+    <button class="btn btn-link" 
+            ng-click="$ctrl.displayParameters()">
+        <span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span>
+    </button>
+    
+    <span class="fa fa-lg fa-picture-o" aria-hidden="true"></span>
+    Trame de fond
+</h3>
+
+<form class="row">
+
+    <div class="form-group col-xs-12">
+        <label>Trame de fond</label>
+        <ui-select 
+            ng-model="$ctrl.backgroundStyle" 
+            ng-change="$ctrl.updateBackgroundStyle($ctrl.backgroundStyle)" 
+            ng-disabled="disabled" 
+            theme="bootstrap" 
+            class="form-control style-selector">
+
+            <ui-select-match 
+                placeholder="Sélectionnez un style">
+                {{$select.selected.name}}
+            </ui-select-match>
+
+            <ui-select-choices repeat="item in $ctrl.backgroundStyleChoices | filter: $select.search">
+                <span ng-bind-html="item.name | highlight: $select.search"></span>
+                <span ng-bind-html="$ctrl.featureIcon(item, 'polygon')"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+    <div class="form-group col-xs-12">
+        <label>Couleur de fond</label>
+        <ui-select 
+            ng-model="$ctrl.backgroundColor" 
+            ng-change="$ctrl.updateBackgroundColor($ctrl.backgroundColor)" 
+            theme="bootstrap" 
+            class="form-control style-selector">
+
+            <ui-select-match 
+                placeholder="Sélectionnez une couleur de fond">
+                {{$ctrl.backgroundColor.name}}
+            </ui-select-match>
+
+            <ui-select-choices repeat="item in $ctrl.colors">
+                <div ng-bind-html="item.name | highlight: $select.search"></div>
+            </ui-select-choices>
+
+        </ui-select>
+    </div>
+
+    <div class="form-group col-xs-12">
+        <label>Importer un fond (SVG/JPG/PNG/PDF)</label>
+        <!-- http://stackoverflow.com/questions/17922557/angularjs-how-to-check-for-changes-in-file-input-fields -->
+        <input onchange="angular.element(this).scope().$ctrl.uploadFile(this)" 
+            type="file" 
+            accept="image/svg+xml,image/png,image/jpeg,application/pdf" />
+    </div>
+
+     <div class="form-group col-xs-12">
+        <label>Choisir un fond de carte prédéfini</label>
+        <uib-accordion close-others="false" >
+            
+            <uib-accordion-group 
+                heading="{{mapCategory.name}}" 
+                is-open="status.isFirstOpen" 
+                is-disabled="status.isFirstDisabled"
+                ng-repeat="mapCategory in $ctrl.mapCategories">
+            
+                <ul class="row">
+                    <li ng-repeat="image in mapCategory.images">
+                        <img class="img-responsive" 
+                            ng-src="{{image.path}}" 
+                            ng-click="$ctrl.appendSvg(image.path)"/>
+                    </li>
+                </ul>
+
+            </uib-accordion-group>
+
+        </uib-accordion>
+    </div>
+
+
+</form>
+
+

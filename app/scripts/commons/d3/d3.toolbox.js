@@ -81,6 +81,7 @@
             RadialMenuService.addRadialMenu(d3.selectAll('path:not(.notDeletable)'));
             RadialMenuService.addRadialMenu(d3.selectAll('circle:not(.notDeletable)'));
             RadialMenuService.addRadialMenu(d3.selectAll('text:not(.notDeletable)'));
+            RadialMenuService.addRadialMenu(d3.selectAll('image:not(.notDeletable)'));
         }
         
         /**
@@ -112,7 +113,8 @@
                     .append('path')
                     .classed('link_' + iid, true)
                     .attr('d', style.path(x,y,style.radius))
-                    .attr('data-link', iid);
+                    .attr('data-link', iid)
+                    .attr('data-type', 'point');
             
             applyStyle(feature, style.style, color);
 
@@ -164,6 +166,7 @@
                     .attr('cy', y)
                     .classed('link_' + iid, true)
                     .attr('data-link', iid)
+                    .attr('data-type', 'circle')
                     .classed('edition', true);
 
                 applyStyle(feature, style.style, color);
@@ -336,6 +339,7 @@
             d3.select('.edition')
                 .classed('edition', false)
                 .classed('link_' + iid, true)
+                .attr('data-type', mode)
                 .attr('data-link', iid);
 
             d3.select('.ongoing').remove();
@@ -371,6 +375,7 @@
                 .attr('id', 'finalText')
                 .classed('edition', true)
                 .classed('link_' + iid, true)
+                .attr('data-type', 'text')
                 .attr('data-link', iid)
                 .text('');
 
@@ -502,9 +507,9 @@
                     if (colorChosen && colorChosen.color !== 'none') {
                         v += '_' + colorChosen.color;
                     }
-                    path.attr('fill', settings.POLYGON_STYLES[v].url());
+                    path.style('fill', settings.POLYGON_STYLES[v].url());
                 } else {
-                    path.attr(k, v);
+                    path.style(k, v);
                 }
             });
         };

@@ -3,6 +3,9 @@
  * @name accessimapEditeurDerApp.DrawingService
  * @requires accessimapEditeurDerApp.LayersService
  * @requires accessimapEditeurDerApp.ToolboxService
+ * @requires accessimapEditeurDerApp.settings
+ * @requires accessimapEditeurDerApp.FeatureService
+ * @requires accessimapEditeurDerApp.ToolboxService
  * @description
  * Service providing drawing functions
  * Provide functions to 
@@ -12,28 +15,25 @@
 (function() {
     'use strict';
 
-    function DrawingService(LayersService, ToolboxService, settings, 
-        FeatureService, EventService, ExportService, shareSvg) {
+    function DrawingService(LayersService, ToolboxService, settings, FeatureService) {
 
         this.initDrawing     = initDrawing;
         
         this.isUndoAvailable = FeatureService.isUndoAvailable;
         this.undo            = FeatureService.undo;
-        
-        this.exportData      = function(filename) {
-            shareSvg.getInteractions()
-                .then(function(interactionData) {
+
+       /* this.exportData      = function(filename) {
+            // shareSvg.getInteractions()
+                // .then(function(interactionData) {
                     ExportService.exportData(filename, 
                             d3.select('svg.leaflet-zoom-animated').node(), 
                             d3.select('.leaflet-tile-container.leaflet-zoom-animated').node(),
                             d3.select('#der-legend').selectAll('svg').node(),
                             $('#comment').val(),
-                            interactionData,
-                            _width,
-                            _height);
-                })
+                            InteractionService.getInteractions());
+                // })
         }
-
+        */
         this.toolbox = ToolboxService;
         
         this.layers  = LayersService;
@@ -77,6 +77,6 @@
 
     angular.module(moduleApp).service('DrawingService', DrawingService);
 
-    DrawingService.$inject = ['LayersService', 'ToolboxService', 'settings', 'FeatureService', 'EventService', 'ExportService', 'shareSvg'];
+    DrawingService.$inject = ['LayersService', 'ToolboxService', 'settings', 'FeatureService'];
 
 })();

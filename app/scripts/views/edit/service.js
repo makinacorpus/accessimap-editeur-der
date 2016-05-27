@@ -18,7 +18,7 @@
 (function() {
     'use strict';
 
-    function EditService($q, settings, MapService, DrawingService, LegendService) {
+    function EditService($q, settings, MapService, DrawingService, LegendService, DefsService, InteractionService, ExportService, UtilService, ImportService) {
 
         this.init          = init;
         this.settings      = settings;
@@ -27,21 +27,17 @@
         this.insertOSMData = insertOSMData;
         this.disableAddPOI = disableAddPOI;
 
+        this.settings      = settings;
+
         // Drawing services
         // TODO : reset action has to work correctly for event...
         // we have to use map event or d3 event... not both (mea culpa)
         this.resetActions = function() {
-            d3.selectAll('path:not(.menu-segment)')
-                .on('click', function() {
-                });
-            d3.selectAll('svg')
-                .on('click', function() {
-                });
-            d3.select('body')
-                .on('keydown', function() {
-                });
-            d3.selectAll('path')
-                .attr('marker-mid', null);
+            d3.selectAll('path:not(.menu-segment)').on('click', function() {});
+            d3.selectAll('svg').on('click', function() {});
+            d3.select('body').on('keydown', function() {});
+            d3.selectAll('path').attr('marker-mid', null);
+
             //$('#der').css('cursor', 'auto');
 
             d3.selectAll('.ongoing').remove();
@@ -50,7 +46,6 @@
             d3.selectAll('.edition').classed('edition', false);
             d3.selectAll('.styleEdition').classed('styleEdition', false);
             d3.selectAll('.highlight').classed('highlight', false);
-
 
             MapService.removeEventListeners();
         }
@@ -69,7 +64,12 @@
         this.drawCircle                    = DrawingService.toolbox.drawCircle;
         this.enableLineOrPolygonMode       = enableLineOrPolygonMode;
         this.enableTextMode                = enableTextMode;
-        this.exportData                    = DrawingService.exportData;
+
+        this.exportData                    = function(model) {
+            model.center = center ? center : MapService.getMap().getCenter();
+            model.zoom   = zoom   ? zoom   : MapService.getMap().getZoom();
+            resetZoom(function() { ExportService.exportData(model)});
+        }
 
         // Map services
         this.showMapLayer                  = MapService.showMapLayer;
@@ -92,13 +92,21 @@
 
         this.rotateMap                     = rotateMap;
 
+        this.interactions                  = InteractionService;
+
         this.changeDrawingFormat = changeDrawingFormat;
-        this.changeLegendFormat = changeLegendFormat;
-        this.toggleLegendFontBraille = LegendService.toggleFontBraille;
+        this.changeLegendFormat  = changeLegendFormat;
+        this.showFontBraille     = LegendService.showFontBraille;
+        this.hideFontBraille     = LegendService.hideFontBraille;
+
+        this.uploadFile          = uploadFile;
+        this.appendSvg           = appendSvg;
+        this.importDER           = importDER;
 
         var d3Element = null, 
             overlayDrawing, 
             overlayGeoJSON, 
+            overlayBackground, 
             overlay, 
             center = null,
             zoom = null,
@@ -115,13 +123,14 @@
             mapFreezed = true;
             MapService.removeMoveHandler();
             // MapService.removeViewResetHandler();
-            if (scaleDefined!==true){
+            if (scaleDefined!==true) {
                 scaleDefined = true;
             }
 
             overlay.unFreezeScaling();
             overlayGeoJSON.unFreezeScaling();
             overlayDrawing.unFreezeScaling();
+            overlayBackground.unFreezeScaling();
 
             center = ( center === null ) ? MapService.getMap().getCenter() : center ;
             zoom = ( zoom === null ) ? MapService.getMap().getZoom() : zoom;
@@ -252,27 +261,40 @@
          * @param  {[type]} legendFormat
          * Printing format of the legend container
          */
-        var selOverlay, selDrawing, selGeoJSON, 
-                projOverlay, projDrawing, projGeoJSON ;
+        var selBackground, selOverlay, selDrawing, selGeoJSON, 
+                projBackground, projOverlay, projDrawing, projGeoJSON,
+                currentDrawingFormat, currentLegendFormat ;
 
         function init(drawingFormat, legendFormat) {
 
-            if (drawingFormat === undefined) 
-                drawingFormat = settings.FORMATS[settings.DEFAULT_DRAWING_FORMAT];
+            currentDrawingFormat = (drawingFormat === undefined) 
+                                    ? settings.FORMATS[settings.DEFAULT_DRAWING_FORMAT]
+                                    : drawingFormat;
+            currentLegendFormat = (legendFormat === undefined) 
+                                    ? settings.FORMATS[settings.DEFAULT_LEGEND_FORMAT]
+                                    : legendFormat;
             
-            if (legendFormat === undefined) 
-                legendFormat = settings.FORMATS[settings.DEFAULT_LEGEND_FORMAT];
-
             MapService.initMap('workspace', 
                             drawingFormat.width, 
                             drawingFormat.height, 
                             settings.ratioPixelPoint,
                             MapService.resizeFunction);
 
+            // Background used to import images, svg or pdf to display a background helper
+            overlayBackground = L.d3SvgOverlay(function(sel, proj) {
+                selBackground = sel;
+                projBackground = proj;
+            }, { zoomDraw: true, zoomHide: false, name: 'background'});
+            overlayBackground.addTo(MapService.getMap())
+            overlayBackground.freezeScaling();
 
+            // Overlay used to import GeoJSON features from OSM
             overlayGeoJSON = L.d3SvgOverlay(function(sel, proj) {
                 selGeoJSON = sel;
                 projGeoJSON = proj;
+
+                DrawingService.layers._elements.geojson.sel = sel;
+                DrawingService.layers._elements.geojson.sel = proj;
 
                 // if map is freezed, we just use the translate / zoom from d3svgoverlay
                 // if not, we re draw the geojson features with reverse scaling
@@ -281,31 +303,29 @@
                 }
 
             }, { zoomDraw: true, zoomHide: false, name: 'geojson'});
-
-
             overlayGeoJSON.addTo(MapService.getMap())
-
             overlayGeoJSON.freezeScaling();
 
+            // Overlay used to draw shapes
             overlayDrawing = L.d3SvgOverlay(function(sel, proj) {
                 selDrawing = sel;
                 projDrawing = proj;
+                DrawingService.layers._elements.drawing.sel = sel;
+                DrawingService.layers._elements.drawing.sel = proj;
             }, { zoomDraw: true, zoomHide: false, name: 'drawing'});
-
             overlayDrawing.addTo(MapService.getMap())
-            
             overlayDrawing.freezeScaling();
 
+            // Overlay used to display the printing format
             overlay = L.d3SvgOverlay(function(sel, proj) {
                 selOverlay = sel;
                 projOverlay = proj;
             }, { zoomDraw: false, zoomHide: false, name: 'overlay'});
-
             overlay.addTo(MapService.getMap())
-
             overlay.freezeScaling();
 
             DrawingService.initDrawing({
+                            background: {sel: selBackground, proj: projBackground },
                             overlay: {sel: selOverlay, proj: projOverlay },
                             drawing: {sel: selDrawing, proj: projDrawing },
                             geojson: {sel: selGeoJSON, proj: projGeoJSON }
@@ -316,17 +336,26 @@
 
             mapFreezed = false;
             MapService.addMoveHandler(function(size, pixelOrigin, pixelBoundMin) {
-                // if scale is not defined, we have to re draw the overlay to keep the initial format
+                // if scale is not defined, 
+                // we have to re draw the overlay to keep the initial format / position
                 if (scaleDefined!==true) {
                     DrawingService.layers.overlay.refresh(size, pixelOrigin, pixelBoundMin);
                 }
             })
+            MapService.getMap().setView(MapService.getMap().getCenter(), MapService.getMap().getZoom(), {reset:true});
+
+            // we create defs svg in a different svg of workspace & legend
+            // it's useful to let #legend & #workspace svg access to patterns
+            // created inside #pattern svg
+            DefsService.createDefs(d3.select('#pattern'));
 
             LegendService.initLegend('#legend', 
                                     legendFormat.width, 
                                     legendFormat.height, 
                                     settings.margin, 
                                     settings.ratioPixelPoint);
+
+            // MapService.resizeFunction();
 
         }
 
@@ -338,13 +367,13 @@
                                         settings.FORMATS[format].height / settings.ratioPixelPoint);
             MapService.resizeFunction();
             center = DrawingService.layers.overlay.getCenter();
-            console.log(center)
             resetZoom();
             // MapService.getMap().invalidateSize()
         }
 
         function changeLegendFormat(format) {
-            
+            LegendService.draw(settings.FORMATS[format].width / settings.ratioPixelPoint, 
+                                                settings.FORMATS[format].height / settings.ratioPixelPoint);
         }
 
         /**
@@ -438,9 +467,10 @@
         function rotateMap(angle) {
             var size = MapService.getMap().getSize();
 
-            $('.leaflet-layer').css('transform', 'rotate(' + angle + 'deg)'); //' ' + size.x / 2 + ' ' + size.y / 2 + ')');
-            // d3.selectAll('.rotable')
-                // .attr('transform', 'rotate(' + angle + ' ' + _width / 2 + ' ' + _height / 2 + ')');
+            $('.leaflet-layer').css('transform', 'rotate(' + angle + 'deg)'); 
+            //' ' + size.x / 2 + ' ' + size.y / 2 + ')');
+            d3.selectAll('.rotable').attr('transform', 'rotate(' + angle + ')');
+            //' ' + _width / 2 + ' ' + _height / 2 + ')');
         }
 
         /**
@@ -485,13 +515,228 @@
             MapService.getMap().panTo(point);
         }
 
-        function resetZoom() {
-            console.log(center)
-            if (center !== null && zoom !== null)
-                MapService.getMap().setView(center, zoom)
-            // if (referenceBounds !== null && referenceBounds !== undefined) {
-            //     MapService.getMap().fitBounds(referenceBounds);
-            // }
+        /**
+         * @ngdoc method
+         * @name  resetZoom
+         * @methodOf accessimapEditeurDerApp.EditService
+         *
+         * @description 
+         * If a center of the drawing is defined, 
+         * we pan / zoom to the initial state of the drawing.
+         *
+         * @param {function} callback
+         * Optional, function to be called when the setView is finished
+         */
+        function resetZoom(callback) {
+
+            if (center !== null && zoom !== null) {
+                // if the tile layer don't zoom, we're not going to load tiles
+                // we have to detect if we are going to change the zoom level or not
+                var zoomWillChange = ( MapService.getMap().getZoom() !== zoom );
+
+                if (zoomWillChange) {
+                    MapService.getTileLayer().once('load', function() { 
+                        console.log('load')
+                        if (callback) callback(); 
+                    })
+                }
+
+                MapService.getMap().setView(center, zoom, {animate:false})
+
+                if (! zoomWillChange && callback) {
+                    console.log('zoomWillNotChange... so callback')
+                    callback();
+                }
+
+            } else {
+                if (callback) callback();
+            }
+
+        }
+
+        function uploadFile(element) {
+
+            UtilService.uploadFile(element)
+                .then(function(data) {
+                    switch (data.type) {
+                        case 'image/svg+xml':
+                        case 'image/png':
+                        case 'image/jpeg':
+                            DrawingService.layers.background.appendImage(data.dataUrl, MapService.getMap().getSize(), MapService.getMap().getPixelOrigin(), MapService.getMap().getPixelBounds().min);
+                            break;
+
+                        case 'application/pdf':
+                            appendPdf(data.dataUrl);
+                            break;
+
+                        default:
+                            console.log('Mauvais format');
+                    }
+                })
+
+        };
+
+        /**
+         * @ngdoc method
+         * @name  appendPdf
+         * @methodOf accessimapEditeurDerApp.EditService
+         *
+         * @description 
+         * Append the first page of a pdf in the background layer
+         * 
+         * @param  {dataUrl} image
+         * dataUrl (could be png, jpg, ...) to insert in the background
+         * 
+         */
+        function appendPdf(dataURI) {
+            var BASE64_MARKER = ';base64,',
+                base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length,
+                base64 = dataURI.substring(base64Index),
+                raw = window.atob(base64),
+                rawLength = raw.length,
+                array = new Uint8Array(new ArrayBuffer(rawLength));
+
+            for (var i = 0; i < rawLength; i++) {
+                array[i] = raw.charCodeAt(i);
+            }
+            PDFJS.getDocument(array)
+            .then(function(pdf) {
+                pdf.getPage(1).then(function(page) {
+                    var scale = 1.5,
+                        viewport = page.getViewport(scale),
+                        canvas = document.createElement('canvas'), //document.getElementById('pdf-canvas'),
+                        context = canvas.getContext('2d');
+
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    var renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    page.render(renderContext).then(function() {
+                        // appendImage(canvas.toDataURL());
+                        DrawingService.layers.background.appendImage(canvas.toDataURL(), MapService.getMap().getSize(), MapService.getMap().getPixelOrigin(), MapService.getMap().getPixelBounds().min);
+                            
+                    });
+                });
+            });
+        }
+
+        function appendSvg(path) {
+            
+            d3.xml(path, function(xml) {
+                // adapt the format of the drawing
+                $(xml.documentElement).data('format')
+                
+                
+                // Load polygon fill styles taht will be used on common map
+                var originalSvg = d3.select(xml.documentElement),
+                    children = originalSvg[0][0].children,
+                    returnChildren = function() {
+                        return children[i];
+                    };
+
+                for (var i = 0; i < children.length; i++) {
+                    var id = d3.select(children[i]).attr('id'),
+                        element = d3.select(children[i]);
+
+                    if (id !== 'margin-layer'
+                        && id !== 'frame-layer'
+                        && id !== 'background-layer') {
+                        d3.select(children[i]).classed('sourceDocument', true);
+                        DrawingService.layers.background.append(returnChildren);
+                    }
+                }
+
+            });
+        }
+
+        function importDER(element) {
+
+            var deferred = $q.defer();
+
+            UtilService.uploadFile(element)
+                .then(function(data) {
+
+                    switch (data.type) {
+                        case 'image/svg+xml':
+                            d3.xml(data.dataUrl, function(svgElement) {
+                                ImportService.importDrawing(svgElement);
+                                freezeMap();
+                                deferred.resolve();
+                            })
+                            break;
+
+                        case 'application/zip':
+                            JSZip.loadAsync(element.files[0])
+                                .then(function(zip) {
+                                    
+                                    var commentairesPath,
+                                        legendPath,
+                                        drawingPath,
+                                        interactionPath,
+                                        legendElement, svgElement, interactionData;
+
+                                    zip.forEach(function (relativePath, zipEntry) {
+                                        
+                                        if (relativePath.indexOf("carte_sans_source.svg") >= 0) {
+                                            drawingPath = relativePath;
+                                        }
+
+                                        if (relativePath.indexOf("interactions.xml") >= 0) {
+                                            interactionPath = relativePath;
+                                        }
+                                    });
+
+                                    var parser = new DOMParser();
+
+                                    if (drawingPath) {
+                                        zip.file(drawingPath).async("string")
+                                        .then(function(data) {
+                                            var svgElement = parser.parseFromString(data, "text/xml"),
+                                                model = ImportService.getModelFromSVG(svgElement);
+
+                                            if (model.center !== null && model.zoom !== null) {
+                                                center = model.center;
+                                                zoom = model.zoom;
+                                                MapService.getMap().setView(model.center, model.zoom, {reset:true});
+                                                freezeMap();
+                                            }
+
+                                            if (model.isMapVisible) {
+                                                MapService.showMapLayer();
+                                            }
+                                            
+                                            ImportService.importDrawing(svgElement)
+                                            
+                                            deferred.resolve(model);
+                                        })
+                                    }
+
+                                    if (interactionPath) {
+                                        zip.file(interactionPath).async("string")
+                                        .then(function(data) {
+                                            ImportService.importInteraction(parser.parseFromString(data, "text/xml"));
+                                        })
+                                    }
+
+                                    // deferred.resolve();
+
+                                    // TODO: make a Promise.all to manage the import time
+
+                                });
+
+                            break;
+
+                        default:
+                            console.log('Mauvais format');
+                    }
+                    
+                })
+
+            return deferred.promise;
+
         }
 
     }
@@ -503,6 +748,11 @@
                             'MapService', 
                             'DrawingService', 
                             'LegendService',
+                            'DefsService',
+                            'InteractionService',
+                            'ExportService',
+                            'UtilService',
+                            'ImportService',
                             ];
 
 })();

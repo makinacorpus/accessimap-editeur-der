@@ -1,0 +1,130 @@
+<h4>
+    <span class="fa fa-list"></span>
+    Listing des éléments
+</h4>
+
+<p ng-if="!$ctrl.getFeatures() || $ctrl.getFeatures().length === 0">
+    Pas encore d'éléments !<br/>
+    Vous verrez ici les éléments que vous allez créer via les boutons d'ajouts de POI, d'adresse ou de données OSM !
+</p>
+
+
+
+<uib-accordion 
+    close-others="true" 
+    ng-if="$ctrl.getFeatures() && $ctrl.getFeatures().length > 0">
+    
+    <uib-accordion-group 
+        heading="{{feature.name}}" 
+        is-open="status.isFirstOpen" 
+        is-disabled="status.isFirstDisabled"
+        ng-repeat="feature in $ctrl.getFeatures()">
+        
+        <!-- simplification slider -->
+        <!--  <div class="form-group" ng-if="feature.type !== 'point'" >
+            <label>Simplification</label>
+            <div class="input-group">
+                <slider 
+                    class="form-control slider-container" 
+                    ng-model="feature.simplification" 
+                    ng-change="$ctrl.simplifyFeatures(feature)" 
+                    min="0" 
+                    max="100">
+                </slider>
+            </div>
+        </div> -->
+
+        <!-- style -->
+        <div class="form-group">
+            <label>Style</label>
+            <ui-select 
+                ng-model="feature.style" 
+                ng-disabled="$ctrl.disabled" 
+                ng-change="$ctrl.updateFeature(feature.id, feature.style)" 
+                theme="bootstrap" 
+                class="form-control style-selector">
+                
+                <ui-select-match 
+                    placeholder="Sélectionnez un style">
+                    {{$select.selected.name}}
+                </ui-select-match>
+
+                <ui-select-choices 
+                    repeat="item in feature.styleChoices | filter: $select.search" 
+                    style="max-height: 500px;">
+                    <span style="display:inline-block;" 
+                        ng-bind-html="item.name | highlight: $select.search"></span>
+                    <span  style="max-height:30px;display:inline-block;" 
+                        ng-bind-html="$ctrl.featureIcon(item, feature.type)"></span>
+                </ui-select-choices>
+
+            </ui-select>
+
+        </div>
+
+        <!-- rotate slider -->
+        <div class="form-group" ng-if="feature.type === 'point'">
+            <label>Rotation</label>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <span class="fa fa-repeat" aria-hidden="true"></span>
+                </span>
+                <slider 
+                    class="form-control slider-container" 
+                    ng-model="feature.rotation" 
+                    ng-change="$ctrl.rotateFeature(feature)" 
+                    min="0" 
+                    max="360">
+                </slider>
+            </div>
+        </div>
+
+            
+        <!-- color -->
+        <div class="form-group" ng-if="feature.type === 'polygon'">
+            <label>Couleur</label>
+            <ui-select 
+                ng-model="feature.color" 
+                ng-change="$ctrl.updateFeature(feature.id, feature.style)" 
+                ng-disabled="$ctrl.disabled" 
+                theme="bootstrap" 
+                class="form-control style-selector">
+                
+                <ui-select-match 
+                    placeholder="Couleur de fond">
+                    {{$select.selected.name}}
+                </ui-select-match>
+
+                <ui-select-choices 
+                    repeat="item in $ctrl.colors | filter: $select.search" 
+                    style="max-height: 500px;">
+                    <span style="display:inline-block;" 
+                        ng-bind-html="item.name | highlight: $select.search"></span>
+                </ui-select-choices>
+                
+            </ui-select>
+        </div>
+
+        <!-- shape -->
+        <div class="form-group" ng-if="feature.type === 'polygon'">
+            <span 
+                class="input-group-addon">
+                Contour de forme
+                <input 
+                    type="checkbox" 
+                    ng-model="feature.contour" 
+                    ng-change="$ctrl.updateFeature(feature.id, feature.style)">
+            </span>
+        </div>
+
+        <!-- delete -->
+        <button 
+            class="btn btn-danger btn-block" 
+            type="button" 
+            ng-click="$ctrl.removeFeature(feature.id)">
+            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+            Supprimer
+        </button>
+    </uib-accordion-group>
+
+</uib-accordion>

@@ -1,0 +1,30 @@
+<h4>
+    <span class="fa fa-search" aria-hidden="true"></span>
+    Chercher une adresse
+</h4>
+<form>
+    <div class="input-group">
+        <span class="input-group-addon">
+            <span class="fa fa-lg fa-map-marker" aria-hidden="true"></span>
+        </span>
+
+        <input 
+            ng-model="$ctrl.address.start" 
+            type="text" 
+            class="form-control" 
+            id="startAddress" 
+            placeholder="Adresse de départ (ex : 37 rue Monplaisir, Toulouse)">
+        
+        <input 
+            ng-model="$ctrl.address.stop" 
+            type="text" 
+            class="form-control" 
+            id="stopAddress" 
+            placeholder="Adresse d'arrivée">
+
+    </div>
+    <button class="btn btn-primary btn-block" ng-click="$ctrl.searchAddress()">
+        <span class="fa fa-map-marker" aria-hidden="true"></span>
+        Positionner
+    </button>
+</form>

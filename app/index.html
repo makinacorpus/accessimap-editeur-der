@@ -15,6 +15,9 @@
         <link rel="stylesheet" href="assets/fonts/font-awesome-4.6.1/css/font-awesome.css" />
         <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
         <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
+        <style type="text/css">
+            .leaflet-control-coordinates{background-color:#D8D8D8;background-color:rgba(255,255,255,.8);cursor:pointer}.leaflet-control-coordinates,.leaflet-control-coordinates .uiElement input{-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px}.leaflet-control-coordinates .uiElement{margin:4px}.leaflet-control-coordinates .uiElement .labelFirst{margin-right:4px}.leaflet-control-coordinates .uiHidden{display:none}.leaflet-control-coordinates .uiElement.label{color:inherit;font-weight:inherit;font-size:inherit;padding:0;display:inherit}
+        </style>
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css(.tmp) assets/styles/main.css -->
@@ -153,15 +156,17 @@
         <script src="bower_components/turf/turf.min.js"></script>
         <script src="bower_components/pdfjs-dist/build/pdf.combined.js"></script>
         <script src="bower_components/leaflet/dist/leaflet.js"></script>
-        <script src="scripts/vendor/d3.geo.tile.v0.min.js"></script>
+        
+        <script src="scripts/vendor/ui-bootstrap-custom-tpls-1.3.2.min.js"></script>
         <script src="scripts/vendor/d3.radialmenu.js"></script>
         <script src='scripts/vendor/osmtogeojson.js'></script>
-        <script src='scripts/vendor/textures.js'></script>
+        <script src='scripts/vendor/textures-v2.js'></script>
         <script src='scripts/vendor/path-data-polyfill.js/path-data-polyfill.js'></script>
         <script src='scripts/vendor/blob.js'></script>
         <script src='scripts/vendor/canvas-toblob.js'></script>
-        <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-image/v0.0.4/leaflet-image.js'></script>
         <script src='scripts/vendor/L.D3SvgOverlay.js'></script>
+        <script src='scripts/vendor/dom-to-image.js'></script>
+        <script src='scripts/vendor/Leaflet.Coordinates.min.js'></script>
         <!-- endbuild -->
         
         <!-- build:js({.tmp,app}) scripts/app.js -->
@@ -174,13 +179,16 @@
         <script src="scripts/commons/map/map.js"></script>
         <script src="scripts/commons/map/map.search.js"></script>
 
+        <script src="scripts/commons/d3/d3.defs.js"></script>
         <script src="scripts/commons/d3/d3.drawing.js"></script>
         <script src="scripts/commons/d3/d3.event.js"></script>
         <script src="scripts/commons/d3/d3.export.js"></script>
         <script src="scripts/commons/d3/d3.feature.js"></script>
         <script src="scripts/commons/d3/d3.generator.js"></script>
+        <script src="scripts/commons/d3/d3.import.js"></script>
         <script src="scripts/commons/d3/d3.interaction.js"></script>
         <script src="scripts/commons/d3/d3.layers.js"></script>
+        <script src="scripts/commons/d3/d3.layer.background.js"></script>
         <script src="scripts/commons/d3/d3.layer.drawing.js"></script>
         <script src="scripts/commons/d3/d3.layer.geojson.js"></script>
         <script src="scripts/commons/d3/d3.layer.overlay.js"></script>
@@ -189,25 +197,17 @@
         <script src="scripts/commons/d3/d3.toolbox.js"></script>
         
         <script src="scripts/commons/editsvg.js"></script>
-        <script src="scripts/commons/exportdata.js"></script>
         <script src="scripts/commons/geometryutils.js"></script>
         <script src="scripts/commons/initsvg.js"></script>
-        <script src="scripts/commons/interaction.js"></script>
         <script src="scripts/commons/sharesvg.js"></script>
-        <script src="scripts/commons/svgicon.js"></script>
-        <script src="scripts/commons/styleutils.js"></script>
 
-
-        <script src="scripts/commons/ui/radialmenu.js"></script>
         <script src="scripts/commons/ui/toaster.js"></script>
-        <script src="scripts/commons/ui/toolbox.js"></script>
 
         <script src="scripts/commons/geometry/generators.js"></script>
         <script src="scripts/commons/geometry/typeoffeature.js"></script>
 
         <script src="scripts/commons/operations/style.js"></script>
         <script src="scripts/commons/operations/geometry.js"></script>
-        <script src="scripts/commons/operations/interact.js"></script>
         <script src="scripts/commons/operations/move.js"></script>
         <script src="scripts/commons/operations/remove.js"></script>
         <script src="scripts/commons/operations/reset.js"></script>
@@ -218,17 +218,8 @@
         <script src="scripts/views/edit/controller.js"></script>
         <script src="scripts/views/edit/service.js"></script>
 
-        <script src="scripts/views/main/controller.js"></script>
-        <script src="scripts/views/main/service.js"></script>
-
-        <script src="scripts/views/localmap/controller.js"></script>
-        <script src="scripts/views/localmap/service.js"></script>
-
-        <script src="scripts/views/globalmap/controller.js"></script>
-
-        <script src="scripts/views/commonmap/controller.js"></script>
-        <script src="scripts/views/commonmap/service.js"></script>
-
+        <script src="scripts/views/home/controller.js"></script>
+        <script src="scripts/views/home/service.js"></script>
 
         <script src="scripts/templates.js"></script>
 

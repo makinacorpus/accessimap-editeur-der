@@ -13,50 +13,30 @@
 (function() {
     'use strict';
 
-    function LayersService(LayerOverlayService, LayerGeoJSONService, LayerDrawingService, settings) {
+    function LayersService(LayerBackgroundService, LayerOverlayService, LayerGeoJSONService, LayerDrawingService) {
 
         // layers functions
         this.createLayers        = createLayers;
 
-        this.geojson = {
-            getLayer      : getGeoJSONLayer,
-            getZoom       : getGeoJSONZoom,
-            geojsonToSvg  : LayerGeoJSONService.geojsonToSvg, // TODO: rename this function to be more understable
-            removeFeature : LayerGeoJSONService.removeFeature,
-            updateFeature : LayerGeoJSONService.updateFeature,
-            rotateFeature : LayerGeoJSONService.rotateFeature,
-            drawAddress   : LayerGeoJSONService.drawAddress,
-            refresh       : LayerGeoJSONService.refresh,
-            getFeatures   : LayerGeoJSONService.getFeatures,
-        }
+        this.geojson = LayerGeoJSONService;
+        this.geojson.getLayer = getGeoJSONLayer;
+        this.geojson.getZoom = getGeoJSONZoom;
 
-        this.overlay = {
-            getLayer : getOverlayLayer,
-            getZoom  : getOverlayZoom,
-            refresh  : LayerOverlayService.refresh,
-            draw     : LayerOverlayService.draw,
-            getCenter     : LayerOverlayService.getCenter,
-        }
+        this.overlay = LayerOverlayService;
+        this.overlay.getLayer = getOverlayLayer;
+        this.overlay.getZoom = getOverlayZoom;
 
         this.drawing = {
             getLayer : getDrawingLayer,
             getZoom  : getDrawingZoom,
         }
 
-        var _svg,
-            _map, // TODO: change this dependency
-            _width,
-            _height,
-            _margin,
-            _projection,
-            _latLngToLayerPoint,
-            _pixelOrigin,
-            _wgsOrigin,
-            _wgsInitialShift,
-            _zoom,
-            _zoomDiff,
-            _shift,
-            _elements;
+        this.background = LayerBackgroundService;
+        this.background.getLayer = getBackgroundLayer;
+
+
+        var _elements = { geojson: {}, drawing: {}, overlay: {}, background: {}};
+        this._elements = _elements;
 
         /**
          * @ngdoc method
@@ -83,18 +63,12 @@
          */
         function createLayers(elements, width, height, margin) {
 
-            _width = width;
-            _height = height;
-            _margin = margin;
-
-            _svg = elements.overlay.sel;
             _elements = elements;
 
-            createDefs();
-
+            LayerBackgroundService.createLayer(elements.background.sel, width, height, margin, elements.background.proj);
             LayerGeoJSONService.createLayer(elements.geojson.sel, width, height, margin, elements.geojson.proj);
-            LayerDrawingService.createLayer(elements.drawing.sel, _width, _height, _margin);
-            LayerOverlayService.createLayer(elements.overlay.sel, _width, _height, _margin, elements.overlay.proj);
+            LayerDrawingService.createLayer(elements.drawing.sel, width, height, margin);
+            LayerOverlayService.createLayer(elements.overlay.sel, width, height, margin, elements.overlay.proj);
 
         }
 
@@ -110,6 +84,10 @@
             return _elements.geojson.sel;
         }
 
+        function getBackgroundLayer() {
+            return _elements.background.sel;
+        }
+
         function getOverlayZoom() {
             return _elements.overlay.proj.scale;
         }
@@ -122,60 +100,12 @@
             return _elements.geojson.proj.scale;
         }
 
-        /**
-         * @ngdoc method
-         * @name  accessimapEditeurDerApp.LayersService.createDefs
-         * @methodOf accessimapEditeurDerApp.LayersService
-         *
-         */
-        function createDefs() {
 
-            var _defs = _svg.append("defs");
-            
-            _defs.append('marker')
-                    .attr('id', 'arrowStartMarker')
-                    .attr('refX', 5)
-                    .attr('refY', 5)
-                    .attr('markerWidth', 10)
-                    .attr('markerHeight', 10)
-                    .attr('orient', 'auto')
-                .append('path')
-                    .attr('d', 'M9,1 L5,5 9,9')
-                    .attr('style', 'fill:none;stroke:#000000;stroke-opacity:1');
-
-            _defs.append('marker')
-                    .attr('id', 'arrowStopMarker')
-                    .attr('refX', 5)
-                    .attr('refY', 5)
-                    .attr('markerWidth', 10)
-                    .attr('markerHeight', 10)
-                    .attr('orient', 'auto')
-                .append('path')
-                    .attr('d', 'M1,1 L5,5 1,9')
-                    .attr('style', 'fill:none;stroke:#000000;stroke-opacity:1');
-
-            _defs.append('marker')
-                    .attr('id', 'straightMarker')
-                    .attr('refX', 1)
-                    .attr('refY', 5)
-                    .attr('markerWidth', 2)
-                    .attr('markerHeight', 10)
-                    .attr('orient', 'auto')
-                .append('path')
-                    .attr('d', 'M1,1 L1,9')
-                    .attr('style', 'fill:none;stroke:#000000;stroke-opacity:1');
-
-            Object.keys(settings.POLYGON_STYLES).forEach(function(value, index, array) {
-                _defs.call(settings.POLYGON_STYLES[value]);
-                // legendsvg.call(fillPatterns[value]);
-            });
-
-        };
 
     }
 
     angular.module(moduleApp).service('LayersService', LayersService);
 
-    LayersService.$inject = ['LayerOverlayService', 'LayerGeoJSONService', 'LayerDrawingService', 'settings'];
+    LayersService.$inject = ['LayerBackgroundService', 'LayerOverlayService', 'LayerGeoJSONService', 'LayerDrawingService'];
 
 })();

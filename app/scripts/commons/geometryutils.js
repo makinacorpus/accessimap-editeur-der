@@ -109,6 +109,5 @@
 
     }
 
-    angular.module(moduleApp)
-        .service('geometryutils', geometryutils);
+    angular.module(moduleApp).service('geometryutils', geometryutils);
 })();

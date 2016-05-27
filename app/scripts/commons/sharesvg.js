@@ -75,8 +75,7 @@
         };
     }
 
-    angular.module(moduleApp)
-        .service('shareSvg', shareSvg);
+    angular.module(moduleApp).service('shareSvg', shareSvg);
 
     shareSvg.$inject = ['$q'];
     

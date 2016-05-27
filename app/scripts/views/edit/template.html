@@ -1,15 +1,13 @@
 <!-- aside -->
-<aside class="col-lg-3 col-md-4 col-sm-4 right-side" 
-        ng-show="$ctrl.isAsideVisible">
-
-    <div class="aside-content row" ng-include="'scripts/views/edit/aside.html'"></div>
-
+<aside class="col-lg-3 col-md-4 col-sm-4 right-side">
+    <div class="aside-content row" ng-include="'scripts/views/edit/aside.html'"/>
 </aside>
 
 <!-- workspace & legend divs -->
-<main>
+<main ng-init="$ctrl.init()">
     <div id="workspace" ng-show="$ctrl.isWorkspaceVisible"></div>
     <div id="legend" ng-show="$ctrl.isLegendVisible"></div>
+    <div id="pattern"></div>
 </main>
 
 <!-- modal dialog changeColorModal -->

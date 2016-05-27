@@ -10,7 +10,7 @@
 
     function FeatureService(InteractionService, geometryutils, generators) {
         
-        this.getType              = getType;
+        // this.getType              = getType;
         this.movePath             = movePath;
         this.movePoint            = movePoint;
         this.rotatePath           = rotatePath;
@@ -97,7 +97,7 @@
                     //     }),
                     //     featureInFilters = scope.interactiveFilters.data.indexOf(featurePosition[0]);
                     if (window.confirm('Ce point est interactif. Voules-vous vraiment le supprimer ?')) {
-                        InteractionService.removeFeature(feature);
+                        // InteractionService.removeFeature(feature);
                         // scope.removeRow(scope.interactiveFilters.data[featureInFilters]);
                         return removeFeature(feature);
                     } else {
@@ -130,7 +130,7 @@
          * - text
          * - null
          */
-        function getType(feature) {
+        /*function getType(feature) {
             var nodeType = feature.node().nodeName;
 
             switch (nodeType) {
@@ -140,9 +140,9 @@
                     if (d3.select(parent).classed('vector')) {
                         parent = parent.parentNode;
                     }
-                    var parentId = parent.id;
+                    var name = $(parent).data('name');
 
-                    switch (parentId) {
+                    switch (name) {
                         case 'points-layer':
                             return 'point';
                             break;
@@ -168,6 +168,7 @@
                     return null;
             }
         }
+        */
 
         function movePath(feature) {
             var el = feature.node(),

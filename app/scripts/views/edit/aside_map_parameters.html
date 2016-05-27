@@ -10,26 +10,26 @@
 
 <form class="row">
     
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-12">
         <label>Afficher la carte</label>
         <br>
         <div class="btn-group">
             <!-- Drawing -->
             <button class="btn btn-default" 
-                    ng-class="{ 'active' : $ctrl.isMapVisible }" 
+                    ng-class="{ 'active' : $ctrl.model.isMapVisible }" 
                     ng-click="$ctrl.showMap()">
                 Oui
             </button>
             <!-- Legend -->
             <button class="btn btn-default" 
-                    ng-class="{ 'active' : ! $ctrl.isMapVisible }"
+                    ng-class="{ 'active' : ! $ctrl.model.isMapVisible }"
                     ng-click="$ctrl.hideMap()">
                 Non
             </button>
         </div>
     </div>
 
-    <!-- rotate slider -->
+    <!-- rotate slider, not ready to use -->
     <div class="form-group col-xs-12">
         <label>Rotation</label>
         <div class="input-group">
@@ -74,7 +74,7 @@
     </div>
 
     <div class="form-group col-md-6 text-center">
-        <button class="btn btn-primary btn-tile" 
+        <button class="btn btn-default btn-tile" 
                 ng-class="{ 'active' : $ctrl.isFeatureManagementVisible }"
                 ng-click="$ctrl.displayFeatureManagement()">
             <span class="fa fa-list" aria-hidden="true"></span> <br/>
@@ -82,13 +82,25 @@
         </button>
     </div>
 
-    <!-- reset view -->
-    <div class="form-group col-md-6 text-center">
-        <button class="btn btn-default btn-tile" 
-                ng-click="$ctrl.centerView()">
-            <span class="fa fa-arrows-alt" aria-hidden="true"></span> <br/>
-            Recentrer
-        </button>
-    </div>
+</form>
 
+<!-- address form -->
+<div ng-if="$ctrl.isAddressVisible" 
+    ng-include="'scripts/views/edit/aside_map_address.html'">
 </div>
+
+<!-- POI form -->
+<div ng-if="$ctrl.isPoiCreationVisible" 
+    ng-include="'scripts/views/edit/aside_map_poi_creation.html'">
+</div>
+
+<!-- Feature form -->
+<div ng-if="$ctrl.isFeatureCreationVisible" 
+    ng-include="'scripts/views/edit/aside_map_feature_creation.html'">
+</div>
+
+<!-- Feature management -->
+<div ng-if="$ctrl.isFeatureManagementVisible" 
+    ng-include="'scripts/views/edit/aside_map_feature_management.html'">
+</div>
+

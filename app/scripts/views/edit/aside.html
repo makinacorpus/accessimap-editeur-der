@@ -1,34 +1,33 @@
 <div class="col-xs-12">
-    <div ng-if="$ctrl.isMapParametersVisible" class="btn-group pull-left"
-        ng-include="'scripts/views/edit/aside_map_parameters.html'"></div>
 
     <!-- parameters form -->
     <div ng-if="$ctrl.isParametersVisible"
-        ng-include="'scripts/views/edit/aside_parameters.html'"></div>
+        ng-include="'scripts/views/edit/aside_parameters.html'">
+    </div>
     
-    <!-- address form -->
-    <div ng-if="$ctrl.isAddressVisible" 
-        ng-include="'scripts/views/edit/aside_address.html'"></div>
-    
-    <!-- POI form -->
-    <div ng-if="$ctrl.isPoiCreationVisible" 
-        ng-include="'scripts/views/edit/aside_poi_creation.html'"></div>
-    
-    <!-- Feature form -->
-    <div ng-if="$ctrl.isFeatureCreationVisible" 
-        ng-include="'scripts/views/edit/aside_feature_creation.html'"></div>
-    
-    <!-- Feature management -->
-    <div ng-if="$ctrl.isFeatureManagementVisible" 
-        ng-include="'scripts/views/edit/aside_feature_management.html'"></div>
+    <!-- Map parameters -->
+    <div ng-if="$ctrl.isMapParametersVisible" class="btn-group pull-left"
+        ng-include="'scripts/views/edit/aside_map_parameters.html'">
+    </div>
 
     <!-- Drawing features -->
-    <div ng-if="$ctrl.isDrawingToolboxVisible" 
-        ng-include="'scripts/views/edit/aside_toolbox_drawing.html'"></div>
+    <div ng-if="$ctrl.isDrawingParametersVisible" 
+        ng-include="'scripts/views/edit/aside_drawing_parameters.html'">
+    </div>
 
     <!-- Legend features -->
-    <div ng-if="$ctrl.isLegendVisible" 
-        ng-include="'scripts/views/edit/aside_legend_parameters.html'"></div>
+    <div ng-if="$ctrl.isLegendParametersVisible" 
+        ng-include="'scripts/views/edit/aside_legend_parameters.html'">
+    </div>
+
+    <!-- Interaction features -->
+    <div ng-if="$ctrl.isInteractionParametersVisible" 
+        ng-include="'scripts/views/edit/aside_interaction_parameters.html'">
+    </div>
+
+    <!-- Background features -->
+    <div ng-if="$ctrl.isBackgroundParametersVisible" 
+        ng-include="'scripts/views/edit/aside_background_parameters.html'">
+    </div>
 
 </div>
-

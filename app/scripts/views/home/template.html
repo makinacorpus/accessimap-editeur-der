@@ -1,0 +1,61 @@
+<div class="container jumbotron">
+
+    <h3>Ajoutez de l'interaction à vos dessins en reliefs (DER)</h3>
+    
+    <h3>Configurez et personnalisez facilement vos documents avant de les imprimer !</h3>
+    <br>
+
+    <!-- <form name="map-format-input" class="form-inline">
+        <div class="form-group">
+            (futures anciennes actions)<br/>
+            <label style="width:20em;text-align: left">Format du dessin en relief&nbsp;</label>
+            <select 
+                ng-model="$ctrl.mapFormat" 
+                class="form-control" 
+                ng-options="format as data.name for (format, data) in $ctrl.formats">
+            </select>
+            <br/>
+            <label style="width:20em;text-align: left">Format de la légende en braille&nbsp;</label>
+            <select 
+                ng-model="$ctrl.legendFormat" 
+                class="form-control" 
+                ng-options="format as data.name for (format, data) in $ctrl.formats">
+            </select>
+
+        </div>
+        
+        <br>
+        <br>
+
+        <div class="form-group">
+            <button 
+                type="button" 
+                class="btn btn-primary btn-lg btn-block" 
+                ng-click="$ctrl.goToBlankPage()">Dessiner à partir d'une page blanche</button>
+            <br/>
+            <button 
+                type="button" 
+                class="btn btn-primary btn-lg btn-block" 
+                ng-click="$ctrl.goToLocalMap()">Dessiner à partir d'une carte Open Street Map</button>
+            <br/>
+
+            <button 
+                type="button" 
+                class="btn btn-primary btn-lg btn-block" 
+                ng-click="$ctrl.goToExistingFile()">Importer un dessin SVG existant</button>
+        </div>
+    </form> -->
+
+    <form class="form-inline">
+        <div class="form-group">
+            <!-- (future action principale)<br/> -->
+            <button 
+                type="button" 
+                class="btn btn-primary btn-lg btn-block" 
+                ng-click="$ctrl.goToEdit()">Créer un nouveau DER
+            </button>
+        </div>
+    </form>
+
+</div>
+

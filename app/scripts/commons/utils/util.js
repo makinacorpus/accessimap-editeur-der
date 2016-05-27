@@ -7,15 +7,17 @@
 (function() {
     'use strict';
 
-    function UtilService() {
+    function UtilService($q) {
 
         this.convertImgToBase64 = convertImgToBase64;
-        this.getiid = getiid;
+        this.getiid             = getiid;
+        this.uploadFile         = uploadFile;
 
         /**
          * @ngdoc method
          * @name  convertImgToBase64
          * @methodOf accessimapEditeurDerApp.UtilService
+         * 
          * @description
          * Convert a png tile into a base64 image
          *
@@ -45,17 +47,47 @@
          * ngdoc method
          * @name  getiid
          * @methodOf accessimapEditeurDerApp.UtilService
-         * @description Function returning an unique identifier
+         * 
+         * @description 
+         * Function returning an unique identifier
          * Useful to store svg element with a uid
+         * 
          * @return {integer} Fresh id !
          */
         function getiid() {
             return iid++;
         }
-        
+
+        /**
+         * @ngdoc method
+         * @name  uploadFile
+         * @methodOf accessimapEditeurDerApp.UtilService
+         *
+         * @description 
+         * Get a file and send back the dataUrl with the file type
+         * 
+         * @param  {Object} element  Input file object
+         * @return {Promise}         Promise containing if success an object { type, dataUrl }
+         */
+        function uploadFile(element) {
+            var file = element.files[0],
+                fileType = file.type,
+                reader = new FileReader(),
+                deferred = $q.defer();
+
+            reader.readAsDataURL(file);
+            reader.onload = function(e) {
+                deferred.resolve({type: fileType, dataUrl: e.target.result })
+            };
+
+            reader.onerror = deferred.reject;
+
+            return deferred.promise;
+        };        
     }
     
-    angular.module(moduleApp)
-        .service('UtilService', UtilService);
+    angular.module(moduleApp).service('UtilService', UtilService);
+
+    UtilService.$inject= ['$q'];
 
 })();

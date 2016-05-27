@@ -8,57 +8,25 @@
     <div class="form-group col-xs-12">
         <label>Titre</label>
         <input type="text" 
-            ng-model="$ctrl.title" 
+            ng-model="$ctrl.model.title" 
             class="form-control input-lg">
     </div>
 
-    <div class="form-group col-lg-6">
+    <div class="form-group col-xs-12">
         <label>Trame de fond</label>
-        <ui-select 
-            ng-model="$ctrl.backgroundStyle" 
-            ng-change="$ctrl.updateBackgroundStyle($ctrl.backgroundStyle)" 
-            ng-disabled="disabled" 
-            theme="bootstrap" 
-            class="form-control style-selector">
-
-            <ui-select-match 
-                placeholder="Sélectionnez un style">
-                {{$select.selected.name}}
-            </ui-select-match>
-
-            <ui-select-choices repeat="item in $ctrl.backgroundStyleChoices | filter: $select.search">
-                <span ng-bind-html="item.name | highlight: $select.search"></span>
-                <span ng-bind-html="$ctrl.featureIcon(item, 'polygon')"></span>
-            </ui-select-choices>
-
-        </ui-select>
+        
+        <button class="btn btn-primary btn-block" 
+            ng-click="$ctrl.displayBackgroundParameters()">
+            <span class="fa fa-lg fa-picture-o" aria-hidden="true"></span>
+            Configurer le fond&nbsp;
+        </button>
     </div>
 
-    <div class="form-group col-lg-6">
-        <label>Couleur de fond</label>
-        <ui-select 
-            ng-model="$ctrl.backgroundColor" 
-            ng-change="$ctrl.updateBackgroundColor($ctrl.backgroundColor)" 
-            theme="bootstrap" 
-            class="form-control style-selector">
-
-            <ui-select-match 
-                placeholder="Sélectionnez une couleur de fond">
-                {{$ctrl.backgroundColor.name}}
-            </ui-select-match>
-
-            <ui-select-choices repeat="item in $ctrl.colors">
-                <div ng-bind-html="item.name | highlight: $select.search"></div>
-            </ui-select-choices>
-
-        </ui-select>
-    </div>
-
-    <div class="form-group col-lg-6">
+    <div class="form-group col-xs-12">
         <label>Format du dessin</label>
         <select 
-            ng-model="$ctrl.mapFormat" 
-            ng-change="$ctrl.changeDrawingFormat($ctrl.mapFormat)"
+            ng-model="$ctrl.model.mapFormat" 
+            ng-change="$ctrl.changeDrawingFormat($ctrl.model.mapFormat)"
             class="form-control" 
             ng-options="format as data.name for (format, data) in $ctrl.formats">
         </select>
@@ -77,28 +45,6 @@
 -->
     </div>
 
-    <div class="form-group col-lg-6">
-        <label>Format de la légende</label>
-        <select 
-            ng-model="$ctrl.legendFormat" 
-            ng-change="$ctrl.changeLegendFormat($ctrl.legendFormat)"
-            class="form-control" 
-            ng-options="format as data.name for (format, data) in $ctrl.formats">
-        </select>
-<!--
-        <ui-select 
-            ng-model="$ctrl.legendFormat" 
-            theme="bootstrap" 
-            class="form-control style-selector">
-
-            <ui-select-match placeholder="Sélectionnez un format">{{$ctrl.legendFormat.name}}</ui-select-match>
-            <ui-select-choices repeat="item in $ctrl.formats">
-                <div ng-bind-html="item.name | highlight: $select.search"></div>
-            </ui-select-choices>
-
-        </ui-select>
--->
-    </div>
 
     <div class="form-group col-xs-12">
         <label>Edition</label>
@@ -106,7 +52,7 @@
 
     <div class="form-group col-md-6 text-center">
         <button class="btn btn-primary btn-tile" 
-                ng-click="$ctrl.displayDrawingToolbox()">
+                ng-click="$ctrl.displayDrawingParameters()">
             <span class="fa fa-lg fa-pencil" aria-hidden="true"></span> 
             <br/>
             Dessin
@@ -115,42 +61,45 @@
 
     <div class="form-group col-md-6 text-center">
         <button class="btn btn-primary btn-tile" 
-                ng-click="$ctrl.displayMapToolbox()">
+                ng-click="$ctrl.displayMapParameters()">
             <span class="fa fa-lg fa-map-o" aria-hidden="true"></span> 
             <br/>
             Carte
         </button>
     </div>
 
-    <div class="form-group col-xs-12">
-        <label>Visualisation</label>
-    </div>
-
     <div class="form-group col-md-6 text-center">
-        <button class="btn btn-default btn-tile" 
-                ng-class="{ 'active' : $ctrl.isWorkspaceVisible }" 
-                ng-click="$ctrl.showDrawing()">
-            <span class="fa fa-lg fa-pencil" aria-hidden="true"></span> 
-            <br/>
-            Dessin
-        </button>
-    </div>
-
-    <div class="form-group col-md-6 text-center">
-        <button class="btn btn-default btn-tile" 
-                ng-class="{ 'active' : $ctrl.isLegendVisible }"
-                ng-click="$ctrl.displayLegendToolbox()">
+        <button class="btn btn-primary btn-tile" 
+                ng-click="$ctrl.displayLegendParameters()">
             <span class="fa fa-lg fa-braille" aria-hidden="true"></span> 
             <br/>
             Légende
         </button>
     </div>
 
+    <div class="form-group col-md-6 text-center">
+        <button class="btn btn-primary btn-tile" 
+                ng-click="$ctrl.displayInteractionParameters()">
+            <span class="fa fa-lg fa-hand-pointer-o" aria-hidden="true"></span> 
+            <br/>
+            Interaction
+        </button>
+    </div>
+
+    <!-- reset view -->
+    <div class="form-group col-md-6 text-center">
+        <button class="btn btn-default btn-tile" 
+                ng-click="$ctrl.centerView()">
+            <span class="fa fa-arrows-alt" aria-hidden="true"></span> <br/>
+            Recentrer
+        </button>
+    </div>
+    
     <div class="form-group col-xs-12">
         <label>Commentaires de transcription</label>
         <textarea 
             class="form-control" 
-            ng-model="$ctrl.comment" 
+            ng-model="$ctrl.model.comment" 
             rows="10" 
             style="resize:none"
             id="comment">
@@ -158,12 +107,22 @@
     </div>
 
     <div class="form-group col-xs-12">
+        <label>Importer un DER (svg/zip)</label>
+        <input 
+        onchange="angular.element(this).scope().$ctrl.importDER(this)" 
+        type="file" 
+        accept="image/svg+xml,application/zip" 
+        name="Importer"/>
+    </div>
+
+    <div class="form-group col-xs-12 ">
+        <label>Exporter</label>
         <button 
-            class="btn btn-success btn-block" 
+            class="btn btn-success btn-block text-center" 
             ng-click="$ctrl.exportData()" 
             type="button">
-            <span class="fa fa-floppy-o" aria-hidden="true"></span>
-            Exporter le dessin          
+            <span class="fa fa-lg fa-download" aria-hidden="true"></span>
+            Exporter
         </button>
     </div>
 

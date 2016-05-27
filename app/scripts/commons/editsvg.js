@@ -149,6 +149,5 @@
         };
     }
     
-    angular.module(moduleApp)
-        .service('editSvg', editSvg);
+    angular.module(moduleApp).service('editSvg', editSvg);
 })();

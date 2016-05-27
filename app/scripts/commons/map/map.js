@@ -22,6 +22,7 @@
             minWidth;
 
         this.getMap                 = getMap;
+        this.getTileLayer           = getTileLayer;
         this.getBounds              = getBounds;
         this.initMap                = initMap;
         this.resizeFunction         = resizeFunction;
@@ -48,8 +49,8 @@
         this.unFreezeMap            = unFreezeMap;
         
         this.searchAddress          = SearchService.searchAddress
-        this.resetZoom = resetZoom;
-        this.setMinimumSize = setMinimumSize;
+        this.resetZoom              = resetZoom;
+        this.setMinimumSize         = setMinimumSize;
 
         /**
          * @ngdoc method
@@ -59,7 +60,7 @@
          * @description 
          * alias of accessimapEditeurDerApp.SearchService:retrieveData
          */
-        this.retrieveData        = SearchService.retrieveData;
+        this.retrieveData = SearchService.retrieveData;
 
         /**
          * @ngdoc method
@@ -87,12 +88,18 @@
                     'Imagery © <a href="http://mapbox.com">Mapbox</a>',
                 id: 'mapbox.streets'
             })
+
+            L.control.coordinates({
+                position:"topright", //optional default "bootomright"
+                enableUserInput:true, //optional default true
+                useLatLngOrder: true, //ordering of labels, default false-> lng-lat
+            }).addTo(map);
             
             // , layer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
             //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             // }).addTo(map);
             // 
-            
+
             // Use Leaflet to implement a D3 geometric transformation.
             $(window).on("resize", _resizeFunction).trigger("resize");
         }
@@ -100,6 +107,9 @@
         function setMinimumSize(width, height) {
             minWidth = width;
             minHeight = height;
+            $('#' + selectorDOM).css('min-height', minHeight)
+            $('#' + selectorDOM).css('min-width', minWidth)
+
         }
 
         /**
@@ -156,8 +166,8 @@
                 mapHeight = ( ( parentHeight - siblingHeight ) > minHeight ) ? ( parentHeight - siblingHeight ) : minHeight,
                 mapWidth = ( parentWidth > minWidth ) ? 'auto' : minWidth;
 
-            $("#" + selectorDOM).height(mapHeight);
-            $("#" + selectorDOM).width(mapWidth);
+            // $("#" + selectorDOM).height('calc(100vh - 80px)');
+            // $("#" + selectorDOM).width(mapWidth);
             map.invalidateSize();
 
         }
@@ -286,6 +296,10 @@
             return map;
         }
 
+        function getTileLayer() {
+            return layer;
+        }
+
         function showMapLayer() {
             map.addLayer(layer);
         }
@@ -300,33 +314,6 @@
 
         function unFreezeMap() {
             map.setMaxBounds(null);
-        }
-
-
-        function getMapBlob() {
-            var deferred = $q.defer();
-            
-            leafletImage(map, function(err, canvas) {
-                if (err) deferred.reject(err);
-            
-                canvas.toBlob(deferred.resolve)
-
-            });
-
-            return deferred.promise;
-        }
-
-        function getMapDataURL() {
-            var deferred = $q.defer();
-
-            leafletImage(map, function(err, canvas) {
-                if (err) deferred.reject(err);
-
-                deferred.resolve(canvas.toDataURL("image/png"));
-
-            });
-
-            return deferred.promise;
         }
 
         function addMoveHandler(callback) {

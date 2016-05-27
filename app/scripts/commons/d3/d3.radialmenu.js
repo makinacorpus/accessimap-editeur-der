@@ -44,7 +44,7 @@
         function drawMenu(target, mousePosition) {
             
             target.classed('blink', true);
-            var type = FeatureService.getType(target);
+            var type = target.attr('data-type') ? target.attr('data-type') : 'default' ; //FeatureService.getType(target);
 
             if (type) {
                 var data = settings.ACTIONS[type],
@@ -70,14 +70,12 @@
                     .show(data);
 
                 MapService.addClickListener(function(e) {
-                    console.log('click outside menu map')
                     e.originalEvent.preventDefault();
                     e.originalEvent.stopPropagation();
                     hideRadialMenu();
                 })
 
                 var clickOutsideMenu = svg.on('click', function(e) {
-                    console.log('click outside menu d3')
                     hideRadialMenu();
                 });
 
@@ -128,7 +126,7 @@
         /**
          * @ngdoc method
          * @name  hideRadialMenu
-         * @methodOf accessimapEditeurDerApp.radialMenu
+         * @methodOf accessimapEditeurDerApp.RadialMenuService
          * 
          * @description
          * Remove the menu if exists (TODO: destroyed the DOM element ?)

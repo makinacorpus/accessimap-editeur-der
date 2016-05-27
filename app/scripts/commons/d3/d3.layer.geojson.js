@@ -15,7 +15,9 @@
 
         var _geojson = [],
             _projection,
-            _g;
+            _g,
+            _lastTranslationX,
+            _lastTranslationY;
 
         this.createLayer   = createLayer;
         
@@ -26,9 +28,15 @@
         this.drawAddress   = drawAddress;
         this.transform     = transform;
         
-        this.getFeatures   = function() { return _geojson }
+        this.getFeatures   = function() { 
+            return _geojson.slice(0)
+        }
+        this.setFeatures   = function(features) { 
+            _geojson = features ;
+        }
 
         this.refresh     = refresh;
+        this.translate     = translate;
 
         function createLayer(target, width, height, margin, projectPoint) {
             _projection = projectPoint;
@@ -113,6 +121,33 @@
         }
 
         /**
+         * Function moving the overlay svg, thanks to map movements...
+         *
+         * This function has to be used only if we want the overlay be 'fixed'
+         * 
+         * TODO: clear the dependencies to map... maybe, give the responsability to the map
+         * and so, thanks to a 'class', we could 'freeze' the overlay thanks to this calc
+         */
+        function translate(size, pixelOrigin, pixelBoundMin) {
+
+            // x,y are coordinates to position overlay
+            // coordinates 0,0 are not the top left, but the point at the middle left
+            _lastTranslationX = 
+                // to get x, we calc the space between left and the overlay
+                ( ( size.x ) / 2 ) 
+                // and we substract the difference between the original point of the map 
+                // and the actual bounding topleft point
+                - (pixelOrigin.x - pixelBoundMin.x),
+
+            _lastTranslationY = 
+                // to get y, we calc the space between the middle axe and the top of the overlay
+                // and we substract the difference between the original point of the map
+                // and the actual bounding topleft point
+                -1 * (pixelOrigin.y - pixelBoundMin.y - size.y / 2);
+
+            _g.attr("transform", "translate(" + (_lastTranslationX ) +"," + (_lastTranslationY) + ")")
+        }
+        /**
          * @ngdoc method
          * @name  geojsonToSvg
          * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
@@ -158,7 +193,7 @@
                         obj = {
                             id: id,
                             name: name,
-                            geometryType: queryChosen.type,
+                            type: queryChosen.type,
                             layer: $.extend(true, {}, data), //deep copy,
                             originallayer: $.extend(true, {}, data), //deep copy
                             style: styleChosen,
@@ -174,7 +209,7 @@
                         obj = {
                             id: queryChosen.id,
                             name: queryChosen.name,
-                            geometryType: queryChosen.type,
+                            type: queryChosen.type,
                             layer: $.extend(true, {}, data), //deep copy,
                             originallayer: $.extend(true, {}, data), //deep copy
                             style: styleChosen,
@@ -243,7 +278,7 @@
             var obj = {
                 id: id,
                 name: id,
-                geometryType: 'point',
+                type: 'point',
                 layer: $.extend(true, {}, point), //deep copy,
                 originallayer: $.extend(true, {}, point), //deep copy
                 style: settings.STYLES.point[0],
@@ -290,8 +325,8 @@
         function drawFeature(data, feature, optionalClass, styleChosen, 
             colorChosen, checkboxModel, rotationAngle) {
             var featureGroup,
-                geometryType = feature[0].geometryType,
-                drawingLayer = d3.select(_g).node().select('[data-name="' + geometryType + 's-layer"]') ; /* d3.select('#' + geometryType + 's-layer') ;*/
+                type = feature[0].type,
+                drawingLayer = d3.select(_g).node().select('[data-name="' + type + 's-layer"]') ; /* d3.select('#' + type + 's-layer') ;*/
             
             if (optionalClass) {
                 if (d3.select('.vector.' + optionalClass + '#' + feature[0].id).empty()) {
@@ -444,7 +479,7 @@
          * id of the feature
          */
         function updateFeature(id, style) {
-            console.log('updateFeature')
+
             var result = _geojson.filter(function(obj) {
                     return obj.id === id;
                 }),
