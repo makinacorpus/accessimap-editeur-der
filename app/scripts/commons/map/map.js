@@ -11,7 +11,7 @@
 (function() {
     'use strict';
 
-    function MapService(settings, SearchService, $q) {
+    function MapService($q, settings, SearchService) {
 
         var selectorDOM = '',
             map = {}, 
@@ -232,7 +232,6 @@
          */
         function removeEventListeners() {
             listeners.forEach(function(currentValue) {
-                console.log('removing ' + currentValue.event + ' listener from map')
                 map.removeEventListener(currentValue.event, currentValue.function)
             })
         }
@@ -342,11 +341,10 @@
             map.setZoom(settings.leaflet.GLOBAL_MAP_DEFAULT_ZOOM);
         }
 
-
     }
 
-    angular.module(moduleApp)
-    .service('MapService', MapService);
+    angular.module(moduleApp).service('MapService', MapService);
 
-    MapService.$inject = ['settings', 'SearchService', '$q'];
-})()
+    MapService.$inject = ['$q', 'settings', 'SearchService'];
+
+})();

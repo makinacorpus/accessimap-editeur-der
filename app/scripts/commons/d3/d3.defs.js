@@ -12,6 +12,9 @@
 
         this.createDefs = createDefs;
 
+        console.log('settings')
+        console.log(settings)
+
         /**
          * @ngdoc method
          * @name  accessimapEditeurDerApp.DefsService.createDefs

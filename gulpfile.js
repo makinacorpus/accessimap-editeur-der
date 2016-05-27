@@ -192,7 +192,7 @@ gulp.task('serve', ['build:css', 'connect', 'copy:js', 'copy:assets', 'build:tem
  * Build task for packaging purposes
  * Will uglify / concat / rev files
  */
-gulp.task('build', ['clean:dist', 'check:jscs', 'build:css', 'build:templatejs', 'copy:assets', 'doc'], function () {
+gulp.task('build', [/*'clean:dist', 'check:jscs',*/ 'build:css', 'build:templatejs', 'copy:assets', 'doc'], function () {
     return gulp.src('./app/index.html')
                 .pipe(usemin({
                     css: [rev, minifyCss],
