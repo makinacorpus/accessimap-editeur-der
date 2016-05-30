@@ -16,15 +16,15 @@
     function LayersService(LayerBackgroundService, LayerOverlayService, LayerGeoJSONService, LayerDrawingService) {
 
         // layers functions
-        this.createLayers        = createLayers;
-
-        this.geojson = LayerGeoJSONService;
+        this.createLayers     = createLayers;
+        
+        this.geojson          = LayerGeoJSONService;
         this.geojson.getLayer = getGeoJSONLayer;
-        this.geojson.getZoom = getGeoJSONZoom;
-
-        this.overlay = LayerOverlayService;
+        this.geojson.getZoom  = getGeoJSONZoom;
+        
+        this.overlay          = LayerOverlayService;
         this.overlay.getLayer = getOverlayLayer;
-        this.overlay.getZoom = getOverlayZoom;
+        this.overlay.getZoom  = getOverlayZoom;
 
         this.drawing = {
             getLayer : getDrawingLayer,
@@ -52,23 +52,17 @@
          * @param {Object} g
          * G node on which will be added layers of polygon, points, etc.
          * 
-         * @param {integer} width
-         * Width in pixel of the drawing zone
-         * 
-         * @param {integer} height
-         * Height in pixel of the drawing zone
-         * 
-         * @param {integer} margin
-         * Margin in pixel of the drawing zone, useful for printing purpose
+         * @param  {enum} format
+         * Format (landscapeA4, landscapeA3, ...) of the drawing
          */
-        function createLayers(elements, width, height, margin) {
+        function createLayers(elements, format) {
 
             _elements = elements;
 
-            LayerBackgroundService.createLayer(elements.background.sel, width, height, margin, elements.background.proj);
-            LayerGeoJSONService.createLayer(elements.geojson.sel, width, height, margin, elements.geojson.proj);
-            LayerDrawingService.createLayer(elements.drawing.sel, width, height, margin);
-            LayerOverlayService.createLayer(elements.overlay.sel, width, height, margin, elements.overlay.proj);
+            LayerBackgroundService.createLayer(elements.background.sel, format, elements.background.proj);
+            LayerGeoJSONService.createLayer(elements.geojson.sel, elements.geojson.proj);
+            LayerDrawingService.createLayer(elements.drawing.sel);
+            LayerOverlayService.createLayer(elements.overlay.sel, format, elements.overlay.proj);
 
         }
 

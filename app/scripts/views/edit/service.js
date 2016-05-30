@@ -68,7 +68,11 @@
         this.exportData                    = function(model) {
             model.center = center ? center : MapService.getMap().getCenter();
             model.zoom   = zoom   ? zoom   : MapService.getMap().getZoom();
-            resetZoom(function() { ExportService.exportData(model)});
+            // $('#workspace').height('742')
+            // $('#workspace').width('1049')
+            resetZoom(function() { 
+                ExportService.exportData(model); 
+            });
         }
 
         // Map services
@@ -267,16 +271,18 @@
 
         function init(drawingFormat, legendFormat) {
 
-            currentDrawingFormat = (drawingFormat === undefined) 
+            currentDrawingFormat = (drawingFormat === undefined && settings.FORMATS[drawingFormat] === undefined) 
                                     ? settings.FORMATS[settings.DEFAULT_DRAWING_FORMAT]
-                                    : drawingFormat;
-            currentLegendFormat = (legendFormat === undefined) 
+                                    : settings.FORMATS[drawingFormat];
+            currentLegendFormat = (legendFormat === undefined && settings.FORMATS[legendFormat] === undefined) 
                                     ? settings.FORMATS[settings.DEFAULT_LEGEND_FORMAT]
-                                    : legendFormat;
+                                    : settings.FORMATS[legendFormat];
+
+            // $('#workspace').width('1049')
+            // $('#workspace').height('742')
             
             MapService.initMap('workspace', 
-                            drawingFormat.width, 
-                            drawingFormat.height, 
+                            drawingFormat, 
                             settings.ratioPixelPoint,
                             MapService.resizeFunction);
 
@@ -330,9 +336,7 @@
                             drawing: {sel: selDrawing, proj: projDrawing },
                             geojson: {sel: selGeoJSON, proj: projGeoJSON }
                         }, 
-                        drawingFormat.width / settings.ratioPixelPoint, 
-                        drawingFormat.height / settings.ratioPixelPoint, 
-                        settings.margin)
+                        drawingFormat)
 
             mapFreezed = false;
             MapService.addMoveHandler(function(size, pixelOrigin, pixelBoundMin) {
@@ -350,8 +354,8 @@
             DefsService.createDefs(d3.select('#pattern'));
 
             LegendService.initLegend('#legend', 
-                                    legendFormat.width, 
-                                    legendFormat.height, 
+                                    currentLegendFormat.width, 
+                                    currentLegendFormat.height, 
                                     settings.margin, 
                                     settings.ratioPixelPoint);
 
@@ -361,14 +365,12 @@
 
         function changeDrawingFormat(format) {
             resetZoom()
-            DrawingService.layers.overlay.draw(settings.FORMATS[format].width / settings.ratioPixelPoint, 
-                                                settings.FORMATS[format].height / settings.ratioPixelPoint);
+            DrawingService.layers.overlay.setFormat(format);
             MapService.setMinimumSize(settings.FORMATS[format].width / settings.ratioPixelPoint,
                                         settings.FORMATS[format].height / settings.ratioPixelPoint);
             MapService.resizeFunction();
-            center = DrawingService.layers.overlay.getCenter();
+            // center = DrawingService.layers.overlay.getCenter();
             resetZoom();
-            // MapService.getMap().invalidateSize()
         }
 
         function changeLegendFormat(format) {
@@ -536,7 +538,6 @@
 
                 if (zoomWillChange) {
                     MapService.getTileLayer().once('load', function() { 
-                        console.log('load')
                         if (callback) callback(); 
                     })
                 }
@@ -544,7 +545,6 @@
                 MapService.getMap().setView(center, zoom, {animate:false})
 
                 if (! zoomWillChange && callback) {
-                    console.log('zoomWillNotChange... so callback')
                     callback();
                 }
 
@@ -570,7 +570,7 @@
                             break;
 
                         default:
-                            console.log('Mauvais format');
+                            console.error('Mauvais format');
                     }
                 })
 
@@ -656,6 +656,9 @@
 
             var deferred = $q.defer();
 
+            // $('#workspace').height('742')
+            // $('#workspace').width('1049')
+            // MapService.resizeFunction();
             UtilService.uploadFile(element)
                 .then(function(data) {
 
@@ -697,6 +700,10 @@
                                             var svgElement = parser.parseFromString(data, "text/xml"),
                                                 model = ImportService.getModelFromSVG(svgElement);
 
+                                            // get the format, and adapt the overlay
+                                            changeDrawingFormat(model.mapFormat)
+                                            // DrawingService.layers.overlay.setFormat(format);
+
                                             if (model.center !== null && model.zoom !== null) {
                                                 center = model.center;
                                                 zoom = model.zoom;
@@ -704,11 +711,15 @@
                                                 freezeMap();
                                             }
 
+                                            // overlayGeoJSON.set(DrawingService.layers.overlay.getTranslationX(), 20)
+
                                             if (model.isMapVisible) {
                                                 MapService.showMapLayer();
                                             }
                                             
+                                            console.log('début de l import')
                                             ImportService.importDrawing(svgElement)
+                                            console.log('fin de l import')
                                             
                                             deferred.resolve(model);
                                         })
@@ -730,7 +741,7 @@
                             break;
 
                         default:
-                            console.log('Mauvais format');
+                            console.error('Mauvais format');
                     }
                     
                 })

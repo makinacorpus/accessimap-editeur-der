@@ -24,70 +24,45 @@
             if (! model.title)
                 model.title = 'Dessin en relief fait avec Accessimap';
 
-            var node = MapService.getMap().getPanes().mapPane,
-                // center = DrawingService.layers.overlay.getCenter(),
-                transformStyle = $(node).css('transform'),
-                drawingNode = MapService.getMap().getContainer(), // d3.select('svg.leaflet-zoom-animated').node(),
-                tilesNode = null,
-                legendNode = LegendService.getNode(),
-                comments = $('#comment').val(),
+            var node                   = MapService.getMap().getPanes().mapPane,
+                transformStyle         = $(node).css('transform'),
+                drawingNode            = MapService.getMap().getContainer(), // d3.select('svg.leaflet-zoom-animated').node(),
+                tilesNode              = null,
+                legendNode             = LegendService.getNode(),
+                comments               = $('#comment').val(),
                 interactionsContentXML = InteractionService.getXMLExport(),
-                titleDrawing = document.createElementNS("http://www.w3.org/2000/svg", "title"),
+                titleDrawing           = document.createElementNS("http://www.w3.org/2000/svg", "title"),
 
-            zip    = new JSZip(),
+            zip        = new JSZip(),
             exportNode = drawingNode ? drawingNode.cloneNode(true) : null,
-            width = 1049 , // d3.select(drawingNode).attr('width'),
-            height = 742 , // d3.select(drawingNode).attr('height'),
-            format = 'landscapeA4' ,
+            size       = DrawingService.layers.overlay.getSize() ,
             svgDrawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+
             d3.select(svgDrawing)
-                .attr('data-format', format)
                 .attr('data-version', exportVersion)
-                .attr('width', width)
-                .attr('height', height)
-                .attr('viewBox', '0 0 ' + width + ' ' + height)
+                .attr('width', size.width)
+                .attr('height', size.height)
+                .style('overflow', 'visible')
 
             // patterns
             DefsService.createDefs(d3.select(svgDrawing))
 
             // get transform attribute of margin / frame layers
-            var translateScaleOverlayGroup = DrawingService.layers.overlay.getLayer().attr('transform'),
-                translateOverlayGroup = ( translateScaleOverlayGroup === null ) 
-                                            ? null 
-                                            : translateScaleOverlayGroup.substring(translateScaleOverlayGroup.indexOf('(') + 1, translateScaleOverlayGroup.indexOf(')')),
-                translateOverlayGroupArray = ( translateOverlayGroup === null ) 
-                                                ? [0, 0] 
-                                                : translateOverlayGroup.slice(0, translateOverlayGroup.length).split(','),
-                
-                translateOverlay = d3.select(exportNode).select('#margin-layer').attr('transform'),
-                translateOverlayArray = translateOverlay.slice(translateOverlay.indexOf('(') + 1, translateOverlay.length - 1).split(','),
+            var translateOverlayArray = DrawingService.layers.overlay.getTranslation(),
+                translateReverseOverlayPx = "translate(" + ( translateOverlayArray.x * -1 ) + 'px,' + ( translateOverlayArray.y * -1 ) + 'px)';
 
-                translateGeoJSON = d3.select(exportNode).select('#geojson-layer').attr('transform'),
-                translateGeoJSONArray = translateGeoJSON.slice(translateGeoJSON.indexOf('(') + 1, translateGeoJSON.length - 1).split(','),
-
-                translateReverseOverlay = "translate(" + ( ( translateOverlayArray[0] ) * -1 ) + ',' + ( ( translateOverlayArray[1] ) * -1 ) + ')',
-                translateReverseGeoJSON = "translate(" + ( ( translateOverlayArray[0] + translateGeoJSONArray[0]  ) * -1 ) + ',' + ( ( translateOverlayArray[1] + translateGeoJSONArray[1] ) * -1 ) + ')',
-                translateReverseOverlayPx = "translate(" + ( ( parseInt(translateOverlayArray[0]) + parseInt(translateOverlayGroupArray[0]) ) * -1 ) + 'px,' + ( ( parseInt(translateOverlayArray[1]) + parseInt(translateOverlayGroupArray[1]) ) * -1 ) + 'px)';
-
-            d3.select(exportNode).select("svg[data-name='overlay'] > g").attr('transform', ''); 
-                      
-            d3.select(exportNode).select('#margin-layer').attr('transform', '');           
-            d3.select(exportNode).select('#frame-layer').attr('transform', '');            
-            d3.select(exportNode).select('#geojson-layer').attr('transform', translateReverseOverlay);            
-            d3.select(exportNode).select('#drawing-layer').attr('transform', translateReverseOverlay);            
-            d3.select(exportNode).select('#background-layer').attr('transform', translateReverseOverlay);            
+            d3.select(svgDrawing).attr('viewBox', translateOverlayArray.x + ' ' + translateOverlayArray.y+ ' ' + size.width + ' ' + size.height)
             
-            // we apply a transformation to facilitate the export 
-            // TODO: see if it's necessary with a special viewbox
-            $(node).css('transform', translateReverseOverlayPx);
-
             function filterDOM(node) {
                 return (node.tagName !== 'svg')
             }
+            
+            // DefsService.createDefs(d3.select(node))
 
-            domtoimage.toPng(node, {width: width, height: height, filter: filterDOM})
+            $(node).css('transform', translateReverseOverlayPx)
+
+            domtoimage.toPng(node, {width: size.width, height: size.height, filter: filterDOM})
                 .then(function(dataUrl) { 
-                    $(node).css('transform', transformStyle);
 
                     // save the image in a file & add it to the current zip
                     var imgBase64 = dataUrl.split('base64,')
@@ -96,10 +71,10 @@
                     // add the current image to a svg:image element
                     var image = document.createElementNS("http://www.w3.org/2000/svg", "image");
                     d3.select(image)
-                        .attr('width', width)
-                        .attr('height', height)
-                        .attr('x', 0)
-                        .attr('y', 0)
+                        .attr('width', size.width)
+                        .attr('height', size.height)
+                        .attr('x', translateOverlayArray.x)
+                        .attr('y', translateOverlayArray.y)
                         .attr('xlink:href', dataUrl)
 
                     // create some metadata object 
@@ -123,10 +98,10 @@
                     
                     svgDrawing.appendChild(image);
 
-                    svgDrawing.appendChild(d3.select(exportNode).select("svg[data-name='background']").node());
-                    svgDrawing.appendChild(d3.select(exportNode).select("svg[data-name='geojson']").node());
-                    svgDrawing.appendChild(d3.select(exportNode).select("svg[data-name='drawing']").node());
-                    svgDrawing.appendChild(d3.select(exportNode).select("svg[data-name='overlay']").node());
+                    svgDrawing.appendChild(d3.select(exportNode).select("svg[data-name='background']").style('overflow', 'visible').node());
+                    svgDrawing.appendChild(d3.select(exportNode).select("svg[data-name='geojson']").style('overflow', 'visible').node());
+                    svgDrawing.appendChild(d3.select(exportNode).select("svg[data-name='drawing']").style('overflow', 'visible').node());
+                    svgDrawing.appendChild(d3.select(exportNode).select("svg[data-name='overlay']").style('overflow', 'visible').node());
 
                     zip.file('carte_avec_source.svg', (new XMLSerializer()).serializeToString(svgDrawing));
 
@@ -154,10 +129,21 @@
                     // Adding the interactions
                     zip.file('interactions.xml', interactionsContentXML);
 
-                    // Build the zip & send the file to the user
-                    zip.generateAsync({type: 'blob'})
-                        .then(function(content) {
-                            saveAs(content, model.title + '.zip');
+                    // TODO: inject DEFS ? il manque les fill patterns
+                    domtoimage.toPng(node, {width: size.width, height: size.height})
+                        .then(function(dataUrl) { 
+
+                            $(node).css('transform', transformStyle)
+
+                            // save the image in a file & add it to the current zip
+                            var imgBase64 = dataUrl.split('base64,')
+                            zip.file('der.png', imgBase64[1], {base64: true});
+
+                            // Build the zip & send the file to the user
+                            zip.generateAsync({type: 'blob'})
+                                .then(function(content) {
+                                    saveAs(content, model.title + '.zip');
+                                })
                         })
 
                 })

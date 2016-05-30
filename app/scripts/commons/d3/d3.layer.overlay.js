@@ -8,18 +8,23 @@
 (function() {
     'use strict';
 
-    function LayerOverlayService() {
+    function LayerOverlayService(settings) {
 
-        this.createLayer = createLayer;
-        this.refresh     = refresh;
-        this.draw        = draw;
-        this.getCenter   = getCenter;
-
+        this.createLayer     = createLayer;
+        this.refresh         = refresh;
+        this.draw            = draw;
+        this.getCenter       = getCenter;
+        this.getTranslation  = getTranslation;
+        this.getSize         = getSize;
+        this.setFormat       = setFormat;
+        
+        this.getFormat       = function() { return _format }
         this.getTranslationX = function() { return _lastTranslationX }
         this.getTranslationY = function() { return _lastTranslationY }
-
-        var marginGroup,
-            frameGroup,
+        
+        var _marginGroup,
+            _frameGroup,
+            _format,
             _width,
             _height,
             _margin,
@@ -29,24 +34,13 @@
             _lastTranslationY;
 
 
-        function createLayer(target, width, height, margin, projection) {
-            _width      = width;
-            _height     = height;
-            _margin     = margin;
-            _target     = target;
-            _projection = projection;
-            
-            marginGroup = _target.append('g').attr('id', 'margin-layer')
-            frameGroup  = _target.append('g').attr('id', 'frame-layer');
-
-            draw(_width, _height)
-
-        }
-
         /**
          * @ngdoc method
-         * @name  accessimapEditeurDerApp.LayerOverlayService.createMarginPath
+         * @name  accessimapEditeurDerApp.LayerOverlayService.createLayer
          * @methodOf accessimapEditeurDerApp.LayerOverlayService
+         *
+         * @description 
+         * create the overlay layer, with margin & frame groups
          *
          * @param  {Object} target  
          * d3 area
@@ -59,14 +53,37 @@
          * 
          * @param  {integer} margin  
          * Margin wished
+         *
+         * @param  {function} projection  
+         * Projection function to use for conversion between GPS & layer point
+         */
+        function createLayer(target, format, projection) {
+            _margin     = settings.margin;
+            _target     = target;
+            _projection = projection;
+
+            _marginGroup = _target.append('g').attr('id', 'margin-layer')
+            _frameGroup  = _target.append('g').attr('id', 'frame-layer');
+
+            setFormat(format)
+
+        }
+
+        /**
+         * @ngdoc method
+         * @name  accessimapEditeurDerApp.LayerOverlayService.createMarginPath
+         * @methodOf accessimapEditeurDerApp.LayerOverlayService
+         *
+         * @description 
+         * draw the margin path
          */
         function createMarginPath() {
             var w40 = _width - _margin,
                 h40 = _height - _margin;
 
-            marginGroup.selectAll("*").remove();
+            _marginGroup.selectAll("*").remove();
 
-            marginGroup.append('path')
+            _marginGroup.append('path')
                 .attr('d', function() {
                     var outer = 'M 0 0 L 0 ' 
                                     + _height 
@@ -93,7 +110,7 @@
                 .attr('id', 'svgWhiteBorder')
                 .classed('notDeletable', true);
 
-            marginGroup.append('path')
+            _marginGroup.append('path')
                 .attr('d', function() {
                     var outer = 'M -10000 -10000 L -10000 ' 
                                     + ( _height + 10000 )
@@ -142,9 +159,9 @@
             var w40 = _width - _margin,
                 h40 = _height - _margin;
 
-            frameGroup.selectAll("*").remove();
+            _frameGroup.selectAll("*").remove();
 
-            frameGroup.append('path')
+            _frameGroup.append('path')
                 .attr('d', function() {
                     return 'M ' + _margin + ' ' + _margin + ' L ' 
                                     + w40 
@@ -165,33 +182,41 @@
                 .classed('notDeletable', true);
         };
 
-        function draw(width, height) {
-
-            _width = width;
-            _height = height;
+        /**
+         * @ngdoc method
+         * @name  draw
+         * @methodOf accessimapEditeurDerApp.LayerOverlayService
+         *
+         * @description 
+         * Draw margin & frame groups, id overlay.
+         *
+         * @param  {integer} width  
+         * Overlay's width
+         * 
+         * @param  {integer} height  
+         * Overlay's height
+         * 
+         */
+        function draw() {
 
             createMarginPath();
             createFramePath();
 
         }
 
-        /**
-         * re draw the overlay with translate & scale
-         *
-         * do not use simultaneously with refresh...
-         * 
-         * @param  {[type]} event      [description]
-         * @param  {[type]} projection [description]
-         * @return {[type]}            [description]
-         */
-        function onZoom(event, projection, transform) {
-
-            marginGroup.attr("transform", transform)
-            frameGroup.attr("transform", transform)
-
+        function setFormat(format) {
+            _format     = format;
+            _width      = settings.FORMATS[format].width / settings.ratioPixelPoint;
+            _height     = settings.FORMATS[format].height / settings.ratioPixelPoint;
+            draw(_width, _height);
         }
 
         /**
+         * @ngdoc method
+         * @name  refresh
+         * @methodOf accessimapEditeurDerApp.LayerOverlayService
+         *
+         * @description
          * Function moving the overlay svg, thanks to map movements...
          *
          * This function has to be used only if we want the overlay be 'fixed'
@@ -217,19 +242,59 @@
                 // and the actual bounding topleft point
                 - (pixelOrigin.y - pixelBoundMin.y - size.y / 2);
 
-            console.log(_height)
-            console.log(pixelOrigin.y)
-            console.log(pixelBoundMin.y)
-            console.log(size.y)
-            console.log((pixelOrigin.y - pixelBoundMin.y - size.y / 2))
-            marginGroup.attr("transform", "translate(" + (_lastTranslationX ) +"," + (_lastTranslationY) + ")")
-            frameGroup.attr("transform", "translate(" + (_lastTranslationX ) +"," + (_lastTranslationY) + ")")
+            _marginGroup.attr("transform", "translate(" + (_lastTranslationX ) +"," + (_lastTranslationY) + ")")
+            _frameGroup.attr("transform", "translate(" + (_lastTranslationX ) +"," + (_lastTranslationY) + ")")
+        }
+
+        /**
+         * @ngdoc method
+         * @name  getTranslation
+         * @methodOf accessimapEditeurDerApp.LayerOverlayService
+         *
+         * @description
+         * calc the translation of the margin-layer group (or frame-layer, it's the same)
+         *
+         * take in consideration the parent group
+         * 
+         * @return {Object} 
+         * {x, y} representing the translation on x axis & y axis
+         * 
+         */
+        function getTranslation() {
+            var translateScaleOverlayGroup = _target.attr('transform'),
+                
+                translateOverlayGroup = ( translateScaleOverlayGroup === null ) ? null 
+                    : translateScaleOverlayGroup.substring(translateScaleOverlayGroup.indexOf('(') + 1, translateScaleOverlayGroup.indexOf(')')),
+                
+                translateOverlayGroupArray = ( translateOverlayGroup === null ) ? [0, 0] 
+                    : translateOverlayGroup.slice(0, translateOverlayGroup.length).split(','),
+                
+                translateOverlayArray = [ _lastTranslationX, _lastTranslationY ]
+
+            return { x: ( parseInt(translateOverlayArray[0]) + parseInt(translateOverlayGroupArray[0]) ),
+                     y: ( parseInt(translateOverlayArray[1]) + parseInt(translateOverlayGroupArray[1]) ) }
+        }
+
+        /**
+         * @ngdoc method
+         * @name  getSize
+         * @methodOf accessimapEditeurDerApp.LayerOverlayService
+         *
+         * @description
+         * return the size of the layer, representing the size of the drawing
+         * 
+         * @return {Object} 
+         * {width, height}
+         * 
+         */
+        function getSize() {
+            return {width: _width, height: _height}
         }
 
     }
 
     angular.module(moduleApp).service('LayerOverlayService', LayerOverlayService);
 
-    LayerOverlayService.$inject = [];
+    LayerOverlayService.$inject = ['settings'];
 
 })();

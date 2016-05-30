@@ -14,7 +14,7 @@
      * - interactions
      * - legend
      */
-    function ImportService(LayersService, InteractionService, LegendService) {
+    function ImportService(LayersService, InteractionService, LegendService, settings, UtilService) {
 
         this.importDrawing     = importDrawing;
         this.importInteraction = importInteraction;
@@ -56,51 +56,101 @@
                 var geojsonLayer = svgElement.querySelector('g[data-name="geojson-layer"]'),
                     drawingLayer = svgElement.querySelector('g[data-name="drawing-layer"]'),
                     backgroundLayer = svgElement.querySelector('g[data-name="background-layer"]'),
+                    overlayLayer = svgElement.querySelector('svg[data-name="overlay"]'),
                     metadataGeoJSON = svgElement.querySelector('metadata[data-name="data-geojson"]'),
                     metadataInteractions = svgElement.querySelector('metadata[data-name="data-interactions"]'),
                     format = svgElement.querySelector('svg').getAttribute('data-format'),
                     center = svgElement.querySelector('svg').getAttribute('data-center');
 
-                // get the format, and adapt the overlay
-                // LayersService.changeFormat(format);
-
                 // if map displayed, display it and center on the right place
-                
                 function removeChildren(node) {
-                    var children = node.children;
+                    var children = node.children,
+                        length = children.length;
 
-                    for (var i = 0; i < children.length; i++) {
+                    for (var i = 0; i < length; i++) {
                         node.removeChild(children[0]); // children list is live, removing a child change the list... 
                     }
                 }
 
-                function cloneChildrenFromNodeToAnotherNode(nodeFrom, nodeTo) {
-                    var children = nodeFrom.children;
+                function cloneChildrenFromNodeToAnotherNode(nodeFrom, nodeTo, translationToApply) {
 
-                    for (var i = 0; i < children.length; i++) {
-                        nodeTo.appendChild(children[i]);
+                    var children = nodeFrom.children,
+                        paths = nodeFrom.querySelectorAll('path,circle,line,text');
+
+                    if (translationToApply) {
+                        for (var i = 0; i < paths.length; i++) {
+                            var currentD = paths[i].getAttribute('d');
+
+                            if (currentD) {
+                                var currentParseD = UtilService.parseSVGPath(currentD),
+                                    currentTranslateD = UtilService.translateSVGPath(currentParseD, translationToApply.x, translationToApply.y),
+                                    currentSerializeD = UtilService.serializeSVGPath(currentTranslateD);
+
+                                paths[i].setAttribute('d', currentSerializeD)
+                            } else {
+                                var cx = paths[i].getAttribute('cx'),
+                                    cy = paths[i].getAttribute('cy'),
+                                    x = paths[i].getAttribute('x'),
+                                    y = paths[i].getAttribute('y');
+                                
+                                if (cx !== null ) {
+                                    paths[i].setAttribute('cx', parseFloat(cx) + translationToApply.x)
+                                    paths[i].setAttribute('cy', parseFloat(cy) + translationToApply.y)
+                                } else {
+                                    paths[i].setAttribute('x', parseFloat(x) + translationToApply.x)
+                                    paths[i].setAttribute('y', parseFloat(y) + translationToApply.y)
+                                }
+
+                            }
+                        }
+                    }
+
+                    var length = children.length;
+                    for (var i = 0; i < length; i++) {
+                        nodeTo.appendChild(children[0]);
                     }
                 }
 
+                var currentOverlayTranslation = LayersService.overlay.getTranslation(),
+
+                translateScaleOverlayGroup = overlayLayer.getAttribute('transform'),
+                
+                translateOverlayGroup = ( translateScaleOverlayGroup === null ) ? null 
+                    : translateScaleOverlayGroup.substring(translateScaleOverlayGroup.indexOf('(') + 1, translateScaleOverlayGroup.indexOf(')')),
+                
+                translateOverlayGroupArray = ( translateOverlayGroup === null ) ? [0, 0] 
+                    : translateOverlayGroup.slice(0, translateOverlayGroup.length).split(','),
+                
+                translateMarginGroup = overlayLayer.querySelector('g[id="margin-layer"]').getAttribute('transform'),
+
+                translateMargin = ( translateMarginGroup === null ) ? null 
+                    : translateMarginGroup.substring(translateMarginGroup.indexOf('(') + 1, translateMarginGroup.indexOf(')')),
+                
+                translateMarginArray = ( translateMargin === null ) ? [0, 0] 
+                    : translateMargin.slice(0, translateMargin.length).split(','),
+
+                translationToApply = { x: currentOverlayTranslation.x - translateOverlayGroupArray[0] - translateMarginArray[0],
+                                           y: currentOverlayTranslation.y - translateOverlayGroupArray[1] - translateMarginArray[1]}
+
                 // if exists, inserts data of the geojson layers
                 if (geojsonLayer) {
-                    var currentGeoJSONLayer = LayersService.geojson.getLayer().node();
+                    var currentGeoJSONLayer = LayersService.geojson.getLayer().node()
                     removeChildren(currentGeoJSONLayer);
-                    cloneChildrenFromNodeToAnotherNode(geojsonLayer, currentGeoJSONLayer);
+                    cloneChildrenFromNodeToAnotherNode(geojsonLayer, currentGeoJSONLayer, translationToApply);
                 }
 
                 // if exists, inserts data of the drawing layers
                 if (drawingLayer) {
                     var currentDrawingLayer = LayersService.drawing.getLayer().node();
                     removeChildren(currentDrawingLayer);
-                    cloneChildrenFromNodeToAnotherNode(drawingLayer, currentDrawingLayer);
+                    cloneChildrenFromNodeToAnotherNode(drawingLayer, currentDrawingLayer, translationToApply);
                 }
                 
                 // if exists, inserts data of the drawing layers
                 if (backgroundLayer) {
                     var currentBackgroundLayer = LayersService.background.getLayer().node();
                     removeChildren(currentBackgroundLayer);
-                    cloneChildrenFromNodeToAnotherNode(backgroundLayer, currentBackgroundLayer);
+                    cloneChildrenFromNodeToAnotherNode(backgroundLayer, currentBackgroundLayer, translationToApply);
                 }
 
                 if (metadataGeoJSON && metadataGeoJSON.getAttribute('data-value') !== '') {
@@ -123,7 +173,10 @@
 
         function generateLegend(dataGeoJSON) {
             dataGeoJSON.forEach(function(element, index, array) {
-                LegendService.addToLegend(element, element.style, index, element.color, {contour: element.contour})
+                var currentStyle = settings.STYLES[element.type].find(function(style, index, array) {
+                    return style.id = element.style.id;
+                })
+                LegendService.addToLegend(element, currentStyle, index, element.color, {contour: element.contour})
             })
         }
 
@@ -156,5 +209,5 @@
 
     angular.module(moduleApp).service('ImportService', ImportService);
 
-    ImportService.$inject = ['LayersService', 'InteractionService', 'LegendService'];
+    ImportService.$inject = ['LayersService', 'InteractionService', 'LegendService', 'settings', 'UtilService'];
 })();

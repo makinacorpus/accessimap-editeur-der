@@ -36,9 +36,8 @@
         }
 
         this.refresh     = refresh;
-        this.translate     = translate;
 
-        function createLayer(target, width, height, margin, projectPoint) {
+        function createLayer(target, projectPoint) {
             _projection = projectPoint;
 
             _g = target
@@ -121,33 +120,6 @@
         }
 
         /**
-         * Function moving the overlay svg, thanks to map movements...
-         *
-         * This function has to be used only if we want the overlay be 'fixed'
-         * 
-         * TODO: clear the dependencies to map... maybe, give the responsability to the map
-         * and so, thanks to a 'class', we could 'freeze' the overlay thanks to this calc
-         */
-        function translate(size, pixelOrigin, pixelBoundMin) {
-
-            // x,y are coordinates to position overlay
-            // coordinates 0,0 are not the top left, but the point at the middle left
-            _lastTranslationX = 
-                // to get x, we calc the space between left and the overlay
-                ( ( size.x ) / 2 ) 
-                // and we substract the difference between the original point of the map 
-                // and the actual bounding topleft point
-                - (pixelOrigin.x - pixelBoundMin.x),
-
-            _lastTranslationY = 
-                // to get y, we calc the space between the middle axe and the top of the overlay
-                // and we substract the difference between the original point of the map
-                // and the actual bounding topleft point
-                -1 * (pixelOrigin.y - pixelBoundMin.y - size.y / 2);
-
-            _g.attr("transform", "translate(" + (_lastTranslationX ) +"," + (_lastTranslationY) + ")")
-        }
-        /**
          * @ngdoc method
          * @name  geojsonToSvg
          * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
@@ -164,8 +136,7 @@
          * @param  {Object} optionalClass 
          * [description]
          */
-        function geojsonToSvg(data, simplification, id, poi, queryChosen, styleChosen, 
-            styleChoices, colorChosen, checkboxModel, rotationAngle) {
+        function geojsonToSvg(data, simplification, id, poi, queryChosen, styleChosen, styleChoices, colorChosen, checkboxModel, rotationAngle) {
             if (data) {
                 // data.features.forEach(function(feature, index) {
                 //     if (simplification) {

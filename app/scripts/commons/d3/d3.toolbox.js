@@ -47,19 +47,12 @@
             updateFeatureStyleAndColor    : updateFeatureStyleAndColor,
             updateMarker                  : updateMarker,
         }
-        
-        var pointsLayer,
-            polygonsLayer,
-            linesLayer,
-            textLayer;
 
+        var _svgDrawing;
+        
         function init(svgDrawing, svgMenu, getCurrentZoom) {
             RadialMenuService.init(svgMenu, getCurrentZoom);
-
-            pointsLayer   = d3.select(svgDrawing).node().select('g[data-name="points-layer"]');
-            polygonsLayer = d3.select(svgDrawing).node().select('g[data-name="polygons-layer"]');
-            linesLayer    = d3.select(svgDrawing).node().select('g[data-name="lines-layer"]');
-            textLayer     = d3.select(svgDrawing).node().select('g[data-name="text-layer"]');
+            _svgDrawing = svgDrawing;
         }
 
         /**
@@ -109,7 +102,7 @@
 
             var iid = UtilService.getiid(),
 
-                feature = pointsLayer
+                feature = d3.select(_svgDrawing).node().select('g[data-name="points-layer"]')
                     .append('path')
                     .classed('link_' + iid, true)
                     .attr('d', style.path(x,y,style.radius))
@@ -160,7 +153,7 @@
                 feature.classed('edition', false);
             } else { // first click
                 var iid = UtilService.getiid();
-                feature = polygonsLayer 
+                feature = d3.select(_svgDrawing).node().select('g[data-name="polygons-layer"]') 
                     .append('circle')
                     .attr('cx', x)
                     .attr('cy', y)
@@ -208,7 +201,7 @@
         }
 
         function beginLineOrPolygon(x, y, style, color, contour, mode, lastPoint, lineEdit) {
-            var drawingLayer = ( mode === 'line' ? linesLayer /* d3.select('#lines-layer') */ : polygonsLayer /* d3.select('#polygons-layer') */),
+            var drawingLayer = d3.select(_svgDrawing).node().select('g[data-name="' + mode + 's-layer"]'),
                 path,
                 pathInner;
 
@@ -282,7 +275,7 @@
 
         function drawHelpLineOrPolygon(x, y, style, color, contour, mode, lastPoint) {
             if (lastPoint) {
-                var drawingLayer = ( mode === 'line' ? linesLayer /* d3.select('#lines-layer') */ : polygonsLayer /* d3.select('#polygons-layer') */),
+                var drawingLayer = d3.select(_svgDrawing).node().select('g[data-name="' + mode + 's-layer"]'),
                     line;
 
                 if (d3.select('.ongoing')[0][0]) {
@@ -362,7 +355,7 @@
             var d = 'Texte',
                 iid = UtilService.getiid();
 
-            textLayer // d3.select('#text-layer')
+            d3.select(_svgDrawing).node().select('g[data-name="text-layer"]') // d3.select('#text-layer')
                 .append('text')
                 .attr('x', x)
                 .attr('y', y - 35)
@@ -379,7 +372,7 @@
                 .attr('data-link', iid)
                 .text('');
 
-            textLayer // d3.select('#text-layer')
+            d3.select(_svgDrawing).node().select('g[data-name="text-layer"]') // d3.select('#text-layer')
                 .selectAll('foreignObject#textEdition')
                 .data([d])
                 .enter()
@@ -419,10 +412,9 @@
                                 .attr('text-anchor', 'start')
                                 .append('tspan')
                                 .attr('text-anchor', 'start')
-                                .attr('x', function() {
-                                    return d3.select(this.parentNode)
-                                            .attr('x');
-                                })
+                                /*.attr('x', function() {
+                                    return d3.select(this.parentNode).attr('x');
+                                })*/
                                 .attr('dy', 35)
                                 .text(data);
                         }

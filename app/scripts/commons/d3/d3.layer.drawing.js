@@ -23,10 +23,8 @@
             
             _target = target;
 
-            _g = _target
-                    // .append("_g")
-                    .attr("data-name", "drawing-layer")
-                    .attr("id", "drawing-layer");
+            _g = _target.attr("data-name", "drawing-layer")
+                        .attr("id", "drawing-layer");
 
             createDrawing();
         }

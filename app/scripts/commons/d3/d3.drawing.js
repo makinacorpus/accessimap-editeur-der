@@ -21,21 +21,7 @@
         
         this.isUndoAvailable = FeatureService.isUndoAvailable;
         this.undo            = FeatureService.undo;
-
-       /* this.exportData      = function(filename) {
-            // shareSvg.getInteractions()
-                // .then(function(interactionData) {
-                    ExportService.exportData(filename, 
-                            d3.select('svg.leaflet-zoom-animated').node(), 
-                            d3.select('.leaflet-tile-container.leaflet-zoom-animated').node(),
-                            d3.select('#der-legend').selectAll('svg').node(),
-                            $('#comment').val(),
-                            InteractionService.getInteractions());
-                // })
-        }
-        */
         this.toolbox = ToolboxService;
-        
         this.layers  = LayersService;
 
         /**
@@ -51,19 +37,13 @@
          * 
          * These properties are given by D3SvgOverlay and help us to display at the right place features & drawings
          * 
-         * @param  {integer} width
-         * width in pixels of the svg created
-         * 
-         * @param  {integer} height
-         * height in pixels of the svg created
-         * 
-         * @param  {integer} margin 
-         * margin of border in millimeters of the svg created
+         * @param  {enum} format
+         * Format (landscapeA4, landscapeA3, ...) of the drawing
          * 
          */
-        function initDrawing(elements, width, height, margin) {
+        function initDrawing(elements, format) {
             
-            LayersService.createLayers(elements, width, height, margin)
+            LayersService.createLayers(elements, format)
 
             ToolboxService.init(LayersService.drawing.getLayer(), 
                                 LayersService.overlay.getLayer(), 

@@ -141,6 +141,10 @@
             EditService.importDER(file)
                 .then(function definedModel(model) {
                     $ctrl.model = model;
+                    console.log(model)
+                })
+                .catch(function(error) {
+                    console.error('Erreur lors de l\'import : ' + error)
                 });
         }
             
@@ -222,7 +226,7 @@
                 EditService.geojsonToSvg(osmGeojson, 
                         null, 
                         'node_' + osmGeojson.features[0].properties.id, 
-                        false, 
+                        $ctrl.queryChosen === EditService.settings.QUERY_POI, 
                         $ctrl.queryChosen, 
                         $ctrl.styleChosen, 
                         $ctrl.styleChoices, 
@@ -447,8 +451,7 @@
         };  
 
         // Initialisation of the view
-        EditService.init(EditService.settings.FORMATS[$ctrl.mapFormat], 
-                        EditService.settings.FORMATS[$ctrl.legendFormat]);
+        EditService.init($ctrl.mapFormat, $ctrl.legendFormat);
         
     }
 
