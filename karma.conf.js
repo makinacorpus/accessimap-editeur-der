@@ -38,7 +38,8 @@ module.exports = function(config) {
             'bower_components/jszip/dist/jszip.js',
             'bower_components/file-saver.js/FileSaver.js',
             'bower_components/turf/turf.min.js',
-            // 'bower_components/pdfjs-dist/build/pdf.combined.js',
+            'bower_components/pdfjs-dist/build/pdf.combined.js',
+            'bower_components/leaflet/dist/leaflet.js',
 
 
             'app/scripts/**/*.js',
@@ -93,7 +94,7 @@ module.exports = function(config) {
 
         // level of logging
         // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-        logLevel: config.LOG_DEBUG,
+        logLevel: config.LOG_INFO,
 
         // Uncomment the following lines if you are using grunt's server to run the tests
         // proxies: {
