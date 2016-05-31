@@ -60,7 +60,6 @@
             // DefsService.createDefs(d3.select(node))
 
             $(node).css('transform', translateReverseOverlayPx)
-
             domtoimage.toPng(node, {width: size.width, height: size.height, filter: filterDOM})
                 .then(function(dataUrl) { 
 

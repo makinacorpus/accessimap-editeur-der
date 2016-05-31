@@ -14,12 +14,15 @@
     function MapService($q, settings, SearchService) {
 
         var _selectorDOM = '',
+            _isMapVisible,
             map = {}, 
             overlay = null,
             layer,
             layerGroup,
             minHeight,
             minWidth;
+
+        this.isMapVisible           = function() { return _isMapVisible }
 
         this.getMap                 = getMap;
         this.getTileLayer           = getTileLayer;
@@ -76,6 +79,7 @@
         function initMap(selectorDOM, format, _ratioPixelPoint, _resizeFunction) {
 
             _selectorDOM = selectorDOM;
+            _isMapVisible = false;
 
             setMinimumSize(settings.FORMATS[format].width / _ratioPixelPoint, settings.FORMATS[format].height / _ratioPixelPoint)
 
@@ -302,10 +306,12 @@
         }
 
         function showMapLayer() {
+            _isMapVisible = true;
             map.addLayer(layer);
         }
 
         function hideMapLayer() {
+            _isMapVisible = false;
             map.removeLayer(layer);
         }
 

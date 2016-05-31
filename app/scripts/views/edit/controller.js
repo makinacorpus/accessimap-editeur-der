@@ -141,7 +141,6 @@
             EditService.importDER(file)
                 .then(function definedModel(model) {
                     $ctrl.model = model;
-                    console.log(model)
                 })
                 .catch(function(error) {
                     console.error('Erreur lors de l\'import : ' + error)
@@ -409,7 +408,7 @@
 
         }
 
-        $ctrl.centerView = EditService.resetZoom;
+        $ctrl.resetView = EditService.resetView;
 
         $ctrl.searchAddress      = function() {
             

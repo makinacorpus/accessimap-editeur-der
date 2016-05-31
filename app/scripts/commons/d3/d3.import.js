@@ -51,9 +51,13 @@
          */
         function importDrawing(svgElement) {
 
+
             if (isVersionOfSVGAcceptable(svgElement)) {
 
-                var geojsonLayer = svgElement.querySelector('g[data-name="geojson-layer"]'),
+                var currentGeoJSONLayer = LayersService.geojson.getLayer().node(),
+                    currentDrawingLayer = LayersService.drawing.getLayer().node(),
+                    currentBackgroundLayer = LayersService.background.getLayer().node(),
+                    geojsonLayer = svgElement.querySelector('g[data-name="geojson-layer"]'),
                     drawingLayer = svgElement.querySelector('g[data-name="drawing-layer"]'),
                     backgroundLayer = svgElement.querySelector('g[data-name="background-layer"]'),
                     overlayLayer = svgElement.querySelector('svg[data-name="overlay"]'),
@@ -61,16 +65,6 @@
                     metadataInteractions = svgElement.querySelector('metadata[data-name="data-interactions"]'),
                     format = svgElement.querySelector('svg').getAttribute('data-format'),
                     center = svgElement.querySelector('svg').getAttribute('data-center');
-
-                // if map displayed, display it and center on the right place
-                function removeChildren(node) {
-                    var children = node.children,
-                        length = children.length;
-
-                    for (var i = 0; i < length; i++) {
-                        node.removeChild(children[0]); // children list is live, removing a child change the list... 
-                    }
-                }
 
                 function cloneChildrenFromNodeToAnotherNode(nodeFrom, nodeTo, translationToApply) {
 
@@ -134,22 +128,16 @@
 
                 // if exists, inserts data of the geojson layers
                 if (geojsonLayer) {
-                    var currentGeoJSONLayer = LayersService.geojson.getLayer().node()
-                    removeChildren(currentGeoJSONLayer);
                     cloneChildrenFromNodeToAnotherNode(geojsonLayer, currentGeoJSONLayer, translationToApply);
                 }
 
                 // if exists, inserts data of the drawing layers
                 if (drawingLayer) {
-                    var currentDrawingLayer = LayersService.drawing.getLayer().node();
-                    removeChildren(currentDrawingLayer);
                     cloneChildrenFromNodeToAnotherNode(drawingLayer, currentDrawingLayer, translationToApply);
                 }
                 
                 // if exists, inserts data of the drawing layers
                 if (backgroundLayer) {
-                    var currentBackgroundLayer = LayersService.background.getLayer().node();
-                    removeChildren(currentBackgroundLayer);
                     cloneChildrenFromNodeToAnotherNode(backgroundLayer, currentBackgroundLayer, translationToApply);
                 }
 

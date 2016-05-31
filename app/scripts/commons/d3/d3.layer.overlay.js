@@ -208,7 +208,7 @@
             _format     = format;
             _width      = settings.FORMATS[format].width / settings.ratioPixelPoint;
             _height     = settings.FORMATS[format].height / settings.ratioPixelPoint;
-            draw(_width, _height);
+            draw();
         }
 
         /**
@@ -225,7 +225,6 @@
          * and so, thanks to a 'class', we could 'freeze' the overlay thanks to this calc
          */
         function refresh(size, pixelOrigin, pixelBoundMin) {
-
             // x,y are coordinates to position overlay
             // coordinates 0,0 are not the top left, but the point at the middle left
             _lastTranslationX = 

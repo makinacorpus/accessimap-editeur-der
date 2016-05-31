@@ -66,13 +66,10 @@
         this.enableTextMode                = enableTextMode;
 
         this.exportData                    = function(model) {
-            model.center = center ? center : MapService.getMap().getCenter();
+            model.center = DrawingService.layers.overlay.getCenter();
             model.zoom   = zoom   ? zoom   : MapService.getMap().getZoom();
-            // $('#workspace').height('742')
-            // $('#workspace').width('1049')
-            resetZoom(function() { 
-                ExportService.exportData(model); 
-            });
+
+            resetView(function() { ExportService.exportData(model) });
         }
 
         // Map services
@@ -92,7 +89,7 @@
 
         this.freezeMap                     = freezeMap;
 
-        this.resetZoom                     = resetZoom;
+        this.resetView                     = resetView;
 
         this.rotateMap                     = rotateMap;
 
@@ -136,9 +133,31 @@
             overlayDrawing.unFreezeScaling();
             overlayBackground.unFreezeScaling();
 
-            center = ( center === null ) ? MapService.getMap().getCenter() : center ;
-            zoom = ( zoom === null ) ? MapService.getMap().getZoom() : zoom;
+            center = DrawingService.layers.overlay.getCenter();
+            zoom   = zoom   ? zoom   : MapService.getMap().getZoom();
 
+        }
+
+        function initWorkspace() {
+
+            mapFreezed = false;
+            scaleDefined = false;
+
+            MapService.addMoveHandler(function(size, pixelOrigin, pixelBoundMin) {
+                // if scale is not defined, 
+                // we have to re draw the overlay to keep the initial format / position
+                if (scaleDefined!==true) {
+                    DrawingService.layers.overlay.refresh(size, pixelOrigin, pixelBoundMin);
+                }
+            })
+            
+            overlay.freezeScaling();
+            overlayGeoJSON.freezeScaling();
+            overlayDrawing.freezeScaling();
+            overlayBackground.freezeScaling();
+
+            center = null;
+            zoom   = null;
         }
         
         function initMode() {
@@ -338,14 +357,8 @@
                         }, 
                         drawingFormat)
 
-            mapFreezed = false;
-            MapService.addMoveHandler(function(size, pixelOrigin, pixelBoundMin) {
-                // if scale is not defined, 
-                // we have to re draw the overlay to keep the initial format / position
-                if (scaleDefined!==true) {
-                    DrawingService.layers.overlay.refresh(size, pixelOrigin, pixelBoundMin);
-                }
-            })
+            initWorkspace();
+
             MapService.getMap().setView(MapService.getMap().getCenter(), MapService.getMap().getZoom(), {reset:true});
 
             // we create defs svg in a different svg of workspace & legend
@@ -359,18 +372,18 @@
                                     settings.margin, 
                                     settings.ratioPixelPoint);
 
-            // MapService.resizeFunction();
 
         }
 
         function changeDrawingFormat(format) {
-            resetZoom()
+            // first, we set the initial state, center & zoom
+            resetView()
             DrawingService.layers.overlay.setFormat(format);
             MapService.setMinimumSize(settings.FORMATS[format].width / settings.ratioPixelPoint,
                                         settings.FORMATS[format].height / settings.ratioPixelPoint);
             MapService.resizeFunction();
-            // center = DrawingService.layers.overlay.getCenter();
-            resetZoom();
+            center = DrawingService.layers.overlay.getCenter();
+            resetView();
         }
 
         function changeLegendFormat(format) {
@@ -519,7 +532,7 @@
 
         /**
          * @ngdoc method
-         * @name  resetZoom
+         * @name  resetView
          * @methodOf accessimapEditeurDerApp.EditService
          *
          * @description 
@@ -529,7 +542,7 @@
          * @param {function} callback
          * Optional, function to be called when the setView is finished
          */
-        function resetZoom(callback) {
+        function resetView(callback) {
 
             if (center !== null && zoom !== null) {
                 // if the tile layer don't zoom, we're not going to load tiles
@@ -537,14 +550,16 @@
                 var zoomWillChange = ( MapService.getMap().getZoom() !== zoom );
 
                 if (zoomWillChange) {
-                    MapService.getTileLayer().once('load', function() { 
-                        if (callback) callback(); 
-                    })
+                    if (MapService.isMapVisible()) {
+                        MapService.getTileLayer().once('load', function() { 
+                            if (callback) callback(); 
+                        })
+                    }
                 }
 
                 MapService.getMap().setView(center, zoom, {animate:false})
 
-                if (! zoomWillChange && callback) {
+                if ( callback && ( ( ! zoomWillChange ) || ( zoomWillChange && ! MapService.isMapVisible() ) ) ) {
                     callback();
                 }
 
@@ -615,9 +630,8 @@
                         viewport: viewport
                     };
                     page.render(renderContext).then(function() {
-                        // appendImage(canvas.toDataURL());
-                        DrawingService.layers.background.appendImage(canvas.toDataURL(), MapService.getMap().getSize(), MapService.getMap().getPixelOrigin(), MapService.getMap().getPixelBounds().min);
-                            
+                        DrawingService.layers.background.appendImage(canvas.toDataURL(), MapService.getMap().getSize(), 
+                            MapService.getMap().getPixelOrigin(), MapService.getMap().getPixelBounds().min);
                     });
                 });
             });
@@ -628,7 +642,6 @@
             d3.xml(path, function(xml) {
                 // adapt the format of the drawing
                 $(xml.documentElement).data('format')
-                
                 
                 // Load polygon fill styles taht will be used on common map
                 var originalSvg = d3.select(xml.documentElement),
@@ -656,14 +669,41 @@
 
             var deferred = $q.defer();
 
-            // $('#workspace').height('742')
-            // $('#workspace').width('1049')
-            // MapService.resizeFunction();
+            function initUpload() {
+                
+                resetView();
+                
+                initWorkspace();
+
+                // empty the svg:g
+                var currentGeoJSONLayer = DrawingService.layers.geojson.getLayer().node(),
+                    currentDrawingLayer = DrawingService.layers.drawing.getLayer().node(),
+                    currentBackgroundLayer = DrawingService.layers.background.getLayer().node();
+                
+                // if map displayed, display it and center on the right place
+                function removeChildren(node) {
+                    var children = node.children,
+                        length = children.length;
+
+                    for (var i = 0; i < length; i++) {
+                        node.removeChild(children[0]); // children list is live, removing a child change the list... 
+                    }
+                }
+
+                removeChildren(currentGeoJSONLayer);
+                removeChildren(currentDrawingLayer);
+                removeChildren(currentBackgroundLayer);
+                
+                DrawingService.layers.geojson.resetFeatures();
+
+            }
+            
             UtilService.uploadFile(element)
                 .then(function(data) {
 
                     switch (data.type) {
                         case 'image/svg+xml':
+                            initUpload();
                             d3.xml(data.dataUrl, function(svgElement) {
                                 ImportService.importDrawing(svgElement);
                                 freezeMap();
@@ -672,6 +712,7 @@
                             break;
 
                         case 'application/zip':
+                            initUpload();
                             JSZip.loadAsync(element.files[0])
                                 .then(function(zip) {
                                     
@@ -700,28 +741,31 @@
                                             var svgElement = parser.parseFromString(data, "text/xml"),
                                                 model = ImportService.getModelFromSVG(svgElement);
 
-                                            // get the format, and adapt the overlay
                                             changeDrawingFormat(model.mapFormat)
-                                            // DrawingService.layers.overlay.setFormat(format);
-
-                                            if (model.center !== null && model.zoom !== null) {
-                                                center = model.center;
-                                                zoom = model.zoom;
-                                                MapService.getMap().setView(model.center, model.zoom, {reset:true});
-                                                freezeMap();
-                                            }
-
-                                            // overlayGeoJSON.set(DrawingService.layers.overlay.getTranslationX(), 20)
 
                                             if (model.isMapVisible) {
                                                 MapService.showMapLayer();
                                             }
+
+                                            if (model.center !== null && model.zoom !== null) {
+                                                center = model.center;
+                                                zoom = model.zoom;
+
+                                                resetView();
+                                                freezeMap();
+                                                showMapAndImport();
+                                                
+                                                // MapService.getMap().setView(model.center, model.zoom, {reset:true});
+                                            } else {
+                                                showMapAndImport();
+                                            }
+
+                                            function showMapAndImport() {
+                                                ImportService.importDrawing(svgElement)
+                                                console.log('import ok !')
+                                                deferred.resolve(model);
+                                            }
                                             
-                                            console.log('début de l import')
-                                            ImportService.importDrawing(svgElement)
-                                            console.log('fin de l import')
-                                            
-                                            deferred.resolve(model);
                                         })
                                     }
 
@@ -731,8 +775,6 @@
                                             ImportService.importInteraction(parser.parseFromString(data, "text/xml"));
                                         })
                                     }
-
-                                    // deferred.resolve();
 
                                     // TODO: make a Promise.all to manage the import time
 

@@ -11,7 +11,7 @@
 (function() {
     'use strict';
 
-    function LayerGeoJSONService(settings, LegendService) {
+    function LayerGeoJSONService(settings, LegendService, RadialMenuService) {
 
         var _geojson = [],
             _projection,
@@ -33,6 +33,9 @@
         }
         this.setFeatures   = function(features) { 
             _geojson = features ;
+        }
+        this.resetFeatures   = function() { 
+            _geojson = [] ;
         }
 
         this.refresh     = refresh;
@@ -293,8 +296,7 @@
          * @param  {Object} rotationAngle 
          * [description]
          */
-        function drawFeature(data, feature, optionalClass, styleChosen, 
-            colorChosen, checkboxModel, rotationAngle) {
+        function drawFeature(data, feature, optionalClass, styleChosen, colorChosen, checkboxModel, rotationAngle) {
             var featureGroup,
                 type = feature[0].type,
                 drawingLayer = d3.select(_g).node().select('[data-name="' + type + 's-layer"]') ; /* d3.select('#' + type + 's-layer') ;*/
@@ -327,6 +329,7 @@
                     return d.geometry.type !== 'Point';
                 }))
                 .enter().append('path')
+                .attr('data-type', type)
                 .attr('class', function(d) {
                     if (optionalClass) {
                         return feature[0].id + ' ' + optionalClass + ' link_' + d.properties.id;
@@ -358,6 +361,7 @@
                     return d.geometry.type === 'Point';
                 }))
                 .enter().append('path')
+                .attr('data-type', type)
                 .attr('class', feature[0].id)
                 .attr('name', function(d) {
                     if (d.properties.tags) {
@@ -436,6 +440,9 @@
             // });
 
             // rotate(rotationAngle);
+
+            RadialMenuService.addRadialMenu(d3.selectAll('path:not(.notDeletable)'));
+            RadialMenuService.addRadialMenu(d3.selectAll('circle:not(.notDeletable)'));
         }
         
         /**
@@ -602,6 +609,6 @@
 
     angular.module(moduleApp).service('LayerGeoJSONService', LayerGeoJSONService);
 
-    LayerGeoJSONService.$inject = ['settings', 'LegendService'];
+    LayerGeoJSONService.$inject = ['settings', 'LegendService', 'RadialMenuService'];
 
 })();

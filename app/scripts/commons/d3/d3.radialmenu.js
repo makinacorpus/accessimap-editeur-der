@@ -17,7 +17,9 @@
         this.init = init;
 
         var menu = null,
-            svg, getCurrentZoom;
+            svg, 
+            getCurrentZoom,
+            currentTarget;
 
         function init(_svg, _getCurrentZoom) {
             svg = _svg;
@@ -43,7 +45,13 @@
          */
         function drawMenu(target, mousePosition) {
             
-            target.classed('blink', true);
+            if (currentTarget) {
+                currentTarget.classed('blink', false);
+            }
+                
+            currentTarget = target;
+            currentTarget.classed('blink', true);
+
             var type = target.attr('data-type') ? target.attr('data-type') : 'default' ; //FeatureService.getType(target);
 
             if (type) {
@@ -63,8 +71,7 @@
                 
                         var action = d.data.action;
                         action(target);
-                        menu.hide();
-                        menu = null;
+                        hideRadialMenu();
                     })
                     .appendTo(svg.node())
                     .show(data);
@@ -136,6 +143,11 @@
                 menu.hide();
                 menu = null
             }
+            
+            if (currentTarget) {
+                currentTarget.classed('blink', false);
+            }
+                
         }
 
     }

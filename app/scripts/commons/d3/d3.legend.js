@@ -194,8 +194,8 @@
          */
         function addToLegend(query, style, position, colorChosen, checkboxModel) {
             var legendGroup = _svg.append('g')
-                    .attr('class', 'legend')
-                    .attr('id', query.id),
+                    // .attr('id', query.id) // TODO: see if it's useful ?
+                    .attr('class', 'legend'),
                 symbol;
 
             switch(query.type) {
