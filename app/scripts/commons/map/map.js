@@ -94,12 +94,6 @@
                 id: 'mapbox.streets'
             })
 
-            L.control.coordinates({
-                position:"topright", //optional default "bootomright"
-                enableUserInput:true, //optional default true
-                useLatLngOrder: true, //ordering of labels, default false-> lng-lat
-            }).addTo(map);
-            
             // , layer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
             //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             // }).addTo(map);

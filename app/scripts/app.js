@@ -18,13 +18,9 @@
             'ngRoute',
             'ngSanitize',
             'ngTouch',
-            'angularSpinner',
             'ui.select',
             'ui.bootstrap',
-            'ui.bootstrap-slider',
-            'ui.grid',
-            'ui.grid.edit',
-            'ui.grid.autoResize'
+            'ui.bootstrap-slider'
         ])
         .config(function($routeProvider) {
             $routeProvider

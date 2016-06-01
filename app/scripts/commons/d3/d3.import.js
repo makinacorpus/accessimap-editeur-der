@@ -110,7 +110,7 @@
                 metadataInteractions = svgElement.querySelector('metadata[data-name="data-interactions"]'),
                 
                 format = svgElement.querySelector('svg').getAttribute('data-format'),
-                center = svgElement.querySelector('svg').getAttribute('data-center')
+                center = svgElement.querySelector('svg').getAttribute('data-center'),
 
                 currentOverlayTranslation = LayersService.overlay.getTranslation(),
 
