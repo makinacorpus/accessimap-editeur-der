@@ -46,7 +46,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service providing drawing functions",
-      "keywords": "accessimapediteurderapp api area border create created d3svgoverlay display dom draw drawing drawings drawingservice element elements features featureservice functions geojson height help init initdrawing layer layersservice map margin method millimeters object pixels place proj properties property provide providing sel service settings size specific svg toolboxservice width"
+      "keywords": "accessimapediteurderapp api area create d3svgoverlay display dom draw drawing drawings drawingservice element elements features featureservice format functions geojson help init initdrawing landscapea3 layer layersservice map method object place proj properties property provide providing sel service settings size specific svg toolboxservice"
     },
     {
       "section": "api",
@@ -55,7 +55,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service used for the &#39;EditController&#39;, and the &#39;edit&#39; view",
-      "keywords": "_errorcallback _successcallback accessimapediteurderapp add address allow allowing angle api append appendpdf area argument background callback called center choose clever click container css cursor d3 data dataurl defined degree disable disableaddpoi display displaying draw drawing drawingformat drawingservice edit editcontroller editservice elements enable enableaddpoi error events export features finished format function functions future image init initial initialize insert insertosmdata jpg layer legend legendformat legendservice link map mapleaflet mapservice method mode move nominatim occured optional osm pan passed pdf png poi printing promise provide query query_list resetting resetzoom result retrieve retrieved rotable rotate rotatemap rotation search searchanddisplayaddress service services settings setview specific successful user version view viewreset zoom"
+      "keywords": "_errorcallback _successcallback accessimapediteurderapp add address allow allowing angle api append appendpdf area argument background callback called center choose clever click container css cursor d3 data dataurl defined degree disable disableaddpoi display displaying draw drawing drawingformat drawingservice edit editcontroller editservice elements enable enableaddpoi error events export features finished format function functions future image init initial initialize insert insertosmdata jpg layer legend legendformat legendservice link map mapleaflet mapservice method mode move nominatim occured optional osm pan passed pdf png poi printing promise provide query query_list resetting resetview result retrieve retrieved rotable rotate rotatemap rotation search searchanddisplayaddress service services settings setview specific successful user version view viewreset zoom"
     },
     {
       "section": "api",
@@ -199,7 +199,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service providing the management of overlay layer",
-      "keywords": "accessimapediteurderapp api area createframepath createmarginpath d3 height layer layeroverlayservice management margin method overlay providing service target width wished"
+      "keywords": "accessimapediteurderapp api area axis calc class clear consideration conversion create createframepath createlayer createmarginpath d3 dependencies draw drawing fixed frame frame-layer freeze function getsize gettranslation gps group groups height layer layeroverlayservice management map margin margin-layer method movements moving overlay parent path point projection providing refresh representing responsability return service size svg target todo translation width wished"
     },
     {
       "section": "api",
@@ -208,7 +208,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service providing layer functions to add",
-      "keywords": "accessimapediteurderapp add api area createdrawing createlayers data defs draw drawing export features functions height init layer layers layersservice map margin method node pixel points polygon printing provide providing purpose required service svg target width zone"
+      "keywords": "accessimapediteurderapp add api area createdrawing createlayers data defs draw drawing export features format functions init landscapea3 layer layers layersservice map method node points polygon provide providing required service svg target"
     },
     {
       "section": "api",
@@ -326,15 +326,6 @@ NG_DOCS={
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Expose different methods to draw on the d3 svg area",
       "keywords": "accessimapediteurderapp add addradialmenus api area arrow circle color contour coordinate coordinates d3 differents draw drawcircle drawpoint edit elements expose feature featureicon item menus method methods model path point radial radius right-clicking service settings shape shapes specific style svg text toolboxservice true type update updatecircleradius users"
-    },
-    {
-      "section": "api",
-      "id": "accessimapEditeurDerApp.typeOf",
-      "shortName": "accessimapEditeurDerApp.typeOf",
-      "type": "service",
-      "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "typeOf",
-      "keywords": "accessimapediteurderapp api service typeof"
     },
     {
       "section": "api",
