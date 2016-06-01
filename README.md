@@ -4,21 +4,15 @@
 
 ### Requirements
 
-`sudo apt-get install ruby-dev gem`
-
-- gem
-- ruby-dev (sudo apt-get install ruby-dev)
-
+- ruby-dev & gem (`sudo apt-get install ruby-dev gem`)
+- sass / compass ? (sudo gem install compass)
 - npm (version > 1.2.10)
-- bower (`npm install -g bower` )
+- bower (`npm install -g bower`)
 - gulp (`npm install -g gulp`)
 - karma (`npm install -g karma`)
 
-- sass / compass ? (sudo gem install compass) with ruby-dev
-
 ### Install
 
-- `gem install compass`
 - `bower install`
 - `npm install`
 - `gulp`
