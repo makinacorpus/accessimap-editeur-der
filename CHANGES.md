@@ -8,6 +8,8 @@ development
 **Major changes**
 * Merge of steps for drawing : choosing a map & adding draw are now one step
 * Add of leafletJS library for displaying maps & layer of Mapbox (Street)
+* UX evolution to integrate a full map / drawing, and a menu on the left side
+* Import / Export drawing feature
 
 **Minor changes**
 
