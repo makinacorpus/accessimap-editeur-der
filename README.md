@@ -10,21 +10,19 @@
 - ruby-dev (sudo apt-get install ruby-dev)
 
 - npm (version > 1.2.10)
-- bower (npm install -g bower)
-- grunt (`npm install -g grunt-cli`)
+- bower (`npm install -g bower` )
 - gulp (`npm install -g gulp`)
-- karma (npm install -g karma)
+- karma (`npm install -g karma`)
 
-- sass / compass ? (sudo gem install compass) avec ruby-dev d'installé
+- sass / compass ? (sudo gem install compass) with ruby-dev
 
 ### Install
 
-- 'npm i bower grunt-cli'
-- 'gem install compass'
-- 'bower install'
+- `gem install compass`
+- `bower install`
 - `npm install`
 - `gulp`
-- look your browser
+- look your favorite browser opening accessimap !
 
 
 If you encounter a 'bug' like 'watching tasks too numerous', or an error like 'Error: watch /home/user/workspaces/accessimap-editeur-der/app/scripts/directives ENOSPC' you'll have to increase your max user watch :
@@ -44,13 +42,14 @@ fs.inotify.max_user_watches=32768
 
 ```
 
-Normally, if you reboot, it will be ok.
+Normally, if you reboot, it will be ok. If not, please tell us in an issue.
 
-### Publish on gh-pages
+### Publish on gh-pages 
 ``` sh
-grunt build
-git subtree push --prefix dist origin gh-pages
+gulp build
 ```
+
+Then copy the dist/v2 into the *gh-pages* branch, commit & push it.
 
 ### PDFJS
 In bower_components/pdfjs-dist/bower.json, this part:
