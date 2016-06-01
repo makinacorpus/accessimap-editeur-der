@@ -90,7 +90,7 @@
         $ctrl.featureIcon                = EditService.featureIcon;
         $ctrl.formats                    = EditService.settings.FORMATS;
         $ctrl.backgroundColor            = EditService.settings.COLORS.transparent[0]; // transparent
-        $ctrl.backgroundStyle            = EditService.settings.STYLES.polygon[EditService.settings.STYLES.polygon - 1]; // solid
+        $ctrl.backgroundStyle            = EditService.settings.STYLES.polygon[EditService.settings.STYLES.polygon.length - 1]; // solid
         $ctrl.backgroundStyleChoices     = EditService.settings.STYLES.polygon;
         $ctrl.mapFormat                  = $location.search().mapFormat ? $location.search().mapFormat : 'landscapeA4';
         $ctrl.legendFormat               = $location.search().legendFormat ? $location.search().legendFormat : 'landscapeA4';
@@ -333,7 +333,6 @@
         $ctrl.rotateFeature = EditService.rotateFeature;
 
         $ctrl.updateMarker  = EditService.updateMarker;
-        $ctrl.toggleLegendFontBraille  = EditService.toggleLegendFontBraille;
 
         $ctrl.updateColor = function(color) {
             EditService.updateFeatureStyleAndColor(null, color);

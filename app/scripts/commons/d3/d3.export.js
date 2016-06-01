@@ -10,7 +10,7 @@
      * @description
      * Service in the accessimapEditeurDerApp.
      */
-    function ExportService(shareSvg, InteractionService, LegendService, DrawingService, DefsService, MapService) {
+    function ExportService(InteractionService, LegendService, DrawingService, DefsService, MapService, $q) {
 
         this.exportData = exportData;
 
@@ -21,8 +21,10 @@
         // To be added : drawingNode, legendNode, interactions
         function exportData(model) {
 
+            var deferred = $q.defer();
+
             if (! model.title)
-                model.title = 'Dessin en relief fait avec Accessimap';
+                model.title = 'der';
 
             var node                   = MapService.getMap().getPanes().mapPane,
                 transformStyle         = $(node).css('transform'),
@@ -58,11 +60,10 @@
             }
             
             // DefsService.createDefs(d3.select(node))
-
             $(node).css('transform', translateReverseOverlayPx)
             domtoimage.toPng(node, {width: size.width, height: size.height, filter: filterDOM})
                 .then(function(dataUrl) { 
-
+                    
                     // save the image in a file & add it to the current zip
                     var imgBase64 = dataUrl.split('base64,')
                     zip.file('carte.png', imgBase64[1], {base64: true});
@@ -142,16 +143,21 @@
                             zip.generateAsync({type: 'blob'})
                                 .then(function(content) {
                                     saveAs(content, model.title + '.zip');
+                                    deferred.resolve(model.title + '.zip');
                                 })
+                                .catch(deferred.reject)
                         })
+                        .catch(deferred.reject)
 
                 })
-
+                .catch(deferred.reject)
+            
+            return deferred.promise;
         }
 
     }
 
     angular.module(moduleApp).service('ExportService', ExportService);
 
-    ExportService.$inject = ['shareSvg', 'InteractionService', 'LegendService', 'DrawingService', 'DefsService', 'MapService'];
+    ExportService.$inject = ['InteractionService', 'LegendService', 'DrawingService', 'DefsService', 'MapService', '$q'];
 })();

@@ -18,7 +18,7 @@
         this.hideFontBraille   = hideFontBraille;
         this.addToLegend       = addToLegend;
         this.draw              = draw;
-        this.getNode           = function() { return _svg.node();}
+        this.getNode           = function() { return _svg !== undefined ? _svg.node() : undefined }
 
         var _width,
             _height,

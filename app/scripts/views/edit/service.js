@@ -69,7 +69,7 @@
             model.center = DrawingService.layers.overlay.getCenter();
             model.zoom   = zoom   ? zoom   : MapService.getMap().getZoom();
 
-            resetView(function() { ExportService.exportData(model) });
+            resetView(function() { ExportService.exportData(model).then(function() { console.log('pouet')}) });
         }
 
         // Map services
@@ -704,7 +704,7 @@
                     switch (data.type) {
                         case 'image/svg+xml':
                             initUpload();
-                            d3.xml(data.dataUrl, function(svgElement) {
+                            d3.xml(data.dataUrl, function loadDrawingFromSVG(svgElement) {
                                 ImportService.importDrawing(svgElement);
                                 freezeMap();
                                 deferred.resolve();
@@ -713,8 +713,7 @@
 
                         case 'application/zip':
                             initUpload();
-                            JSZip.loadAsync(element.files[0])
-                                .then(function(zip) {
+                            JSZip.loadAsync(element.files[0]).then(function loadDrawingFromZip(zip) {
                                     
                                     var commentairesPath,
                                         legendPath,
@@ -722,7 +721,7 @@
                                         interactionPath,
                                         legendElement, svgElement, interactionData;
 
-                                    zip.forEach(function (relativePath, zipEntry) {
+                                    zip.forEach(function getPath(relativePath, zipEntry) {
                                         
                                         if (relativePath.indexOf("carte_sans_source.svg") >= 0) {
                                             drawingPath = relativePath;
@@ -736,8 +735,8 @@
                                     var parser = new DOMParser();
 
                                     if (drawingPath) {
-                                        zip.file(drawingPath).async("string")
-                                        .then(function(data) {
+                                        zip.file(drawingPath).async("string").then(function importDrawing(data) {
+
                                             var svgElement = parser.parseFromString(data, "text/xml"),
                                                 model = ImportService.getModelFromSVG(svgElement);
 
@@ -753,25 +752,17 @@
 
                                                 resetView();
                                                 freezeMap();
-                                                showMapAndImport();
-                                                
-                                                // MapService.getMap().setView(model.center, model.zoom, {reset:true});
-                                            } else {
-                                                showMapAndImport();
                                             }
 
-                                            function showMapAndImport() {
-                                                ImportService.importDrawing(svgElement)
-                                                console.log('import ok !')
-                                                deferred.resolve(model);
-                                            }
+                                            ImportService.importDrawing(svgElement)
+                                            DrawingService.toolbox.addRadialMenus();
+                                            deferred.resolve(model);
                                             
                                         })
                                     }
 
                                     if (interactionPath) {
-                                        zip.file(interactionPath).async("string")
-                                        .then(function(data) {
+                                        zip.file(interactionPath).async("string").then(function importInteraction(data) {
                                             ImportService.importInteraction(parser.parseFromString(data, "text/xml"));
                                         })
                                     }

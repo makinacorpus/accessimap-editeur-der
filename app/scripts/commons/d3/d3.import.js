@@ -30,12 +30,53 @@
 
             if (isVersionOfSVGAcceptable(svgElement)) {
                 var metadataModel = svgElement.querySelector('metadata[data-name="data-model"]');
+
                 if (metadataModel) {
                     return JSON.parse(metadataModel.getAttribute('data-value'));
                 }
             }
             
             return null;
+        }
+        
+        function cloneChildrenFromNodeAToB(nodeFrom, nodeTo, translationToApply) {
+
+            var children = nodeFrom.children,
+                paths = nodeFrom.querySelectorAll('path,circle,line,text');
+
+            if (translationToApply) {
+                for (var i = 0; i < paths.length; i++) {
+                    var currentD = paths[i].getAttribute('d');
+
+                    if (currentD) {
+                        var currentParseD = UtilService.parseSVGPath(currentD),
+                            currentTranslateD = UtilService.translateSVGPath(currentParseD, translationToApply.x, translationToApply.y),
+                            currentSerializeD = UtilService.serializeSVGPath(currentTranslateD);
+
+                        paths[i].setAttribute('d', currentSerializeD)
+                    } else {
+                        var cx = paths[i].getAttribute('cx'),
+                            cy = paths[i].getAttribute('cy'),
+                            x = paths[i].getAttribute('x'),
+                            y = paths[i].getAttribute('y');
+                        
+                        if (cx !== null ) {
+                            paths[i].setAttribute('cx', parseFloat(cx) + translationToApply.x)
+                            paths[i].setAttribute('cy', parseFloat(cy) + translationToApply.y)
+                        } else {
+                            paths[i].setAttribute('x', parseFloat(x) + translationToApply.x)
+                            paths[i].setAttribute('y', parseFloat(y) + translationToApply.y)
+                        }
+
+                    }
+                }
+            }
+
+            var length = children.length;
+
+            for (var i = 0; i < length; i++) {
+                nodeTo.appendChild(children[0]);
+            }
         }
 
         /**
@@ -54,58 +95,24 @@
 
             if (isVersionOfSVGAcceptable(svgElement)) {
 
-                var currentGeoJSONLayer = LayersService.geojson.getLayer().node(),
-                    currentDrawingLayer = LayersService.drawing.getLayer().node(),
-                    currentBackgroundLayer = LayersService.background.getLayer().node(),
-                    geojsonLayer = svgElement.querySelector('g[data-name="geojson-layer"]'),
-                    drawingLayer = svgElement.querySelector('g[data-name="drawing-layer"]'),
-                    backgroundLayer = svgElement.querySelector('g[data-name="background-layer"]'),
-                    overlayLayer = svgElement.querySelector('svg[data-name="overlay"]'),
-                    metadataGeoJSON = svgElement.querySelector('metadata[data-name="data-geojson"]'),
-                    metadataInteractions = svgElement.querySelector('metadata[data-name="data-interactions"]'),
-                    format = svgElement.querySelector('svg').getAttribute('data-format'),
-                    center = svgElement.querySelector('svg').getAttribute('data-center');
+                var 
 
-                function cloneChildrenFromNodeToAnotherNode(nodeFrom, nodeTo, translationToApply) {
+                currentGeoJSONLayer    = LayersService.geojson.getLayer().node(),
+                currentDrawingLayer    = LayersService.drawing.getLayer().node(),
+                currentBackgroundLayer = LayersService.background.getLayer().node(),
 
-                    var children = nodeFrom.children,
-                        paths = nodeFrom.querySelectorAll('path,circle,line,text');
+                geojsonLayer    = svgElement.querySelector('g[data-name="geojson-layer"]'),
+                drawingLayer    = svgElement.querySelector('g[data-name="drawing-layer"]'),
+                backgroundLayer = svgElement.querySelector('g[data-name="background-layer"]'),
+                overlayLayer    = svgElement.querySelector('svg[data-name="overlay"]'),
+                
+                metadataGeoJSON      = svgElement.querySelector('metadata[data-name="data-geojson"]'),
+                metadataInteractions = svgElement.querySelector('metadata[data-name="data-interactions"]'),
+                
+                format = svgElement.querySelector('svg').getAttribute('data-format'),
+                center = svgElement.querySelector('svg').getAttribute('data-center')
 
-                    if (translationToApply) {
-                        for (var i = 0; i < paths.length; i++) {
-                            var currentD = paths[i].getAttribute('d');
-
-                            if (currentD) {
-                                var currentParseD = UtilService.parseSVGPath(currentD),
-                                    currentTranslateD = UtilService.translateSVGPath(currentParseD, translationToApply.x, translationToApply.y),
-                                    currentSerializeD = UtilService.serializeSVGPath(currentTranslateD);
-
-                                paths[i].setAttribute('d', currentSerializeD)
-                            } else {
-                                var cx = paths[i].getAttribute('cx'),
-                                    cy = paths[i].getAttribute('cy'),
-                                    x = paths[i].getAttribute('x'),
-                                    y = paths[i].getAttribute('y');
-                                
-                                if (cx !== null ) {
-                                    paths[i].setAttribute('cx', parseFloat(cx) + translationToApply.x)
-                                    paths[i].setAttribute('cy', parseFloat(cy) + translationToApply.y)
-                                } else {
-                                    paths[i].setAttribute('x', parseFloat(x) + translationToApply.x)
-                                    paths[i].setAttribute('y', parseFloat(y) + translationToApply.y)
-                                }
-
-                            }
-                        }
-                    }
-
-                    var length = children.length;
-                    for (var i = 0; i < length; i++) {
-                        nodeTo.appendChild(children[0]);
-                    }
-                }
-
-                var currentOverlayTranslation = LayersService.overlay.getTranslation(),
+                currentOverlayTranslation = LayersService.overlay.getTranslation(),
 
                 translateScaleOverlayGroup = overlayLayer.getAttribute('transform'),
                 
@@ -128,17 +135,17 @@
 
                 // if exists, inserts data of the geojson layers
                 if (geojsonLayer) {
-                    cloneChildrenFromNodeToAnotherNode(geojsonLayer, currentGeoJSONLayer, translationToApply);
+                    cloneChildrenFromNodeAToB(geojsonLayer, currentGeoJSONLayer, translationToApply);
                 }
 
                 // if exists, inserts data of the drawing layers
                 if (drawingLayer) {
-                    cloneChildrenFromNodeToAnotherNode(drawingLayer, currentDrawingLayer, translationToApply);
+                    cloneChildrenFromNodeAToB(drawingLayer, currentDrawingLayer, translationToApply);
                 }
                 
                 // if exists, inserts data of the drawing layers
                 if (backgroundLayer) {
-                    cloneChildrenFromNodeToAnotherNode(backgroundLayer, currentBackgroundLayer, translationToApply);
+                    cloneChildrenFromNodeAToB(backgroundLayer, currentBackgroundLayer, translationToApply);
                 }
 
                 if (metadataGeoJSON && metadataGeoJSON.getAttribute('data-value') !== '') {
@@ -198,4 +205,5 @@
     angular.module(moduleApp).service('ImportService', ImportService);
 
     ImportService.$inject = ['LayersService', 'InteractionService', 'LegendService', 'settings', 'UtilService'];
+
 })();

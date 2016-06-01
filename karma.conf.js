@@ -18,6 +18,11 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
+            'node_modules/babel-polyfill/dist/polyfill.js',
+
+            'app/scripts/vendor/dom-to-image.js',
+            'bower_components/jszip/dist/jszip.js',
+
             'bower_components/jquery/dist/jquery.js',
             'bower_components/angular/angular.js',
             'bower_components/angular-mocks/angular-mocks.js',
@@ -35,12 +40,10 @@ module.exports = function(config) {
             'bower_components/angular-bootstrap-slider/slider.js',
             'bower_components/angular-ui-grid/ui-grid.js',
 
-            'bower_components/jszip/dist/jszip.js',
             'bower_components/file-saver.js/FileSaver.js',
             'bower_components/turf/turf.min.js',
             'bower_components/pdfjs-dist/build/pdf.combined.js',
             'bower_components/leaflet/dist/leaflet.js',
-
 
             'app/scripts/**/*.js',
             // 'test/mock/**/*.js',
@@ -62,15 +65,15 @@ module.exports = function(config) {
         // - PhantomJS
         // - IE (only Windows)
         browsers: [
-          'PhantomJS', 'Chrome'
+            'PhantomJS'
         ],
 
         // Code coverage report
-        reporters: ['progress', 'coverage', 'coveralls'],
+        reporters: ['coverage', 'coveralls'],
 
         preprocessors: {
-            'app/scripts/app.js': ['progress', 'coverage'],
-            'app/scripts/{commons,components,views,filters}/**/*.js': ['progress', 'coverage']
+            'app/scripts/app.js': ['coverage'],
+            'app/scripts/{commons,components,views,filters}/**/*.js': ['coverage']
         },
 
         coverageReporter: {
@@ -80,6 +83,8 @@ module.exports = function(config) {
 
         // Which plugins to enable
         plugins: [
+          'karma-chrome-launcher',
+          'karma-firefox-launcher',
           'karma-phantomjs-launcher',
           'karma-jasmine',
           'karma-coverage',
