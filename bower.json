@@ -26,7 +26,7 @@
     "path-data-polyfill.js": "https://github.com/jarek-foksa/path-data-polyfill.js.git",
     "pdfjs-dist": "~1.1.494",
     "select2": "~3.4.5",
-    "turf": "~2.0.2",
+    "turf": "~2.0.2"
 
   },
   "devDependencies": {
