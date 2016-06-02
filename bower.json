@@ -2,7 +2,6 @@
   "name": "accessimap-editeur-der",
   "version": "0.6.1",
   "dependencies": {
-
     "angular": "#1.5.x",
     "angular-animate": "#1.5.x",
     "angular-cookies": "#1.5.x",
@@ -13,9 +12,7 @@
     "angular-ui-select": "https://github.com/angular-ui/ui-select.git",
     "angular-ui-utils": "#0.2.3",
     "angular-bootstrap-slider": "~0.1.7",
-    
     "bootstrap-sass-official": "^3.2.0",
-
     "d3": "~3.5.3",
     "es5-shim": "^4.0.0",
     "file-saver.js": "~1.20150304.1",
@@ -27,11 +24,11 @@
     "pdfjs-dist": "~1.1.494",
     "select2": "~3.4.5",
     "turf": "~2.0.2"
-
   },
   "devDependencies": {
     "angular-mocks": "#1.5.x",
-    "angular-scenario": "#1.5.x"
+    "angular-scenario": "#1.5.x",
+    "toastr": "^2.1.2"
   },
   "appPath": "app"
 }

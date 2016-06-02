@@ -66,10 +66,19 @@
         this.enableTextMode                = enableTextMode;
 
         this.exportData                    = function(model) {
+            var deferred = $q.defer();
+
             model.center = DrawingService.layers.overlay.getCenter();
             model.zoom   = zoom   ? zoom   : MapService.getMap().getZoom();
 
-            resetView(function() { ExportService.exportData(model).then(function() { console.log('pouet')}) });
+            resetView(function() { 
+                ExportService.exportData(model).then(function() { 
+                    deferred.resolve()
+                }) 
+                .catch(deferred.reject)
+            });
+
+            return deferred.promise;
         }
 
         // Map services

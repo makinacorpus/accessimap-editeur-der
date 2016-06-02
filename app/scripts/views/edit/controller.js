@@ -124,7 +124,19 @@
         
         $ctrl.isUndoAvailable     = EditService.isUndoAvailable;
         
-        $ctrl.exportData          = function() { EditService.exportData($ctrl.model) };
+        $ctrl.exportData          = function() { 
+
+            ToasterService.info('Export du dessin... merci de patienter', {timeout: 0, tapToDismiss: false})
+            EditService.exportData($ctrl.model) 
+                .then(function () {
+                    ToasterService.remove()
+                    ToasterService.success('Export terminé !')
+                })
+                .catch(function(error) {
+                    ToasterService.remove()
+                    ToasterService.error(error, 'Erreur lors de l\'export...')
+                });
+        };
         $ctrl.rotateMap           = EditService.rotateMap;
         
         $ctrl.changeDrawingFormat = EditService.changeDrawingFormat;
@@ -138,12 +150,18 @@
         $ctrl.appendSvg           = EditService.appendSvg;
         
         $ctrl.importDER = function(file) {
+
+            ToasterService.info('Import du fichier... merci de patienter', {timeout: 0, tapToDismiss: false})
+
             EditService.importDER(file)
                 .then(function definedModel(model) {
+                    ToasterService.remove()
+                    ToasterService.success('Import terminé !')
                     $ctrl.model = model;
                 })
                 .catch(function(error) {
-                    console.error('Erreur lors de l\'import : ' + error)
+                    ToasterService.remove()
+                    ToasterService.error(error, 'Erreur lors de l\'import...')
                 });
         }
             
@@ -218,7 +236,7 @@
         function drawGeoJSON(osmGeojson) {
             
             if (! osmGeojson) {
-                throw new Error('Parameter osmGeojson undefined. Please provide it before calling this function.')
+                ToasterService.error('Parameter osmGeojson undefined. Please provide it before calling this function.')
             }
             
             if (osmGeojson.features && osmGeojson.features.length > 0) {
@@ -235,7 +253,7 @@
             }
             else {
                 // TODO: soft error, with a toaster or something to explain to the user we haven't find anything...
-                throw new Error('No feature to display... Please click again, maybe not at the same place ?')
+                ToasterService.warning('No feature to display... Please click again, maybe not at the same place ?')
             }
         }
         $ctrl.displaySearchAddressForm = function() {
