@@ -253,7 +253,7 @@
             }
             else {
                 // TODO: soft error, with a toaster or something to explain to the user we haven't find anything...
-                ToasterService.warning('No feature to display... Please click again, maybe not at the same place ?')
+                ToasterService.warning('Aucun POI trouvé à cet endroit... Merci de cliquer ailleurs !?')
             }
         }
         $ctrl.displaySearchAddressForm = function() {
@@ -288,6 +288,9 @@
             $ctrl.isLegendParametersVisible      = false;
             $ctrl.isInteractionParametersVisible = false;
             $ctrl.isBackgroundParametersVisible  = false;
+
+            EditService.resetActions();
+
         }
         $ctrl.displayMapParameters = function() {
             $ctrl.isWorkspaceVisible             = true;

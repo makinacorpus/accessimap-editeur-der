@@ -250,7 +250,7 @@
          * https://developer.mozilla.org/fr/docs/Web/CSS/cursor
          */
         function changeCursor(style) {
-            $('#' + _selectorDOM).css('cursor', style);
+            document.getElementById(_selectorDOM).style.setProperty('cursor', style)
         }
 
         /**
@@ -262,7 +262,7 @@
          * Reset to 'default' the cursor on the map
          */
         function resetCursor() {
-            changeCursor('default');
+            document.getElementById(_selectorDOM).style.removeProperty('cursor')
         }
 
         /**

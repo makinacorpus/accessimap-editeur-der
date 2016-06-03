@@ -38,7 +38,7 @@
             d3.select('body').on('keydown', function() {});
             d3.selectAll('path').attr('marker-mid', null);
 
-            //$('#der').css('cursor', 'auto');
+            MapService.resetCursor();
 
             d3.selectAll('.ongoing').remove();
 
