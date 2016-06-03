@@ -71,32 +71,32 @@
             $ctrl.styleChosen  = $ctrl.styleChoices[0];
         };
 
-        $ctrl.model = {
-            title        : 'Titre du dessin',
-            isMapVisible : false,
-            comment      : 'Pas de commentaire',
-            mapFormat    : 'landscapeA4',
-            legendFormat : 'landscapeA4',
-        }
-
         $ctrl.fonts                      = EditService.settings.FONTS;
         $ctrl.fontChosen                 = $ctrl.fonts[0];
         $ctrl.fontColors                 = EditService.settings.COLORS;
         $ctrl.fontColorChosen            = $ctrl.fontColors[$ctrl.fontChosen.color][0];
         
-        $ctrl.colors                     = (EditService.settings.COLORS.transparent)
-                                                .concat(EditService.settings.COLORS.other);
+        $ctrl.colors                     = (EditService.settings.COLORS.transparent).concat(EditService.settings.COLORS.other);
+        
         $ctrl.colorChosen                = $ctrl.colors[0];
         $ctrl.featureIcon                = EditService.featureIcon;
         $ctrl.formats                    = EditService.settings.FORMATS;
-        $ctrl.backgroundColor            = EditService.settings.COLORS.transparent[0]; // transparent
-        $ctrl.backgroundStyle            = EditService.settings.STYLES.polygon[EditService.settings.STYLES.polygon.length - 1]; // solid
         $ctrl.backgroundStyleChoices     = EditService.settings.STYLES.polygon;
         $ctrl.mapFormat                  = $location.search().mapFormat ? $location.search().mapFormat : 'landscapeA4';
         $ctrl.legendFormat               = $location.search().legendFormat ? $location.search().legendFormat : 'landscapeA4';
         $ctrl.checkboxModel              = { contour: true};
         $ctrl.getFeatures                = EditService.getFeatures;
         
+        $ctrl.model = {
+            title           : 'Titre du dessin',
+            isMapVisible    : false,
+            comment         : 'Pas de commentaire',
+            mapFormat       : 'landscapeA4',
+            legendFormat    : 'landscapeA4',
+            backgroundColor : $ctrl.colors[0], // transparent
+            backgroundStyle : EditService.settings.STYLES.polygon[EditService.settings.STYLES.polygon.length - 1], // solid
+        }
+
         // general state parameters        
         $ctrl.isParametersVisible            = true; // initial state = parameters
         $ctrl.isMapParametersVisible         = false;
@@ -139,7 +139,10 @@
         };
         $ctrl.rotateMap           = EditService.rotateMap;
         
-        $ctrl.changeDrawingFormat = EditService.changeDrawingFormat;
+        $ctrl.changeDrawingFormat = function(format) {
+            EditService.changeDrawingFormat(format);
+            EditService.updateBackgroundStyleAndColor($ctrl.model.backgroundStyle, $ctrl.model.backgroundColor);
+        }
         $ctrl.changeLegendFormat  = EditService.changeLegendFormat;
         
         $ctrl.interactions        = EditService.interactions;
