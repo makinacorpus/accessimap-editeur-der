@@ -74,7 +74,9 @@
          * @description 
          * Project all paths from _geojson
          */
-        function refresh(_projection) {
+        function refresh(projectPoint) {
+
+            if (projectPoint) _projection = projectPoint;
             
             _geojson.forEach(function (geojson) {
 
@@ -504,7 +506,7 @@
 
             if (style.path) {
                 _geojson[objectId].style.path = style.path;
-                zoomed();
+                refresh();
             }
 
             var symbol = d3.select('.legend#' + id).select('.symbol');
