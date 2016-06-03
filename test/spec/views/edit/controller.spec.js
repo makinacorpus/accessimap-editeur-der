@@ -43,8 +43,6 @@ describe('Controller: EditController', function () {
         expect(EditController.colors).toBeDefined();
         expect(EditController.featureIcon).toBeDefined();
         expect(EditController.formats).toBeDefined();
-        expect(EditController.backgroundColor).toBeDefined();
-        expect(EditController.backgroundStyle).toBeDefined();
         expect(EditController.backgroundStyleChoices).toBeDefined();
         expect(EditController.mapFormat).toBeDefined();
         expect(EditController.legendFormat).toBeDefined();
