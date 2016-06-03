@@ -316,7 +316,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service providing functions to display messages to the user.",
-      "keywords": "accessimapediteurderapp api display displayed displayerror displaymessage error functions message messages method providing raised service system throwned toasterservice user"
+      "keywords": "accessimapediteurderapp alias animations api breaking code current display displayed error functions future info library message messages method options passed providing raised remove service success system throwned toasterservice toastr user warning"
     },
     {
       "section": "api",
