@@ -10,7 +10,7 @@
      * @description
      * Service in the accessimapEditeurDerApp.
      */
-    function ExportService(InteractionService, LegendService, DrawingService, DefsService, MapService, $q) {
+    function ExportService(InteractionService, LegendService, DrawingService, DefsService, MapService, $q, $http) {
 
         this.exportData = exportData;
 
@@ -58,8 +58,11 @@
             function filterDOM(node) {
                 return (node.tagName !== 'svg')
             }
+
+
             
             // DefsService.createDefs(d3.select(node))
+            // TODO: union promises with a Promise.all to maintain a sequence programmation
             $(node).css('transform', translateReverseOverlayPx)
             domtoimage.toPng(node, {width: size.width, height: size.height, filter: filterDOM})
                 .then(function(dataUrl) { 
@@ -139,18 +142,28 @@
                             var imgBase64 = dataUrl.split('base64,')
                             zip.file('der.png', imgBase64[1], {base64: true});
 
-                            // Build the zip & send the file to the user
-                            zip.generateAsync({type: 'blob'})
-                                .then(function(content) {
-                                    saveAs(content, model.title + '.zip');
-                                    deferred.resolve(model.title + '.zip');
-                                })
-                                .catch(deferred.reject)
-                        })
-                        .catch(deferred.reject)
+                            // get the Braille Font & add it to the current zip
+                            $.ajax({
+                                url: "/assets/fonts/Braille_2007.ttf",
+                                type: "GET",
+                                dataType: 'binary',
+                                processData: false,
+                                success: function(result) {
+                                    zip.file('Braille_2007.ttf', result, {binary: true})
+                                    zip.generateAsync({type: 'blob'})
+                                        .then(function(content) {
+                                            saveAs(content, model.title + '.zip');
+                                            deferred.resolve(model.title + '.zip');
+                                        }).catch(deferred.reject)
+                                },
+                                error: function(error) {
+                                    deferred.reject('Braille font ' + error.statusText)
+                                }
+                            });             
 
-                })
-                .catch(deferred.reject)
+                        }).catch(deferred.reject)
+
+                }).catch(deferred.reject)
             
             return deferred.promise;
         }
@@ -159,5 +172,5 @@
 
     angular.module(moduleApp).service('ExportService', ExportService);
 
-    ExportService.$inject = ['InteractionService', 'LegendService', 'DrawingService', 'DefsService', 'MapService', '$q'];
+    ExportService.$inject = ['InteractionService', 'LegendService', 'DrawingService', 'DefsService', 'MapService', '$q', '$http'];
 })();

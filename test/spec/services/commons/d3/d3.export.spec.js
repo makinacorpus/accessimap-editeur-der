@@ -10,7 +10,9 @@ describe('Service: ExportService', function () {
         content,
         MapService,
         filename,
-        initDone = false;
+        initDone = false,
+        $httpBackend,
+        options = {};
 
     // load the service's module
 
@@ -38,6 +40,12 @@ describe('Service: ExportService', function () {
             }
         }
 
+        $.ajax = function(_options_) {
+            options = _options_;
+
+            if (options.success) options.success('fake');
+        }
+
         spyOn(JSZip.prototype, 'generateAsync').and.callFake(function(options) {
             var deferred = $q.defer();
             deferred.resolve('fakeBlob');
@@ -51,10 +59,11 @@ describe('Service: ExportService', function () {
 
     }));
 
-    beforeEach(inject(function (_ExportService_) {
+    beforeEach(inject(function ($injector) {
 
         content       = null;
         filename      = '';
+        $httpBackend = $injector.get('$httpBackend')
 
     }));
 
@@ -79,6 +88,16 @@ describe('Service: ExportService', function () {
             ExportService.exportData({title: 'test'})
                 .then(function(filename) {
                     expect(filename).toBe('test.zip');
+                    done()
+                })
+            if (! $rootScope.$$phase) $rootScope.$digest()
+        });
+    
+        it('should download font file', function(done) {
+            ExportService.exportData({title: 'test'})
+                .then(function(filename) {
+                    expect(options.url).toBe('/assets/fonts/Braille_2007.ttf');
+                    expect(options.dataType).toBe('binary');
                     done()
                 })
             if (! $rootScope.$$phase) $rootScope.$digest()
