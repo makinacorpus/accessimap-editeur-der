@@ -106,6 +106,8 @@
                     .append('path')
                     .classed('link_' + iid, true)
                     .attr('d', style.path(x,y,style.radius))
+                    .attr('data-x', x)
+                    .attr('data-y', y)
                     .attr('data-link', iid)
                     .attr('data-type', 'point');
             
@@ -453,8 +455,11 @@
             if (style) {
                 path.attr('e-style', style.id);
             } else {
+                var arrayStyles = settings.STYLES.point.concat(
+                                    settings.STYLES.polygon.concat(
+                                        settings.STYLES.lines))
                 // no style, we just find the current style of the feature
-                settings.STYLES.polygon.forEach(function (item, index, array) {
+                arrayStyles.forEach(function (item, index, array) {
                     if (item.id === currentStyleId) {
                         style = item;
                     }
@@ -473,6 +478,12 @@
                     }
                 })
                 
+            }
+
+            if (path.attr('data-type') === 'point') {
+                var x = parseInt(path.attr('data-x')),
+                    y = parseInt(path.attr('data-y'))
+                path.attr('d', style.path(x,y,style.radius))
             }
 
             applyStyle(path, style.style, color);
