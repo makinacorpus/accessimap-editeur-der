@@ -154,10 +154,10 @@
                     generateLegend(dataGeoJSON);
                 }
 
-                if (metadataInteractions && metadataInteractions.getAttribute('data-value') !== '') {
-                    var parser = new DOMParser();
-                    importInteraction(parser.parseFromString(metadataInteractions.getAttribute('data-value'), "text/xml"))
-                }
+                // if (metadataInteractions && metadataInteractions.getAttribute('data-value') !== '') {
+                //     var parser = new DOMParser();
+                //     importInteraction(parser.parseFromString(metadataInteractions.getAttribute('data-value'), "text/xml"))
+                // }
 
             } else {
                 // it's not a draw from the der, but we will append each element in the 'drawing section'

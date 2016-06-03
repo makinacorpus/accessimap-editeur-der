@@ -79,21 +79,21 @@
 
                     // create some metadata object 
                     var metadataGeoJSON = document.createElementNS("http://www.w3.org/2000/svg", "metadata"),
-                        metadataInteractions = document.createElementNS("http://www.w3.org/2000/svg", "metadata"),
+                        // metadataInteractions = document.createElementNS("http://www.w3.org/2000/svg", "metadata"),
                         metadataModel = document.createElementNS("http://www.w3.org/2000/svg", "metadata");
 
                     metadataGeoJSON.setAttribute('data-name', 'data-geojson')
                     metadataGeoJSON.setAttribute('data-value', JSON.stringify(DrawingService.layers.geojson.getFeatures()))
 
-                    metadataInteractions.setAttribute('data-name', 'data-interactions')
-                    metadataInteractions.setAttribute('data-value', interactionsContentXML)
+                    // metadataInteractions.setAttribute('data-name', 'data-interactions')
+                    // metadataInteractions.setAttribute('data-value', interactionsContentXML)
 
                     metadataModel.setAttribute('data-name', 'data-model')
                     metadataModel.setAttribute('data-value', JSON.stringify(model))
 
                     // Assembly of 'carte_avec_source.svg'
                     svgDrawing.appendChild(metadataGeoJSON);
-                    svgDrawing.appendChild(metadataInteractions);
+                    // svgDrawing.appendChild(metadataInteractions);
                     svgDrawing.appendChild(metadataModel);
                     
                     svgDrawing.appendChild(image);
