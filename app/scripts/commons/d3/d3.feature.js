@@ -10,7 +10,6 @@
 
     function FeatureService(InteractionService, geometryutils, generators) {
         
-        // this.getType              = getType;
         this.movePath             = movePath;
         this.movePoint            = movePoint;
         this.rotatePath           = rotatePath;
@@ -110,66 +109,6 @@
 
             }
         }
-
-        /**
-         * @ngdoc method
-         * @name  getType
-         * @methodOf accessimapEditeurDerApp.FeatureService
-         *
-         * @description 
-         * Return the type of a feature
-         * 
-         * @param  {Object} feature
-         * Feature to be analyzed
-         * 
-         * @return {string}
-         * Type in this set :
-         * - point
-         * - line
-         * - polygon
-         * - circle
-         * - text
-         * - null
-         */
-        /*function getType(feature) {
-            var nodeType = feature.node().nodeName;
-
-            switch (nodeType) {
-                case 'path':
-                    var parent = feature.node().parentNode;
-
-                    if (d3.select(parent).classed('vector')) {
-                        parent = parent.parentNode;
-                    }
-                    var name = $(parent).data('name');
-
-                    switch (name) {
-                        case 'points-layer':
-                            return 'point';
-                            break;
-
-                        case 'lines-layer':
-                            return 'line';
-                            break;
-                            
-                        default:
-                            return 'polygon';
-                    }
-                    break;
-
-                case 'circle':
-                    return 'circle';
-                    break;
-
-                case 'text':
-                    return 'text';
-                    break;
-
-                default:
-                    return null;
-            }
-        }
-        */
 
         function movePath(feature) {
             var el = feature.node(),
