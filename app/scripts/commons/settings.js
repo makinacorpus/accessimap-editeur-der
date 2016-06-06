@@ -1254,7 +1254,6 @@
                     action: FeatureService.rotatePath },
                 { icon: 'assets/icons/texture.svg', 
                     action: FeatureService.changePattern },
-                //{ icon: 'assets/icons/palette.svg', action: 'fill' },
                 { icon: 'assets/icons/radio_button_checked.svg', 
                     action: FeatureService.emptyNearFeature },
                 { icon: 'assets/icons/hearing.svg', 

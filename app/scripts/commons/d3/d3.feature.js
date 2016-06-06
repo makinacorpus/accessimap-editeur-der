@@ -411,6 +411,16 @@
             });
         };
 
+        /**
+         * @ngdoc method
+         * @name  toggleStroke
+         * @methodOf accessimapEditeurDerApp.FeatureService
+         * @description 
+         * Add or remove (toggle) the stroke (2px border) on a feature.
+         * 
+         * @param  {Object} feature 
+         * Feature (shape) on which will be added the 'white area'
+         */
         function toggleStroke(feature) {
             if (feature.attr('stroke')) {
                 feature.attr('stroke', null)
@@ -426,6 +436,16 @@
             feature.classed('styleEdition', true);
         };
 
+        /**
+         * @ngdoc method
+         * @name  emptyNearFeature
+         * @methodOf accessimapEditeurDerApp.FeatureService
+         * @description 
+         * Add an empty (white) area around the feature shape.
+         * 
+         * @param  {Object} feature 
+         * Feature (shape) on which will be added the 'white area'
+         */
         function emptyNearFeature(feature) {
 
             var emptyCircleExists = d3.select('.c' + feature.attr('data-link')).node();
