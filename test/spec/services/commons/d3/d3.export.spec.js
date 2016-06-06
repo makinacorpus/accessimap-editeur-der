@@ -8,7 +8,6 @@ describe('Service: ExportService', function () {
     var ExportService,
         $rootScope,
         content,
-        MapService,
         filename,
         initDone = false,
         $httpBackend,

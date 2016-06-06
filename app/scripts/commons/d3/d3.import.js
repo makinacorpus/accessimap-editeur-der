@@ -107,7 +107,7 @@
                 overlayLayer    = svgElement.querySelector('svg[data-name="overlay"]'),
                 
                 metadataGeoJSON      = svgElement.querySelector('metadata[data-name="data-geojson"]'),
-                metadataInteractions = svgElement.querySelector('metadata[data-name="data-interactions"]'),
+                // metadataInteractions = svgElement.querySelector('metadata[data-name="data-interactions"]'),
                 
                 format = svgElement.querySelector('svg').getAttribute('data-format'),
                 center = svgElement.querySelector('svg').getAttribute('data-center'),
@@ -182,7 +182,9 @@
 
             // we don't take the first filter, because it's the OSM Value by default in a DER
             for (var i = 1; i < filters.length; i++) {
-                InteractionService.addFilter(filters[i].name, filters[i].gesture, filters[i].protocol )
+                InteractionService.addFilter(filters[i].getAttribute('name'), 
+                                            filters[i].getAttribute('gesture'), 
+                                            filters[i].getAttribute('protocol') )
             }
 
             // insertion of interactions
