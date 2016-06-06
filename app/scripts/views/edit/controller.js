@@ -111,7 +111,7 @@
         $ctrl.isFeatureCreationVisible   = false;
         $ctrl.isFeatureManagementVisible = true;
         
-        $ctrl.isMapFreezed = false;
+        $ctrl.isDrawingFreezed = false;
 
         // states of right side : drawing (workspace) or legend ?
         $ctrl.isWorkspaceVisible  = true;
@@ -321,9 +321,13 @@
 
             $ctrl.enableDrawingMode('default');
             
-            $ctrl.isMapFreezed               = true;
+            // Display for the first time the drawing is freezed
+            if (! $ctrl.isDrawingFreezed)
+                ToasterService.info('Lorsque vous passez en mode dessin, la zone du dessin est automatiquement figée.', 'La zone du dessin est figée')
+
+            $ctrl.isDrawingFreezed               = true;
+
             EditService.freezeMap();
-            ToasterService.info('Lorsque vous passez en mode dessin, la zone du dessin est automatiquement figée.', 'La zone du dessin est figée')
         }
         $ctrl.displayLegendParameters = function() {
             $ctrl.isWorkspaceVisible             = false;
