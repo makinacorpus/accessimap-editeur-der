@@ -323,6 +323,7 @@
             
             $ctrl.isMapFreezed               = true;
             EditService.freezeMap();
+            ToasterService.info('Lorsque vous passez en mode dessin, la zone du dessin est automatiquement figée.', 'La zone du dessin est figée')
         }
         $ctrl.displayLegendParameters = function() {
             $ctrl.isWorkspaceVisible             = false;

@@ -30,6 +30,22 @@
             class="form-control" 
             ng-options="format as data.name for (format, data) in $ctrl.formats">
         </select>
+        <label>Etat de la zone de dessin</label>
+        <br>
+        <div class="btn-group">
+            <!-- Drawing -->
+            <button class="btn btn-default" 
+                    ng-class="{ 'active' : $ctrl.isMapFreezed }" 
+                    disabled>
+                Figée
+            </button>
+            <!-- Legend -->
+            <button class="btn btn-default" 
+                    ng-class="{ 'active' : ! $ctrl.isMapFreezed }"
+                    disabled>
+                Non figée
+            </button>
+        </div>
 <!--
         <ui-select 
             ng-model="$ctrl.mapFormat" 
