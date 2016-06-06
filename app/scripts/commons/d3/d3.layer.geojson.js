@@ -349,6 +349,7 @@
                 })
                 .attr('e-style', styleChosen.id)
                 .attr('e-color', colorChosen.color)
+                // TODO: useful for lines ?
                 // .attr('stroke-width', 2 / _projection.scale)
                 .attr('d', function(d) {
                     return _projection.pathFromGeojson(d);
@@ -370,18 +371,16 @@
                         return d.properties.tags.name;
                     }
                 })
+                // TODO: useful for lines ?
                 // .attr('stroke-width', 2 / _projection.scale)
                 .attr('cx', function(d) {
                     return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0])).x;
-                    // return _projection(d.geometry.coordinates[0], d.geometry.coordinates[1]).x;
                 })
                 .attr('cy', function(d) {
                     return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0])).y;
-                    // return _projection(d.geometry.coordinates[0], d.geometry.coordinates[1]).y;
                 })
                 .attr('d', function(d) {
                     var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0]));
-                    // var coords = _projection(d.geometry.coordinates[0], d.geometry.coordinates[1]);
 
                     return feature[0].style.path(coords.x, coords.y, feature[0].style.radius /* / _projection.scale */);
                 });

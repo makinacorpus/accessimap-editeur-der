@@ -233,32 +233,32 @@
             $ctrl.styleChoices = EditService.settings.STYLES[$ctrl.queryChosen.type];
             $ctrl.styleChosen  = $ctrl.styleChoices[0];
 
-            EditService.enableAddPOI(drawGeoJSON, ToasterService.displayError);
+            EditService.enableAddPOI(ToasterService.warning, ToasterService.error, getDrawingParameters );
         }
 
-        function drawGeoJSON(osmGeojson) {
+        // function drawGeoJSON(osmGeojson) {
             
-            if (! osmGeojson) {
-                ToasterService.error('Parameter osmGeojson undefined. Please provide it before calling this function.')
-            }
+        //     if (! osmGeojson) {
+        //         ToasterService.error('Parameter osmGeojson undefined. Please provide it before calling this function.')
+        //     }
             
-            if (osmGeojson.features && osmGeojson.features.length > 0) {
-                EditService.geojsonToSvg(osmGeojson, 
-                        null, 
-                        'node_' + osmGeojson.features[0].properties.id, 
-                        $ctrl.queryChosen === EditService.settings.QUERY_POI, 
-                        $ctrl.queryChosen, 
-                        $ctrl.styleChosen, 
-                        $ctrl.styleChoices, 
-                        $ctrl.colorChosen, 
-                        $ctrl.checkboxModel, 
-                        $ctrl.rotationAngle)
-            }
-            else {
-                // TODO: soft error, with a toaster or something to explain to the user we haven't find anything...
-                ToasterService.warning('Aucun POI trouvé à cet endroit... Merci de cliquer ailleurs !?')
-            }
-        }
+        //     if (osmGeojson.features && osmGeojson.features.length > 0) {
+        //         EditService.geojsonToSvg(osmGeojson, 
+        //                 null, 
+        //                 'node_' + osmGeojson.features[0].properties.id, 
+        //                 $ctrl.queryChosen === EditService.settings.QUERY_POI, 
+        //                 $ctrl.queryChosen, 
+        //                 $ctrl.styleChosen, 
+        //                 $ctrl.styleChoices, 
+        //                 $ctrl.colorChosen, 
+        //                 $ctrl.checkboxModel, 
+        //                 $ctrl.rotationAngle)
+        //     } else {
+        //         // TODO: soft error, with a toaster or something to explain to the user we haven't find anything...
+        //         ToasterService.warning('Aucun POI trouvé à cet endroit... Merci de cliquer ailleurs !?')
+        //     }
+        // }
+        
         $ctrl.displaySearchAddressForm = function() {
             $ctrl.isAddressVisible           = true;
             $ctrl.isPoiCreationVisible       = false;
@@ -272,7 +272,7 @@
             $ctrl.isFeatureManagementVisible = false;
         }
         $ctrl.insertOSMData = function()  {
-            EditService.insertOSMData($ctrl.queryChosen, drawGeoJSON, ToasterService.displayError)
+            EditService.insertOSMData($ctrl.queryChosen, ToasterService.warning, ToasterService.error, getDrawingParameters)
         }
         $ctrl.displayFeatureManagement = function() {
             $ctrl.isAddressVisible           = false;
@@ -374,6 +374,17 @@
             EditService.updateBackgroundStyleAndColor(style, null);
         }
         
+        function getDrawingParameters() {
+            return {
+                style: $ctrl.styleChosen,
+                color: $ctrl.colorChosen,
+                font: $ctrl.fontChosen,
+                fontColor: $ctrl.fontColorChosen,
+                contour: $ctrl.checkboxModel ? $ctrl.checkboxModel.contour : false,
+                mode: $ctrl.mode
+            }
+        }
+
         // switch of editor's mode
         // adapt user's interactions
         $ctrl.enableDrawingMode = function(mode) {
@@ -385,17 +396,6 @@
             function setStyles(styleSetting) {
                 $ctrl.styleChoices = EditService.settings.STYLES[styleSetting];
                 $ctrl.styleChosen  = $ctrl.styleChoices[0];
-            }
-
-            function getDrawingParameter() {
-                return {
-                    style: $ctrl.styleChosen,
-                    color: $ctrl.colorChosen,
-                    font: $ctrl.fontChosen,
-                    fontColor: $ctrl.fontColorChosen,
-                    contour: $ctrl.checkboxModel ? $ctrl.checkboxModel.contour : false,
-                    mode: $ctrl.mode
-                }
             }
 
             switch ($ctrl.mode) {
@@ -410,22 +410,22 @@
 
                 case 'point':
                     setStyles($ctrl.mode);
-                    EditService.enablePointMode(getDrawingParameter);
+                    EditService.enablePointMode(getDrawingParameters);
                     break;
 
                 case 'circle':
                     setStyles('polygon');
-                    EditService.enableCircleMode(getDrawingParameter);
+                    EditService.enableCircleMode(getDrawingParameters);
                     break;
 
                 case 'line':
                 case 'polygon':
                     setStyles($ctrl.mode);
-                    EditService.enableLineOrPolygonMode(getDrawingParameter);
+                    EditService.enableLineOrPolygonMode(getDrawingParameters);
                     break;
 
                 case 'addtext':
-                    EditService.enableTextMode(getDrawingParameter);
+                    EditService.enableTextMode(getDrawingParameters);
                     break;
             }
 
@@ -468,7 +468,7 @@
                     }
                 })
                 .catch(function(error) {
-                    ToasterService.displayError(error);
+                    ToasterService.error(error);
                 })
         };  
 

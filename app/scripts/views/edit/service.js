@@ -415,18 +415,43 @@
          * @param {function} _errorCallback 
          * Callback function called when an error occured, error is passed in first argument
          */
-        function enableAddPOI(_successCallback, _errorCallback) {
+        function enableAddPOI(_warningCallback, _errorCallback, _currentParametersFn) {
 
             initMode();
 
             MapService.addClickListener(function(e) {
+
+                var currentParameters = _currentParametersFn(),
+                styleChosen = settings.ALL_STYLES.find(function(element, index, array) {
+                    return element.id === currentParameters.style.id;
+                }),
+                colorChosen = settings.ALL_COLORS.find(function(element, index, array) {
+                    return element.id === currentParameters.color.id;
+                })
                 // TODO: prevent any future click 
                 // user has to wait before click again
                 MapService.changeCursor('progress');
                 
                 MapService
                     .retrieveData([e.latlng.lng,  e.latlng.lat], settings.QUERY_LIST[0])
-                    .then(_successCallback)
+                    .then(function successCallback(osmGeojson) {
+                        if (!osmGeojson) {
+                            _errorCallback('Erreur lors de la recherche de POI... Merci de recommencer.')
+                        }
+                        
+                        if (osmGeojson.features && osmGeojson.features.length > 0) {
+                            DrawingService.layers.geojson.geojsonToSvg(osmGeojson, 
+                                    null, 
+                                    'node_' + osmGeojson.features[0].properties.id, 
+                                    true, 
+                                    settings.QUERY_POI, 
+                                    styleChosen, 
+                                    settings.STYLES[settings.QUERY_POI.type], 
+                                    colorChosen, null, null)
+                        } else {
+                            _warningCallback('Aucun POI trouvé à cet endroit... Merci de cliquer ailleurs !?')
+                        }
+                    })
                     .catch(_errorCallback)
                     .finally(function finallyCallback() {
                         MapService.changeCursor('crosshair');
@@ -464,13 +489,45 @@
          * @param {function} _errorCallback 
          * Callback function called when an error occured, error is passed in first argument
          */
-        function insertOSMData(query, _successCallback, _errorCallback) {
+        function insertOSMData(query, _warningCallback, _errorCallback, _currentParametersFn) {
 
             MapService.changeCursor('progress');
+
+            console.log(query)
             
+            var currentParameters = _currentParametersFn(),
+            styleChosen = settings.ALL_STYLES.find(function(element, index, array) {
+                return element.id === currentParameters.style.id;
+            }),
+            colorChosen = settings.ALL_COLORS.find(function(element, index, array) {
+                return element.name === currentParameters.color.name;
+            }),
+            queryChosen = settings.QUERY_LIST.find(function(element, index, array) {
+                return element.id === query.id;
+            }),
+            checkboxModel = { contour: currentParameters.contour }
+
             MapService
                 .retrieveData(MapService.getBounds(), query)
-                .then(_successCallback)
+                .then(function successCallback(osmGeojson) {
+                    if (!osmGeojson) {
+                        _errorCallback('Erreur lors de la recherche de donnée OSM... Merci de recommencer.')
+                    }
+                    
+                    if (osmGeojson.features && osmGeojson.features.length > 0) {
+                        DrawingService.layers.geojson.geojsonToSvg(osmGeojson, 
+                                null, 
+                                'node_' + osmGeojson.features[0].properties.id, 
+                                false, 
+                                queryChosen, 
+                                styleChosen, 
+                                settings.STYLES[queryChosen.type], 
+                                colorChosen, checkboxModel, null)
+                    } else {
+                        _warningCallback('Aucune donnée trouvée... Merci de chercher autre chose !?')
+                    }
+
+                })
                 .catch(_errorCallback)
                 .finally(function finallyCallback() {
                     MapService.resetCursor();
