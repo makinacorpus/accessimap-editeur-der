@@ -235,29 +235,6 @@
 
             EditService.enableAddPOI(ToasterService.warning, ToasterService.error, getDrawingParameters );
         }
-
-        // function drawGeoJSON(osmGeojson) {
-            
-        //     if (! osmGeojson) {
-        //         ToasterService.error('Parameter osmGeojson undefined. Please provide it before calling this function.')
-        //     }
-            
-        //     if (osmGeojson.features && osmGeojson.features.length > 0) {
-        //         EditService.geojsonToSvg(osmGeojson, 
-        //                 null, 
-        //                 'node_' + osmGeojson.features[0].properties.id, 
-        //                 $ctrl.queryChosen === EditService.settings.QUERY_POI, 
-        //                 $ctrl.queryChosen, 
-        //                 $ctrl.styleChosen, 
-        //                 $ctrl.styleChoices, 
-        //                 $ctrl.colorChosen, 
-        //                 $ctrl.checkboxModel, 
-        //                 $ctrl.rotationAngle)
-        //     } else {
-        //         // TODO: soft error, with a toaster or something to explain to the user we haven't find anything...
-        //         ToasterService.warning('Aucun POI trouvé à cet endroit... Merci de cliquer ailleurs !?')
-        //     }
-        // }
         
         $ctrl.displaySearchAddressForm = function() {
             $ctrl.isAddressVisible           = true;
