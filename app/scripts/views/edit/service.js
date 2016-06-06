@@ -6,6 +6,11 @@
  * @requires accessimapEditeurDerApp.MapService
  * @requires accessimapEditeurDerApp.DrawingService
  * @requires accessimapEditeurDerApp.LegendService
+ * @requires accessimapEditeurDerApp.DefsService
+ * @requires accessimapEditeurDerApp.InteractionService
+ * @requires accessimapEditeurDerApp.ExportService
+ * @requires accessimapEditeurDerApp.UtilService
+ * @requires accessimapEditeurDerApp.ImportService
  * 
  * @description
  * Service used for the 'EditController', and the 'edit' view
@@ -18,7 +23,8 @@
 (function() {
     'use strict';
 
-    function EditService($q, settings, MapService, DrawingService, LegendService, DefsService, InteractionService, ExportService, UtilService, ImportService) {
+    function EditService($q, settings, MapService, DrawingService, LegendService, 
+        DefsService, InteractionService, ExportService, UtilService, ImportService) {
 
         this.init          = init;
         this.settings      = settings;
@@ -193,7 +199,6 @@
 
             MapService.addClickListener(function(e) {
                 var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    // p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
                     drawingParameters = getDrawingParameter();
                 DrawingService.toolbox.drawCircle(p.x, 
                                         p.y, 
@@ -204,7 +209,6 @@
 
             MapService.addMouseMoveListener(function(e) {
                 var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    // p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
                     drawingParameters = getDrawingParameter();
                 DrawingService.toolbox.updateCircleRadius(p.x, p.y);
             })
@@ -220,7 +224,6 @@
 
             MapService.addClickListener(function(e) {
                 var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    // p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
                     drawingParameters = getDrawingParameter();
                 DrawingService.toolbox.beginLineOrPolygon(p.x, 
                                                 p.y, 
@@ -235,7 +238,6 @@
 
             MapService.addMouseMoveListener(function(e) {
                 var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    // p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
                     drawingParameters = getDrawingParameter();
                 DrawingService.toolbox.drawHelpLineOrPolygon(p.x, 
                                                     p.y, 
@@ -248,7 +250,6 @@
 
             MapService.addDoubleClickListener(function(e) {
                 var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    // p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
                     drawingParameters = getDrawingParameter();
                 DrawingService.toolbox.finishLineOrPolygon(p.x, 
                                                     p.y, 
@@ -306,9 +307,6 @@
                                     ? settings.FORMATS[settings.DEFAULT_LEGEND_FORMAT]
                                     : settings.FORMATS[legendFormat];
 
-            // $('#workspace').width('1049')
-            // $('#workspace').height('742')
-            
             MapService.initMap('workspace', 
                             drawingFormat, 
                             settings.ratioPixelPoint,
@@ -493,8 +491,6 @@
 
             MapService.changeCursor('progress');
 
-            console.log(query)
-            
             var currentParameters = _currentParametersFn(),
             styleChosen = settings.ALL_STYLES.find(function(element, index, array) {
                 return element.id === currentParameters.style.id;
