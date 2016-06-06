@@ -112,9 +112,7 @@
 
                             if (this.transform.baseVal.length > 0) {
                                 var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0]));
-                                // var coords = _projection(d.geometry.coordinates);
 
-                                // result += 'rotate(' + geojson.rotation + ' ' + coords[0] + ' ' + coords[1] + ');';
                                 result += 'rotate(' + geojson.rotation + ')';//' ' + coords.x + ' ' + coords.y + ');';
                             }
 
@@ -332,6 +330,7 @@
                 }))
                 .enter().append('path')
                 .attr('data-type', type)
+                .attr('data-from', 'osm')
                 .attr('class', function(d) {
                     if (optionalClass) {
                         return feature[0].id + ' ' + optionalClass + ' link_' + d.properties.id;
@@ -365,6 +364,7 @@
                 }))
                 .enter().append('path')
                 .attr('data-type', type)
+                .attr('data-from', 'osm')
                 .attr('class', feature[0].id)
                 .attr('name', function(d) {
                     if (d.properties.tags) {
@@ -457,12 +457,16 @@
          * @param  {Object} id 
          * id of the feature
          */
-        function updateFeature(id, style) {
+        function updateFeature(id, style, color) {
 
             var result = _geojson.filter(function(obj) {
                     return obj.id === id;
                 }),
                 objectId = _geojson.indexOf(result[0]);
+
+            if(color) _geojson[objectId].color = color;
+
+            if(style) _geojson[objectId].style = style;
 
             if (_geojson[objectId].contour) {
                 d3.select('#' + id)
@@ -488,7 +492,7 @@
                     d3.select('#' + id)
                         .attr(k, v);
                 }
-            });
+            })
 
             if (style.styleInner) {
                 angular.forEach(style.styleInner, function(attribute) {
@@ -500,7 +504,7 @@
                     } else {
                         d3.select('.inner#' + id).attr(k, v);
                     }
-                });
+                })
             }
 
             if (style.path) {
@@ -531,7 +535,7 @@
                 } else {
                     symbol.attr(k, v);
                 }
-            });
+            })
 
             if (style.styleInner) {
                 var symbolInner = d3.select('.legend#' + id).select('.inner');
@@ -544,13 +548,13 @@
                     } else {
                         symbolInner.attr(k, v);
                     }
-                });
+                })
             }
 
             if (style.path) {
                 symbol.attr('d', function() {
                     return style.path(symbol.attr('cx'), symbol.attr('cy'), style.radius);
-                });
+                })
             }
         }
  
@@ -604,7 +608,7 @@
                     cy = d3.select(featurei).attr('cy');
                 d3.select(featurei).attr('transform', 'rotate(' + feature.rotation + ' ' + cx + ' ' + cy + ')');
             });
-        };
+        }
 
     }
 

@@ -24,9 +24,10 @@
         this.textEmptyNearFeature = textEmptyNearFeature;
         this.changeColor          = changeColor;
         this.changePattern        = changePattern;
+        this.changePoint          = changePoint;
         this.lineToCardinal       = lineToCardinal;
 
-        this.init                  = init;
+        this.init                 = init;
         
         // this var retain the last feature deleted
         // useful for cancel this deletion
@@ -527,6 +528,11 @@
             scope.colorChosen = color[0];
             */
             $('#changePatternModal').modal('show');
+            feature.classed('styleEdition', true);
+        };
+
+        function changePoint(feature) {
+            $('#changePointModal').modal('show');
             feature.classed('styleEdition', true);
         };
 

@@ -1253,7 +1253,7 @@
                 { icon: 'assets/icons/autorenew.svg', 
                     action: FeatureService.rotatePath },
                 { icon: 'assets/icons/texture.svg', 
-                    action: FeatureService.changePattern },
+                    action: FeatureService.changePoint },
                 { icon: 'assets/icons/radio_button_checked.svg', 
                     action: FeatureService.emptyNearFeature },
                 { icon: 'assets/icons/hearing.svg', 

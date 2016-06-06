@@ -53,6 +53,16 @@
 
         /**
          * @ngdoc property
+         * @name  pointChoices
+         * @propertyOf accessimapEditeurDerApp.controller:EditController
+         * 
+         * @description
+         * Options of styling for POI / points
+         */
+        $ctrl.pointChoices = EditService.settings.STYLES.point;
+
+        /**
+         * @ngdoc property
          * @name  styleChosen
          * @propertyOf accessimapEditeurDerApp.controller:EditController
          * @description
@@ -337,6 +347,8 @@
         $ctrl.removeFeature = EditService.removeFeature;
         $ctrl.updateFeature = EditService.updateFeature;
         $ctrl.rotateFeature = EditService.rotateFeature;
+        
+        $ctrl.updatePoint   = EditService.updatePoint;
 
         $ctrl.updateMarker  = EditService.updateMarker;
 

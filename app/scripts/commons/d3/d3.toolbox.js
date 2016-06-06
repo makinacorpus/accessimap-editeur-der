@@ -102,14 +102,16 @@
 
             var iid = UtilService.getiid(),
 
-                feature = d3.select(_svgDrawing).node().select('g[data-name="points-layer"]')
+                feature = d3.select(_svgDrawing).node()
+                    .select('g[data-name="points-layer"]')
                     .append('path')
-                    .classed('link_' + iid, true)
-                    .attr('d', style.path(x,y,style.radius))
-                    .attr('data-x', x)
-                    .attr('data-y', y)
-                    .attr('data-link', iid)
-                    .attr('data-type', 'point');
+                        .classed('link_' + iid, true)
+                        .attr('d', style.path(x,y,style.radius))
+                        .attr('data-x', x)
+                        .attr('data-y', y)
+                        .attr('data-link', iid)
+                        .attr('data-type', 'point')
+                        .attr('data-from', 'drawing');
             
             applyStyle(feature, style.style, color);
 
@@ -141,6 +143,7 @@
          * 
          */
         function drawCircle(x, y, style, color, contour) {
+
             var feature;
 
             if (d3.select('.edition')[0][0]) { // second click
@@ -162,6 +165,7 @@
                     .classed('link_' + iid, true)
                     .attr('data-link', iid)
                     .attr('data-type', 'circle')
+                    .attr('data-from', 'drawing')
                     .classed('edition', true);
 
                 applyStyle(feature, style.style, color);
@@ -335,6 +339,7 @@
                 .classed('edition', false)
                 .classed('link_' + iid, true)
                 .attr('data-type', mode)
+                .attr('data-from', 'drawing')
                 .attr('data-link', iid);
 
             d3.select('.ongoing').remove();
@@ -371,6 +376,7 @@
                 .classed('edition', true)
                 .classed('link_' + iid, true)
                 .attr('data-type', 'text')
+                .attr('data-from', 'drawing')
                 .attr('data-link', iid)
                 .text('');
 
@@ -455,11 +461,8 @@
             if (style) {
                 path.attr('e-style', style.id);
             } else {
-                var arrayStyles = settings.STYLES.point.concat(
-                                    settings.STYLES.polygon.concat(
-                                        settings.STYLES.lines))
                 // no style, we just find the current style of the feature
-                arrayStyles.forEach(function (item, index, array) {
+                settings.ALL_STYLES.forEach(function (item, index, array) {
                     if (item.id === currentStyleId) {
                         style = item;
                     }
@@ -470,9 +473,7 @@
                 path.attr('e-color', color.color);
             } else {
                 // no color, we just find the current color of the feature
-                var arrayColors = settings.COLORS.black.concat(settings.COLORS.transparent.concat(settings.COLORS.other));
-
-                arrayColors.forEach(function (item, index, array) {
+                settings.ALL_COLORS.forEach(function (item, index, array) {
                     if (item.color === currentColorName) {
                         color = item;
                     }

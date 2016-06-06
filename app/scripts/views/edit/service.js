@@ -61,6 +61,7 @@
         this.updateBackgroundStyleAndColor = DrawingService.toolbox.updateBackgroundStyleAndColor;
         this.updateFeatureStyleAndColor    = DrawingService.toolbox.updateFeatureStyleAndColor;
         this.updateMarker                  = DrawingService.toolbox.updateMarker;
+        this.updatePoint                   = updatePoint;
         this.addRadialMenus                = DrawingService.toolbox.addRadialMenus;
         this.isUndoAvailable               = DrawingService.isUndoAvailable;
         this.undo                          = DrawingService.undo;
@@ -397,6 +398,46 @@
             LegendService.draw(settings.FORMATS[format].width / settings.ratioPixelPoint, 
                                                 settings.FORMATS[format].height / settings.ratioPixelPoint);
         }
+
+
+        /**
+         * @ngdoc method
+         * @name  updateFeatureStyleAndColor
+         * @methodOf accessimapEditeurDerApp.EditService
+         *
+         * @description 
+         * Update the style (pattern) & color of a feature.
+         * Could be a geojson feature or a drawing feature.
+         * 
+         * @param {Object} style 
+         * settings.STYLES object
+         * 
+         * @param {Object} color 
+         * settings.COLORS object
+         */
+        function updatePoint(style) {
+
+            var currentSelection = d3.select('.styleEdition'),
+                featureId = currentSelection.attr('id'),
+                featureFrom = currentSelection.attr('data-from');
+
+            if (featureFrom === 'drawing') {
+                DrawingService.toolbox.updateFeatureStyleAndColor(style, null);
+            } else if (featureFrom === 'osm') {
+                // find the id of the current feature
+                var idFound = null,
+                    currentParent = currentSelection.node().parentNode;
+                
+                console.log(currentParent.getAttribute('id'))
+                
+                while (! currentParent.getAttribute('id')) {
+                    currentParent = currentParent.parentNode;
+                }
+
+                DrawingService.layers.geojson.updateFeature(currentParent.getAttribute('id'), style)
+            }
+            currentSelection.classed('styleEdition', false)
+        }    
 
         /**
          * @ngdoc method
