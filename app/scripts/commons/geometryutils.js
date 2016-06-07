@@ -11,6 +11,11 @@
      */
     function geometryutils() {
 
+        this.distance = distance ;
+        this.nearest = nearest ;
+        this.realCoordinates = realCoordinates ;
+        this.angle = angle ;
+
         /**
          * @ngdoc method
          * @name  distance
@@ -21,7 +26,7 @@
          * @param  {Point} point2 Coordinates [x,y]
          * @return {float}        Distance between the points
          */
-        this.distance = function(point1, point2) {
+        function distance(point1, point2) {
             var distance = Math.sqrt(Math.pow((point1[0] - point2[0]), 2) 
                                     + Math.pow((point1[1] - point2[1]), 2));
 
@@ -45,7 +50,7 @@
          * @return {Point}
          * Coordinates [x,y] of the nearest point
          */
-        this.nearest = function(targetPoint, points) {
+        function nearest(targetPoint, points) {
             var nearestPoint,
                 _this = this;
             
@@ -74,7 +79,7 @@
          * @param  {[type]} coordinates [description]
          * @return {[type]}             [description]
          */
-        this.realCoordinates = function(transform, coordinates) {
+        function realCoordinates(transform, coordinates) {
             
             // var transform = d3.transform(d3.select('#map-layer')
             //                                 .attr('transform')),
@@ -98,7 +103,7 @@
          * @param  {integer} ey Y coordinate of the second point
          * @return {integer}    angle, in degrees, between the two points
          */
-        this.angle = function(cx, cy, ex, ey) {
+        function angle(cx, cy, ex, ey) {
             var dy = ey - cy,
                 dx = ex - cx,
                 theta = Math.atan2(dy, dx);
