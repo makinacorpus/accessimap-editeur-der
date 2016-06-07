@@ -40,10 +40,10 @@
 
         function init(_svgDrawing) {
             svgDrawing = _svgDrawing;
-            pointsLayer   = d3.select(svgDrawing).node().select('g[data-name="points-layer"]');
-            polygonsLayer = d3.select(svgDrawing).node().select('g[data-name="polygons-layer"]');
-            linesLayer    = d3.select(svgDrawing).node().select('g[data-name="lines-layer"]');
-            textLayer     = d3.select(svgDrawing).node().select('g[data-name="text-layer"]');
+            pointsLayer   = svgDrawing.select('g[data-name="points-layer"]');
+            polygonsLayer = svgDrawing.select('g[data-name="polygons-layer"]');
+            linesLayer    = svgDrawing.select('g[data-name="lines-layer"]');
+            textLayer     = svgDrawing.select('g[data-name="text-layer"]');
         }
 
         function isUndoAvailable() {
@@ -120,7 +120,7 @@
                 .attr('opacity', 0.5);
             pointsLayer.node().appendChild(temporaryPath);
 
-            d3.select(svgDrawing)
+            svgDrawing
                 .on('click', function() {
                     
                     d3.event.preventDefault();
@@ -128,14 +128,13 @@
 
                     if (d3.select(temporaryPath).classed('moved')) {
                         var coordinates = d3.mouse(this),
-                            transform = d3.transform(d3.select(svgDrawing)
+                            transform = d3.transform(svgDrawing
                                             .attr('transform')),
                             realCoordinates = 
                                 geometryutils.realCoordinates(transform, coordinates),
                             transX = realCoordinates[0] - bbox.x,
                             transY = realCoordinates[1] - bbox.y,
-                            emptyCircle = 
-                                d3.select('.c' + feature.attr('data-link')),
+                            emptyCircle = d3.select('.c' + feature.attr('data-link')),
                             emptyCircleExists = emptyCircle.node(),
 
                             transformString = '',
@@ -158,15 +157,15 @@
                             emptyCircle.attr('transform', transformString);
                         }
 
-                        d3.select(svgDrawing).on('click', null);
-                        d3.select(svgDrawing).on('mousemove', null);
+                        svgDrawing.on('click', null);
+                        svgDrawing.on('mousemove', null);
 
                         d3.select(temporaryPath).remove();
                     }
                 })
                 .on('mousemove', function() {
                     var coordinates = d3.mouse(this),
-                            transform = d3.transform(d3.select(svgDrawing)
+                            transform = d3.transform(svgDrawing
                                             .attr('transform')),
                         realCoordinates = 
                             geometryutils.realCoordinates(transform, coordinates),
@@ -380,6 +379,7 @@
          * @ngdoc method
          * @name  emptyNearFeature
          * @methodOf accessimapEditeurDerApp.FeatureService
+         * 
          * @description 
          * Add an empty (white) area around the feature shape.
          * 
@@ -406,6 +406,7 @@
                     .attr('iid', null)
                     .attr('fill', 'none')
                     .attr('stroke', 'white')
+                    .attr('style', '')
                     .attr('stroke-width', '20');
                 el.parentNode.insertBefore(emptyArea, el);
             }

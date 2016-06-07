@@ -218,12 +218,14 @@
                 if (mode === 'line') {
                     pathInner = d3.select('.edition.inner');
                 }
+
             } else {
                 // first click
                 // lineEdit = [];
                 path = drawingLayer
                         .append('path')
                         .attr({'class': 'edition'});
+
                 applyStyle(path, style.style, color);
 
                 if (contour && !path.attr('stroke')) {
@@ -238,7 +240,7 @@
                     applyStyle(pathInner, style.styleInner, color);
                 }
             }
-
+            
             if (lastPoint) {
                 var tanAngle = Math.abs((y - lastPoint.y) / (x - lastPoint.x)),
                     tan5     = Math.tan((5 * 2 * Math.PI) / 360),
