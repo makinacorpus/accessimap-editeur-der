@@ -7,12 +7,18 @@ describe('Service: geometryutils', function () {
 
     // instantiate service
     var geometryutils;
-    beforeEach(inject(function (_geometryutils_) {
-        geometryutils = _geometryutils_;
+    beforeEach(inject(function ($injector) {
+        geometryutils = $injector.get('geometryutils');
     }));
 
     it('should do something', function () {
-        expect(!!geometryutils).toBe(true);
+        expect(geometryutils).toBeDefined();
+        expect(geometryutils.distance).toBeDefined();
+        expect(geometryutils.nearest).toBeDefined();
+        expect(geometryutils.realCoordinates).toBeDefined();
+        expect(geometryutils.angle).toBeDefined();
+        expect(geometryutils.extendPath).toBeDefined();
+        expect(geometryutils.getPathDirection).toBeDefined();
     });
 
     describe('the distance function', function() {
@@ -75,6 +81,57 @@ describe('Service: geometryutils', function () {
 
         it('should return an error if no points are in parameter', function() {
             expect(geometryutils.angle()).toEqual(Number.NaN);
+        });
+
+    });
+
+    describe('the getPathDirection function', function() {
+
+        it('should return the right direction between two points', function() {
+            expect(geometryutils.getPathDirection([10,0], [0,10])).toEqual(1);
+            expect(geometryutils.getPathDirection([10,10], [0,0])).toEqual(2);
+            expect(geometryutils.getPathDirection([0,10], [10,0])).toEqual(3);
+            expect(geometryutils.getPathDirection([0,0], [10,10])).toEqual(4);
+        });
+
+    });
+
+    describe('the extendPath function', function() {
+
+        it('should return a correct extended for a "top right to bottom left" path', function() {
+            var extendedPath = geometryutils.extendPath([10,10], [0,0], 2);
+
+            expect(extendedPath[0][0]).toBeCloseTo(10 + Math.sqrt(2));
+            expect(extendedPath[0][1]).toBeCloseTo(10 + Math.sqrt(2));
+            expect(extendedPath[1][0]).toBeCloseTo(0 - Math.sqrt(2));
+            expect(extendedPath[1][1]).toBeCloseTo(0 - Math.sqrt(2));
+        });
+
+        it('should return a correct extended for a "bottom right to top left" path', function() {
+            var extendedPath = geometryutils.extendPath([10,0], [0,10], 2);
+
+            expect(extendedPath[0][0]).toBeCloseTo(10 + Math.sqrt(2));
+            expect(extendedPath[0][1]).toBeCloseTo(0 - Math.sqrt(2));
+            expect(extendedPath[1][0]).toBeCloseTo(0 - Math.sqrt(2));
+            expect(extendedPath[1][1]).toBeCloseTo(10 + Math.sqrt(2));
+        });
+
+        it('should return a correct extended for a "bottom left to top right" path', function() {
+            var extendedPath = geometryutils.extendPath([0,0], [10,10], 2);
+
+            expect(extendedPath[0][0]).toBeCloseTo(0 - Math.sqrt(2));
+            expect(extendedPath[0][1]).toBeCloseTo(0 - Math.sqrt(2));
+            expect(extendedPath[1][0]).toBeCloseTo(10 + Math.sqrt(2));
+            expect(extendedPath[1][1]).toBeCloseTo(10 + Math.sqrt(2));
+        });
+
+        it('should return a correct extended for a "top left to bottom right" path', function() {
+            var extendedPath = geometryutils.extendPath([0,10], [10,0], 2);
+
+            expect(extendedPath[0][0]).toBeCloseTo(0 - Math.sqrt(2));
+            expect(extendedPath[0][1]).toBeCloseTo(10 + Math.sqrt(2));
+            expect(extendedPath[1][0]).toBeCloseTo(10 + Math.sqrt(2));
+            expect(extendedPath[1][1]).toBeCloseTo(0 - Math.sqrt(2));
         });
 
     });

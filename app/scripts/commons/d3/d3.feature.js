@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    function FeatureService(InteractionService, geometryutils, generators) {
+    function FeatureService(InteractionService, EmptyConfortService, geometryutils, generators) {
         
         this.movePath             = movePath;
         this.movePoint            = movePoint;
@@ -19,8 +19,8 @@
         
         this.toggleStroke         = toggleStroke;
         this.toggleArrow          = toggleArrow;
-        this.emptyNearFeature     = emptyNearFeature;
-        this.textEmptyNearFeature = textEmptyNearFeature;
+        this.toggleEmptyComfortNearFeature     = toggleEmptyComfortNearFeature;
+        // this.textEmptyNearFeature = textEmptyNearFeature;
         this.changeColor          = changeColor;
         this.changePattern        = changePattern;
         this.changePoint          = changePoint;
@@ -377,7 +377,7 @@
 
         /**
          * @ngdoc method
-         * @name  emptyNearFeature
+         * @name  toggleEmptyComfortNearFeature
          * @methodOf accessimapEditeurDerApp.FeatureService
          * 
          * @description 
@@ -386,56 +386,18 @@
          * @param  {Object} feature 
          * Feature (shape) on which will be added the 'white area'
          */
-        function emptyNearFeature(feature) {
+        function toggleEmptyComfortNearFeature(feature) {
 
             var emptyCircleExists = d3.select('.c' + feature.attr('data-link')).node();
 
             if (emptyCircleExists) {
                 emptyCircleExists.remove();
             } else {
-                var el = feature.node(),
-                    bbox = el.getBBox(),
-                    transformString = null || feature.attr('transform'),
-                    emptyArea = el.cloneNode(true),
-                    bbox = el.getBBox();
+                var emptyArea = EmptyConfortService.calcEmptyComfort(feature);
 
-                d3.select(emptyArea)
-                    .classed('c' + feature.attr('data-link'), true)
-                    .classed('notDeletable', true)
-                    .attr('transform', transformString)
-                    .attr('iid', null)
-                    .attr('fill', 'none')
-                    .attr('stroke', 'white')
-                    .attr('style', '')
-                    .attr('stroke-width', '20');
-                el.parentNode.insertBefore(emptyArea, el);
+                feature.node().parentNode.insertBefore(emptyArea, feature.node());
             }
-        };
-
-        function textEmptyNearFeature(feature) {
-
-            var emptyCircleExists = d3.select('.c' + feature.attr('data-link')).node();
-
-            if (emptyCircleExists) {
-                emptyCircleExists.remove();
-            } else {
-                var el = feature.node(),
-                    bbox = el.getBBox(),
-                    radius = Math.max(bbox.height, bbox.width) / 2 + 14,
-                    rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-                    
-                d3.select(rect)
-                    .classed('c' + feature.attr('data-link'), true)
-                    .classed('link_' + feature.attr('data-link'), true)
-                    .classed('notDeletable', true)
-                    .attr('x', bbox.x - 7)
-                    .attr('y', bbox.y - 7)
-                    .attr('width', bbox.width + 14)
-                    .attr('height', bbox.height + 14)
-                    .attr('fill', 'white');
-                el.parentNode.insertBefore(rect, el);
-            }
-        };
+        }
 
         function changeColor(feature) {
             // TODO: init correctly value of modal dialog
@@ -545,9 +507,8 @@
 
     }
 
-    angular.module(moduleApp)
-        .service('FeatureService', FeatureService);
+    angular.module(moduleApp).service('FeatureService', FeatureService);
 
-    FeatureService.$inject = ['InteractionService', 'geometryutils', 'generators']
+    FeatureService.$inject = ['InteractionService', 'EmptyConfortService', 'geometryutils', 'generators']
 
 })();

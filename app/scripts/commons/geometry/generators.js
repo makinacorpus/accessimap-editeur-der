@@ -2,8 +2,8 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.generators
+ * 
  * @description
- * # generators
  * Service in the accessimapEditeurDerApp.
  */
 (function() {

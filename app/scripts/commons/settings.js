@@ -1255,7 +1255,7 @@
                 { icon: 'assets/icons/texture.svg', 
                     action: FeatureService.changePoint },
                 { icon: 'assets/icons/radio_button_checked.svg', 
-                    action: FeatureService.emptyNearFeature },
+                    action: FeatureService.toggleEmptyComfortNearFeature },
                 { icon: 'assets/icons/hearing.svg', 
                     action: InteractionService.addInteraction }
             ],
@@ -1267,7 +1267,7 @@
                 { icon: 'assets/icons/trending_flat.svg', 
                     action: FeatureService.toggleArrow },
                 { icon: 'assets/icons/radio_button_checked.svg', 
-                    action: FeatureService.emptyNearFeature },
+                    action: FeatureService.toggleEmptyComfortNearFeature },
                 { icon: 'assets/icons/rounded_corner.svg', 
                     action: FeatureService.lineToCardinal }
             ],
@@ -1281,7 +1281,7 @@
                 { icon: 'assets/icons/palette.svg', 
                     action: FeatureService.changeColor },
                 { icon: 'assets/icons/radio_button_checked.svg', 
-                    action: FeatureService.emptyNearFeature },
+                    action: FeatureService.toggleEmptyComfortNearFeature },
                 { icon: 'assets/icons/crop_din.svg', 
                     action: FeatureService.toggleStroke }
             ],
@@ -1293,7 +1293,7 @@
                 { icon: 'assets/icons/palette.svg', 
                     action: FeatureService.changeColor },
                 { icon: 'assets/icons/radio_button_checked.svg', 
-                    action: FeatureService.emptyNearFeature },
+                    action: FeatureService.toggleEmptyComfortNearFeature },
                 { icon: 'assets/icons/crop_din.svg', 
                     action: FeatureService.toggleStroke }
             ],
@@ -1301,7 +1301,7 @@
                 { icon: 'assets/icons/delete.svg', 
                     action: FeatureService.removeObject },
                 { icon: 'assets/icons/radio_button_checked.svg', 
-                    action: FeatureService.textEmptyNearFeature }
+                    action: FeatureService.toggleEmptyComfortNearFeature }
             ],
             'default': [
                 { icon: 'assets/icons/delete.svg', 
