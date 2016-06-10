@@ -10,23 +10,22 @@
 
     function FeatureService(InteractionService, EmptyConfortService, geometryutils, generators) {
         
-        this.movePath             = movePath;
-        this.movePoint            = movePoint;
-        this.rotatePath           = rotatePath;
-        this.removeObject         = removeObject;
-        this.undo                 = undo;
-        this.isUndoAvailable      = isUndoAvailable;
+        this.movePath                      = movePath;
+        this.movePoint                     = movePoint;
+        this.rotatePath                    = rotatePath;
+        this.removeObject                  = removeObject;
+        this.undo                          = undo;
+        this.isUndoAvailable               = isUndoAvailable;
         
-        this.toggleStroke         = toggleStroke;
-        this.toggleArrow          = toggleArrow;
-        this.toggleEmptyComfortNearFeature     = toggleEmptyComfortNearFeature;
-        // this.textEmptyNearFeature = textEmptyNearFeature;
-        this.changeColor          = changeColor;
-        this.changePattern        = changePattern;
-        this.changePoint          = changePoint;
-        this.lineToCardinal       = lineToCardinal;
-
-        this.init                 = init;
+        this.toggleStroke                  = toggleStroke;
+        this.toggleArrow                   = toggleArrow;
+        this.toggleEmptyComfortNearFeature = toggleEmptyComfortNearFeature;
+        this.changeColor                   = changeColor;
+        this.changePattern                 = changePattern;
+        this.changePoint                   = changePoint;
+        this.lineToCardinal                = lineToCardinal;
+        
+        this.init                          = init;
         
         // this var retain the last feature deleted
         // useful for cancel this deletion
@@ -36,14 +35,20 @@
             polygonsLayer,
             linesLayer,
             textLayer,
+            layer,
+            projection,
+            handlers,
             svgDrawing;
 
-        function init(_svgDrawing) {
-            svgDrawing = _svgDrawing;
-            pointsLayer   = svgDrawing.select('g[data-name="points-layer"]');
-            polygonsLayer = svgDrawing.select('g[data-name="polygons-layer"]');
-            linesLayer    = svgDrawing.select('g[data-name="lines-layer"]');
-            textLayer     = svgDrawing.select('g[data-name="text-layer"]');
+        function init(_layer, _projection, _handlers) {
+            layer         = _layer;
+            projection    = _projection;
+            handlers      = _handlers;
+            
+            pointsLayer   = layer.select('g[data-name="points-layer"]');
+            polygonsLayer = layer.select('g[data-name="polygons-layer"]');
+            linesLayer    = layer.select('g[data-name="lines-layer"]');
+            textLayer     = layer.select('g[data-name="text-layer"]');
         }
 
         function isUndoAvailable() {
@@ -74,7 +79,6 @@
                 t = document.createElement('foreignObject');
 
             removedFeature = new XMLSerializer().serializeToString(el),
-            // scope.updateView();
 
             d3.select(t).attr('id', 'deletedElement');
             el.parentNode.insertBefore(t, el);
@@ -91,14 +95,7 @@
                 d3.select('#deletedElement').remove();
 
                 if (InteractionService.isFeatureInteractive(feature)) {
-                    // var iid = d3.select(feature).node().attr('data-link'),
-                    //     featurePosition = scope.interactiveFilters.data.filter(function(row) {
-                    //         return row.id === 'poi-' + iid;
-                    //     }),
-                    //     featureInFilters = scope.interactiveFilters.data.indexOf(featurePosition[0]);
                     if (window.confirm('Ce point est interactif. Voules-vous vraiment le supprimer ?')) {
-                        // InteractionService.removeFeature(feature);
-                        // scope.removeRow(scope.interactiveFilters.data[featureInFilters]);
                         return removeFeature(feature);
                     } else {
                         return false;
@@ -111,83 +108,87 @@
         }
 
         function movePath(feature) {
-            var el = feature.node(),
-                temporaryPath = el.cloneNode(true),
-                bbox = el.getBBox();
+            
+            var el            = feature.node(),
+            temporaryPath     = el.cloneNode(true),
+
+            emptyCircle       = d3.select('.c' + feature.attr('data-link')),
+            emptyCircleExists = emptyCircle.node(),
+            temporaryCircle   = emptyCircleExists ? emptyCircleExists.cloneNode(true) : null,
+
+            transform         = d3.transform(layer.attr('transform')),
+            hasRotate         = /rotate\((.*?)(?: |,)(.*?)(?: |,)(.*?)\)/.exec(feature.attr('transform')),
+            bbox              = el.getBBox();
 
             d3.select(temporaryPath)
                 .attr('id', 'temporaryPath')
                 .attr('opacity', 0.5);
+
+            d3.select(temporaryCircle)
+                .attr('id', 'temporaryPath')
+                .attr('opacity', 0.5);
+
             pointsLayer.node().appendChild(temporaryPath);
 
-            svgDrawing
-                .on('click', function() {
-                    
-                    d3.event.preventDefault();
-                    d3.event.stopPropagation();
+            if (temporaryCircle) pointsLayer.node().appendChild(temporaryCircle);
 
-                    if (d3.select(temporaryPath).classed('moved')) {
-                        var coordinates = d3.mouse(this),
-                            transform = d3.transform(svgDrawing
-                                            .attr('transform')),
-                            realCoordinates = 
-                                geometryutils.realCoordinates(transform, coordinates),
-                            transX = realCoordinates[0] - bbox.x,
-                            transY = realCoordinates[1] - bbox.y,
-                            emptyCircle = d3.select('.c' + feature.attr('data-link')),
-                            emptyCircleExists = emptyCircle.node(),
+            handlers.removeEventListeners();
 
-                            transformString = '',
-                            hasRotate = 
-                                /rotate\((.*?)(?: |,)(.*?)(?: |,)(.*?)\)/
-                                .exec(feature.attr('transform'));
+            handlers.addClickListener(function(e) {
 
-                        if (hasRotate) {
-                            transformString += 
-                                'rotate(' + [hasRotate[1], 
-                                    (parseFloat(hasRotate[2]) + transX), 
-                                    (parseFloat(hasRotate[3]) + transY)] + ')';
-                        }
-                        transformString += 
-                            'translate(' + [transX, transY] + ')';
+                if (d3.select(temporaryPath).classed('moved')) {
 
-                        feature.attr('transform', transformString);
-
-                        if (emptyCircleExists) {
-                            emptyCircle.attr('transform', transformString);
-                        }
-
-                        svgDrawing.on('click', null);
-                        svgDrawing.on('mousemove', null);
-
-                        d3.select(temporaryPath).remove();
-                    }
-                })
-                .on('mousemove', function() {
-                    var coordinates = d3.mouse(this),
-                            transform = d3.transform(svgDrawing
-                                            .attr('transform')),
-                        realCoordinates = 
-                            geometryutils.realCoordinates(transform, coordinates),
-                        transX = realCoordinates[0] - bbox.x,
-                        transY = realCoordinates[1] - bbox.y,
-                        transformString = '',
-                        hasRotate = /rotate\((.*?)(?: |,)(.*?)(?: |,)(.*?)\)/
-                            .exec(feature.attr('transform'));
+                    var p = projection.latLngToLayerPoint(e.latlng),
+                    realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y]),
+                    transX = realCoordinates[0] - bbox.x - ( bbox.width / 2 ),
+                    transY = realCoordinates[1] - bbox.y - ( bbox.height / 2 ),
+                    transformString = '';
 
                     if (hasRotate) {
-                        transformString += 'rotate(' 
-                            + [hasRotate[1], 
-                            (parseFloat(hasRotate[2]) + transX), 
-                            (parseFloat(hasRotate[3]) + transY)] + ')';
+                        transformString += 'rotate(' + [hasRotate[1], 
+                                (parseFloat(hasRotate[2]) + transX), 
+                                (parseFloat(hasRotate[3]) + transY)] + ')';
                     }
                     transformString += 'translate(' + [transX, transY] + ')';
 
-                    d3.select(temporaryPath)
-                        .classed('moved', true)
-                        .attr('transform', transformString);
-                });
-        };
+                    feature.attr('transform', transformString);
+
+                    if (emptyCircleExists) emptyCircle.attr('transform', transformString);
+
+                    d3.select(temporaryPath).remove();
+                    d3.select(temporaryCircle).remove();
+
+                    handlers.removeEventListeners();
+
+                }
+            })
+
+            handlers.addMouseMoveListener(function(e) {
+
+                var p = projection.latLngToLayerPoint(e.latlng),
+                    realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y]),
+                    transX = realCoordinates[0] - bbox.x - ( bbox.width / 2 ),
+                    transY = realCoordinates[1] - bbox.y - ( bbox.height / 2 ),
+                    transformString = '';
+
+                if (hasRotate) {
+                    transformString += 'rotate(' + [hasRotate[1], 
+                        (parseFloat(hasRotate[2]) + transX), 
+                        (parseFloat(hasRotate[3]) + transY)] + ')';
+                }
+                transformString += 'translate(' + [transX, transY] + ')';
+
+                d3.select(temporaryPath)
+                    .classed('moved', true)
+                    .attr('transform', transformString);
+
+                d3.select(temporaryCircle)
+                    .classed('moved', true)
+                    .attr('transform', transformString);
+
+            })
+
+        }
 
         function movePoint(feature) {
             var el = feature.node(),
@@ -232,12 +233,11 @@
             drag.on('drag', function() {
                 d3.event.sourceEvent.stopPropagation();
                 var mousePosition = d3.mouse(this);
-                d3.select(this)
-                    .attr('cx', mousePosition[0])
-                    .attr('cy', mousePosition[1]);
+                d3.select(this).attr('cx', mousePosition[0])
+                                .attr('cy', mousePosition[1]);
 
-                var vertexNumber = 
-                    parseInt(d3.select(this).attr('id').replace('n', ''));
+                var vertexNumber = parseInt(d3.select(this).attr('id').replace('n', ''));
+
                 featuresToUpdate.each(function(d, i) {
                     var pathDataToUpdate = this.getPathData();
                     pathDataToUpdate[vertexNumber].values[0] = mousePosition[0];
@@ -245,7 +245,7 @@
                     this.setPathData(pathDataToUpdate);
                 });
             });
-        };
+        }
 
         function rotatePath(feature) {
             var el = feature.node(),
@@ -348,7 +348,7 @@
                 pointsLayer.on('mousedown.drag', null);
                 $('#der').css('cursor', 'auto');
             });
-        };
+        }
 
         /**
          * @ngdoc method
@@ -368,12 +368,12 @@
                 feature.attr('stroke', 'black')
                     .attr('stroke-width', '2');
             }
-        };
+        }
 
         function toggleArrow(feature) {
             $('#changeArrowsModal').modal('show');
             feature.classed('styleEdition', true);
-        };
+        }
 
         /**
          * @ngdoc method
@@ -414,7 +414,7 @@
             */
             $('#changeColorModal').modal('show');
             feature.classed('styleEdition', true);
-        };
+        }
 
         function changePattern(feature) {
             // TODO: init correctly value of modal dialog
@@ -431,12 +431,12 @@
             */
             $('#changePatternModal').modal('show');
             feature.classed('styleEdition', true);
-        };
+        }
 
         function changePoint(feature) {
             $('#changePointModal').modal('show');
             feature.classed('styleEdition', true);
-        };
+        }
 
         /**
          * @ngdoc method
@@ -503,7 +503,7 @@
                 });
                 featuresToUpdate.attr('d', generators.lineFunction(coords));
             }
-        };
+        }
 
     }
 

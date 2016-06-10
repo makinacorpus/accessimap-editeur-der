@@ -24,7 +24,7 @@
     'use strict';
 
     function EditService($q, settings, MapService, DrawingService, LegendService, 
-        DefsService, InteractionService, ExportService, UtilService, ImportService) {
+        DefsService, InteractionService, ExportService, UtilService, ImportService, FeatureService) {
 
         this.init          = init;
         this.settings      = settings;
@@ -63,8 +63,8 @@
         this.updateMarker                  = DrawingService.toolbox.updateMarker;
         this.updatePoint                   = updatePoint;
         this.addRadialMenus                = DrawingService.toolbox.addRadialMenus;
-        this.isUndoAvailable               = DrawingService.isUndoAvailable;
-        this.undo                          = DrawingService.undo;
+        this.isUndoAvailable               = FeatureService.isUndoAvailable;
+        this.undo                          = FeatureService.undo;
         this.enablePointMode               = enablePointMode;
         this.drawPoint                     = DrawingService.toolbox.drawPoint;
         this.enableCircleMode              = enableCircleMode;
@@ -269,7 +269,6 @@
 
             MapService.addClickListener(function(e) {
                 var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    // p = MapService.projectPoint(e.latlng.lng,  e.latlng.lat),
                     drawingParameters = getDrawingParameter();
                 DrawingService.toolbox.writeText(p.x, p.y, drawingParameters.font, drawingParameters.fontColor);
             })
@@ -380,6 +379,7 @@
                                     settings.margin, 
                                     settings.ratioPixelPoint);
 
+            FeatureService.init(selDrawing, projDrawing, MapService)
 
         }
 
@@ -680,7 +680,10 @@
                         case 'image/svg+xml':
                         case 'image/png':
                         case 'image/jpeg':
-                            DrawingService.layers.background.appendImage(data.dataUrl, MapService.getMap().getSize(), MapService.getMap().getPixelOrigin(), MapService.getMap().getPixelBounds().min);
+                            DrawingService.layers.background.appendImage(data.dataUrl, 
+                                                                        MapService.getMap().getSize(), 
+                                                                        MapService.getMap().getPixelOrigin(), 
+                                                                        MapService.getMap().getPixelBounds().min);
                             break;
 
                         case 'application/pdf':
@@ -866,7 +869,8 @@
                                     }
 
                                     if (interactionPath) {
-                                        zip.file(interactionPath).async("string").then(function importInteraction(data) {
+                                        zip.file(interactionPath).async("string")
+                                        .then(function importInteraction(data) {
                                             ImportService.importInteraction(parser.parseFromString(data, "text/xml"));
                                         })
                                     }
@@ -901,6 +905,7 @@
                             'ExportService',
                             'UtilService',
                             'ImportService',
+                            'FeatureService',
                             ];
 
 })();

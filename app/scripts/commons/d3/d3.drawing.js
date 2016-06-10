@@ -3,9 +3,8 @@
  * @name accessimapEditeurDerApp.DrawingService
  * @requires accessimapEditeurDerApp.LayersService
  * @requires accessimapEditeurDerApp.ToolboxService
- * @requires accessimapEditeurDerApp.settings
  * @requires accessimapEditeurDerApp.FeatureService
- * @requires accessimapEditeurDerApp.ToolboxService
+ * @requires accessimapEditeurDerApp.settings
  * @description
  * Service providing drawing functions
  * Provide functions to 
@@ -15,14 +14,12 @@
 (function() {
     'use strict';
 
-    function DrawingService(LayersService, ToolboxService, settings, FeatureService) {
+    function DrawingService(LayersService, ToolboxService, settings) {
 
         this.initDrawing     = initDrawing;
         
-        this.isUndoAvailable = FeatureService.isUndoAvailable;
-        this.undo            = FeatureService.undo;
-        this.toolbox = ToolboxService;
-        this.layers  = LayersService;
+        this.toolbox         = ToolboxService;
+        this.layers          = LayersService;
 
         /**
          * @ngdoc method
@@ -47,9 +44,7 @@
 
             ToolboxService.init(LayersService.drawing.getLayer(), 
                                 LayersService.overlay.getLayer(), 
-                                LayersService.overlay.getZoom );
-
-            FeatureService.init(LayersService.drawing.getLayer())
+                                LayersService.overlay.getZoom )
 
         }
 
@@ -57,6 +52,6 @@
 
     angular.module(moduleApp).service('DrawingService', DrawingService);
 
-    DrawingService.$inject = ['LayersService', 'ToolboxService', 'settings', 'FeatureService'];
+    DrawingService.$inject = ['LayersService', 'ToolboxService', 'settings'];
 
 })();
