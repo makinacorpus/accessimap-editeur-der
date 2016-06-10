@@ -19,7 +19,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Controller of the &#39;/edit&#39; view",
-      "keywords": "accessimapediteurderapp add allow api area areas changestyle controller data display drawing editcontroller editservice features hide hidefontbraille hidemap layer leaflet map method options poc poi print properties property querychoices querychosen roads search selected set showfontbraille showmap specific style stylechoices stylechosen styling type update user view visualize"
+      "keywords": "accessimapediteurderapp add allow api area areas changestyle controller data display drawing editcontroller editservice features hide hidefontbraille hidemap layer leaflet map method options poc poi pointchoices points print properties property querychoices querychosen roads search selected set showfontbraille showmap specific style stylechoices stylechosen styling type update user view visualize"
     },
     {
       "section": "api",
@@ -55,7 +55,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service used for the &#39;EditController&#39;, and the &#39;edit&#39; view",
-      "keywords": "_errorcallback _successcallback accessimapediteurderapp add address allow allowing angle api append appendpdf area argument background callback called center choose clever click container css cursor d3 data dataurl defined degree disable disableaddpoi display displaying draw drawing drawingformat drawingservice edit editcontroller editservice elements enable enableaddpoi error events export features finished format function functions future image init initial initialize insert insertosmdata jpg layer legend legendformat legendservice link map mapleaflet mapservice method mode move nominatim occured optional osm pan passed pdf png poi printing promise provide query query_list resetting resetview result retrieve retrieved rotable rotate rotatemap rotation search searchanddisplayaddress service services settings setview specific successful user version view viewreset zoom"
+      "keywords": "_errorcallback _successcallback accessimapediteurderapp add address allow allowing angle api append appendpdf area argument background callback called center choose clever click color colors container css cursor d3 data dataurl defined defsservice degree disable disableaddpoi display displaying draw drawing drawingformat drawingservice edit editcontroller editservice elements enable enableaddpoi error events export exportservice feature features finished format function functions future geojson image importservice init initial initialize insert insertosmdata interactionservice jpg layer legend legendformat legendservice link map mapleaflet mapservice method mode move nominatim object occured optional osm pan passed pdf png poi printing promise provide query query_list resetting resetview result retrieve retrieved rotable rotate rotatemap rotation search searchanddisplayaddress service services settings setview specific style styles successful update updatefeaturestyleandcolor user utilservice version view viewreset zoom"
     },
     {
       "section": "api",
@@ -65,6 +65,15 @@ NG_DOCS={
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "editSvg",
       "keywords": "accessimapediteurderapp api editsvg service"
+    },
+    {
+      "section": "api",
+      "id": "accessimapEditeurDerApp.EmptyConfortService",
+      "shortName": "accessimapEditeurDerApp.EmptyConfortService",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "",
+      "keywords": "7px accessimapediteurderapp add api area bigger bounding box calcemptycomfort calculate comfort d3 dom element empty emptyconfortservice extend extremities feature method object original path rect representing return service text"
     },
     {
       "section": "api",
@@ -91,7 +100,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service providing actions to manage features",
-      "keywords": "accessimapediteurderapp actions analyzed api bezier circle curve feature features featureservice gettype linetocardinal manage method null path point polygon providing return service set simplify text transform type"
+      "keywords": "accessimapediteurderapp actions add api area bezier border curve empty feature features featureservice linetocardinal manage method path providing remove service shape simplify stroke toggleemptycomfortnearfeature togglestroke transform white"
     },
     {
       "section": "api",
@@ -108,7 +117,7 @@ NG_DOCS={
       "shortName": "accessimapEditeurDerApp.generators",
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "generators",
+      "shortDescription": "Service in the accessimapEditeurDerApp.",
       "keywords": "accessimapediteurderapp api generators service"
     },
     {
@@ -122,21 +131,12 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "accessimapEditeurDerApp.geometry",
-      "shortName": "accessimapEditeurDerApp.geometry",
-      "type": "service",
-      "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "geometry",
-      "keywords": "accessimapediteurderapp api geometry service"
-    },
-    {
-      "section": "api",
       "id": "accessimapEditeurDerApp.geometryutils",
       "shortName": "accessimapEditeurDerApp.geometryutils",
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "geometryutils",
-      "keywords": "accessimapediteurderapp angle api array coordinate coordinates cx cy degrees distance ey geometryutils method nearest point point1 point2 points realcoordinates return second service targetpoint transform"
+      "shortDescription": "Useful functions for calc distances, angles, ...",
+      "keywords": "accessimapediteurderapp add angle angles api array axis bottom calc calculate composed coordinate coordinates cx cy degrees direction distance distances drawing extend extended extendpath extension ey functions geometryutils getpathdirection integer knowing left length matching method nearest order path point point1 point2 points realcoordinates return second service side substract targetpoint thales theorem top transform"
     },
     {
       "section": "api",
@@ -302,12 +302,12 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "accessimapEditeurDerApp.style",
-      "shortName": "accessimapEditeurDerApp.style",
+      "id": "accessimapEditeurDerApp.SVGService",
+      "shortName": "accessimapEditeurDerApp.SVGService",
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "style",
-      "keywords": "accessimapediteurderapp api service style"
+      "shortDescription": "Service exposing utils functions",
+      "keywords": "accessimapediteurderapp api exposing functions service svgservice utils"
     },
     {
       "section": "api",

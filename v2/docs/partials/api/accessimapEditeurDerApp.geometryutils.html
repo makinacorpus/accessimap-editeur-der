@@ -4,8 +4,7 @@
 </div>
 </h1>
 <div><h2 id="description">Description</h2>
-<div class="description"><div class="accessimapediteurderapp-geometryutils-page"><h3 id="geometryutils" id="description_geometryutils">geometryutils</h3>
-<p>Service in the accessimapEditeurDerApp.</p>
+<div class="description"><div class="accessimapediteurderapp-geometryutils-page"><p>Useful functions for calc distances, angles, ...</p>
 </div></div>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_angle">angle(cx, cy, ex, ey)</h3>
@@ -21,6 +20,32 @@
 </div><h5 id="methods_distance_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>point1</td><td><a href="" class="label type-hint type-hint-point">Point</a></td><td><div class="distance-page"><p>Coordinates [x,y]</p>
 </div></td></tr><tr><td>point2</td><td><a href="" class="label type-hint type-hint-point">Point</a></td><td><div class="distance-page"><p>Coordinates [x,y]</p>
 </div></td></tr></tbody></table><h5 id="methods_distance_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-float">float</a></td><td><div class="distance-page"><p>Distance between the points</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_extendpath">extendPath(point1, point2, extension)</h3>
+<div class="extendpath"><div class="extendpath-page"><p>Extend a path composed by two points</p>
+<p>Use Thales theorem to calculate the new coordinates</p>
+<p>Upon the direction path, we add / substract the extended coordinates</p>
+</div><h5 id="methods_extendpath_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>point1</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="extendpath-page"><p>First point of the path</p>
+</div></td></tr><tr><td>point2</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="extendpath-page"><p>Second point of the path</p>
+</div></td></tr><tr><td>extension</td><td><a href="" class="label type-hint type-hint-float">float</a></td><td><div class="extendpath-page"><p>Length to add to each side of the path</p>
+</div></td></tr></tbody></table><h5 id="methods_extendpath_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="extendpath-page"><p>Array of points extended drawing the new path, 
+in the same order than [ point1, point2 ]</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getpathdirection">getPathDirection(point1, point2)</h3>
+<div class="getpathdirection"><div class="getpathdirection-page"><p>Knowing the y axis is from top to bottom, 
+and x axis is from left to right,</p>
+<p>Calculate the direction of a path : </p>
+<ul>
+<li>top right to bottom left (1)</li>
+<li>bottom right to top left (2)</li>
+<li>bottom left to top right (3)</li>
+<li>top left to bottom right (4)</li>
+</ul>
+</div><h5 id="methods_getpathdirection_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>point1</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="getpathdirection-page"><p>First point of the path</p>
+</div></td></tr><tr><td>point2</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="getpathdirection-page"><p>Second point of the path</p>
+</div></td></tr></tbody></table><h5 id="methods_getpathdirection_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="getpathdirection-page"><p>The integer matching the direction</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_nearest">nearest(targetPoint, points)</h3>
