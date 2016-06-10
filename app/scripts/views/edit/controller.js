@@ -86,14 +86,19 @@
         $ctrl.fontColors                 = EditService.settings.COLORS;
         $ctrl.fontColorChosen            = $ctrl.fontColors[$ctrl.fontChosen.color][0];
         
-        $ctrl.colors                     = (EditService.settings.COLORS.transparent).concat(EditService.settings.COLORS.other);
+        $ctrl.colors                     = (EditService.settings.COLORS.transparent)
+                                                .concat(EditService.settings.COLORS.other);
         
         $ctrl.colorChosen                = $ctrl.colors[0];
         $ctrl.featureIcon                = EditService.featureIcon;
         $ctrl.formats                    = EditService.settings.FORMATS;
         $ctrl.backgroundStyleChoices     = EditService.settings.STYLES.polygon;
-        $ctrl.mapFormat                  = $location.search().mapFormat ? $location.search().mapFormat : 'landscapeA4';
-        $ctrl.legendFormat               = $location.search().legendFormat ? $location.search().legendFormat : 'landscapeA4';
+        $ctrl.mapFormat                  = $location.search().mapFormat 
+                                            ? $location.search().mapFormat 
+                                            : 'landscapeA4';
+        $ctrl.legendFormat               = $location.search().legendFormat 
+                                            ? $location.search().legendFormat 
+                                            : 'landscapeA4';
         $ctrl.checkboxModel              = { contour: true};
         $ctrl.getFeatures                = EditService.getFeatures;
         
@@ -104,7 +109,7 @@
             mapFormat       : 'landscapeA4',
             legendFormat    : 'landscapeA4',
             backgroundColor : $ctrl.colors[0], // transparent
-            backgroundStyle : EditService.settings.STYLES.polygon[EditService.settings.STYLES.polygon.length - 1], // solid
+            backgroundStyle : EditService.settings.STYLES.polygon[EditService.settings.STYLES.polygon.length - 1],
         }
 
         // general state parameters        
@@ -259,7 +264,10 @@
             $ctrl.isFeatureManagementVisible = false;
         }
         $ctrl.insertOSMData = function()  {
-            EditService.insertOSMData($ctrl.queryChosen, ToasterService.warning, ToasterService.error, getDrawingParameters)
+            EditService.insertOSMData($ctrl.queryChosen, 
+                                        ToasterService.warning, 
+                                        ToasterService.error, 
+                                        getDrawingParameters)
         }
         $ctrl.displayFeatureManagement = function() {
             $ctrl.isAddressVisible           = false;
@@ -310,7 +318,8 @@
             
             // Display for the first time the drawing is freezed
             if (! $ctrl.isDrawingFreezed)
-                ToasterService.info('Lorsque vous passez en mode dessin, la zone du dessin est automatiquement figée.', 'La zone du dessin est figée')
+                ToasterService.info('Lorsque vous passez en mode dessin, la zone du dessin est automatiquement figée.',
+                                     'La zone du dessin est figée')
 
             $ctrl.isDrawingFreezed               = true;
 

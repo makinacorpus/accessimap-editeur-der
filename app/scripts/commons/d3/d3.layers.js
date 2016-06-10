@@ -100,6 +100,7 @@
 
     angular.module(moduleApp).service('LayersService', LayersService);
 
-    LayersService.$inject = ['LayerBackgroundService', 'LayerOverlayService', 'LayerGeoJSONService', 'LayerDrawingService'];
+    LayersService.$inject = ['LayerBackgroundService', 'LayerOverlayService', 
+                            'LayerGeoJSONService', 'LayerDrawingService'];
 
 })();

@@ -52,7 +52,7 @@
             currentTarget = target;
             currentTarget.classed('blink', true);
 
-            var type = target.attr('data-type') ? target.attr('data-type') : 'default' ; //FeatureService.getType(target);
+            var type = target.attr('data-type') ? target.attr('data-type') : 'default' ;
 
             if (type) {
                 var data = settings.ACTIONS[type],

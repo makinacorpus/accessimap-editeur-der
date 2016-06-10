@@ -81,10 +81,13 @@
             _selectorDOM = selectorDOM;
             _isMapVisible = false;
 
-            setMinimumSize(settings.FORMATS[format].width / _ratioPixelPoint, settings.FORMATS[format].height / _ratioPixelPoint)
+            setMinimumSize(settings.FORMATS[format].width / _ratioPixelPoint, 
+                            settings.FORMATS[format].height / _ratioPixelPoint)
 
-            map = L.map(_selectorDOM).setView(settings.leaflet.GLOBAL_MAP_CENTER, settings.leaflet.GLOBAL_MAP_DEFAULT_ZOOM);
-            var access_token = "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw";
+            map = L.map(_selectorDOM).setView(settings.leaflet.GLOBAL_MAP_CENTER, 
+                                                settings.leaflet.GLOBAL_MAP_DEFAULT_ZOOM);
+            var access_token = 
+                "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw";
             
             layer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + access_token, {
                 maxZoom: 18,
@@ -163,7 +166,9 @@
             var parentHeight = $('#' + _selectorDOM).parent().height(),
                 parentWidth = $('#' + _selectorDOM).parent().width(),
                 siblingHeight = $($('#' + _selectorDOM).siblings()[0]).outerHeight(true),
-                mapHeight = ( ( parentHeight - siblingHeight ) > minHeight ) ? ( parentHeight - siblingHeight ) : minHeight,
+                mapHeight = ( ( parentHeight - siblingHeight ) > minHeight ) 
+                            ? ( parentHeight - siblingHeight ) 
+                            : minHeight,
                 mapWidth = ( parentWidth > minWidth ) ? 'auto' : minWidth;
 
             // $("#" + _selectorDOM).height('calc(100vh - 80px)');

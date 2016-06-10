@@ -138,7 +138,8 @@
         };
 
         function getCenter() {
-            return _projection.layerPointToLatLng([( _width / 2 ) + _lastTranslationX, ( _height / 2 ) + _lastTranslationY]);
+            return _projection.layerPointToLatLng([( _width / 2 ) + _lastTranslationX, 
+                                                    ( _height / 2 ) + _lastTranslationY]);
         }
 
         /**
@@ -263,7 +264,8 @@
             var translateScaleOverlayGroup = _target.attr('transform'),
                 
                 translateOverlayGroup = ( translateScaleOverlayGroup === null ) ? null 
-                    : translateScaleOverlayGroup.substring(translateScaleOverlayGroup.indexOf('(') + 1, translateScaleOverlayGroup.indexOf(')')),
+                    : translateScaleOverlayGroup.substring(translateScaleOverlayGroup.indexOf('(') + 1, 
+                                                            translateScaleOverlayGroup.indexOf(')')),
                 
                 translateOverlayGroupArray = ( translateOverlayGroup === null ) ? [0, 0] 
                     : translateOverlayGroup.slice(0, translateOverlayGroup.length).split(','),

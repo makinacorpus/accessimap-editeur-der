@@ -50,7 +50,9 @@
 
                     if (currentD) {
                         var currentParseD = UtilService.parseSVGPath(currentD),
-                            currentTranslateD = UtilService.translateSVGPath(currentParseD, translationToApply.x, translationToApply.y),
+                            currentTranslateD = UtilService.translateSVGPath(currentParseD, 
+                                                                                translationToApply.x, 
+                                                                                translationToApply.y),
                             currentSerializeD = UtilService.serializeSVGPath(currentTranslateD);
 
                         paths[i].setAttribute('d', currentSerializeD)
@@ -116,22 +118,33 @@
 
                 translateScaleOverlayGroup = overlayLayer.getAttribute('transform'),
                 
-                translateOverlayGroup = ( translateScaleOverlayGroup === null ) ? null 
-                    : translateScaleOverlayGroup.substring(translateScaleOverlayGroup.indexOf('(') + 1, translateScaleOverlayGroup.indexOf(')')),
+                translateOverlayGroup = ( translateScaleOverlayGroup === null ) 
+                                        ? null 
+                                        : translateScaleOverlayGroup
+                                                .substring(translateScaleOverlayGroup.indexOf('(') + 1, 
+                                                            translateScaleOverlayGroup.indexOf(')')),
                 
                 translateOverlayGroupArray = ( translateOverlayGroup === null ) ? [0, 0] 
                     : translateOverlayGroup.slice(0, translateOverlayGroup.length).split(','),
                 
                 translateMarginGroup = overlayLayer.querySelector('g[id="margin-layer"]').getAttribute('transform'),
 
-                translateMargin = ( translateMarginGroup === null ) ? null 
-                    : translateMarginGroup.substring(translateMarginGroup.indexOf('(') + 1, translateMarginGroup.indexOf(')')),
+                translateMargin = ( translateMarginGroup === null ) 
+                                    ? null 
+                                    : translateMarginGroup
+                                            .substring(translateMarginGroup.indexOf('(') + 1, 
+                                                        translateMarginGroup.indexOf(')')),
                 
                 translateMarginArray = ( translateMargin === null ) ? [0, 0] 
                     : translateMargin.slice(0, translateMargin.length).split(','),
 
-                translationToApply = { x: currentOverlayTranslation.x - translateOverlayGroupArray[0] - translateMarginArray[0],
-                                           y: currentOverlayTranslation.y - translateOverlayGroupArray[1] - translateMarginArray[1]}
+                translationToApply = { x: currentOverlayTranslation.x 
+                                            - translateOverlayGroupArray[0] 
+                                            - translateMarginArray[0],
+                                       y: currentOverlayTranslation.y 
+                                            - translateOverlayGroupArray[1] 
+                                            - translateMarginArray[1]
+                                    }
 
                 // if exists, inserts data of the geojson layers
                 if (geojsonLayer) {
@@ -153,11 +166,6 @@
                     LayersService.geojson.setFeatures(dataGeoJSON);
                     generateLegend(dataGeoJSON);
                 }
-
-                // if (metadataInteractions && metadataInteractions.getAttribute('data-value') !== '') {
-                //     var parser = new DOMParser();
-                //     importInteraction(parser.parseFromString(metadataInteractions.getAttribute('data-value'), "text/xml"))
-                // }
 
             } else {
                 // it's not a draw from the der, but we will append each element in the 'drawing section'

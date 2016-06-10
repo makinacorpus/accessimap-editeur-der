@@ -97,13 +97,16 @@
                             return d.geometry.type === 'Point'; })
                         .attr('stroke-width', 2 / _projection.scale)
                         .attr('cx', function(d) {
-                            return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0])).x;
+                            return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                                                                d.geometry.coordinates[0])).x;
                         })
                         .attr('cy', function(d) {
-                            return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0])).y;
+                            return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                                                                d.geometry.coordinates[0])).y;
                         })
                         .attr('d', function(d) {
-                            var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0]));
+                            var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                                                                d.geometry.coordinates[0]));
 
                             return geojson.style.path(coords.x, coords.y, geojson.style.radius / _projection.scale);
                         })
@@ -111,7 +114,8 @@
                             var result = '';
 
                             if (this.transform.baseVal.length > 0) {
-                                var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0]));
+                                var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                                                                                d.geometry.coordinates[0]));
 
                                 result += 'rotate(' + geojson.rotation + ')';//' ' + coords.x + ' ' + coords.y + ');';
                             }
@@ -139,7 +143,8 @@
          * @param  {Object} optionalClass 
          * [description]
          */
-        function geojsonToSvg(data, simplification, id, poi, queryChosen, styleChosen, styleChoices, colorChosen, checkboxModel, rotationAngle) {
+        function geojsonToSvg(data, simplification, id, poi, queryChosen, styleChosen, 
+                                styleChoices, colorChosen, checkboxModel, rotationAngle) {
             if (data) {
                 // data.features.forEach(function(feature, index) {
                 //     if (simplification) {
@@ -191,7 +196,8 @@
                             contour: checkboxModel.contour,
                             color: colorChosen
                         };
-                        LegendService.addToLegend(queryChosen, styleChosen, _geojson.length, colorChosen, checkboxModel);
+                        LegendService.addToLegend(queryChosen, styleChosen, _geojson.length, 
+                                                    colorChosen, checkboxModel);
                     }
                     _geojson.push(obj);
                     drawFeature(data, [obj], null, styleChosen, colorChosen, checkboxModel, rotationAngle);
@@ -299,7 +305,7 @@
         function drawFeature(data, feature, optionalClass, styleChosen, colorChosen, checkboxModel, rotationAngle) {
             var featureGroup,
                 type = feature[0].type,
-                drawingLayer = d3.select(_g).node().select('[data-name="' + type + 's-layer"]') ; /* d3.select('#' + type + 's-layer') ;*/
+                drawingLayer = d3.select(_g).node().select('[data-name="' + type + 's-layer"]') ; 
             
             if (optionalClass) {
                 if (d3.select('.vector.' + optionalClass + '#' + feature[0].id).empty()) {
@@ -374,15 +380,18 @@
                 // TODO: useful for lines ?
                 // .attr('stroke-width', 2 / _projection.scale)
                 .attr('cx', function(d) {
-                    return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0])).x;
+                    return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                                                                    d.geometry.coordinates[0])).x;
                 })
                 .attr('cy', function(d) {
-                    return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0])).y;
+                    return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                                                                    d.geometry.coordinates[0])).y;
                 })
                 .attr('d', function(d) {
-                    var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0]));
+                    var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                                                                        d.geometry.coordinates[0]));
 
-                    return feature[0].style.path(coords.x, coords.y, feature[0].style.radius /* / _projection.scale */);
+                    return feature[0].style.path(coords.x, coords.y, feature[0].style.radius);
                 });
 
             // settings style attributes

@@ -25,14 +25,14 @@
              * @type {Object}
              */
 
-            var length = {a: 7, c: 6, h: 1, l: 2, m: 2, q: 4, s: 4, t: 2, v: 1, z: 0}
+            var length = {a: 7, c: 6, h: 1, l: 2, m: 2, q: 4, s: 4, t: 2, v: 1, z: 0},
 
             /**
              * segment pattern
              * @type {RegExp}
              */
 
-            var segment = /([astvzqmhlc])([^astvzqmhlc]*)/ig
+            segment = /([astvzqmhlc])([^astvzqmhlc]*)/ig ,
 
             /**
              * parse an svg path data string. Generates an Array
@@ -43,8 +43,9 @@
              * @return {Array}
              */
 
-            var data = []
-            path.replace(segment, function(_, command, args){
+            data = []
+
+            path.replace(segment, function(_, command, args) {
                 var type = command.toLowerCase()
                 args = parseValues(args)
 
@@ -67,7 +68,7 @@
             })
             return data
 
-            function parseValues(args){
+            function parseValues(args) {
                 args = args.match(/-?[.0-9]+(?:e[-+]?\d+)?/ig)
                 return args ? args.map(Number) : []
             }
@@ -99,6 +100,7 @@
                 // V is the only command, with shifted coords parity
                 if (name === 'v') {
                     segment[1] += y
+
                     return segment
                 }
 
@@ -107,6 +109,7 @@
                 if (name === 'a') {
                     segment[6] += x
                     segment[7] += y
+
                     return segment
                 }
 
@@ -115,6 +118,7 @@
                     if (!i) {
                         return val
                     }
+                    
                     return i % 2 ? val + x : val + y
                 })
             })

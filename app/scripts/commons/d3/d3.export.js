@@ -10,7 +10,7 @@
      * @description
      * Service in the accessimapEditeurDerApp.
      */
-    function ExportService(InteractionService, LegendService, DrawingService, DefsService, MapService, $q, $http) {
+    function ExportService(InteractionService, LegendService, DrawingService, DefsService, MapService, $q) {
 
         this.exportData = exportData;
 
@@ -28,7 +28,7 @@
 
             var node                   = MapService.getMap().getPanes().mapPane,
                 transformStyle         = $(node).css('transform'),
-                drawingNode            = MapService.getMap().getContainer(), // d3.select('svg.leaflet-zoom-animated').node(),
+                drawingNode            = MapService.getMap().getContainer(),
                 tilesNode              = null,
                 legendNode             = LegendService.getNode(),
                 comments               = $('#comment').val(),
@@ -51,9 +51,12 @@
 
             // get transform attribute of margin / frame layers
             var translateOverlayArray = DrawingService.layers.overlay.getTranslation(),
-                translateReverseOverlayPx = "translate(" + ( translateOverlayArray.x * -1 ) + 'px,' + ( translateOverlayArray.y * -1 ) + 'px)';
+                translateReverseOverlayPx = "translate(" + ( translateOverlayArray.x * -1 ) + 'px,' 
+                                                         + ( translateOverlayArray.y * -1 ) + 'px)';
 
-            d3.select(svgDrawing).attr('viewBox', translateOverlayArray.x + ' ' + translateOverlayArray.y+ ' ' + size.width + ' ' + size.height)
+            d3.select(svgDrawing).attr('viewBox', translateOverlayArray.x + ' ' 
+                                                + translateOverlayArray.y + ' ' 
+                                                + size.width + ' ' + size.height)
             
             function filterDOM(node) {
                 return (node.tagName !== 'svg')
@@ -86,7 +89,8 @@
                         metadataModel = document.createElementNS("http://www.w3.org/2000/svg", "metadata");
 
                     metadataGeoJSON.setAttribute('data-name', 'data-geojson')
-                    metadataGeoJSON.setAttribute('data-value', JSON.stringify(DrawingService.layers.geojson.getFeatures()))
+                    metadataGeoJSON.setAttribute('data-value', 
+                            JSON.stringify(DrawingService.layers.geojson.getFeatures()))
 
                     // metadataInteractions.setAttribute('data-name', 'data-interactions')
                     // metadataInteractions.setAttribute('data-value', interactionsContentXML)
@@ -101,10 +105,18 @@
                     
                     svgDrawing.appendChild(image);
 
-                    svgDrawing.appendChild(d3.select(exportNode).select("svg[data-name='background']").style('overflow', 'visible').node());
-                    svgDrawing.appendChild(d3.select(exportNode).select("svg[data-name='geojson']").style('overflow', 'visible').node());
-                    svgDrawing.appendChild(d3.select(exportNode).select("svg[data-name='drawing']").style('overflow', 'visible').node());
-                    svgDrawing.appendChild(d3.select(exportNode).select("svg[data-name='overlay']").style('overflow', 'visible').node());
+                    svgDrawing.appendChild(d3.select(exportNode)
+                                            .select("svg[data-name='background']")
+                                                .style('overflow', 'visible').node());
+                    svgDrawing.appendChild(d3.select(exportNode)
+                                            .select("svg[data-name='geojson']")
+                                                .style('overflow', 'visible').node());
+                    svgDrawing.appendChild(d3.select(exportNode)
+                                            .select("svg[data-name='drawing']")
+                                                .style('overflow', 'visible').node());
+                    svgDrawing.appendChild(d3.select(exportNode)
+                                            .select("svg[data-name='overlay']")
+                                                .style('overflow', 'visible').node());
 
                     zip.file('carte_avec_source.svg', (new XMLSerializer()).serializeToString(svgDrawing));
 
@@ -172,5 +184,6 @@
 
     angular.module(moduleApp).service('ExportService', ExportService);
 
-    ExportService.$inject = ['InteractionService', 'LegendService', 'DrawingService', 'DefsService', 'MapService', '$q', '$http'];
+    ExportService.$inject = ['InteractionService', 'LegendService', 'DrawingService', 
+                            'DefsService', 'MapService', '$q'];
 })();
