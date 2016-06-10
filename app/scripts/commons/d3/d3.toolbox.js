@@ -7,7 +7,7 @@
 (function() {
     'use strict';
 
-    function ToolboxService(generators, RadialMenuService, settings, UtilService) {
+    function ToolboxService(generators, RadialMenuService, settings, UtilService, $q) {
 
         this.init                          = init;
         
@@ -358,90 +358,110 @@
         }
 
         function writeText(x, y, font, color) {
+
+            
             // the previously edited text should not be edited anymore
             d3.select('.edition').classed('edition', false);
 
-            var d = 'Texte',
-                iid = UtilService.getiid();
+            var iid = UtilService.getiid(),
 
-            svgDrawing.select('g[data-name="texts-layer"]')
-                .append('text')
-                .attr('x', x)
-                .attr('y', y - 35)
-                .attr('font-family', font.family)
-                .attr('font-size', font.size)
-                .attr('font-weight', function() {
-                    return font.weight;
-                })
-                .attr('fill', color.color)
-                .attr('id', 'finalText')
-                .classed('edition', true)
-                .classed('link_' + iid, true)
-                .attr('data-type', 'text')
-                .attr('data-from', 'drawing')
-                .attr('data-link', iid)
-                .text('');
+                textElement = svgDrawing.select('g[data-name="texts-layer"]')
+                    .append('text')
+                    .attr('x', x)
+                    .attr('y', y - 35)
+                    .attr('font-family', font.family)
+                    .attr('font-size', font.size)
+                    .attr('font-weight', function() {
+                        return font.weight;
+                    })
+                    .attr('fill', color.color)
+                    // .attr('id', 'finalText')
+                    .classed('edition', true)
+                    .classed('link_' + iid, true)
+                    .attr('data-type', 'text')
+                    .attr('data-from', 'drawing')
+                    .attr('data-link', iid)
+                    .text('');
+
+            return setTextEditable(textElement);
+            
+        }
+
+        function setTextEditable(textElement) {
+            console.log(textElement)
+            
+            var deferred = $q.defer(),
+                text = textElement.text() || 'Texte';
+
+            textElement.text('')
 
             svgDrawing.select('g[data-name="texts-layer"]')
                 .selectAll('foreignObject#textEdition')
-                .data([d])
-                .enter()
-                .append('foreignObject')
-                .attr('id', 'textEdition')
-                .attr('x', x)
-                .attr('y', y - 35)
-                .attr('height', 500)
-                .attr('width', 500)
-                .attr('font-family', font.family)
-                .attr('font-size', font.size)
-                .attr('font-weight', function() {
-                    return font.weight;
-                })
-                .attr('fill', color.color)
-                .classed('edition', true)
-                .append('xhtml:p')
-                .attr('contentEditable', 'true')
-                .text(d)
-                .on('mousedown', function() {
-                    d3.event.stopPropagation();
-                })
-                .on('keydown', function() {
-                    d3.event.stopPropagation();
+                .data([text])
+                    .enter()
+                    .append('foreignObject')
+                    .attr('id', 'textEdition')
+                    .attr('x', textElement.attr('x'))
+                    .attr('y',  textElement.attr('y'))
+                    .attr('height', 500)
+                    .attr('width', 500)
+                    .attr('font-family', textElement.attr('font-family'))
+                    .attr('font-size', textElement.attr('font-size'))
+                    .attr('font-weight', textElement.attr('font-weight'))
+                    .attr('fill', textElement.attr('fill'))
+                    .classed('edition', true)
+                    .append('xhtml:p')
+                    .attr('contentEditable', 'true')
+                    .text(text)
+                    .on('mousedown', function() {
+                        d3.event.stopPropagation();
+                    })
+                    .on('keydown', function() {
+                        d3.event.stopPropagation();
 
-                    if (d3.event.keyCode === 13 && !d3.event.shiftKey) {
-                        this.blur();
-                    }
-                })
-                .on('blur', function() {
-                    angular.forEach(this.childNodes, function(node) {
-                        var data = node.data;
-
-                        if (data) {
-                            data = data.replace(/(\d+)/g, '¤$1');
-                            d3.select('#finalText')
-                                .attr('text-anchor', 'start')
-                                .append('tspan')
-                                .attr('text-anchor', 'start')
-                                /*.attr('x', function() {
-                                    return d3.select(this.parentNode).attr('x');
-                                })*/
-                                .attr('dy', 35)
-                                .text(data);
+                        if (d3.event.keyCode === 13 && !d3.event.shiftKey) {
+                            this.blur();
                         }
+                    })
+                    .on('blur', function() {
+                        angular.forEach(this.childNodes, function(node) {
+                            var data = node.data;
+
+                            if (data) {
+                                data = data.replace(/(\d+)/g, '¤$1');
+                                textElement
+                                    .attr('text-anchor', 'start')
+                                    .append('tspan')
+                                        .attr('text-anchor', 'start')
+                                        .attr('x', function() {
+                                            return d3.select(this.parentNode).attr('x');
+                                        })
+                                        .attr('dy', 40)
+                                        .text(data);
+                            }
+                        });
+                        d3.select(this.parentElement).remove();
+
+                        RadialMenuService.addRadialMenu(d3.select('.edition'));
+
+                        d3.select('.edition').classed('edition', false);
+                        textElement.style('cursor','text')
+                            .on('click', function(event) {
+                                d3.event.stopPropagation();
+                                // enter edition mode
+                                setTextEditable(d3.select(this))
+                            })
+                            .attr('id', null);
+
+                        deferred.resolve(textElement);
                     });
-                    d3.select(this.parentElement).remove();
-
-                    RadialMenuService.addRadialMenu(d3.select('.edition'));
-
-                    d3.select('.edition').classed('edition', false);
-                    d3.select('#finalText').attr('id', null);
-                });
 
             selectElementContents(
                 d3.selectAll('foreignObject#textEdition')
                     .selectAll('p')
                     .node());
 
+            return deferred.promise;
         }
 
         function changeTextColor(model) {
@@ -599,6 +619,6 @@
     
     angular.module(moduleApp).service('ToolboxService', ToolboxService);
 
-    ToolboxService.$inject = ['generators', 'RadialMenuService', 'settings', 'UtilService'];
+    ToolboxService.$inject = ['generators', 'RadialMenuService', 'settings', 'UtilService', '$q'];
 
 })();

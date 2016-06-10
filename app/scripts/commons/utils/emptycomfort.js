@@ -34,7 +34,8 @@
                 bbox = el.getBBox(),
                 type = feature.attr('data-type'),
                 emptyArea,
-                path = feature.attr('d');
+                path = feature.attr('d'),
+                transformString = null || feature.attr('transform');
 
             switch (type) {
                 case 'text':
@@ -52,12 +53,10 @@
                     break;
 
                 default:
-                    var transformString = null || feature.attr('transform');
                     
                     emptyArea = el.cloneNode(true);
 
                     d3.select(emptyArea)
-                        .attr('transform', transformString)
                         .attr('iid', null)
                         .attr('fill', 'none')
                         .attr('stroke', 'white')
@@ -75,6 +74,7 @@
             }
 
             d3.select(emptyArea)
+                .attr('transform', transformString)
                 .classed('c' + feature.attr('data-link'), true)
                 .classed('link_' + feature.attr('data-link'), true)
                 .classed('notDeletable', true);
