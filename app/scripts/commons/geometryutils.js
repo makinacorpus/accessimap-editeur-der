@@ -91,16 +91,13 @@
          * 
          * @return {[type]}             [description]
          */
-        function realCoordinates(transform, coordinates) {
+        function realCoordinates(transform, bbox, coordinates) {
             
-            // var transform = d3.transform(d3.select('#map-layer')
-            //                                 .attr('transform')),
             var translate = transform.translate,
-                scale = transform.scale[0],
                 realCoordinates = [];
 
-            realCoordinates[0] = (coordinates[0] - translate[0]) / scale;
-            realCoordinates[1] = (coordinates[1] - translate[1]) / scale;
+            realCoordinates[0] = (coordinates[0] - translate[0] - bbox.x - ( bbox.width / 2 ))
+            realCoordinates[1] = (coordinates[1] - translate[1] - bbox.y - ( bbox.height / 2 ))
 
             return realCoordinates;
         }

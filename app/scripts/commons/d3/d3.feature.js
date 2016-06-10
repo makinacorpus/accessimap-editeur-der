@@ -8,8 +8,9 @@
 (function() {
     'use strict';
 
-    function FeatureService(InteractionService, EmptyConfortService, geometryutils, generators) {
+    function FeatureService(InteractionService, EmptyConfortService, UtilService, geometryutils, generators) {
         
+        this.duplicatePath                 = duplicatePath;
         this.movePath                      = movePath;
         this.movePoint                     = movePoint;
         this.rotatePath                    = rotatePath;
@@ -48,7 +49,7 @@
             pointsLayer   = layer.select('g[data-name="points-layer"]');
             polygonsLayer = layer.select('g[data-name="polygons-layer"]');
             linesLayer    = layer.select('g[data-name="lines-layer"]');
-            textLayer     = layer.select('g[data-name="text-layer"]');
+            textLayer     = layer.select('g[data-name="texts-layer"]');
         }
 
         function isUndoAvailable() {
@@ -110,6 +111,7 @@
         function movePath(feature) {
             
             var el            = feature.node(),
+            parentNode        = el.parentNode,
             temporaryPath     = el.cloneNode(true),
 
             emptyCircle       = d3.select('.c' + feature.attr('data-link')),
@@ -120,36 +122,30 @@
             hasRotate         = /rotate\((.*?)(?: |,)(.*?)(?: |,)(.*?)\)/.exec(feature.attr('transform')),
             bbox              = el.getBBox();
 
-            d3.select(temporaryPath)
-                .attr('id', 'temporaryPath')
-                .attr('opacity', 0.5);
+            transform.translate = [0,0];
 
-            d3.select(temporaryCircle)
-                .attr('id', 'temporaryPath')
-                .attr('opacity', 0.5);
+            d3.select(temporaryCircle).attr('opacity', 0.5).attr('transform', transform);
+            d3.select(temporaryPath).attr('opacity', 0.5).attr('transform', transform);
 
-            pointsLayer.node().appendChild(temporaryPath);
+            if (temporaryCircle) parentNode.appendChild(temporaryCircle);
+            parentNode.appendChild(temporaryPath);
 
-            if (temporaryCircle) pointsLayer.node().appendChild(temporaryCircle);
-
-            handlers.removeEventListeners();
+            handlers.removeEventListener(['click', 'mousemove']);
 
             handlers.addClickListener(function(e) {
 
                 if (d3.select(temporaryPath).classed('moved')) {
 
                     var p = projection.latLngToLayerPoint(e.latlng),
-                    realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y]),
-                    transX = realCoordinates[0] - bbox.x - ( bbox.width / 2 ),
-                    transY = realCoordinates[1] - bbox.y - ( bbox.height / 2 ),
+                    realCoordinates = geometryutils.realCoordinates(transform, bbox, [p.x, p.y]),
                     transformString = '';
 
                     if (hasRotate) {
                         transformString += 'rotate(' + [hasRotate[1], 
-                                (parseFloat(hasRotate[2]) + transX), 
-                                (parseFloat(hasRotate[3]) + transY)] + ')';
+                                (parseFloat(hasRotate[2]) + realCoordinates[0]), 
+                                (parseFloat(hasRotate[3]) + realCoordinates[1])] + ')';
                     }
-                    transformString += 'translate(' + [transX, transY] + ')';
+                    transformString += 'translate(' + [realCoordinates[0], realCoordinates[1]] + ')';
 
                     feature.attr('transform', transformString);
 
@@ -158,7 +154,7 @@
                     d3.select(temporaryPath).remove();
                     d3.select(temporaryCircle).remove();
 
-                    handlers.removeEventListeners();
+                    handlers.removeEventListener(['click', 'mousemove']);
 
                 }
             })
@@ -166,17 +162,108 @@
             handlers.addMouseMoveListener(function(e) {
 
                 var p = projection.latLngToLayerPoint(e.latlng),
-                    realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y]),
-                    transX = realCoordinates[0] - bbox.x - ( bbox.width / 2 ),
-                    transY = realCoordinates[1] - bbox.y - ( bbox.height / 2 ),
+                    realCoordinates = geometryutils.realCoordinates(transform, bbox, [p.x, p.y]),
                     transformString = '';
 
                 if (hasRotate) {
                     transformString += 'rotate(' + [hasRotate[1], 
-                        (parseFloat(hasRotate[2]) + transX), 
-                        (parseFloat(hasRotate[3]) + transY)] + ')';
+                        (parseFloat(hasRotate[2]) + realCoordinates[0]), 
+                        (parseFloat(hasRotate[3]) + realCoordinates[1])] + ')';
                 }
-                transformString += 'translate(' + [transX, transY] + ')';
+                transformString += 'translate(' + [realCoordinates[0], realCoordinates[1]] + ')';
+
+                d3.select(temporaryPath)
+                    .classed('moved', true)
+                    .attr('transform', transformString);
+
+                d3.select(temporaryCircle)
+                    .classed('moved', true)
+                    .attr('transform', transformString);
+
+            })
+
+        }
+
+        function duplicatePath(feature, addRadialMenuFunction) {
+            
+            var el            = feature.node(),
+            parentNode        = el.parentNode,
+            temporaryPath     = el.cloneNode(true),
+
+            emptyCircle       = d3.select('.c' + feature.attr('data-link')),
+            emptyCircleExists = emptyCircle.node(),
+            temporaryCircle   = emptyCircleExists ? emptyCircleExists.cloneNode(true) : null,
+
+            transform         = d3.transform(layer.attr('transform')),
+            hasRotate         = /rotate\((.*?)(?: |,)(.*?)(?: |,)(.*?)\)/.exec(feature.attr('transform')),
+            bbox              = el.getBBox(),
+            iid               = UtilService.getiid();
+
+            transform.translate = [0,0];
+
+            d3.select(temporaryCircle)
+                .attr('opacity', 0.5)
+                .attr('transform', transform)
+                .classed('c' + feature.attr('data-link'), false)
+                .classed('link_' + feature.attr('data-link'), false)
+                .classed('c' + iid, true)
+                .classed('link_' + iid, true);
+
+            d3.select(temporaryPath)
+                .attr('opacity', 0.5)
+                .attr('transform', transform)
+                .classed('link_' + feature.attr('data-link'), false)
+                .classed('link_' + iid, true)
+                .attr('data-link', iid);
+
+            if (temporaryCircle) parentNode.appendChild(temporaryCircle)
+            parentNode.appendChild(temporaryPath)
+
+            handlers.removeEventListener(['click', 'mousemove']);
+            addRadialMenuFunction(d3.select(temporaryPath));
+
+            handlers.addClickListener(function(e) {
+
+                if (d3.select(temporaryPath).classed('moved')) {
+
+                    var p = projection.latLngToLayerPoint(e.latlng),
+                    realCoordinates = geometryutils.realCoordinates(transform, bbox, [p.x, p.y]),
+                    transformString = '';
+
+                    if (hasRotate) {
+                        transformString += 'rotate(' + [hasRotate[1], 
+                                (parseFloat(hasRotate[2]) + realCoordinates[0]), 
+                                (parseFloat(hasRotate[3]) + realCoordinates[1])] + ')';
+                    }
+                    transformString += 'translate(' + [realCoordinates[0], realCoordinates[1]] + ')';
+
+                    d3.select(temporaryPath)
+                        .classed('moved', false)
+                        .attr('opacity', 1)
+                        .attr('transform', transformString);
+
+                    d3.select(temporaryCircle)
+                        .classed('moved', false)
+                        .attr('opacity', 1)
+                        .attr('transform', transformString);
+
+                    handlers.removeEventListener(['click', 'mousemove']);
+
+                }
+            })
+
+            handlers.addMouseMoveListener(function(e) {
+
+                var p = projection.latLngToLayerPoint(e.latlng),
+                    realCoordinates = geometryutils.realCoordinates(transform, bbox, [p.x, p.y]),
+                    transformString = '';
+
+                if (hasRotate) {
+                    transformString += 'rotate(' + [hasRotate[1], 
+                        (parseFloat(hasRotate[2]) + realCoordinates[0]), 
+                        (parseFloat(hasRotate[3]) + realCoordinates[1])] + ')';
+                }
+                transformString += 'translate(' + [realCoordinates[0], realCoordinates[1]] + ')';
 
                 d3.select(temporaryPath)
                     .classed('moved', true)
@@ -509,6 +596,7 @@
 
     angular.module(moduleApp).service('FeatureService', FeatureService);
 
-    FeatureService.$inject = ['InteractionService', 'EmptyConfortService', 'geometryutils', 'generators']
+    FeatureService.$inject = ['InteractionService', 'EmptyConfortService', 'UtilService', 
+                                'geometryutils', 'generators']
 
 })();

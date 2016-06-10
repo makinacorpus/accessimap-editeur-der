@@ -34,7 +34,8 @@
         this.addMouseMoveListener   = addMouseMoveListener;
         this.addDoubleClickListener = addDoubleClickListener;
         this.removeEventListeners   = removeEventListeners;
-        
+        this.removeEventListener    = removeEventListener;
+
         this.addMoveHandler         = addMoveHandler;
         this.removeMoveHandler      = removeMoveHandler;
         this.addViewResetHandler    = addViewResetHandler;
@@ -229,15 +230,32 @@
 
         /**
          * @ngdoc method
-         * @name  removeEventListener
+         * @name  removeEventListeners
          * @methodOf accessimapEditeurDerApp.MapService
          * 
          * @description 
-         * Remove all the listener to the map
+         * Remove all the listeners to the map
          */
         function removeEventListeners() {
             listeners.forEach(function(currentValue) {
                 map.removeEventListener(currentValue.event, currentValue.function)
+            })
+        }
+
+        /**
+         * @ngdoc method
+         * @name  removeEventListener
+         * @methodOf accessimapEditeurDerApp.MapService
+         * 
+         * @description 
+         * Remove one or several listeners
+         *
+         * @param {Array} events
+         * Array of string representing events : [ 'click', 'mousemove' ] for example
+         */
+        function removeEventListener(events) {
+            events.forEach(function(event) {
+                map.removeEventListener(event)
             })
         }
 

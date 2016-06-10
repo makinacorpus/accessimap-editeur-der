@@ -68,10 +68,11 @@
 
                         d3.event.preventDefault();
                         d3.event.stopPropagation();
+                        
+                        hideRadialMenu();
                 
                         var action = d.data.action;
-                        action(target);
-                        hideRadialMenu();
+                        action(target, addRadialMenu);
                     })
                     .appendTo(svg.node())
                     .show(data);
@@ -103,7 +104,6 @@
          * 
          */
         function addRadialMenu(elements) {
-            var that = this;
             elements.on('contextmenu', function(event) {
 
                 // TODO: Block others click...
@@ -111,11 +111,8 @@
                 d3.event.stopPropagation();
 
                 if (menu) menu.hide();
-
-                menu = that.drawMenu(
-                            d3.select(this), 
-                            d3.mouse(svg.node()),
-                            1);
+                menu = drawMenu(d3.select(this), d3.mouse(svg.node()), 1);
+                
             });
 
             // useful if we want to add a visual helper to the user

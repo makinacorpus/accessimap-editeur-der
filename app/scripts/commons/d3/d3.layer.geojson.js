@@ -59,7 +59,7 @@
             _g.append('g').attr('data-name', 'polygons-layer');
             _g.append('g').attr('data-name', 'lines-layer');
             _g.append('g').attr('data-name', 'points-layer');
-            _g.append('g').attr('data-name', 'text-layer');
+            _g.append('g').attr('data-name', 'texts-layer');
         };
 
         function transform(transform) {

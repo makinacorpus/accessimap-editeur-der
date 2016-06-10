@@ -260,14 +260,10 @@
                 .attr('id', 'drawing-layer');
             //.classed('rotable', true);
 
-            drawingGroup.append('g')
-                .attr('id', 'polygons-layer');
-            drawingGroup.append('g')
-                .attr('id', 'lines-layer');
-            drawingGroup.append('g')
-                .attr('id', 'points-layer');
-            drawingGroup.append('g')
-                .attr('id', 'text-layer');
+            drawingGroup.append('g').attr('id', 'polygons-layer');
+            drawingGroup.append('g').attr('id', 'lines-layer');
+            drawingGroup.append('g').attr('id', 'points-layer');
+            drawingGroup.append('g').attr('id', 'texts-layer');
         };
 
         /**

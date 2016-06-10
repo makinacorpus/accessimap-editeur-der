@@ -48,11 +48,11 @@
             updateMarker                  : updateMarker,
         }
 
-        var _svgDrawing;
+        var svgDrawing;
         
-        function init(svgDrawing, svgMenu, getCurrentZoom) {
+        function init(_svgDrawing, svgMenu, getCurrentZoom) {
             RadialMenuService.init(svgMenu, getCurrentZoom);
-            _svgDrawing = svgDrawing;
+            svgDrawing = _svgDrawing;
         }
 
         /**
@@ -102,7 +102,7 @@
 
             var iid = UtilService.getiid(),
 
-                feature = d3.select(_svgDrawing).node()
+                feature = svgDrawing
                     .select('g[data-name="points-layer"]')
                     .append('path')
                         .classed('link_' + iid, true)
@@ -158,7 +158,7 @@
                 feature.classed('edition', false);
             } else { // first click
                 var iid = UtilService.getiid();
-                feature = d3.select(_svgDrawing).node().select('g[data-name="polygons-layer"]') 
+                feature = svgDrawing.select('g[data-name="polygons-layer"]') 
                     .append('circle')
                     .attr('cx', x)
                     .attr('cy', y)
@@ -207,7 +207,7 @@
         }
 
         function beginLineOrPolygon(x, y, style, color, contour, mode, lastPoint, lineEdit) {
-            var drawingLayer = d3.select(_svgDrawing).node().select('g[data-name="' + mode + 's-layer"]'),
+            var drawingLayer = svgDrawing.select('g[data-name="' + mode + 's-layer"]'),
                 path,
                 pathInner;
 
@@ -283,7 +283,7 @@
 
         function drawHelpLineOrPolygon(x, y, style, color, contour, mode, lastPoint) {
             if (lastPoint) {
-                var drawingLayer = d3.select(_svgDrawing).node().select('g[data-name="' + mode + 's-layer"]'),
+                var drawingLayer = svgDrawing.select('g[data-name="' + mode + 's-layer"]'),
                     line;
 
                 if (d3.select('.ongoing')[0][0]) {
@@ -364,7 +364,7 @@
             var d = 'Texte',
                 iid = UtilService.getiid();
 
-            d3.select(_svgDrawing).node().select('g[data-name="text-layer"]') // d3.select('#text-layer')
+            svgDrawing.select('g[data-name="texts-layer"]')
                 .append('text')
                 .attr('x', x)
                 .attr('y', y - 35)
@@ -382,7 +382,7 @@
                 .attr('data-link', iid)
                 .text('');
 
-            d3.select(_svgDrawing).node().select('g[data-name="text-layer"]') // d3.select('#text-layer')
+            svgDrawing.select('g[data-name="texts-layer"]')
                 .selectAll('foreignObject#textEdition')
                 .data([d])
                 .enter()
