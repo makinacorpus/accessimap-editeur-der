@@ -157,6 +157,8 @@
                     feature.attr('r', r)
                         .attr('e-style', style.id)
                         .attr('e-color', color.color)
+                        .attr('data-origin-x', '')
+                        .attr('data-origin-y', '')
                         .classed('edition', false)
                 } else {
                     feature.remove()
@@ -217,24 +219,22 @@
                     newX = originX + ( deltaX / 2 ),
                     newY = originY + ( deltaY / 2 ),
 
-                    xOffset = x - originX,
-                    yOffset = y - originY,
-                    r = Math.sqrt(Math.pow(xOffset, 2) + Math.pow(yOffset, 2));
+                    xOffset = Math.abs(x - originX),
+                    yOffset = Math.abs(y - originY);
 
                 // if shift key, we draw a circle, and not an ellipse
-                // TODO: fix the coordinates
                 if (shiftKeyPressed) {
                     if (xOffset < yOffset) {
-                        yOffset = xOffset
-                        newY = originY + ( deltaX / 2 )
+                        xOffset = yOffset
+                        newX = originX + ( Math.abs(deltaY) / 2 * ( x < originX ? -1 : 1 ) )
                     } else {
-                        xOffset = yOffset;
-                        newX = originX + ( deltaY / 2 )
+                        yOffset = xOffset;
+                        newY = originY + ( Math.abs(deltaX) / 2 * ( y < originY ? -1 : 1 ) )
                     }
                 }
 
-                feature.attr('rx', Math.abs(xOffset) / 2)
-                       .attr('ry', Math.abs(yOffset) / 2)
+                feature.attr('rx', xOffset / 2)
+                       .attr('ry', yOffset / 2)
                        .attr('cx', newX)
                        .attr('cy', newY);
             }
