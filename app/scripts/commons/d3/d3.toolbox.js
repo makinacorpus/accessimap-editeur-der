@@ -151,18 +151,26 @@
                 var xOffset = x - feature.attr('cx'),
                     yOffset = y - feature.attr('cy'),
                     r = Math.sqrt(Math.pow(xOffset, 2) 
-                                + Math.pow(yOffset, 2));
-                feature.attr('r', r)
-                    .attr('e-style', style.id)
-                    .attr('e-color', color.color);
-                feature.classed('edition', false);
+                                + Math.pow(yOffset, 2))
+
+                if (r > 0) {
+                    feature.attr('r', r)
+                        .attr('e-style', style.id)
+                        .attr('e-color', color.color)
+                        .classed('edition', false)
+                } else {
+                    feature.remove()
+                }
+
             } else { // first click
                 var iid = UtilService.getiid();
                 feature = svgDrawing.select('g[data-name="polygons-layer"]') 
-                    .append('circle')
+                    .append('ellipse')
                     .attr('cx', x)
                     .attr('cy', y)
                     .classed('link_' + iid, true)
+                    .attr('data-origin-x', x)
+                    .attr('data-origin-y', y)
                     .attr('data-link', iid)
                     .attr('data-type', 'circle')
                     .attr('data-from', 'drawing')
@@ -193,16 +201,42 @@
          * @param  {integer} y     
          * Y coordinate of the point
          * 
+         * @param  {boolean} shiftKeyPressed     
+         * Whether or not the shift key is pressed
+         * 
          */
-        function updateCircleRadius(x, y) {
+        function updateCircleRadius(x, y, shiftKeyPressed) {
             var feature = d3.select('.edition');
 
             if (feature[0][0]) {
-                var xOffset = x - feature.attr('cx'),
-                    yOffset = y - feature.attr('cy'),
-                    r = Math.sqrt(Math.pow(xOffset, 2) 
-                                + Math.pow(yOffset, 2));
-                feature.attr('r', r);
+
+                var originX = parseFloat(feature.attr('data-origin-x')),
+                    originY = parseFloat(feature.attr('data-origin-y')),
+                    deltaX = x - originX,
+                    deltaY = y - originY,
+                    newX = originX + ( deltaX / 2 ),
+                    newY = originY + ( deltaY / 2 ),
+
+                    xOffset = x - originX,
+                    yOffset = y - originY,
+                    r = Math.sqrt(Math.pow(xOffset, 2) + Math.pow(yOffset, 2));
+
+                // if shift key, we draw a circle, and not an ellipse
+                // TODO: fix the coordinates
+                if (shiftKeyPressed) {
+                    if (xOffset < yOffset) {
+                        yOffset = xOffset
+                        newY = originY + ( deltaX / 2 )
+                    } else {
+                        xOffset = yOffset;
+                        newX = originX + ( deltaY / 2 )
+                    }
+                }
+
+                feature.attr('rx', Math.abs(xOffset) / 2)
+                       .attr('ry', Math.abs(yOffset) / 2)
+                       .attr('cx', newX)
+                       .attr('cy', newY);
             }
         }
 

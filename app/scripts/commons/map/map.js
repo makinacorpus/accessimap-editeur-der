@@ -30,6 +30,7 @@
         this.initMap                = initMap;
         this.resizeFunction         = resizeFunction;
         
+        this.addEventListener       = addEventListener;
         this.addClickListener       = addClickListener;
         this.addMouseMoveListener   = addMouseMoveListener;
         this.addDoubleClickListener = addDoubleClickListener;
@@ -180,6 +181,13 @@
 
         var listeners = [];
 
+        function addEventListener(events, listener) {
+            events.forEach(function(event) {
+                listeners.push({event: event, function: listener})
+                map.addEventListener(event, listener)
+            })
+        }
+
         /**
          * @ngdoc method
          * @name  addClickListener
@@ -192,8 +200,7 @@
          * function executed when click event is fired
          */
         function addClickListener(listener) {
-            listeners.push({event: 'click', function: listener})
-            map.addEventListener('click', listener);
+            addEventListener([ 'click' ], listener)
         }
 
         /**
@@ -208,8 +215,7 @@
          * function executed when mousemove event is fired
          */
         function addMouseMoveListener(listener) {
-            listeners.push({event: 'mousemove', function: listener})
-            map.addEventListener('mousemove', listener);
+            addEventListener([ 'mousemove' ], listener)
         }
 
         /**
@@ -224,8 +230,7 @@
          * function executed when doubleclick event is fired
          */
         function addDoubleClickListener(listener) {
-            listeners.push({event: 'contextmenu', function: listener})
-            map.addEventListener('contextmenu', listener);
+            addEventListener([ 'contextmenu' ], listener)
         }
 
         /**

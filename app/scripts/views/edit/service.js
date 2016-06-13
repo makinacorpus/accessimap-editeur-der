@@ -198,7 +198,8 @@
 
             initMode();
 
-            MapService.addClickListener(function(e) {
+            MapService.addEventListener([ 'mousedown', 'mouseup' ] , function(e) {
+                e.originalEvent.stopImmediatePropagation()
                 var p = projDrawing.latLngToLayerPoint(e.latlng),
                     drawingParameters = getDrawingParameter();
                 DrawingService.toolbox.drawCircle(p.x, 
@@ -211,7 +212,7 @@
             MapService.addMouseMoveListener(function(e) {
                 var p = projDrawing.latLngToLayerPoint(e.latlng),
                     drawingParameters = getDrawingParameter();
-                DrawingService.toolbox.updateCircleRadius(p.x, p.y);
+                DrawingService.toolbox.updateCircleRadius(p.x, p.y, e.originalEvent.shiftKey);
             })
 
         }
