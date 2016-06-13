@@ -268,14 +268,9 @@
             initMode();
 
             MapService.addClickListener(function(e) {
-                // first, we try to know if we are clicking on a text feature or not
-                
-                // then, if yes, we are just editing the current text feature
-                
-                // else, we draw a new text feature
-                
                 var p = projDrawing.latLngToLayerPoint(e.latlng),
                     drawingParameters = getDrawingParameter();
+
                 DrawingService.toolbox.writeText(p.x, p.y, drawingParameters.font, drawingParameters.fontColor)
                     .then(function addAgainClickListener(element) {
                         MapService.addClickListener(function(e) {

@@ -388,7 +388,6 @@
         }
 
         function setTextEditable(textElement) {
-            console.log(textElement)
             
             var deferred = $q.defer(),
                 text = textElement.text() || 'Texte';
@@ -413,6 +412,9 @@
                     .append('xhtml:p')
                     .attr('contentEditable', 'true')
                     .text(text)
+                    .on('click', function() {
+                        d3.event.stopPropagation();
+                    })
                     .on('mousedown', function() {
                         d3.event.stopPropagation();
                     })
@@ -447,8 +449,8 @@
                         d3.select('.edition').classed('edition', false);
                         textElement.style('cursor','text')
                             .on('click', function(event) {
+                                // when we click in the text, we will enter the edition mode
                                 d3.event.stopPropagation();
-                                // enter edition mode
                                 setTextEditable(d3.select(this))
                             })
                             .attr('id', null);
