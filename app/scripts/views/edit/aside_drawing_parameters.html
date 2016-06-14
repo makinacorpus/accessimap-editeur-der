@@ -46,7 +46,14 @@
         ng-class="{ 'active' : $ctrl.mode == 'circle' }" 
         class="btn btn-default">
         <span class="fa fa-pencil" aria-hidden="true"></span> 
-        Cercle
+        Cercle / Ellipses
+    </a>
+    <a 
+        ng-click="$ctrl.enableDrawingMode('square')" 
+        ng-class="{ 'active' : $ctrl.mode == 'square' }" 
+        class="btn btn-default">
+        <span class="fa fa-pencil" aria-hidden="true"></span> 
+        Carré / Rectangle
     </a>
     <a 
         ng-click="$ctrl.enableDrawingMode('polygon')" 

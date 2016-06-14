@@ -421,6 +421,11 @@
                     EditService.enableCircleMode(getDrawingParameters);
                     break;
 
+                case 'square':
+                    setStyles('polygon');
+                    EditService.enableSquareMode(getDrawingParameters);
+                    break;
+
                 case 'line':
                 case 'polygon':
                     setStyles($ctrl.mode);

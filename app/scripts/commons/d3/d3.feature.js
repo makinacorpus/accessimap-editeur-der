@@ -239,12 +239,12 @@
 
                     d3.select(temporaryPath)
                         .classed('moved', false)
-                        .attr('opacity', 1)
+                        .attr('opacity', '')
                         .attr('transform', transformString);
 
                     d3.select(temporaryCircle)
                         .classed('moved', false)
-                        .attr('opacity', 1)
+                        .attr('opacity', '')
                         .attr('transform', transformString);
 
                     handlers.removeEventListener(['click', 'mousemove']);

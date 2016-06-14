@@ -68,6 +68,7 @@
         this.enablePointMode               = enablePointMode;
         this.drawPoint                     = DrawingService.toolbox.drawPoint;
         this.enableCircleMode              = enableCircleMode;
+        this.enableSquareMode              = enableSquareMode;
         this.drawCircle                    = DrawingService.toolbox.drawCircle;
         this.enableLineOrPolygonMode       = enableLineOrPolygonMode;
         this.enableTextMode                = enableTextMode;
@@ -198,22 +199,83 @@
 
             initMode();
 
-            MapService.addEventListener([ 'mousedown', 'mouseup' ] , function(e) {
-                e.originalEvent.stopImmediatePropagation()
-                var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    drawingParameters = getDrawingParameter();
-                DrawingService.toolbox.drawCircle(p.x, 
-                                        p.y, 
-                                        drawingParameters.style, 
-                                        drawingParameters.color, 
-                                        drawingParameters.contour)
+            MapService.addEventListener([ 'click', 'contextmenu' ], function(e) {
+                e.originalEvent.stopImmediatePropagation();
             })
 
-            MapService.addMouseMoveListener(function(e) {
-                var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    drawingParameters = getDrawingParameter();
-                DrawingService.toolbox.updateCircleRadius(p.x, p.y, e.originalEvent.shiftKey);
+            MapService.addEventListener([ 'mousedown', 'mouseup' ] , function(e) {
+                // only left click
+                if (e.originalEvent.button === 0) {
+                    
+                    e.originalEvent.stopImmediatePropagation()
+                    var p = projDrawing.latLngToLayerPoint(e.latlng),
+                        drawingParameters = getDrawingParameter();
+                    
+                    DrawingService.toolbox.drawCircle(p.x, p.y, 
+                                            drawingParameters.style, 
+                                            drawingParameters.color, 
+                                            drawingParameters.contour)
+
+                    MapService.addMouseMoveListener(function(e) {
+                        var p = projDrawing.latLngToLayerPoint(e.latlng),
+                            drawingParameters = getDrawingParameter();
+                        DrawingService.toolbox.updateCircleRadius(p.x, p.y, e.originalEvent.shiftKey);
+                    })
+                    
+                }
             })
+
+
+        }
+
+        function enableSquareMode(getDrawingParameter) {
+
+            initMode();
+
+            MapService.addEventListener([ 'click', 'contextmenu' ], function(e) {
+                e.originalEvent.stopImmediatePropagation();
+            })
+
+            MapService.addEventListener([ 'mousedown' ] , function(e) {
+                // only left click
+                e.originalEvent.stopImmediatePropagation()
+                if (e.originalEvent.button === 0) {
+
+                    var p = projDrawing.latLngToLayerPoint(e.latlng),
+                        drawingParameters = getDrawingParameter();
+
+                    DrawingService.toolbox.drawSquare(p.x, p.y, 
+                                                    drawingParameters.style, 
+                                                    drawingParameters.color, 
+                                                    drawingParameters.contour)
+
+                    MapService.addMouseMoveListener(function(e) {
+
+                        var p = projDrawing.latLngToLayerPoint(e.latlng),
+                            drawingParameters = getDrawingParameter();
+
+                        DrawingService.toolbox.updateSquare(p.x, p.y, e.originalEvent.shiftKey);
+
+                        MapService.addEventListener([ 'mouseup' ] , function(e) {
+                            // only left click
+                            e.originalEvent.stopImmediatePropagation()
+                            if (e.originalEvent.button === 0) {
+                                var p = projDrawing.latLngToLayerPoint(e.latlng),
+                                    drawingParameters = getDrawingParameter();
+                                DrawingService.toolbox.drawSquare(p.x, p.y, 
+                                                                drawingParameters.style, 
+                                                                drawingParameters.color, 
+                                                                drawingParameters.contour)
+                                enableSquareMode(getDrawingParameter)
+                            }
+                        })
+
+                    })
+
+                }
+
+            })
+
 
         }
 
