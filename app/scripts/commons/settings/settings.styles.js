@@ -1,4 +1,5 @@
-// jscs:disable maximumNumberOfLines
+// jscs:disable maximumNumberOfLines 
+// jscs:disable maximumLineLength
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.SettingsStyles

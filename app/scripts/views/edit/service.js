@@ -421,10 +421,12 @@
 
         function init(drawingFormat, legendFormat) {
 
-            currentDrawingFormat = (drawingFormat === undefined && SettingsService.FORMATS[drawingFormat] === undefined) 
+            currentDrawingFormat = (drawingFormat === undefined 
+                                    && SettingsService.FORMATS[drawingFormat] === undefined) 
                                     ? SettingsService.FORMATS[SettingsService.DEFAULT_DRAWING_FORMAT]
                                     : SettingsService.FORMATS[drawingFormat];
-            currentLegendFormat = (legendFormat === undefined && SettingsService.FORMATS[legendFormat] === undefined) 
+            currentLegendFormat = (legendFormat === undefined 
+                                    && SettingsService.FORMATS[legendFormat] === undefined) 
                                     ? SettingsService.FORMATS[SettingsService.DEFAULT_LEGEND_FORMAT]
                                     : SettingsService.FORMATS[legendFormat];
 
@@ -517,7 +519,7 @@
 
         function changeLegendFormat(format) {
             LegendService.draw(SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint, 
-                                                SettingsService.FORMATS[format].height / SettingsService.ratioPixelPoint);
+                               SettingsService.FORMATS[format].height / SettingsService.ratioPixelPoint);
         }
 
 
