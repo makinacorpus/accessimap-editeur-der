@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    function RadialMenuService(settings, FeatureService, MapService) {
+    function RadialMenuService(SettingsService, FeatureService, MapService) {
 
         this.drawMenu       = drawMenu;
         this.addRadialMenu  = addRadialMenu;
@@ -55,7 +55,7 @@
             var type = target.attr('data-type') ? target.attr('data-type') : 'default' ;
 
             if (type) {
-                var data = settings.ACTIONS[type],
+                var data = SettingsService.ACTIONS[type],
 
                     m = new d3.radialMenu()
                     .radius(50)
@@ -151,6 +151,6 @@
 
     angular.module(moduleApp).service('RadialMenuService', RadialMenuService);
 
-    RadialMenuService.$inject = ['settings', 'FeatureService', 'MapService'];
+    RadialMenuService.$inject = ['SettingsService', 'FeatureService', 'MapService'];
 
 })();

@@ -1,8 +1,9 @@
+// jscs:disable maximumNumberOfLines
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.EditService
  * 
- * @requires accessimapEditeurDerApp.settings
+ * @requires accessimapEditeurDerApp.SettingsService
  * @requires accessimapEditeurDerApp.MapService
  * @requires accessimapEditeurDerApp.DrawingService
  * @requires accessimapEditeurDerApp.LegendService
@@ -23,17 +24,15 @@
 (function() {
     'use strict';
 
-    function EditService($q, settings, MapService, DrawingService, LegendService, 
+    function EditService($q, SettingsService, MapService, DrawingService, LegendService, 
         DefsService, InteractionService, ExportService, UtilService, ImportService, FeatureService) {
 
         this.init          = init;
-        this.settings      = settings;
+        this.settings      = SettingsService;
         this.featureIcon   = DrawingService.toolbox.featureIcon;
         this.enableAddPOI  = enableAddPOI;
         this.insertOSMData = insertOSMData;
         this.disableAddPOI = disableAddPOI;
-
-        this.settings      = settings;
 
         // Drawing services
         // TODO : reset action has to work correctly for event...
@@ -422,16 +421,16 @@
 
         function init(drawingFormat, legendFormat) {
 
-            currentDrawingFormat = (drawingFormat === undefined && settings.FORMATS[drawingFormat] === undefined) 
-                                    ? settings.FORMATS[settings.DEFAULT_DRAWING_FORMAT]
-                                    : settings.FORMATS[drawingFormat];
-            currentLegendFormat = (legendFormat === undefined && settings.FORMATS[legendFormat] === undefined) 
-                                    ? settings.FORMATS[settings.DEFAULT_LEGEND_FORMAT]
-                                    : settings.FORMATS[legendFormat];
+            currentDrawingFormat = (drawingFormat === undefined && SettingsService.FORMATS[drawingFormat] === undefined) 
+                                    ? SettingsService.FORMATS[SettingsService.DEFAULT_DRAWING_FORMAT]
+                                    : SettingsService.FORMATS[drawingFormat];
+            currentLegendFormat = (legendFormat === undefined && SettingsService.FORMATS[legendFormat] === undefined) 
+                                    ? SettingsService.FORMATS[SettingsService.DEFAULT_LEGEND_FORMAT]
+                                    : SettingsService.FORMATS[legendFormat];
 
             MapService.initMap('workspace', 
                             drawingFormat, 
-                            settings.ratioPixelPoint,
+                            SettingsService.ratioPixelPoint,
                             MapService.resizeFunction);
 
             // Background used to import images, svg or pdf to display a background helper
@@ -498,8 +497,8 @@
             LegendService.initLegend('#legend', 
                                     currentLegendFormat.width, 
                                     currentLegendFormat.height, 
-                                    settings.margin, 
-                                    settings.ratioPixelPoint);
+                                    SettingsService.margin, 
+                                    SettingsService.ratioPixelPoint);
 
             FeatureService.init(selDrawing, projDrawing, MapService)
 
@@ -509,16 +508,16 @@
             // first, we set the initial state, center & zoom
             resetView()
             DrawingService.layers.overlay.setFormat(format);
-            MapService.setMinimumSize(settings.FORMATS[format].width / settings.ratioPixelPoint,
-                                        settings.FORMATS[format].height / settings.ratioPixelPoint);
+            MapService.setMinimumSize(SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint,
+                                        SettingsService.FORMATS[format].height / SettingsService.ratioPixelPoint);
             MapService.resizeFunction();
             center = DrawingService.layers.overlay.getCenter();
             resetView();
         }
 
         function changeLegendFormat(format) {
-            LegendService.draw(settings.FORMATS[format].width / settings.ratioPixelPoint, 
-                                                settings.FORMATS[format].height / settings.ratioPixelPoint);
+            LegendService.draw(SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint, 
+                                                SettingsService.FORMATS[format].height / SettingsService.ratioPixelPoint);
         }
 
 
@@ -532,10 +531,10 @@
          * Could be a geojson feature or a drawing feature.
          * 
          * @param {Object} style 
-         * settings.STYLES object
+         * SettingsService.STYLES object
          * 
          * @param {Object} color 
-         * settings.COLORS object
+         * SettingsService.COLORS object
          */
         function updatePoint(style) {
 
@@ -583,10 +582,10 @@
             MapService.addClickListener(function(e) {
 
                 var currentParameters = _currentParametersFn(),
-                styleChosen = settings.ALL_STYLES.find(function(element, index, array) {
+                styleChosen = SettingsService.ALL_STYLES.find(function(element, index, array) {
                     return element.id === currentParameters.style.id;
                 }),
-                colorChosen = settings.ALL_COLORS.find(function(element, index, array) {
+                colorChosen = SettingsService.ALL_COLORS.find(function(element, index, array) {
                     return element.id === currentParameters.color.id;
                 })
                 // TODO: prevent any future click 
@@ -594,7 +593,7 @@
                 MapService.changeCursor('progress');
                 
                 MapService
-                    .retrieveData([e.latlng.lng,  e.latlng.lat], settings.QUERY_LIST[0])
+                    .retrieveData([e.latlng.lng,  e.latlng.lat], SettingsService.QUERY_LIST[0])
                     .then(function successCallback(osmGeojson) {
                         if (!osmGeojson) {
                             _errorCallback('Erreur lors de la recherche de POI... Merci de recommencer.')
@@ -605,9 +604,9 @@
                                     null, 
                                     'node_' + osmGeojson.features[0].properties.id, 
                                     true, 
-                                    settings.QUERY_POI, 
+                                    SettingsService.QUERY_POI, 
                                     styleChosen, 
-                                    settings.STYLES[settings.QUERY_POI.type], 
+                                    SettingsService.STYLES[SettingsService.QUERY_POI.type], 
                                     colorChosen, null, null)
                         } else {
                             _warningCallback('Aucun POI trouvé à cet endroit... Merci de cliquer ailleurs !?')
@@ -642,7 +641,7 @@
          * Retrieve data from nominatim (via MapService) for a specific 'query'
          * 
          * @param {function} query 
-         * Query settings from settings.QUERY_LIST
+         * Query SettingsService from SettingsService.QUERY_LIST
          * 
          * @param {function} _successCallback 
          * Callback function called when data has been retrieved, data is passed in first argument
@@ -655,13 +654,13 @@
             MapService.changeCursor('progress');
 
             var currentParameters = _currentParametersFn(),
-            styleChosen = settings.ALL_STYLES.find(function(element, index, array) {
+            styleChosen = SettingsService.ALL_STYLES.find(function(element, index, array) {
                 return element.id === currentParameters.style.id;
             }),
-            colorChosen = settings.ALL_COLORS.find(function(element, index, array) {
+            colorChosen = SettingsService.ALL_COLORS.find(function(element, index, array) {
                 return element.name === currentParameters.color.name;
             }),
-            queryChosen = settings.QUERY_LIST.find(function(element, index, array) {
+            queryChosen = SettingsService.QUERY_LIST.find(function(element, index, array) {
                 return element.id === query.id;
             }),
             checkboxModel = { contour: currentParameters.contour }
@@ -680,7 +679,7 @@
                                 false, 
                                 queryChosen, 
                                 styleChosen, 
-                                settings.STYLES[queryChosen.type], 
+                                SettingsService.STYLES[queryChosen.type], 
                                 colorChosen, checkboxModel, null)
                     } else {
                         _warningCallback('Aucune donnée trouvée... Merci de chercher autre chose !?')
@@ -1018,7 +1017,7 @@
     angular.module(moduleApp).service('EditService', EditService);
 
     EditService.$inject = ['$q',
-                            'settings', 
+                            'SettingsService', 
                             'MapService', 
                             'DrawingService', 
                             'LegendService',

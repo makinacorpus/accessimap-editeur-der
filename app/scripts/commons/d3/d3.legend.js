@@ -11,7 +11,7 @@
 (function() {
     'use strict';
 
-    function LegendService(settings) {
+    function LegendService(SettingsService) {
 
         this.initLegend        = initLegend;
         this.showFontBraille   = showFontBraille;
@@ -297,7 +297,7 @@
                     if (colorChosen && colorChosen.color !== 'none') {
                         v += '_' + colorChosen.color;
                     }
-                    symbol.attr('fill', settings.POLYGON_STYLES[v].url());
+                    symbol.attr('fill', SettingsService.POLYGON_STYLES[v].url());
                 } else {
                     symbol.attr(k, v);
                 }
@@ -327,6 +327,6 @@
 
     angular.module(moduleApp).service('LegendService', LegendService);
 
-    LegendService.$inject = ['settings'];
+    LegendService.$inject = ['SettingsService'];
 
 })();

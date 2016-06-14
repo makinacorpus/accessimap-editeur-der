@@ -8,22 +8,22 @@ describe('Controller: HomeController', function () {
     var HomeController,
         $scope,
         $location,
-        settings,
+        SettingsService,
         $rootScope;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function (_$controller_, _$rootScope_, _$location_, _settings_) {
+    beforeEach(inject(function (_$controller_, _$rootScope_, _$location_, _SettingsService_) {
 
-        $location = _$location_;
-        settings = _settings_;
-        $rootScope = _$rootScope_;
-        $scope = $rootScope.$new();
+        $location       = _$location_;
+        SettingsService = _SettingsService_;
+        $rootScope      = _$rootScope_;
+        $scope          = $rootScope.$new();
         
 
         HomeController = _$controller_('HomeController', {
-            $scope: $scope,
-            $location: $location,
-            settings: settings
+            $scope          : $scope,
+            $location       : $location,
+            SettingsService : SettingsService
         });
     }));
 
@@ -34,9 +34,6 @@ describe('Controller: HomeController', function () {
         expect($rootScope.displayFooter).toBeDefined();
         expect($rootScope.displayFooter).toBe(true);
 
-        expect(HomeController.mapFormat).toBe('landscapeA4');
-        expect(HomeController.legendFormat).toBe('landscapeA4');
-        expect(HomeController.formats).toBeDefined();
     });
 
     it('should go to /edit when we call goToEdit', function() {

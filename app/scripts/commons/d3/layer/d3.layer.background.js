@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    function LayerBackgroundService(settings) {
+    function LayerBackgroundService(SettingsService) {
 
         this.createLayer = createLayer;
         this.append      = append;
@@ -22,8 +22,8 @@
 
 
         function createLayer(target, format, projection) {
-            _width      = settings.FORMATS[format].width / settings.ratioPixelPoint;
-            _height     = settings.FORMATS[format].height / settings.ratioPixelPoint;
+            _width      = SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint;
+            _height     = SettingsService.FORMATS[format].height / SettingsService.ratioPixelPoint;
             _target     = target;
             _projection = projection;
             
@@ -89,6 +89,6 @@
 
     angular.module(moduleApp).service('LayerBackgroundService', LayerBackgroundService);
 
-    LayerBackgroundService.$inject = ['settings'];
+    LayerBackgroundService.$inject = ['SettingsService'];
 
 })();

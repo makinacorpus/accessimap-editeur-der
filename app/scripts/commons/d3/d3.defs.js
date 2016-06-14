@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    function DefsService(settings) {
+    function DefsService(SettingsService) {
 
         this.createDefs = createDefs;
 
@@ -57,8 +57,8 @@
                     .attr('d', 'M1,1 L1,9')
                     .attr('style', 'fill:none;stroke:#000000;stroke-opacity:1');
 
-            Object.keys(settings.POLYGON_STYLES).forEach(function(value, index, array) {
-                _defs.call(settings.POLYGON_STYLES[value]);
+            Object.keys(SettingsService.POLYGON_STYLES).forEach(function(value, index, array) {
+                _defs.call(SettingsService.POLYGON_STYLES[value]);
             });
 
         };
@@ -67,6 +67,6 @@
 
     angular.module(moduleApp).service('DefsService', DefsService);
 
-    DefsService.$inject = ['settings'];
+    DefsService.$inject = ['SettingsService'];
 
 })();

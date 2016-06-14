@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    function LayerOverlayService(settings) {
+    function LayerOverlayService(SettingsService) {
 
         this.createLayer     = createLayer;
         this.refresh         = refresh;
@@ -58,7 +58,7 @@
          * Projection function to use for conversion between GPS & layer point
          */
         function createLayer(target, format, projection) {
-            _margin     = settings.margin;
+            _margin     = SettingsService.margin;
             _target     = target;
             _projection = projection;
 
@@ -207,8 +207,8 @@
 
         function setFormat(format) {
             _format     = format;
-            _width      = settings.FORMATS[format].width / settings.ratioPixelPoint;
-            _height     = settings.FORMATS[format].height / settings.ratioPixelPoint;
+            _width      = SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint;
+            _height     = SettingsService.FORMATS[format].height / SettingsService.ratioPixelPoint;
             draw();
         }
 
@@ -296,6 +296,6 @@
 
     angular.module(moduleApp).service('LayerOverlayService', LayerOverlayService);
 
-    LayerOverlayService.$inject = ['settings'];
+    LayerOverlayService.$inject = ['SettingsService'];
 
 })();

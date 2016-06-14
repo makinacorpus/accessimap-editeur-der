@@ -7,7 +7,7 @@
 (function() {
     'use strict';
 
-    function ToolboxService(RadialMenuService, settings, UtilService, 
+    function ToolboxService(RadialMenuService, SettingsService, UtilService, 
             ToolboxTriangleService, ToolboxRectangleService, 
             ToolboxEllipseService, ToolboxTextService, ToolboxPolylineService) {
 
@@ -90,10 +90,10 @@
          * Y coordinate of the point
          * 
          * @param  {Object} style 
-         * settings.STYLE of the point
+         * SettingsService.STYLE of the point
          * 
          * @param  {Object} color 
-         * settings.COLOR of the point
+         * SettingsService.COLOR of the point
          * 
          */
         function drawPoint(x, y, style, color) {
@@ -136,7 +136,7 @@
                 path.attr('e-style', style.id);
             } else {
                 // no style, we just find the current style of the feature
-                settings.ALL_STYLES.forEach(function (item, index, array) {
+                SettingsService.ALL_STYLES.forEach(function (item, index, array) {
                     if (item.id === currentStyleId) {
                         style = item;
                     }
@@ -147,7 +147,7 @@
                 path.attr('e-color', color.color);
             } else {
                 // no color, we just find the current color of the feature
-                settings.ALL_COLORS.forEach(function (item, index, array) {
+                SettingsService.ALL_COLORS.forEach(function (item, index, array) {
                     if (item.color === currentColorName) {
                         color = item;
                     }
@@ -184,7 +184,7 @@
                     if (colorChosen && colorChosen.color !== 'none') {
                         v += '_' + colorChosen.color;
                     }
-                    path.style('fill', settings.POLYGON_STYLES[v].url());
+                    path.style('fill', SettingsService.POLYGON_STYLES[v].url());
                 } else {
                     path.style(k, v);
                 }
@@ -259,7 +259,7 @@
                     v = attribute.v;
 
                 if (k === 'fill-pattern') {
-                    symbol.attr('fill', settings.POLYGON_STYLES[v].url());
+                    symbol.attr('fill', SettingsService.POLYGON_STYLES[v].url());
                 } else {
                     symbol.attr(k, v);
                 }
@@ -272,7 +272,7 @@
     
     angular.module(moduleApp).service('ToolboxService', ToolboxService);
 
-    ToolboxService.$inject = ['RadialMenuService', 'settings', 'UtilService',
+    ToolboxService.$inject = ['RadialMenuService', 'SettingsService', 'UtilService',
                             'ToolboxTriangleService', 'ToolboxRectangleService', 'ToolboxEllipseService', 
                             'ToolboxTextService', 'ToolboxPolylineService'];
 

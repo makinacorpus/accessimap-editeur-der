@@ -6,6 +6,7 @@
         "beforeOpeningCurlyBrace": true
     },
     "maximumLineLength": 120,
+    "maximumNumberOfLines": 500,
     "requirePaddingNewlinesBeforeKeywords": [
         'do',
         'for',

@@ -4,7 +4,7 @@
  * @requires accessimapEditeurDerApp.LayerService
  * @requires accessimapEditeurDerApp.ToolboxService
  * @requires accessimapEditeurDerApp.FeatureService
- * @requires accessimapEditeurDerApp.settings
+ * @requires accessimapEditeurDerApp.SettingsService
  * @description
  * Service providing drawing functions
  * Provide functions to 
@@ -14,7 +14,7 @@
 (function() {
     'use strict';
 
-    function DrawingService(LayerService, ToolboxService, settings) {
+    function DrawingService(LayerService, ToolboxService, SettingsService) {
 
         this.initDrawing     = initDrawing;
         
@@ -52,6 +52,6 @@
 
     angular.module(moduleApp).service('DrawingService', DrawingService);
 
-    DrawingService.$inject = ['LayerService', 'ToolboxService', 'settings'];
+    DrawingService.$inject = ['LayerService', 'ToolboxService', 'SettingsService'];
 
 })();

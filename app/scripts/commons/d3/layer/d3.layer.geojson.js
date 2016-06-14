@@ -1,3 +1,4 @@
+// jscs:disable maximumNumberOfLines
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.LayerGeoJSONService
@@ -11,7 +12,7 @@
 (function() {
     'use strict';
 
-    function LayerGeoJSONService(settings, LegendService, RadialMenuService) {
+    function LayerGeoJSONService(SettingsService, LegendService, RadialMenuService) {
 
         var _geojson = [],
             _projection,
@@ -238,10 +239,10 @@
          * specific string identifying this address
          * useful to erase the d3 node
          * 
-         * @param  {settings.STYLES} style
+         * @param  {SettingsService.STYLES} style
          * style of the point ... ?
          * 
-         * @param  {settings.COLORS} color 
+         * @param  {SettingsService.COLORS} color 
          * Color of the POI
          * 
          */
@@ -261,8 +262,8 @@
                 type: 'point',
                 layer: $.extend(true, {}, point), //deep copy,
                 originallayer: $.extend(true, {}, point), //deep copy
-                style: settings.STYLES.point[0],
-                styleChoices: settings.STYLES.point,
+                style: SettingsService.STYLES.point[0],
+                styleChoices: SettingsService.STYLES.point,
                 rotation: 0
             };
 
@@ -394,7 +395,7 @@
                     return feature[0].style.path(coords.x, coords.y, feature[0].style.radius);
                 });
 
-            // settings style attributes
+            // SettingsService style attributes
             angular.forEach(feature[0].style.style, function(attribute) {
                 var k = attribute.k,
                     v = attribute.v;
@@ -403,7 +404,7 @@
                     if (colorChosen && colorChosen.color !== 'none') {
                         v += '_' + colorChosen.color;
                     }
-                    d3.select('#' + feature[0].id).attr('fill', settings.POLYGON_STYLES[v].url());
+                    d3.select('#' + feature[0].id).attr('fill', SettingsService.POLYGON_STYLES[v].url());
                 } else {
                     d3.select('#' + feature[0].id).attr(k, v);
                 }
@@ -419,7 +420,7 @@
                             v += '_' + colorChosen.color;
                         }
                         d3.select('.' + optionalClass + '#' + feature[0].id)
-                            .attr('fill', settings.POLYGON_STYLES[v].url());
+                            .attr('fill', SettingsService.POLYGON_STYLES[v].url());
                     } else {
                         d3.select('.' + optionalClass + '#' + feature[0].id)
                             .attr(k, v);
@@ -496,7 +497,7 @@
                         v += '_' + _geojson[objectId].color.color;
                     }
                     d3.select('#' + id)
-                        .attr('fill', settings.POLYGON_STYLES[v].url());
+                        .attr('fill', SettingsService.POLYGON_STYLES[v].url());
                 } else {
                     d3.select('#' + id)
                         .attr(k, v);
@@ -509,7 +510,7 @@
                         v = attribute.v;
 
                     if (k === 'fill-pattern') {
-                        d3.select('.inner#' + id).attr('fill', settings.POLYGON_STYLES[v].url());
+                        d3.select('.inner#' + id).attr('fill', SettingsService.POLYGON_STYLES[v].url());
                     } else {
                         d3.select('.inner#' + id).attr(k, v);
                     }
@@ -540,7 +541,7 @@
                     if (_geojson[objectId].color && _geojson[objectId].color.color !== 'none') {
                         v += '_' + _geojson[objectId].color.color;
                     }
-                    symbol.attr('fill', settings.POLYGON_STYLES[v].url());
+                    symbol.attr('fill', SettingsService.POLYGON_STYLES[v].url());
                 } else {
                     symbol.attr(k, v);
                 }
@@ -553,7 +554,7 @@
                         v = attribute.v;
 
                     if (k === 'fill-pattern') {
-                        symbol.attr('fill', settings.POLYGON_STYLES[v].url());
+                        symbol.attr('fill', SettingsService.POLYGON_STYLES[v].url());
                     } else {
                         symbolInner.attr(k, v);
                     }
@@ -623,6 +624,6 @@
 
     angular.module(moduleApp).service('LayerGeoJSONService', LayerGeoJSONService);
 
-    LayerGeoJSONService.$inject = ['settings', 'LegendService', 'RadialMenuService'];
+    LayerGeoJSONService.$inject = ['SettingsService', 'LegendService', 'RadialMenuService'];
 
 })();

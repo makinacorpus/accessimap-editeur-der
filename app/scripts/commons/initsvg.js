@@ -6,7 +6,7 @@
      * @name accessimapEditeurDerApp.initSvg
      * @description Service allowing user to create svg elements
      */
-    function initSvg(settings) {
+    function initSvg(SettingsService) {
 
         /**
          * @ngdoc method
@@ -22,10 +22,10 @@
          */
         this.createBlankSvg = function(mapFormat, legendFormat) {
 
-            var widthMm = settings.FORMATS[mapFormat].width,
-                    legendWidthMm = settings.FORMATS[legendFormat].width,
-                    heightMm = settings.FORMATS[mapFormat].height,
-                    legendHeightMm = settings.FORMATS[legendFormat].height,
+            var widthMm = SettingsService.FORMATS[mapFormat].width,
+                    legendWidthMm = SettingsService.FORMATS[legendFormat].width,
+                    heightMm = SettingsService.FORMATS[mapFormat].height,
+                    legendHeightMm = SettingsService.FORMATS[legendFormat].height,
                     margin = 40,
 
                 mapsvg = this.createDetachedSvg(widthMm, heightMm),
@@ -34,15 +34,15 @@
             this.createDefs(mapsvg);
 
             // Load polygon fill styles taht will be used on common map
-            angular.forEach(settings.POLYGON_STYLES, function(key) {
+            angular.forEach(SettingsService.POLYGON_STYLES, function(key) {
                 mapsvg.call(key);
                 legendsvg.call(key);
             });
 
-            var width = widthMm / settings.ratioPixelPoint,
-                height = heightMm / settings.ratioPixelPoint,
-                legendWidth = legendWidthMm / settings.ratioPixelPoint,
-                legendHeight = legendHeightMm / settings.ratioPixelPoint,
+            var width = widthMm / SettingsService.ratioPixelPoint,
+                height = heightMm / SettingsService.ratioPixelPoint,
+                legendWidth = legendWidthMm / SettingsService.ratioPixelPoint,
+                legendHeight = legendHeightMm / SettingsService.ratioPixelPoint,
 
                 legendContainter = legendsvg.append('g')
                     .attr('width', legendWidth)
@@ -82,9 +82,9 @@
                      .attr('width', width + 'mm')
                      .attr('height', height + 'mm')
                      .attr('viewBox', '0 0 ' 
-                                        + (width / settings.ratioPixelPoint) 
+                                        + (width / SettingsService.ratioPixelPoint) 
                                         + ' ' 
-                                        + (height / settings.ratioPixelPoint));
+                                        + (height / SettingsService.ratioPixelPoint));
         };
 
         /**
@@ -100,9 +100,9 @@
                 .attr('width', width + 'mm')
                 .attr('height', height + 'mm')
                 .attr('viewBox', '0 0 ' 
-                                    + (width / settings.ratioPixelPoint) 
+                                    + (width / SettingsService.ratioPixelPoint) 
                                     + ' ' 
-                                    + (height / settings.ratioPixelPoint));
+                                    + (height / SettingsService.ratioPixelPoint));
         };
 
         /**
@@ -334,5 +334,5 @@
     angular.module(moduleApp)
         .service('initSvg', initSvg);
 
-    initSvg.$inject = ['settings', ];
+    initSvg.$inject = ['SettingsService', ];
 })();

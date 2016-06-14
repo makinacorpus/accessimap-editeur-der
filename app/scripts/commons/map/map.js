@@ -2,7 +2,7 @@
  * @ngdoc service
  * @name accessimapEditeurDerApp.MapService
  * 
- * @requires accessimapEditeurDerApp.settings
+ * @requires accessimapEditeurDerApp.SettingsService
  * @requires accessimapEditeurDerApp.SearchService
  * 
  * @description
@@ -11,7 +11,7 @@
 (function() {
     'use strict';
 
-    function MapService($q, settings, SearchService) {
+    function MapService($q, SettingsService, SearchService) {
 
         var _selectorDOM = '',
             _isMapVisible,
@@ -83,11 +83,11 @@
             _selectorDOM = selectorDOM;
             _isMapVisible = false;
 
-            setMinimumSize(settings.FORMATS[format].width / _ratioPixelPoint, 
-                            settings.FORMATS[format].height / _ratioPixelPoint)
+            setMinimumSize(SettingsService.FORMATS[format].width / _ratioPixelPoint, 
+                            SettingsService.FORMATS[format].height / _ratioPixelPoint)
 
-            map = L.map(_selectorDOM).setView(settings.leaflet.GLOBAL_MAP_CENTER, 
-                                                settings.leaflet.GLOBAL_MAP_DEFAULT_ZOOM);
+            map = L.map(_selectorDOM).setView(SettingsService.leaflet.GLOBAL_MAP_CENTER, 
+                                                SettingsService.leaflet.GLOBAL_MAP_DEFAULT_ZOOM);
             var access_token = 
                 "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw";
             
@@ -368,13 +368,13 @@
         }
 
         function resetZoom() {
-            map.setZoom(settings.leaflet.GLOBAL_MAP_DEFAULT_ZOOM);
+            map.setZoom(SettingsService.leaflet.GLOBAL_MAP_DEFAULT_ZOOM);
         }
 
     }
 
     angular.module(moduleApp).service('MapService', MapService);
 
-    MapService.$inject = ['$q', 'settings', 'SearchService'];
+    MapService.$inject = ['$q', 'SettingsService', 'SearchService'];
 
 })();

@@ -14,7 +14,7 @@
      * - interactions
      * - legend
      */
-    function ImportService(LayerService, InteractionService, LegendService, settings, UtilService) {
+    function ImportService(LayerService, InteractionService, LegendService, SettingsService, UtilService) {
 
         this.importDrawing     = importDrawing;
         this.importInteraction = importInteraction;
@@ -176,7 +176,7 @@
 
         function generateLegend(dataGeoJSON) {
             dataGeoJSON.forEach(function(element, index, array) {
-                var currentStyle = settings.STYLES[element.type].find(function(style, index, array) {
+                var currentStyle = SettingsService.STYLES[element.type].find(function(style, index, array) {
                     return style.id = element.style.id;
                 })
                 LegendService.addToLegend(element, currentStyle, index, element.color, {contour: element.contour})
@@ -214,6 +214,6 @@
 
     angular.module(moduleApp).service('ImportService', ImportService);
 
-    ImportService.$inject = ['LayerService', 'InteractionService', 'LegendService', 'settings', 'UtilService'];
+    ImportService.$inject = ['LayerService', 'InteractionService', 'LegendService', 'SettingsService', 'UtilService'];
 
 })();

@@ -5,7 +5,7 @@
  * 
  * @requires $http
  * @requires $q
- * @requires accessimapEditeurDerApp.settings
+ * @requires accessimapEditeurDerApp.SettingsService
  * 
  * @description
  * Provide functions to get information on nominatim
@@ -13,7 +13,7 @@
 (function() {
     'use strict';
 
-    function SearchService($http, $q, settings) {
+    function SearchService($http, $q, SettingsService) {
 
         this.retrieveData  = retrieveData;
         this.searchAddress = searchAddress;
@@ -56,7 +56,7 @@
                     'Please see the docs to provide an array[x,y] or an object {_southWest,_northEast}.')
             }
 
-            var url = settings.XAPI_URL + '[out:xml];(';
+            var url = SettingsService.XAPI_URL + '[out:xml];(';
 
             for (var i = 0; i < queryChosen.query.length; i++) {
                 url += queryChosen.query[i];
@@ -134,7 +134,7 @@
         function searchAddress(address) {
 
             var deferred = $q.defer(),
-                url = settings.NOMINATIM_URL + address + '?format=json';
+                url = SettingsService.NOMINATIM_URL + address + '?format=json';
 
             $http.get(url)
                 .success(deferred.resolve)
@@ -148,6 +148,6 @@
 
     angular.module(moduleApp).service('SearchService', SearchService);
 
-    SearchService.$inject = ['$http', '$q', 'settings'];
+    SearchService.$inject = ['$http', '$q', 'SettingsService'];
 
 })();

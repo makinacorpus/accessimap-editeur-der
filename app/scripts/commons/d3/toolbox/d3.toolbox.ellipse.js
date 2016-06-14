@@ -36,10 +36,10 @@
          * Y coordinate of the point
          * 
          * @param  {Object} style 
-         * settings.STYLE of the point
+         * SettingsService.STYLE of the point
          * 
          * @param  {Object} color 
-         * settings.COLOR of the point
+         * SettingsService.COLOR of the point
          * 
          * @param  {boolean} contour
          * If true add a shape to the circle
