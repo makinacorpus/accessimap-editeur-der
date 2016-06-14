@@ -33,7 +33,6 @@
 
     }
 
-    angular.module(moduleApp)
-          .service('GeneratorService', GeneratorService);
+    angular.module(moduleApp).service('GeneratorService', GeneratorService);
 
 })();

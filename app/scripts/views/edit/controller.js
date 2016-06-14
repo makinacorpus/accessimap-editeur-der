@@ -426,6 +426,11 @@
                     EditService.enableSquareMode(getDrawingParameters);
                     break;
 
+                case 'triangle':
+                    setStyles('polygon');
+                    EditService.enableTriangleMode(getDrawingParameters);
+                    break;
+
                 case 'line':
                 case 'polygon':
                     setStyles($ctrl.mode);

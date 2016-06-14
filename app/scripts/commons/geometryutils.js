@@ -1,7 +1,6 @@
 (function() {
     'use strict';
 
-
     /**
      * @ngdoc service
      * @name accessimapEditeurDerApp.geometryutils

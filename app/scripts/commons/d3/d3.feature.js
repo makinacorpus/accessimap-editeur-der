@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    function FeatureService(InteractionService, EmptyConfortService, UtilService, geometryutils, generators) {
+    function FeatureService(InteractionService, EmptyConfortService, UtilService, geometryutils, GeneratorService) {
         
         this.duplicatePath                 = duplicatePath;
         this.movePath                      = movePath;
@@ -21,6 +21,7 @@
         this.toggleStroke                  = toggleStroke;
         this.toggleArrow                   = toggleArrow;
         this.toggleEmptyComfortNearFeature = toggleEmptyComfortNearFeature;
+        
         this.changeColor                   = changeColor;
         this.changePattern                 = changePattern;
         this.changePoint                   = changePoint;
@@ -31,7 +32,7 @@
         // this var retain the last feature deleted
         // useful for cancel this deletion
         // TODO: need to be improved to integrate the history pattern (undo/redo)
-        var removedFeature        = null,
+        var removedFeature = null,
             pointsLayer,
             polygonsLayer,
             linesLayer,
@@ -563,7 +564,7 @@
                         return parseFloat(ca);
                     });
                 });
-                featuresToUpdate.attr('d', generators.cardinalLineFunction(coords));
+                featuresToUpdate.attr('d', GeneratorService.cardinalLineFunction(coords));
             }
 
             else { // line's type is cardinal
@@ -588,7 +589,7 @@
                         return parseFloat(ca);
                     });
                 });
-                featuresToUpdate.attr('d', generators.lineFunction(coords));
+                featuresToUpdate.attr('d', GeneratorService.lineFunction(coords));
             }
         }
 
@@ -597,6 +598,6 @@
     angular.module(moduleApp).service('FeatureService', FeatureService);
 
     FeatureService.$inject = ['InteractionService', 'EmptyConfortService', 'UtilService', 
-                                'geometryutils', 'generators']
+                                'geometryutils', 'GeneratorService']
 
 })();

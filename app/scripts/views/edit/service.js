@@ -69,6 +69,7 @@
         this.drawPoint                     = DrawingService.toolbox.drawPoint;
         this.enableCircleMode              = enableCircleMode;
         this.enableSquareMode              = enableSquareMode;
+        this.enableTriangleMode            = enableTriangleMode;
         this.drawCircle                    = DrawingService.toolbox.drawCircle;
         this.enableLineOrPolygonMode       = enableLineOrPolygonMode;
         this.enableTextMode                = enableTextMode;
@@ -276,6 +277,55 @@
 
             })
 
+        }
+
+        function enableTriangleMode(getDrawingParameter) {
+
+            initMode();
+
+            MapService.addEventListener([ 'click', 'contextmenu' ], function(e) {
+                e.originalEvent.stopImmediatePropagation();
+            })
+
+            MapService.addEventListener([ 'mousedown' ] , function(e) {
+                // only left click
+                e.originalEvent.stopImmediatePropagation()
+                if (e.originalEvent.button === 0) {
+
+                    var p = projDrawing.latLngToLayerPoint(e.latlng),
+                        drawingParameters = getDrawingParameter();
+
+                    DrawingService.toolbox.drawTriangle(p.x, p.y, 
+                                                    drawingParameters.style, 
+                                                    drawingParameters.color, 
+                                                    drawingParameters.contour)
+
+                    MapService.addMouseMoveListener(function(e) {
+
+                        var p = projDrawing.latLngToLayerPoint(e.latlng),
+                            drawingParameters = getDrawingParameter();
+
+                        DrawingService.toolbox.updateTriangle(p.x, p.y, e.originalEvent.shiftKey);
+
+                        MapService.addEventListener([ 'mouseup' ] , function(e) {
+                            // only left click
+                            e.originalEvent.stopImmediatePropagation()
+                            if (e.originalEvent.button === 0) {
+                                var p = projDrawing.latLngToLayerPoint(e.latlng),
+                                    drawingParameters = getDrawingParameter();
+                                DrawingService.toolbox.drawTriangle(p.x, p.y, 
+                                                                drawingParameters.style, 
+                                                                drawingParameters.color, 
+                                                                drawingParameters.contour)
+                                enableSquareMode(getDrawingParameter)
+                            }
+                        })
+
+                    })
+
+                }
+
+            })
 
         }
 

@@ -5,11 +5,11 @@ describe('Service: EmptyConfortService', function () {
     beforeEach(module('accessimapEditeurDerApp'));
 
     var EmptyConfortService,
-        generators;
+        GeneratorService;
 
     beforeEach(inject(function ($injector) {
         EmptyConfortService = $injector.get('EmptyConfortService');
-        generators = $injector.get('generators');
+        GeneratorService = $injector.get('GeneratorService');
     }));
 
     it('should create the EmptyConfortService service', function () {
@@ -63,7 +63,7 @@ describe('Service: EmptyConfortService', function () {
             d3.select(svgElement)
                 .append('path')
                 .attr('id', 'line')
-                .attr('d', generators.pathFunction['line'](linePoints))
+                .attr('d', GeneratorService.pathFunction['line'](linePoints))
                 .classed('link_1', true)
                 .attr('data-type', 'line')
                 .attr('data-from', 'drawing')
