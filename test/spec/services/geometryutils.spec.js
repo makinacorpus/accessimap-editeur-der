@@ -58,15 +58,33 @@ describe('Service: geometryutils', function () {
             translate: [12,20],
             scale: [0.5,2,3]
         },
+        bbox = {
+            x: 10, y: 10, width: 100, height: 100
+        },
+        bbox1 = {
+            x: 31, y: 90, width: 140, height: 400
+        },
+        bbox2 = {
+            x: 42, y: -10, width: 100, height: 100
+        },
         point = [50,50];
 
         it('should not change the coordinates if there is no CSS transform', function() {
             expect(geometryutils.realCoordinates(transform, point)).toEqual([0,0]);
         });
 
-        it('should transform the coordinates with scale and translation', function() {
-            expect(geometryutils.realCoordinates(transform1, point)).toEqual([-50,0]);
-            expect(geometryutils.realCoordinates(transform2, point)).toEqual([76,60]);
+        it('should transform the coordinates with translation', function() {
+            expect(geometryutils.realCoordinates(transform1, point)).toEqual([-250,0]);
+            expect(geometryutils.realCoordinates(transform2, point)).toEqual([38,30]);
+        });
+
+        it('should transform the coordinates with translation and bbox', function() {
+            expect(geometryutils.realCoordinates(transform1, point, bbox)).toEqual([-310,-60]);
+            expect(geometryutils.realCoordinates(transform2, point, bbox)).toEqual([-22,-30]);
+            expect(geometryutils.realCoordinates(transform1, point, bbox1)).toEqual([-351,-290]);
+            expect(geometryutils.realCoordinates(transform2, point, bbox1)).toEqual([-63,-260]);
+            expect(geometryutils.realCoordinates(transform1, point, bbox2)).toEqual([-342,-40]);
+            expect(geometryutils.realCoordinates(transform2, point, bbox2)).toEqual([-54,-10]);
         });
 
     });
