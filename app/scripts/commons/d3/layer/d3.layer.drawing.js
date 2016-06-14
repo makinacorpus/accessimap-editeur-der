@@ -31,8 +31,8 @@
 
         /**
          * @ngdoc method
-         * @name  accessimapEditeurDerApp.LayersService.createDrawing
-         * @methodOf accessimapEditeurDerApp.LayersService
+         * @name  accessimapEditeurDerApp.LayerDrawingService.createDrawing
+         * @methodOf accessimapEditeurDerApp.LayerDrawingService
          *
          * @param  {Object} target  [description]
          */

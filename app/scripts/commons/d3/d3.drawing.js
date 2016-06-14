@@ -1,7 +1,7 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.DrawingService
- * @requires accessimapEditeurDerApp.LayersService
+ * @requires accessimapEditeurDerApp.LayerService
  * @requires accessimapEditeurDerApp.ToolboxService
  * @requires accessimapEditeurDerApp.FeatureService
  * @requires accessimapEditeurDerApp.settings
@@ -14,12 +14,12 @@
 (function() {
     'use strict';
 
-    function DrawingService(LayersService, ToolboxService, settings) {
+    function DrawingService(LayerService, ToolboxService, settings) {
 
         this.initDrawing     = initDrawing;
         
         this.toolbox         = ToolboxService;
-        this.layers          = LayersService;
+        this.layers          = LayerService;
 
         /**
          * @ngdoc method
@@ -40,11 +40,11 @@
          */
         function initDrawing(elements, format) {
             
-            LayersService.createLayers(elements, format)
+            LayerService.createLayers(elements, format)
 
-            ToolboxService.init(LayersService.drawing.getLayer(), 
-                                LayersService.overlay.getLayer(), 
-                                LayersService.overlay.getZoom )
+            ToolboxService.init(LayerService.drawing.getLayer(), 
+                                LayerService.overlay.getLayer(), 
+                                LayerService.overlay.getZoom )
 
         }
 
@@ -52,6 +52,6 @@
 
     angular.module(moduleApp).service('DrawingService', DrawingService);
 
-    DrawingService.$inject = ['LayersService', 'ToolboxService', 'settings'];
+    DrawingService.$inject = ['LayerService', 'ToolboxService', 'settings'];
 
 })();

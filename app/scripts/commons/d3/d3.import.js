@@ -14,7 +14,7 @@
      * - interactions
      * - legend
      */
-    function ImportService(LayersService, InteractionService, LegendService, settings, UtilService) {
+    function ImportService(LayerService, InteractionService, LegendService, settings, UtilService) {
 
         this.importDrawing     = importDrawing;
         this.importInteraction = importInteraction;
@@ -99,9 +99,9 @@
 
                 var 
 
-                currentGeoJSONLayer    = LayersService.geojson.getLayer().node(),
-                currentDrawingLayer    = LayersService.drawing.getLayer().node(),
-                currentBackgroundLayer = LayersService.background.getLayer().node(),
+                currentGeoJSONLayer    = LayerService.geojson.getLayer().node(),
+                currentDrawingLayer    = LayerService.drawing.getLayer().node(),
+                currentBackgroundLayer = LayerService.background.getLayer().node(),
 
                 geojsonLayer    = svgElement.querySelector('g[data-name="geojson-layer"]'),
                 drawingLayer    = svgElement.querySelector('g[data-name="drawing-layer"]'),
@@ -114,7 +114,7 @@
                 format = svgElement.querySelector('svg').getAttribute('data-format'),
                 center = svgElement.querySelector('svg').getAttribute('data-center'),
 
-                currentOverlayTranslation = LayersService.overlay.getTranslation(),
+                currentOverlayTranslation = LayerService.overlay.getTranslation(),
 
                 translateScaleOverlayGroup = overlayLayer.getAttribute('transform'),
                 
@@ -163,13 +163,13 @@
 
                 if (metadataGeoJSON && metadataGeoJSON.getAttribute('data-value') !== '') {
                     var dataGeoJSON = JSON.parse(metadataGeoJSON.getAttribute('data-value'));
-                    LayersService.geojson.setFeatures(dataGeoJSON);
+                    LayerService.geojson.setFeatures(dataGeoJSON);
                     generateLegend(dataGeoJSON);
                 }
 
             } else {
                 // it's not a draw from the der, but we will append each element in the 'drawing section'
-                LayersService.drawing.getLayer().node().appendChild(svgElement.childNodes[0])
+                LayerService.drawing.getLayer().node().appendChild(svgElement.childNodes[0])
             }
 
         }
@@ -214,6 +214,6 @@
 
     angular.module(moduleApp).service('ImportService', ImportService);
 
-    ImportService.$inject = ['LayersService', 'InteractionService', 'LegendService', 'settings', 'UtilService'];
+    ImportService.$inject = ['LayerService', 'InteractionService', 'LegendService', 'settings', 'UtilService'];
 
 })();
