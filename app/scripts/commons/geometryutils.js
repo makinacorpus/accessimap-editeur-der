@@ -91,10 +91,12 @@
          * 
          * @return {[type]}             [description]
          */
-        function realCoordinates(transform, bbox, coordinates) {
+        function realCoordinates(transform, coordinates, bbox) {
             
             var translate = transform.translate,
                 realCoordinates = [];
+
+            if (! bbox) bbox = { x: 0, y: 0, width: 0, height: 0 }
 
             realCoordinates[0] = (coordinates[0] - translate[0] - bbox.x - ( bbox.width / 2 ))
             realCoordinates[1] = (coordinates[1] - translate[1] - bbox.y - ( bbox.height / 2 ))

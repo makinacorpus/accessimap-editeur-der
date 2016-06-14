@@ -137,7 +137,7 @@
                 if (d3.select(temporaryPath).classed('moved')) {
 
                     var p = projection.latLngToLayerPoint(e.latlng),
-                    realCoordinates = geometryutils.realCoordinates(transform, bbox, [p.x, p.y]),
+                    realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y], bbox),
                     transformString = '';
 
                     if (hasRotate) {
@@ -162,7 +162,7 @@
             handlers.addMouseMoveListener(function(e) {
 
                 var p = projection.latLngToLayerPoint(e.latlng),
-                    realCoordinates = geometryutils.realCoordinates(transform, bbox, [p.x, p.y]),
+                    realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y], bbox),
                     transformString = '';
 
                 if (hasRotate) {
@@ -227,7 +227,7 @@
                 if (d3.select(temporaryPath).classed('moved')) {
 
                     var p = projection.latLngToLayerPoint(e.latlng),
-                    realCoordinates = geometryutils.realCoordinates(transform, bbox, [p.x, p.y]),
+                    realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y], bbox),
                     transformString = '';
 
                     if (hasRotate) {
@@ -255,7 +255,7 @@
             handlers.addMouseMoveListener(function(e) {
 
                 var p = projection.latLngToLayerPoint(e.latlng),
-                    realCoordinates = geometryutils.realCoordinates(transform, bbox, [p.x, p.y]),
+                    realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y], bbox),
                     transformString = '';
 
                 if (hasRotate) {
