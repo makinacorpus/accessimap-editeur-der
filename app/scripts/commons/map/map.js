@@ -17,8 +17,8 @@
             _isMapVisible,
             map = {}, 
             overlay = null,
-            layer,
-            layerGroup,
+            layerDefault,
+            layerControl,
             minHeight,
             minWidth;
 
@@ -89,20 +89,24 @@
             map = L.map(_selectorDOM).setView(SettingsService.leaflet.GLOBAL_MAP_CENTER, 
                                                 SettingsService.leaflet.GLOBAL_MAP_DEFAULT_ZOOM);
             var access_token = 
-                "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw";
+                "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw",
             
-            layer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + access_token, {
+            layerMapBox = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' 
+                + access_token, {
                 maxZoom: 18,
                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
                     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
                     'Imagery © <a href="http://mapbox.com">Mapbox</a>',
                 id: 'mapbox.streets'
-            })
+            }),
 
-            // , layer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            // }).addTo(map);
-            // 
+            layerOSM = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            });
+
+            layerDefault = layerMapBox;
+
+            layerControl = L.control.layers({ 'Open Street Map': layerOSM, 'MapBox Street': layerMapBox})
 
             // Use Leaflet to implement a D3 geometric transformation.
             $(window).on("resize", _resizeFunction).trigger("resize");
@@ -329,12 +333,14 @@
 
         function showMapLayer() {
             _isMapVisible = true;
-            map.addLayer(layer);
+            layerControl.addTo(map)
+            map.addLayer(layerDefault);
         }
 
         function hideMapLayer() {
             _isMapVisible = false;
-            map.removeLayer(layer);
+            layerControl.removeFrom(map)
+            map.removeLayer(layerDefault);
         }
 
         function freezeMap() {
