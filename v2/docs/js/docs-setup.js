@@ -28,7 +28,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Controller of the Home View",
-      "keywords": "$location $rootscope accessimapediteurderapp api controller homecontroller settings view"
+      "keywords": "$location $rootscope accessimapediteurderapp api controller homecontroller view"
     },
     {
       "section": "api",
@@ -46,7 +46,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service providing drawing functions",
-      "keywords": "accessimapediteurderapp api area create d3svgoverlay display dom draw drawing drawings drawingservice element elements features featureservice format functions geojson help init initdrawing landscapea3 layer layersservice map method object place proj properties property provide providing sel service settings size specific svg toolboxservice"
+      "keywords": "accessimapediteurderapp api area create d3svgoverlay display dom draw drawing drawings drawingservice element elements features format functions geojson help init initdrawing landscapea3 layer layerservice map method object place proj properties property provide providing sel service settingsservice size specific svg toolboxservice"
     },
     {
       "section": "api",
@@ -55,7 +55,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service used for the &#39;EditController&#39;, and the &#39;edit&#39; view",
-      "keywords": "_errorcallback _successcallback accessimapediteurderapp add address allow allowing angle api append appendpdf area argument background callback called center choose clever click color colors container css cursor d3 data dataurl defined defsservice degree disable disableaddpoi display displaying draw drawing drawingformat drawingservice edit editcontroller editservice elements enable enableaddpoi error events export exportservice feature features finished format function functions future geojson image importservice init initial initialize insert insertosmdata interactionservice jpg layer legend legendformat legendservice link map mapleaflet mapservice method mode move nominatim object occured optional osm pan passed pdf png poi printing promise provide query query_list resetting resetview result retrieve retrieved rotable rotate rotatemap rotation search searchanddisplayaddress service services settings setview specific style styles successful update updatefeaturestyleandcolor user utilservice version view viewreset zoom"
+      "keywords": "_errorcallback _successcallback accessimapediteurderapp add address allow allowing angle api append appendpdf area argument background callback called center choose clever click color colors container css cursor d3 data dataurl defined defsservice degree disable disableaddpoi display displaying draw drawing drawingformat drawingservice edit editcontroller editservice elements enable enableaddpoi error events export exportservice feature features finished format function functions future geojson image importservice init initial initialize insert insertosmdata interactionservice jpg layer legend legendformat legendservice link map mapleaflet mapservice method mode move nominatim object occured optional osm pan passed pdf png poi printing promise provide query query_list resetting resetview result retrieve retrieved rotable rotate rotatemap rotation search searchanddisplayaddress service services settingsservice setview specific style styles successful update updatefeaturestyleandcolor user utilservice version view viewreset zoom"
     },
     {
       "section": "api",
@@ -100,7 +100,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service providing actions to manage features",
-      "keywords": "accessimapediteurderapp actions add api area bezier border curve empty feature features featureservice linetocardinal manage method path providing remove service shape simplify stroke toggleemptycomfortnearfeature togglestroke transform white"
+      "keywords": "accessimapediteurderapp actions actual add analyzing api apply area axis bezier border clear click curve detect direction distance empty enter feature features featureservice finished initial linetocardinal linked manage method mode mouse mouseup move operate path position providing remove rename selected service shape simplify skew stroke todo toggleemptycomfortnearfeature togglestroke transform transformation user white"
     },
     {
       "section": "api",
@@ -110,15 +110,6 @@ NG_DOCS={
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Return all the layers not selected from an array of layers ",
       "keywords": "accessimapediteurderapp api array filter intersection layernotselected layers return selected selectedlayer set"
-    },
-    {
-      "section": "api",
-      "id": "accessimapEditeurDerApp.generators",
-      "shortName": "accessimapEditeurDerApp.generators",
-      "type": "service",
-      "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "Service in the accessimapEditeurDerApp.",
-      "keywords": "accessimapediteurderapp api generators service"
     },
     {
       "section": "api",
@@ -181,7 +172,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service providing drawing functions",
-      "keywords": "accessimapediteurderapp api area draw drawing features functions init layerdrawingservice layerservice map provide providing service"
+      "keywords": "accessimapediteurderapp api area createdrawing draw drawing features functions init layerdrawingservice layerservice map method provide providing service target"
     },
     {
       "section": "api",
@@ -203,12 +194,12 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "accessimapEditeurDerApp.LayersService",
-      "shortName": "accessimapEditeurDerApp.LayersService",
+      "id": "accessimapEditeurDerApp.LayerService",
+      "shortName": "accessimapEditeurDerApp.LayerService",
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "Service providing layer functions to add",
-      "keywords": "accessimapediteurderapp add api area createdrawing createlayers data defs draw drawing export features format functions init landscapea3 layer layers layersservice map method node points polygon provide providing required service svg target"
+      "shortDescription": "Service providing layer functions to add ",
+      "keywords": "accessimapediteurderapp add api area createlayers data defs draw drawing export features format functions init landscapea3 layer layers layerservice map method node points polygon provide providing required service svg"
     },
     {
       "section": "api",
@@ -226,16 +217,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service used for initializing leaflet maps",
-      "keywords": "accessimapediteurderapp add addclicklistener adddoubleclicklistener addmousemovelistener alias api appearance apply calc change changecursor changes click container coordinates crosshair css current cursor d3 default doubleclick event executed fired function geographical getbounds getmap getter height html http https init initializing initmap latitude latlngbounds layer leaflet library listener longitude map map-getbounds maps mapservice method mousemove mozilla org point project projected projections projectpoint property remove removeeventlistener reset resetcursor resizefunction retrievedata returns searchservice selector service settings siblings size space style substracting view"
-    },
-    {
-      "section": "api",
-      "id": "accessimapEditeurDerApp.move",
-      "shortName": "accessimapEditeurDerApp.move",
-      "type": "service",
-      "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "move",
-      "keywords": "accessimapediteurderapp api move service"
+      "keywords": "accessimapediteurderapp add addclicklistener adddoubleclicklistener addmousemovelistener alias api appearance apply array calc change changecursor changes click container coordinates crosshair css current cursor d3 default doubleclick event events example executed fired function geographical getbounds getmap getter height html http https init initializing initmap latitude latlngbounds layer leaflet library listener listeners longitude map map-getbounds maps mapservice method mousemove mozilla org point project projected projections projectpoint property remove removeeventlistener removeeventlisteners representing reset resetcursor resizefunction retrievedata returns searchservice selector service settingsservice siblings size space string style substracting view"
     },
     {
       "section": "api",
@@ -248,39 +230,75 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "accessimapEditeurDerApp.remove",
-      "shortName": "accessimapEditeurDerApp.remove",
-      "type": "service",
-      "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "remove",
-      "keywords": "accessimapediteurderapp api remove service"
-    },
-    {
-      "section": "api",
-      "id": "accessimapEditeurDerApp.reset",
-      "shortName": "accessimapEditeurDerApp.reset",
-      "type": "service",
-      "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "reset",
-      "keywords": "accessimapediteurderapp api reset service"
-    },
-    {
-      "section": "api",
       "id": "accessimapEditeurDerApp.SearchService",
       "shortName": "accessimapEditeurDerApp.SearchService",
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Provide functions to get information on nominatim",
-      "keywords": "$http $q accessimapediteurderapp address api array data display element empty functions geographic lat method nominatim overpass park point promise provide query querychosen retrieve retrievedata search searchaddress searchservice service settings shop specific successcallback svg"
+      "keywords": "$http $q accessimapediteurderapp address api array data display element empty functions geographic lat method nominatim overpass park point promise provide query querychosen retrieve retrievedata search searchaddress searchservice service settingsservice shop specific successcallback svg"
     },
     {
       "section": "api",
-      "id": "accessimapEditeurDerApp.settings",
-      "shortName": "accessimapEditeurDerApp.settings",
+      "id": "accessimapEditeurDerApp.SettingsActions",
+      "shortName": "accessimapEditeurDerApp.SettingsActions",
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "settings",
-      "keywords": "accessimapediteurderapp api availables documents editing editsvg factory featureservice formats interactionservice millimeter pixel property ratio ratiopixelpoint service settings"
+      "shortDescription": "",
+      "keywords": "accessimapediteurderapp api service settingsactions"
+    },
+    {
+      "section": "api",
+      "id": "accessimapEditeurDerApp.SettingsColors",
+      "shortName": "accessimapEditeurDerApp.SettingsColors",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "SettingsColors",
+      "keywords": "accessimapediteurderapp api factory service settingscolors"
+    },
+    {
+      "section": "api",
+      "id": "accessimapEditeurDerApp.SettingsFonts",
+      "shortName": "accessimapEditeurDerApp.SettingsFonts",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "",
+      "keywords": "accessimapediteurderapp api service settingsfonts"
+    },
+    {
+      "section": "api",
+      "id": "accessimapEditeurDerApp.SettingsFormats",
+      "shortName": "accessimapEditeurDerApp.SettingsFormats",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "SettingsFormats",
+      "keywords": "accessimapediteurderapp api availables documents editing editsvg factory formats interactionservice property service settingsformats"
+    },
+    {
+      "section": "api",
+      "id": "accessimapEditeurDerApp.SettingsQuery",
+      "shortName": "accessimapEditeurDerApp.SettingsQuery",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "",
+      "keywords": "accessimapediteurderapp api service settingsquery"
+    },
+    {
+      "section": "api",
+      "id": "accessimapEditeurDerApp.SettingsService",
+      "shortName": "accessimapEditeurDerApp.SettingsService",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "SettingsService",
+      "keywords": "accessimapediteurderapp api factory millimeter pixel property ratio ratiopixelpoint service settingsactions settingscolors settingsfonts settingsformats settingsquery settingsservice settingsstyles"
+    },
+    {
+      "section": "api",
+      "id": "accessimapEditeurDerApp.SettingsStyles",
+      "shortName": "accessimapEditeurDerApp.SettingsStyles",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "",
+      "keywords": "accessimapediteurderapp api service settingsstyles"
     },
     {
       "section": "api",
@@ -320,12 +338,57 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "accessimapEditeurDerApp.ToolboxEllipseService",
+      "shortName": "accessimapEditeurDerApp.ToolboxEllipseService",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "Expose different methods to draw on the d3 svg area",
+      "keywords": "accessimapediteurderapp add api area circle color contour coordinate coordinates d3 draw drawcircle expose feature key method methods point pressed radius service settingsservice shape shift shiftkeypressed specific style svg toolboxellipseservice true update updatecircleradius"
+    },
+    {
+      "section": "api",
+      "id": "accessimapEditeurDerApp.ToolboxPolylineService",
+      "shortName": "accessimapEditeurDerApp.ToolboxPolylineService",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "Expose different methods to draw on the d3 svg area",
+      "keywords": "accessimapediteurderapp api area d3 draw expose methods service svg toolboxpolylineservice"
+    },
+    {
+      "section": "api",
+      "id": "accessimapEditeurDerApp.ToolboxRectangleService",
+      "shortName": "accessimapEditeurDerApp.ToolboxRectangleService",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "Expose different methods to draw on the d3 svg area",
+      "keywords": "accessimapediteurderapp add api area circle color contour coordinate coordinates d3 draw drawsquare expose feature key method methods point pressed radius service settingsservice shape shift shiftkeypressed specific square style svg toolboxrectangleservice true update updatesquare"
+    },
+    {
+      "section": "api",
       "id": "accessimapEditeurDerApp.ToolboxService",
       "shortName": "accessimapEditeurDerApp.ToolboxService",
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Expose different methods to draw on the d3 svg area",
-      "keywords": "accessimapediteurderapp add addradialmenus api area arrow circle color contour coordinate coordinates d3 differents draw drawcircle drawpoint edit elements expose feature featureicon item menus method methods model path point radial radius right-clicking service settings shape shapes specific style svg text toolboxservice true type update updatecircleradius users"
+      "keywords": "ability accessimapediteurderapp add addradialmenus api area arrow circle circles color coordinate coordinates d3 differents draw drawing drawpoint edit elements ellipses expose featureicon item lines menus method methods model path point points polygons radial rectangles right-clicking service set settingsservice shapes specific squares style svg text toolbox toolboxservice tools type user users"
+    },
+    {
+      "section": "api",
+      "id": "accessimapEditeurDerApp.ToolboxTextService",
+      "shortName": "accessimapEditeurDerApp.ToolboxTextService",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "Expose different methods to draw on the d3 svg area",
+      "keywords": "accessimapediteurderapp api area d3 draw expose methods service svg toolboxtextservice"
+    },
+    {
+      "section": "api",
+      "id": "accessimapEditeurDerApp.ToolboxTriangleService",
+      "shortName": "accessimapEditeurDerApp.ToolboxTriangleService",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "Service to draw a triangle",
+      "keywords": "accessimapediteurderapp add api circle color contour coordinate coordinates draw drawcircle feature key method point pressed radius service settingsservice shape shift shiftkeypressed specific style toolboxtriangleservice triangle true update updatecircleradius"
     },
     {
       "section": "api",

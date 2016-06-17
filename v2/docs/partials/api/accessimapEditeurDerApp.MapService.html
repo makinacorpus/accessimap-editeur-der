@@ -7,7 +7,7 @@
 <div class="description"><div class="accessimapediteurderapp-mapservice-page"><p>Service used for initializing leaflet maps</p>
 </div></div>
 <h2 id="dependencies">Dependencies</h2>
-<ul class="dependencies"><li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.settings">settings</a></code>
+<ul class="dependencies"><li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.SettingsService">SettingsService</a></code>
 </li>
 <li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.SearchService">SearchService</a></code>
 </li>
@@ -58,8 +58,13 @@ Useful for d3 projections</p>
 </div></td></tr></tbody></table><h5 id="methods_projectpoint_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="projectpoint-page"><p>Point with projected coordinates</p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods_removeeventlistener">removeEventListener()</h3>
-<div class="removeeventlistener"><div class="removeeventlistener-page"><p>Remove all the listener to the map</p>
+<li><h3 id="methods_removeeventlistener">removeEventListener(events)</h3>
+<div class="removeeventlistener"><div class="removeeventlistener-page"><p>Remove one or several listeners</p>
+</div><h5 id="methods_removeeventlistener_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>events</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="removeeventlistener-page"><p>Array of string representing events : [ &#39;click&#39;, &#39;mousemove&#39; ] for example</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_removeeventlisteners">removeEventListeners()</h3>
+<div class="removeeventlisteners"><div class="removeeventlisteners-page"><p>Remove all the listeners to the map</p>
 </div></div>
 </li>
 <li><h3 id="methods_resetcursor">resetCursor()</h3>

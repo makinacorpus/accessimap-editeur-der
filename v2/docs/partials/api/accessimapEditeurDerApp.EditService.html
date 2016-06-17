@@ -13,7 +13,7 @@
 </ul>
 </div></div>
 <h2 id="dependencies">Dependencies</h2>
-<ul class="dependencies"><li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.settings">settings</a></code>
+<ul class="dependencies"><li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.SettingsService">SettingsService</a></code>
 </li>
 <li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.MapService">MapService</a></code>
 </li>
@@ -63,7 +63,7 @@ allowing user to click on the map and retrieve data from OSM</p>
 </li>
 <li><h3 id="methods_insertosmdata">insertOSMData(query, _successCallback, _errorCallback)</h3>
 <div class="insertosmdata"><div class="insertosmdata-page"><p>Retrieve data from nominatim (via MapService) for a specific &#39;query&#39;</p>
-</div><h5 id="methods_insertosmdata_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-function">function</a></td><td><div class="insertosmdata-page"><p>Query settings from settings.QUERY_LIST</p>
+</div><h5 id="methods_insertosmdata_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-function">function</a></td><td><div class="insertosmdata-page"><p>Query SettingsService from SettingsService.QUERY_LIST</p>
 </div></td></tr><tr><td>_successCallback</td><td><a href="" class="label type-hint type-hint-function">function</a></td><td><div class="insertosmdata-page"><p>Callback function called when data has been retrieved, data is passed in first argument</p>
 </div></td></tr><tr><td>_errorCallback</td><td><a href="" class="label type-hint type-hint-function">function</a></td><td><div class="insertosmdata-page"><p>Callback function called when an error occured, error is passed in first argument</p>
 </div></td></tr></tbody></table></div>
@@ -91,8 +91,8 @@ and allow the user to choose the right one...</p>
 <li><h3 id="methods_updatefeaturestyleandcolor">updateFeatureStyleAndColor(style, color)</h3>
 <div class="updatefeaturestyleandcolor"><div class="updatefeaturestyleandcolor-page"><p>Update the style (pattern) &amp; color of a feature.
 Could be a geojson feature or a drawing feature.</p>
-</div><h5 id="methods_updatefeaturestyleandcolor_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>style</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="updatefeaturestyleandcolor-page"><p>settings.STYLES object</p>
-</div></td></tr><tr><td>color</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="updatefeaturestyleandcolor-page"><p>settings.COLORS object</p>
+</div><h5 id="methods_updatefeaturestyleandcolor_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>style</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="updatefeaturestyleandcolor-page"><p>SettingsService.STYLES object</p>
+</div></td></tr><tr><td>color</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="updatefeaturestyleandcolor-page"><p>SettingsService.COLORS object</p>
 </div></td></tr></tbody></table></div>
 </li>
 </ul>

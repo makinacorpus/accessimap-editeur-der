@@ -5,6 +5,15 @@
 </h1>
 <div><h2 id="description">Description</h2>
 <div class="description"><div class="accessimapediteurderapp-toolboxservice-page"><p>Expose different methods to draw on the d3 svg area</p>
+<p>The toolbox is a set of &#39;drawing tools&#39;, giving the user the ability to draw some specific shapes :</p>
+<ul>
+<li>points</li>
+<li>ellipses, circles</li>
+<li>rectangles, squares</li>
+<li>text</li>
+<li>lines</li>
+<li>polygons</li>
+</ul>
 </div></div>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_addradialmenus">addRadialMenus(model)</h3>
@@ -18,21 +27,12 @@
 </div><h5 id="methods_addradialmenus_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>model</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="addradialmenus-page"><p>[description]</p>
 </div></td></tr></tbody></table></div>
 </li>
-<li><h3 id="methods_drawcircle">drawCircle(x, y, style, color, contour)</h3>
-<div class="drawcircle"><div class="drawcircle-page"><p>Draw a circle at specific coordinates </p>
-</div><h5 id="methods_drawcircle_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>x</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="drawcircle-page"><p>X coordinate of the point</p>
-</div></td></tr><tr><td>y</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="drawcircle-page"><p>Y coordinate of the point</p>
-</div></td></tr><tr><td>style</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="drawcircle-page"><p>settings.STYLE of the point</p>
-</div></td></tr><tr><td>color</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="drawcircle-page"><p>settings.COLOR of the point</p>
-</div></td></tr><tr><td>contour</td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="drawcircle-page"><p>If true add a shape to the circle</p>
-</div></td></tr></tbody></table></div>
-</li>
 <li><h3 id="methods_drawpoint">drawPoint(x, y, style, color)</h3>
 <div class="drawpoint"><div class="drawpoint-page"><p>Draw a point (circle, arrow,...) at specific coordinates</p>
 </div><h5 id="methods_drawpoint_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>x</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="drawpoint-page"><p>X coordinate of the point</p>
 </div></td></tr><tr><td>y</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="drawpoint-page"><p>Y coordinate of the point</p>
-</div></td></tr><tr><td>style</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="drawpoint-page"><p>settings.STYLE of the point</p>
-</div></td></tr><tr><td>color</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="drawpoint-page"><p>settings.COLOR of the point</p>
+</div></td></tr><tr><td>style</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="drawpoint-page"><p>SettingsService.STYLE of the point</p>
+</div></td></tr><tr><td>color</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="drawpoint-page"><p>SettingsService.COLOR of the point</p>
 </div></td></tr></tbody></table></div>
 </li>
 <li><h3 id="methods_featureicon">featureIcon(item, type)</h3>
@@ -40,12 +40,6 @@
 </div></td></tr><tr><td>type</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="featureicon-page"><p>[description]</p>
 </div></td></tr></tbody></table><h5 id="methods_featureicon_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="featureicon-page"><p>[description]</p>
 </div></td></tr></table></div>
-</li>
-<li><h3 id="methods_updatecircleradius">updateCircleRadius(x, y)</h3>
-<div class="updatecircleradius"><div class="updatecircleradius-page"><p>Update the radius of a feature circle</p>
-</div><h5 id="methods_updatecircleradius_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>x</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="updatecircleradius-page"><p>X coordinate of the point</p>
-</div></td></tr><tr><td>y</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="updatecircleradius-page"><p>Y coordinate of the point</p>
-</div></td></tr></tbody></table></div>
 </li>
 </ul>
 </div>
