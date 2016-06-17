@@ -17,6 +17,8 @@
         this.movePoint                     = movePoint;
         this.rotatePath                    = rotatePath;
         this.removeObject                  = removeObject;
+        this.skew                          = skew;
+
         this.undo                          = undo;
         this.isUndoAvailable               = isUndoAvailable;
         
@@ -335,6 +337,122 @@
                     this.setPathData(pathDataToUpdate);
                 });
             });
+        }
+
+        /**
+         * @ngdoc method
+         * @name  skew
+         * @methodOf accessimapEditeurDerApp.FeatureService
+         *
+         * @description 
+         * Enter into the skew mode for the feature selected.
+         *
+         * When user click and move his mouse, 
+         * we detect the axis by analyzing first direction of the move,
+         * then apply a skew linked by the distance from initial click and actual position of the mouse
+         *
+         * When user 'mouseup', we act the skew transformation is finished.
+         * 
+         * @param  {Object} feature
+         * Feature on which the skew will operate
+         * 
+         */
+        function skew(feature) {
+
+            var el            = feature.node(),
+            parentNode        = el.parentNode,
+            temporaryPath     = el.cloneNode(true),
+            
+            emptyCircle       = d3.select('.c' + feature.attr('data-link')),
+            emptyCircleExists = emptyCircle.node(),
+            temporaryCircle   = emptyCircleExists ? emptyCircleExists.cloneNode(true) : null,
+            
+            transform         = d3.transform(layer.attr('transform')),
+            // hasRotate         = /rotate\((.*?)(?: |,)(.*?)(?: |,)(.*?)\)/.exec(feature.attr('transform')),
+            bbox              = el.getBBox(),
+            axis              = null,
+            originalPoint     = { x: null, y: null }, 
+            originalMove      = { x: 0, y: 0 },
+            initialTransform  = feature.attr('transform') !== null ? feature.attr('transform') : '';
+
+            transform.translate = [0,0];
+
+            d3.select(temporaryCircle).attr('opacity', 0.5).attr('transform', transform);
+            d3.select(temporaryPath).attr('opacity', 0.5).attr('transform', transform);
+
+            if (temporaryCircle) parentNode.appendChild(temporaryCircle);
+            parentNode.appendChild(temporaryPath);
+
+            handlers.removeEventListener(['click', 'mousemove']);
+
+            handlers.addClickListener(function(e) {
+
+                if (d3.select(temporaryPath).classed('moved')) {
+
+                    var transformString = d3.select(temporaryPath).attr('transform')
+                    feature.attr('transform', transformString);
+
+                    if (emptyCircleExists) emptyCircle.attr('transform', transformString);
+
+                    d3.select(temporaryPath).remove();
+                    d3.select(temporaryCircle).remove();
+
+                    handlers.removeEventListener(['click', 'mousemove']);
+
+                }
+            })
+
+            handlers.addMouseMoveListener(function(e) {
+
+                var p = projection.latLngToLayerPoint(e.latlng),
+                    // realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y], bbox),
+                    transformString = initialTransform,
+                    shiftKeyPressed = e.originalEvent.shiftKey,
+                    transform = d3.svg.transform();
+
+                originalPoint.x = originalPoint.x === null ? p.x : originalPoint.x;
+                originalPoint.y = originalPoint.y === null ? p.y : originalPoint.y;
+
+                originalMove.x = Math.abs(originalPoint.x - p.x)
+                originalMove.y = Math.abs(originalPoint.y - p.y)
+
+
+                // if (hasRotate) {
+                //     transformString += 'rotate(' + [hasRotate[1], 
+                //         (parseFloat(hasRotate[2]) + realCoordinates[0]), 
+                //         (parseFloat(hasRotate[3]) + realCoordinates[1])] + ')';
+                // }
+
+                if (! shiftKeyPressed) {
+                    transform.skewX(( p.x - originalPoint.x ) / 5)
+                             .skewY(( p.y - originalPoint.y ) / 5)
+                } else {
+                    
+                    if ( originalMove.x > 5 || originalMove.y > 5 ) {
+                        axis = ( originalMove.x < originalMove.y ) ? 'Y' : 'X';
+                    }
+
+                    switch(axis) {
+                        case 'X':
+                            transform.skewX(( p.x - originalPoint.x ) / 5)
+                            break;
+
+                        case 'Y':
+                            transform.skewY(( p.y - originalPoint.y ) / 5)
+                            break;
+                    }
+                }
+
+                d3.select(temporaryPath)
+                    .classed('moved', true)
+                    .attr('transform', initialTransform + transform());
+
+                d3.select(temporaryCircle)
+                    .classed('moved', true)
+                    .attr('transform', initialTransform + transform());
+
+            })
+
         }
 
         function rotatePath(feature) {

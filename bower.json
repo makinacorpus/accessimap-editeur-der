@@ -28,7 +28,8 @@
   "devDependencies": {
     "angular-mocks": "#1.5.x",
     "angular-scenario": "#1.5.x",
-    "toastr": "^2.1.2"
+    "toastr": "^2.1.2",
+    "d3-transform": "^1.0.4"
   },
   "appPath": "app"
 }
