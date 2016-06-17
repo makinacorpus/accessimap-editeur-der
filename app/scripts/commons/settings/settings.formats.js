@@ -4,7 +4,6 @@
  * @ngdoc service
  * @name accessimapEditeurDerApp.SettingsFormats
  * @requires accessimapEditeurDerApp.editSvg
- * @requires accessimapEditeurDerApp.FeatureService
  * @requires accessimapEditeurDerApp.InteractionService
  * @description
  * # SettingsFormats

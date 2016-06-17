@@ -1,9 +1,11 @@
+// jscs: disable maximumNumberOfLines
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.FeatureService
  * 
  * @description
  * Service providing actions to manage features
+ * TODO: rename this service ? It's not clear about what it's doing
  */
 (function() {
     'use strict';
@@ -32,6 +34,7 @@
         // this var retain the last feature deleted
         // useful for cancel this deletion
         // TODO: need to be improved to integrate the history pattern (undo/redo)
+        // Surely need a specific service for that
         var removedFeature = null,
             pointsLayer,
             polygonsLayer,
@@ -39,8 +42,7 @@
             textLayer,
             layer,
             projection,
-            handlers,
-            svgDrawing;
+            handlers;
 
         function init(_layer, _projection, _handlers) {
             layer         = _layer;

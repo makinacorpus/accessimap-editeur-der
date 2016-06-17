@@ -3,7 +3,6 @@
  * @name accessimapEditeurDerApp.DrawingService
  * @requires accessimapEditeurDerApp.LayerService
  * @requires accessimapEditeurDerApp.ToolboxService
- * @requires accessimapEditeurDerApp.FeatureService
  * @requires accessimapEditeurDerApp.SettingsService
  * @description
  * Service providing drawing functions

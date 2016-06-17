@@ -1,8 +1,18 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.ToolboxService
+ * 
  * @description
  * Expose different methods to draw on the d3 svg area
+ *
+ * The toolbox is a set of 'drawing tools', giving the user the ability to draw some specific shapes :
+ *
+ * - points
+ * - ellipses, circles
+ * - rectangles, squares
+ * - text
+ * - lines
+ * - polygons
  */
 (function() {
     'use strict';

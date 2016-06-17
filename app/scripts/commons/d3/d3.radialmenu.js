@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    function RadialMenuService(SettingsService, FeatureService, MapService) {
+    function RadialMenuService(SettingsService, MapService) {
 
         this.drawMenu       = drawMenu;
         this.addRadialMenu  = addRadialMenu;
@@ -151,6 +151,6 @@
 
     angular.module(moduleApp).service('RadialMenuService', RadialMenuService);
 
-    RadialMenuService.$inject = ['SettingsService', 'FeatureService', 'MapService'];
+    RadialMenuService.$inject = ['SettingsService', 'MapService'];
 
 })();

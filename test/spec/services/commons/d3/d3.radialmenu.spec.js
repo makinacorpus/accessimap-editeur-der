@@ -6,8 +6,7 @@ describe('Service: RadialMenuService', function () {
 
     var RadialMenuService;
 
-
-    beforeEach(inject(function (_RadialMenuService_, _$rootScope_, _SettingsService_, _FeatureService_, _MapService_) {
+    beforeEach(inject(function (_RadialMenuService_) {
         RadialMenuService = _RadialMenuService_;
     }));
 
