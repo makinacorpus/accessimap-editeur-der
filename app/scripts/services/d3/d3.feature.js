@@ -10,7 +10,8 @@
 (function() {
     'use strict';
 
-    function FeatureService(InteractionService, EmptyConfortService, UtilService, GeometryUtilsService, GeneratorService) {
+    function FeatureService(InteractionService, EmptyConfortService, UtilService, 
+                            GeometryUtilsService, GeneratorService) {
         
         this.duplicatePath                 = duplicatePath;
         this.movePath                      = movePath;

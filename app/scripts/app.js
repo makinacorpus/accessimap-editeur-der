@@ -25,12 +25,12 @@
         .config(function($routeProvider) {
             $routeProvider
                 .when('/', {
-                    templateUrl: 'scripts/views/home/template.html',
+                    templateUrl: 'scripts/routes/home/template.html',
                     controller: 'HomeController',
                     controllerAs: '$ctrl'
                 })
                 .when('/edit', {
-                    templateUrl: 'scripts/views/edit/template.html',
+                    templateUrl: 'scripts/routes/edit/template.html',
                     controller: 'EditController',
                     controllerAs: '$ctrl'
                 })
