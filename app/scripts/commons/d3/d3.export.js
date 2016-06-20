@@ -106,17 +106,17 @@
                     svgDrawing.appendChild(image);
 
                     svgDrawing.appendChild(d3.select(exportNode)
-                                            .select("svg[data-name='background']")
-                                                .style('overflow', 'visible').node());
+                                             .select("svg[data-name='background']")
+                                             .style('overflow', 'visible').node());
                     svgDrawing.appendChild(d3.select(exportNode)
-                                            .select("svg[data-name='geojson']")
-                                                .style('overflow', 'visible').node());
+                                             .select("svg[data-name='geojson']")
+                                             .style('overflow', 'visible').node());
                     svgDrawing.appendChild(d3.select(exportNode)
-                                            .select("svg[data-name='drawing']")
-                                                .style('overflow', 'visible').node());
+                                             .select("svg[data-name='drawing']")
+                                             .style('overflow', 'visible').node());
                     svgDrawing.appendChild(d3.select(exportNode)
-                                            .select("svg[data-name='overlay']")
-                                                .style('overflow', 'visible').node());
+                                             .select("svg[data-name='overlay']")
+                                             .style('overflow', 'visible').node());
 
                     zip.file('carte_avec_source.svg', (new XMLSerializer()).serializeToString(svgDrawing));
 

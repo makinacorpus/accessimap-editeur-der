@@ -76,8 +76,9 @@
         this.exportData                    = function(model) {
             var deferred = $q.defer();
 
-            model.center = DrawingService.layers.overlay.getCenter();
-            model.zoom   = zoom   ? zoom   : MapService.getMap().getZoom();
+            model.center       = DrawingService.layers.overlay.getCenter();
+            model.zoom         = zoom   ? zoom   : MapService.getMap().getZoom();
+            model.mapIdVisible = MapService.getBaseLayerId();
 
             resetView(function() { 
                 ExportService.exportData(model).then(function() { 
@@ -777,7 +778,7 @@
 
                 if (zoomWillChange) {
                     if (MapService.isMapVisible()) {
-                        MapService.getTileLayer().once('load', function() { 
+                        MapService.getBaseLayer().once('load', function() { 
                             if (callback) callback(); 
                         })
                     }
@@ -973,7 +974,7 @@
                                             changeDrawingFormat(model.mapFormat)
 
                                             if (model.isMapVisible) {
-                                                MapService.showMapLayer();
+                                                MapService.showMapLayer(model.mapIdVisible);
                                             }
 
                                             if (model.center !== null && model.zoom !== null) {

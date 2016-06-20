@@ -18,14 +18,20 @@
             map = {}, 
             overlay = null,
             layerDefault,
+            layerMapBox,
+            layerMapBoxId = 'mapbox.streets',
+            layerOSM,
+            layerOSMId = 'osm',
             layerControl,
             minHeight,
-            minWidth;
+            minWidth,
+            currentLayer;
 
         this.isMapVisible           = function() { return _isMapVisible }
 
         this.getMap                 = getMap;
-        this.getTileLayer           = getTileLayer;
+        this.getBaseLayer           = getBaseLayer;
+        this.getBaseLayerId         = getBaseLayerId;
         this.getBounds              = getBounds;
         this.initMap                = initMap;
         this.resizeFunction         = resizeFunction;
@@ -89,7 +95,7 @@
             map = L.map(_selectorDOM).setView(SettingsService.leaflet.GLOBAL_MAP_CENTER, 
                                                 SettingsService.leaflet.GLOBAL_MAP_DEFAULT_ZOOM);
             var access_token = 
-                "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw",
+                "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw";
             
             layerMapBox = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' 
                 + access_token, {
@@ -97,11 +103,12 @@
                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
                     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
                     'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                id: 'mapbox.streets'
-            }),
+                id: layerMapBoxId
+            });
 
             layerOSM = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+                id: layerOSMId
             });
 
             layerDefault = layerMapBox;
@@ -110,6 +117,10 @@
 
             // Use Leaflet to implement a D3 geometric transformation.
             $(window).on("resize", _resizeFunction).trigger("resize");
+
+            map.on('baselayerchange', function(layerEvent) {
+                currentLayer = layerEvent.layer;
+            })
         }
 
         function setMinimumSize(width, height) {
@@ -327,14 +338,24 @@
             return map;
         }
 
-        function getTileLayer() {
-            return layer;
+        function getBaseLayer() {
+            return currentLayer;
         }
 
-        function showMapLayer() {
+        function getBaseLayerId() {
+            return currentLayer.options.id;
+        }
+
+        function showMapLayer(layerId) {
             _isMapVisible = true;
             layerControl.addTo(map)
-            map.addLayer(layerDefault);
+            if (layerId === layerOSMId) {
+                map.addLayer(layerOSM);
+            } else if (layerId === layerMapBoxId) {
+                map.addLayer(layerMapBox)
+            } else {
+                map.addLayer(layerDefault);
+            }
         }
 
         function hideMapLayer() {
