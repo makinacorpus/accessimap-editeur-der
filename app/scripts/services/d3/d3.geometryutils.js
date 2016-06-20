@@ -3,12 +3,12 @@
 
     /**
      * @ngdoc service
-     * @name accessimapEditeurDerApp.geometryutils
+     * @name accessimapEditeurDerApp.GeometryUtilsService
      * 
      * @description
      * Useful functions for calc distances, angles, ...
      */
-    function geometryutils() {
+    function GeometryUtilsService() {
 
         this.distance         = distance ;
         this.nearest          = nearest ;
@@ -20,7 +20,7 @@
         /**
          * @ngdoc method
          * @name  distance
-         * @methodOf accessimapEditeurDerApp.geometryutils
+         * @methodOf accessimapEditeurDerApp.GeometryUtilsService
          * 
          * @description 
          * Return the distance between two points
@@ -44,7 +44,7 @@
         /**
          * @ngdoc method
          * @name  nearest
-         * @methodOf accessimapEditeurDerApp.geometryutils
+         * @methodOf accessimapEditeurDerApp.GeometryUtilsService
          * 
          * @description 
          * Return the nearest point of a targetPoint 
@@ -82,7 +82,7 @@
         /**
          * @ngdoc method
          * @name  realCoordinates
-         * @methodOf accessimapEditeurDerApp.geometryutils
+         * @methodOf accessimapEditeurDerApp.GeometryUtilsService
          * 
          * @param  {[type]} transform   [description]
          * 
@@ -106,7 +106,7 @@
         /**
          * @ngdoc method
          * @name  angle
-         * @methodOf accessimapEditeurDerApp.geometryutils
+         * @methodOf accessimapEditeurDerApp.GeometryUtilsService
          * 
          * @param  {integer} cx 
          * X coordinate of the first point
@@ -135,7 +135,7 @@
         /**
          * @ngdoc method
          * @name  extendPath
-         * @methodOf accessimapEditeurDerApp.geometryutils
+         * @methodOf accessimapEditeurDerApp.GeometryUtilsService
          *
          * @description
          * Extend a path composed by two points
@@ -175,7 +175,7 @@
         /**
          * @ngdoc method
          * @name  getPathDirection
-         * @methodOf accessimapEditeurDerApp.geometryutils
+         * @methodOf accessimapEditeurDerApp.GeometryUtilsService
          *
          * @description 
          * Knowing the y axis is from top to bottom, 
@@ -230,5 +230,5 @@
 
     }
 
-    angular.module(moduleApp).service('geometryutils', geometryutils);
+    angular.module(moduleApp).service('GeometryUtilsService', GeometryUtilsService);
 })();

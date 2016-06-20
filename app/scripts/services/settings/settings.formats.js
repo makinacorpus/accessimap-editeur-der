@@ -1,13 +1,9 @@
-/*global textures */
-// jscs:disable maximumLineLength
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.SettingsFormats
- * @requires accessimapEditeurDerApp.editSvg
- * @requires accessimapEditeurDerApp.InteractionService
+ * 
  * @description
- * # SettingsFormats
- * Factory in the accessimapEditeurDerApp.
+ * Provide different drawing formats
  */
 (function() {
     'use strict';

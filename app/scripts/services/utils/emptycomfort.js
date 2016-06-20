@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    function EmptyConfortService(SVGService, geometryutils) {
+    function EmptyConfortService(SVGService) {
 
         this.calcEmptyComfort = calcEmptyComfort;
 
@@ -87,6 +87,6 @@
     
     angular.module(moduleApp).service('EmptyConfortService', EmptyConfortService);
 
-    EmptyConfortService.$inject= ['SVGService', 'geometryutils'];
+    EmptyConfortService.$inject= ['SVGService'];
 
 })();

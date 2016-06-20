@@ -10,7 +10,7 @@
 (function() {
     'use strict';
 
-    function FeatureService(InteractionService, EmptyConfortService, UtilService, geometryutils, GeneratorService) {
+    function FeatureService(InteractionService, EmptyConfortService, UtilService, GeometryUtilsService, GeneratorService) {
         
         this.duplicatePath                 = duplicatePath;
         this.movePath                      = movePath;
@@ -142,7 +142,7 @@
                 if (d3.select(temporaryPath).classed('moved')) {
 
                     var p = projection.latLngToLayerPoint(e.latlng),
-                    realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y], bbox),
+                    realCoordinates = GeometryUtilsService.realCoordinates(transform, [p.x, p.y], bbox),
                     transformString = '';
 
                     if (hasRotate) {
@@ -167,7 +167,7 @@
             handlers.addMouseMoveListener(function(e) {
 
                 var p = projection.latLngToLayerPoint(e.latlng),
-                    realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y], bbox),
+                    realCoordinates = GeometryUtilsService.realCoordinates(transform, [p.x, p.y], bbox),
                     transformString = '';
 
                 if (hasRotate) {
@@ -232,7 +232,7 @@
                 if (d3.select(temporaryPath).classed('moved')) {
 
                     var p = projection.latLngToLayerPoint(e.latlng),
-                    realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y], bbox),
+                    realCoordinates = GeometryUtilsService.realCoordinates(transform, [p.x, p.y], bbox),
                     transformString = '';
 
                     if (hasRotate) {
@@ -260,7 +260,7 @@
             handlers.addMouseMoveListener(function(e) {
 
                 var p = projection.latLngToLayerPoint(e.latlng),
-                    realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y], bbox),
+                    realCoordinates = GeometryUtilsService.realCoordinates(transform, [p.x, p.y], bbox),
                     transformString = '';
 
                 if (hasRotate) {
@@ -319,7 +319,7 @@
             drag.on('dragstart', function(e) {
                 // silence other listeners
                 d3.event.sourceEvent.stopPropagation();
-                nearest = geometryutils.nearest(d3.mouse(this), features);
+                nearest = GeometryUtilsService.nearest(d3.mouse(this), features);
             });
 
             drag.on('drag', function() {
@@ -405,7 +405,7 @@
             handlers.addMouseMoveListener(function(e) {
 
                 var p = projection.latLngToLayerPoint(e.latlng),
-                    // realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y], bbox),
+                    // realCoordinates = GeometryUtilsService.realCoordinates(transform, [p.x, p.y], bbox),
                     transformString = initialTransform,
                     shiftKeyPressed = e.originalEvent.shiftKey,
                     transform = d3.svg.transform();
@@ -513,13 +513,13 @@
                 // silence other listeners
                 d3.event.sourceEvent.stopPropagation(); 
                 var mouse = d3.mouse(pointsLayer.node());
-                initialAngle = geometryutils.angle(pathCenterTranslate[0], 
+                initialAngle = GeometryUtilsService.angle(pathCenterTranslate[0], 
                                         pathCenterTranslate[1], 
                                         mouse[0], 
                                         mouse[1]);
             }).on('drag', function() {
                 var mouse = d3.mouse(pointsLayer.node()),
-                    currentAngle = geometryutils.angle(pathCenterTranslate[0], 
+                    currentAngle = GeometryUtilsService.angle(pathCenterTranslate[0], 
                                         pathCenterTranslate[1], 
                                         mouse[0], 
                                         mouse[1]),
@@ -718,6 +718,6 @@
     angular.module(moduleApp).service('FeatureService', FeatureService);
 
     FeatureService.$inject = ['InteractionService', 'EmptyConfortService', 'UtilService', 
-                                'geometryutils', 'GeneratorService']
+                                'GeometryUtilsService', 'GeneratorService']
 
 })();

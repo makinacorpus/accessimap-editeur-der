@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    function SettingsStyles (editSvg) {
+    function SettingsStyles (SVGService) {
 
         var POLYGON_STYLES = {
             'bighash': textures.lines().id('bighash').orientation('vertical'),
@@ -666,7 +666,7 @@
         'point': [{
             id: 'smallcircleempty',
             name: 'Petit cercle vide',
-            path: editSvg.circlePath,
+            path: SVGService.circlePath,
             radius: 10,
             style: [{
                 'k': 'stroke',
@@ -681,7 +681,7 @@
         },{
             id: 'bigcircleempty',
             name: 'Grand cercle vide',
-            path: editSvg.circlePath,
+            path: SVGService.circlePath,
             radius: 18,
             style: [{
                 'k': 'stroke',
@@ -696,7 +696,7 @@
         },{
             id: 'smallcircle',
             name: 'Petit cercle plein',
-            path: editSvg.circlePath,
+            path: SVGService.circlePath,
             radius: 10,
             style: [{
                 'k': 'stroke',
@@ -711,7 +711,7 @@
         },{
             id: 'bigcircle',
             name: 'Grand cercle',
-            path: editSvg.circlePath,
+            path: SVGService.circlePath,
             radius: 18,
             style: [{
                 'k': 'stroke',
@@ -726,7 +726,7 @@
         },{
             id: 'circleCross',
             name: 'Cercle croix',
-            path: editSvg.circleCrossPath,
+            path: SVGService.circleCrossPath,
             radius: 18,
             style: [{
                 'k': 'stroke',
@@ -741,7 +741,7 @@
         },{
             id: 'ovalempty',
             name: 'Ovale vide',
-            path: editSvg.ovalPath,
+            path: SVGService.ovalPath,
             radius: 18,
             style: [{
                 'k': 'stroke',
@@ -756,7 +756,7 @@
         },{
             id: 'oval',
             name: 'Ovale',
-            path: editSvg.ovalPath,
+            path: SVGService.ovalPath,
             radius: 18,
             style: [{
                 'k': 'stroke',
@@ -771,7 +771,7 @@
         },{
             id: 'triangleempty',
             name: 'Triangle vide',
-            path: editSvg.trianglePath,
+            path: SVGService.trianglePath,
             radius: 22,
             style: [{
                 'k': 'stroke',
@@ -786,7 +786,7 @@
         },{
             id: 'triangle',
             name: 'Triangle',
-            path: editSvg.trianglePath,
+            path: SVGService.trianglePath,
             radius: 22,
             style: [{
                 'k': 'stroke',
@@ -801,7 +801,7 @@
         },{
             id: 'squareempty',
             name: 'Carré vide',
-            path: editSvg.squarePath,
+            path: SVGService.squarePath,
             radius: 20,
             style: [{
                 'k': 'stroke',
@@ -816,7 +816,7 @@
         },{
             id: 'square',
             name: 'Carré',
-            path: editSvg.squarePath,
+            path: SVGService.squarePath,
             radius: 20,
             style: [{
                 'k': 'stroke',
@@ -831,7 +831,7 @@
         },{
             id: 'squareDiag',
             name: 'Carré Diag',
-            path: editSvg.squareDiagPath,
+            path: SVGService.squareDiagPath,
             radius: 25,
             style: [{
                 'k': 'stroke',
@@ -846,7 +846,7 @@
         },{
             id: 'squareCross',
             name: 'Carré croix',
-            path: editSvg.squareCrossPath,
+            path: SVGService.squareCrossPath,
             radius: 25,
             style: [{
                 'k': 'stroke',
@@ -861,7 +861,7 @@
         },{
             id: 'cross',
             name: 'Croix',
-            path: editSvg.crossPath,
+            path: SVGService.crossPath,
             radius: 25,
             style: [{
                 'k': 'stroke',
@@ -876,7 +876,7 @@
         },{
             id: 'cross2',
             name: 'Croix2',
-            path: editSvg.crossPath,
+            path: SVGService.crossPath,
             radius: 25,
             style: [{
                 'k': 'stroke',
@@ -891,7 +891,7 @@
         },{
             id: 'cross3',
             name: 'Croix3',
-            path: editSvg.crossPath,
+            path: SVGService.crossPath,
             radius: 30,
             style: [{
                 'k': 'stroke',
@@ -906,7 +906,7 @@
         },{
             id: 'horizontalRect',
             name: 'horizontalRect',
-            path: editSvg.horizontalRectPath,
+            path: SVGService.horizontalRectPath,
             radius: 20,
             style: [{
                 'k': 'stroke',
@@ -921,7 +921,7 @@
         },{
             id: 'horizontalArrow',
             name: 'horizontalArrow',
-            path: editSvg.horizontalArrowPath,
+            path: SVGService.horizontalArrowPath,
             radius: 100,
             style: [{
                 'k': 'stroke',
@@ -936,7 +936,7 @@
         },{
             id: 'horizontalArrowHash',
             name: 'horizontalArrowHash',
-            path: editSvg.horizontalArrowPath,
+            path: SVGService.horizontalArrowPath,
             radius: 100,
             style: [{
                 'k': 'stroke-width',
@@ -948,7 +948,7 @@
         },{
             id: 'horizontalArrowDots',
             name: 'horizontalArrowDots',
-            path: editSvg.horizontalArrowPath,
+            path: SVGService.horizontalArrowPath,
             radius: 100,
             style: [{
                 'k': 'stroke',
@@ -963,7 +963,7 @@
         },{
             id: 'horizontalArrowMedium',
             name: 'horizontalArrowMedium',
-            path: editSvg.horizontalArrowPath,
+            path: SVGService.horizontalArrowPath,
             radius: 60,
             style: [{
                 'k': 'stroke',
@@ -978,7 +978,7 @@
         },{
             id: 'horizontalArrowSmall',
             name: 'horizontalArrowSmall',
-            path: editSvg.horizontalSmallArrowPath,
+            path: SVGService.horizontalSmallArrowPath,
             radius: 30,
             style: [{
                 'k': 'stroke',
@@ -993,7 +993,7 @@
         },{
             id: 'northOrientation',
             name: 'Flèche du Nord',
-            path: editSvg.northOrientation,
+            path: SVGService.northOrientation,
             radius: 30,
             style: [{
                 'k': 'stroke',
@@ -1015,6 +1015,6 @@
 
     angular.module(moduleApp).service('SettingsStyles', SettingsStyles);
 
-    SettingsStyles.$inject = ['editSvg']
+    SettingsStyles.$inject = ['SVGService']
 
 })();
