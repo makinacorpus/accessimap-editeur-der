@@ -12,6 +12,7 @@
  * @requires accessimapEditeurDerApp.ExportService
  * @requires accessimapEditeurDerApp.UtilService
  * @requires accessimapEditeurDerApp.ImportService
+ * @requires accessimapEditeurDerApp.EventsService
  * 
  * @description
  * Service used for the 'EditController', and the 'edit' view
@@ -25,14 +26,15 @@
     'use strict';
 
     function EditService($q, SettingsService, MapService, DrawingService, LegendService, 
-        DefsService, InteractionService, ExportService, UtilService, ImportService, FeatureService) {
+        DefsService, InteractionService, ExportService, UtilService, ImportService, FeatureService, EventsService) {
 
         this.init          = init;
         this.settings      = SettingsService;
         this.featureIcon   = DrawingService.toolbox.featureIcon;
-        this.enableAddPOI  = enableAddPOI;
         this.insertOSMData = insertOSMData;
-        this.disableAddPOI = disableAddPOI;
+
+        this.enableAddPOI  = EventsService.enableAddPOI;
+        this.disableAddPOI = EventsService.disableAddPOI;
 
         // Drawing services
         // TODO : reset action has to work correctly for event...
@@ -56,22 +58,24 @@
         }
 
         // Toolbox
+        this.drawPoint                     = DrawingService.toolbox.drawPoint;
+        this.drawCircle                    = DrawingService.toolbox.drawCircle;
         this.changeTextColor               = DrawingService.toolbox.changeTextColor;
         this.updateBackgroundStyleAndColor = DrawingService.toolbox.updateBackgroundStyleAndColor;
         this.updateFeatureStyleAndColor    = DrawingService.toolbox.updateFeatureStyleAndColor;
         this.updateMarker                  = DrawingService.toolbox.updateMarker;
-        this.updatePoint                   = updatePoint;
         this.addRadialMenus                = DrawingService.toolbox.addRadialMenus;
+        this.updatePoint                   = DrawingService.updatePoint;
+        
         this.isUndoAvailable               = FeatureService.isUndoAvailable;
         this.undo                          = FeatureService.undo;
-        this.enablePointMode               = enablePointMode;
-        this.drawPoint                     = DrawingService.toolbox.drawPoint;
-        this.enableCircleMode              = enableCircleMode;
-        this.enableSquareMode              = enableSquareMode;
-        this.enableTriangleMode            = enableTriangleMode;
-        this.drawCircle                    = DrawingService.toolbox.drawCircle;
-        this.enableLineOrPolygonMode       = enableLineOrPolygonMode;
-        this.enableTextMode                = enableTextMode;
+
+        this.enablePointMode               = EventsService.enablePointMode;
+        this.enableCircleMode              = EventsService.enableCircleMode;
+        this.enableSquareMode              = EventsService.enableSquareMode;
+        this.enableTriangleMode            = EventsService.enableTriangleMode;
+        this.enableLineOrPolygonMode       = EventsService.enableLineOrPolygonMode;
+        this.enableTextMode                = EventsService.enableTextMode;
 
         this.exportData                    = function(model) {
             var deferred = $q.defer();
@@ -80,7 +84,7 @@
             model.zoom         = zoom   ? zoom   : MapService.getMap().getZoom();
             model.mapIdVisible = MapService.getBaseLayerId();
 
-            resetView(function() { 
+            resetView(model.center, model.zoom, function() { 
                 ExportService.exportData(model).then(function() { 
                     deferred.resolve()
                 }) 
@@ -91,33 +95,35 @@
         }
 
         // Map services
-        this.showMapLayer                  = MapService.showMapLayer;
-        this.hideMapLayer                  = MapService.hideMapLayer;
-
-        this.geojsonToSvg                  = DrawingService.layers.geojson.geojsonToSvg;
-        this.getFeatures                   = DrawingService.layers.geojson.getFeatures;
+        this.showMapLayer            = MapService.showMapLayer;
+        this.hideMapLayer            = MapService.hideMapLayer;
         
-        this.removeFeature                 = DrawingService.layers.geojson.removeFeature;
-        this.updateFeature                 = DrawingService.layers.geojson.updateFeature;
-        this.rotateFeature                 = DrawingService.layers.geojson.rotateFeature;
+        this.geojsonToSvg            = DrawingService.layers.geojson.geojsonToSvg;
+        this.getFeatures             = DrawingService.layers.geojson.getFeatures;
         
-        this.searchAndDisplayAddress       = searchAndDisplayAddress;
-        this.fitBounds                     = fitBounds;
-        this.panTo                         = panTo;
+        this.removeFeature           = DrawingService.layers.geojson.removeFeature;
+        this.updateFeature           = DrawingService.layers.geojson.updateFeature;
+        this.rotateFeature           = DrawingService.layers.geojson.rotateFeature;
+        
+        this.searchAndDisplayAddress = searchAndDisplayAddress;
+        this.fitBounds               = MapService.getMap().fitBounds;
+        this.panTo                   = MapService.getMap().panTo;
+        
+        this.freezeMap               = freezeMap;
+        
+        this.resetView               = function(callback) {
+            MapService.resetView(center, zoom, callback);
+        }
 
-        this.freezeMap                     = freezeMap;
-
-        this.resetView                     = resetView;
-
-        this.rotateMap                     = rotateMap;
-
-        this.interactions                  = InteractionService;
-
+        this.rotateMap           = rotateMap;
+        
+        this.interactions        = InteractionService;
+        
         this.changeDrawingFormat = changeDrawingFormat;
         this.changeLegendFormat  = changeLegendFormat;
         this.showFontBraille     = LegendService.showFontBraille;
         this.hideFontBraille     = LegendService.hideFontBraille;
-
+        
         this.uploadFile          = uploadFile;
         this.appendSvg           = appendSvg;
         this.importDER           = importDER;
@@ -178,225 +184,6 @@
             zoom   = null;
         }
         
-        function initMode() {
-            MapService.changeCursor('crosshair');
-            MapService.removeEventListeners();
-        }
-        
-
-        function enablePointMode(getDrawingParameter) {
-
-            initMode();
-
-            MapService.addClickListener(function(e) {
-                var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    drawingParameters = getDrawingParameter();
-                DrawingService.toolbox.drawPoint(p.x, p.y, drawingParameters.style, drawingParameters.color);
-            })
-
-        }
-
-        function enableCircleMode(getDrawingParameter) {
-
-            initMode();
-
-            MapService.addEventListener([ 'click', 'contextmenu' ], function(e) {
-                e.originalEvent.stopImmediatePropagation();
-            })
-
-            MapService.addEventListener([ 'mousedown', 'mouseup' ] , function(e) {
-                // only left click
-                if (e.originalEvent.button === 0) {
-                    
-                    e.originalEvent.stopImmediatePropagation()
-                    var p = projDrawing.latLngToLayerPoint(e.latlng),
-                        drawingParameters = getDrawingParameter();
-                    
-                    DrawingService.toolbox.drawCircle(p.x, p.y, 
-                                            drawingParameters.style, 
-                                            drawingParameters.color, 
-                                            drawingParameters.contour)
-
-                    MapService.addMouseMoveListener(function(e) {
-                        var p = projDrawing.latLngToLayerPoint(e.latlng),
-                            drawingParameters = getDrawingParameter();
-                        DrawingService.toolbox.updateCircleRadius(p.x, p.y, e.originalEvent.shiftKey);
-                    })
-                    
-                }
-            })
-
-
-        }
-
-        function enableSquareMode(getDrawingParameter) {
-
-            initMode();
-
-            MapService.addEventListener([ 'click', 'contextmenu' ], function(e) {
-                e.originalEvent.stopImmediatePropagation();
-            })
-
-            MapService.addEventListener([ 'mousedown' ] , function(e) {
-                // only left click
-                e.originalEvent.stopImmediatePropagation()
-                if (e.originalEvent.button === 0) {
-
-                    var p = projDrawing.latLngToLayerPoint(e.latlng),
-                        drawingParameters = getDrawingParameter();
-
-                    DrawingService.toolbox.drawSquare(p.x, p.y, 
-                                                    drawingParameters.style, 
-                                                    drawingParameters.color, 
-                                                    drawingParameters.contour)
-
-                    MapService.addMouseMoveListener(function(e) {
-
-                        var p = projDrawing.latLngToLayerPoint(e.latlng),
-                            drawingParameters = getDrawingParameter();
-
-                        DrawingService.toolbox.updateSquare(p.x, p.y, e.originalEvent.shiftKey);
-
-                        MapService.addEventListener([ 'mouseup' ] , function(e) {
-                            // only left click
-                            e.originalEvent.stopImmediatePropagation()
-                            if (e.originalEvent.button === 0) {
-                                var p = projDrawing.latLngToLayerPoint(e.latlng),
-                                    drawingParameters = getDrawingParameter();
-                                DrawingService.toolbox.drawSquare(p.x, p.y, 
-                                                                drawingParameters.style, 
-                                                                drawingParameters.color, 
-                                                                drawingParameters.contour)
-                                enableSquareMode(getDrawingParameter)
-                            }
-                        })
-
-                    })
-
-                }
-
-            })
-
-        }
-
-        function enableTriangleMode(getDrawingParameter) {
-
-            initMode();
-
-            MapService.addEventListener([ 'click', 'contextmenu' ], function(e) {
-                e.originalEvent.stopImmediatePropagation();
-            })
-
-            MapService.addEventListener([ 'mousedown' ] , function(e) {
-                // only left click
-                e.originalEvent.stopImmediatePropagation()
-                if (e.originalEvent.button === 0) {
-
-                    var p = projDrawing.latLngToLayerPoint(e.latlng),
-                        drawingParameters = getDrawingParameter();
-
-                    DrawingService.toolbox.drawTriangle(p.x, p.y, 
-                                                    drawingParameters.style, 
-                                                    drawingParameters.color, 
-                                                    drawingParameters.contour)
-
-                    MapService.addMouseMoveListener(function(e) {
-
-                        var p = projDrawing.latLngToLayerPoint(e.latlng),
-                            drawingParameters = getDrawingParameter();
-
-                        DrawingService.toolbox.updateTriangle(p.x, p.y, e.originalEvent.shiftKey);
-
-                        MapService.addEventListener([ 'mouseup' ] , function(e) {
-                            // only left click
-                            e.originalEvent.stopImmediatePropagation()
-                            if (e.originalEvent.button === 0) {
-                                var p = projDrawing.latLngToLayerPoint(e.latlng),
-                                    drawingParameters = getDrawingParameter();
-                                DrawingService.toolbox.drawTriangle(p.x, p.y, 
-                                                                drawingParameters.style, 
-                                                                drawingParameters.color, 
-                                                                drawingParameters.contour)
-                                enableSquareMode(getDrawingParameter)
-                            }
-                        })
-
-                    })
-
-                }
-
-            })
-
-        }
-
-        function enableLineOrPolygonMode(getDrawingParameter) {
-
-            initMode();
-
-            var lastPoint = null,
-                lineEdit = [];
-
-            MapService.addClickListener(function(e) {
-                var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    drawingParameters = getDrawingParameter();
-                DrawingService.toolbox.beginLineOrPolygon(p.x, 
-                                                p.y, 
-                                                drawingParameters.style, 
-                                                drawingParameters.color, 
-                                                drawingParameters.contour, 
-                                                drawingParameters.mode, 
-                                                lastPoint, 
-                                                lineEdit);
-                lastPoint = p;
-            })
-
-            MapService.addMouseMoveListener(function(e) {
-                var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    drawingParameters = getDrawingParameter();
-                DrawingService.toolbox.drawHelpLineOrPolygon(p.x, 
-                                                    p.y, 
-                                                    drawingParameters.style, 
-                                                    drawingParameters.color, 
-                                                    drawingParameters.contour, 
-                                                    drawingParameters.mode, 
-                                                    lastPoint);
-            })
-
-            MapService.addDoubleClickListener(function(e) {
-                var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    drawingParameters = getDrawingParameter();
-                DrawingService.toolbox.finishLineOrPolygon(p.x, 
-                                                    p.y, 
-                                                    drawingParameters.style, 
-                                                    drawingParameters.color, 
-                                                    drawingParameters.mode);
-                lastPoint = null;
-                lineEdit = [];
-            })
-
-        }
-
-        function enableTextMode(getDrawingParameter) {
-
-            initMode();
-
-            MapService.addClickListener(function(e) {
-                var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    drawingParameters = getDrawingParameter();
-
-                DrawingService.toolbox.writeText(p.x, p.y, drawingParameters.font, drawingParameters.fontColor)
-                    .then(function addAgainClickListener(element) {
-                        MapService.addClickListener(function(e) {
-                            enableTextMode(getDrawingParameter)
-                        })
-                    })
-
-                // to prevent the draw of a new text feature
-                MapService.removeEventListener(['click']);
-            })
-
-        }
-
         /**
          * @ngdoc method
          * @name  init
@@ -431,10 +218,7 @@
                                     ? SettingsService.FORMATS[SettingsService.DEFAULT_LEGEND_FORMAT]
                                     : SettingsService.FORMATS[legendFormat];
 
-            MapService.initMap('workspace', 
-                            drawingFormat, 
-                            SettingsService.ratioPixelPoint,
-                            MapService.resizeFunction);
+            MapService.initMap('workspace', drawingFormat, SettingsService.ratioPixelPoint, MapService.resizeFunction);
 
             // Background used to import images, svg or pdf to display a background helper
             overlayBackground = L.d3SvgOverlay(function(sel, proj) {
@@ -495,7 +279,7 @@
             // we create defs svg in a different svg of workspace & legend
             // it's useful to let #legend & #workspace svg access to patterns
             // created inside #pattern svg
-            DefsService.createDefs(d3.select('#pattern'));
+            DefsService.createDefs('#pattern');
 
             LegendService.initLegend('#legend', 
                                     currentLegendFormat.width, 
@@ -504,135 +288,24 @@
                                     SettingsService.ratioPixelPoint);
 
             FeatureService.init(selDrawing, projDrawing, MapService)
+            EventsService.init(projDrawing)
 
         }
 
         function changeDrawingFormat(format) {
             // first, we set the initial state, center & zoom
-            resetView()
+            MapService.resetView(center, zoom)
             DrawingService.layers.overlay.setFormat(format);
             MapService.setMinimumSize(SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint,
                                         SettingsService.FORMATS[format].height / SettingsService.ratioPixelPoint);
             MapService.resizeFunction();
             center = DrawingService.layers.overlay.getCenter();
-            resetView();
+            MapService.resetView(center, zoom);
         }
 
         function changeLegendFormat(format) {
             LegendService.draw(SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint, 
                                SettingsService.FORMATS[format].height / SettingsService.ratioPixelPoint);
-        }
-
-
-        /**
-         * @ngdoc method
-         * @name  updateFeatureStyleAndColor
-         * @methodOf accessimapEditeurDerApp.EditService
-         *
-         * @description 
-         * Update the style (pattern) & color of a feature.
-         * Could be a geojson feature or a drawing feature.
-         * 
-         * @param {Object} style 
-         * SettingsService.STYLES object
-         * 
-         * @param {Object} color 
-         * SettingsService.COLORS object
-         */
-        function updatePoint(style) {
-
-            var currentSelection = d3.select('.styleEdition'),
-                featureId = currentSelection.attr('id'),
-                featureFrom = currentSelection.attr('data-from');
-
-            if (featureFrom === 'drawing') {
-                DrawingService.toolbox.updateFeatureStyleAndColor(style, null);
-            } else if (featureFrom === 'osm') {
-                // find the id of the current feature
-                var idFound = null,
-                    currentParent = currentSelection.node().parentNode;
-                
-                console.log(currentParent.getAttribute('id'))
-                
-                while (! currentParent.getAttribute('id')) {
-                    currentParent = currentParent.parentNode;
-                }
-
-                DrawingService.layers.geojson.updateFeature(currentParent.getAttribute('id'), style)
-            }
-            currentSelection.classed('styleEdition', false)
-        }    
-
-        /**
-         * @ngdoc method
-         * @name  enableAddPOI
-         * @methodOf accessimapEditeurDerApp.EditService
-         * 
-         * @description 
-         * Enable the 'Add POI' mode, 
-         * allowing user to click on the map and retrieve data from OSM
-         * 
-         * @param {function} _successCallback 
-         * Callback function called when data has been retrieved, data is passed in first argument
-         * 
-         * @param {function} _errorCallback 
-         * Callback function called when an error occured, error is passed in first argument
-         */
-        function enableAddPOI(_warningCallback, _errorCallback, _currentParametersFn) {
-
-            initMode();
-
-            MapService.addClickListener(function(e) {
-
-                var currentParameters = _currentParametersFn(),
-                styleChosen = SettingsService.ALL_STYLES.find(function(element, index, array) {
-                    return element.id === currentParameters.style.id;
-                }),
-                colorChosen = SettingsService.ALL_COLORS.find(function(element, index, array) {
-                    return element.id === currentParameters.color.id;
-                })
-                // TODO: prevent any future click 
-                // user has to wait before click again
-                MapService.changeCursor('progress');
-                
-                MapService
-                    .retrieveData([e.latlng.lng,  e.latlng.lat], SettingsService.QUERY_LIST[0])
-                    .then(function successCallback(osmGeojson) {
-                        if (!osmGeojson) {
-                            _errorCallback('Erreur lors de la recherche de POI... Merci de recommencer.')
-                        }
-                        
-                        if (osmGeojson.features && osmGeojson.features.length > 0) {
-                            DrawingService.layers.geojson.geojsonToSvg(osmGeojson, 
-                                    null, 
-                                    'node_' + osmGeojson.features[0].properties.id, 
-                                    true, 
-                                    SettingsService.QUERY_POI, 
-                                    styleChosen, 
-                                    SettingsService.STYLES[SettingsService.QUERY_POI.type], 
-                                    colorChosen, null, null)
-                        } else {
-                            _warningCallback('Aucun POI trouvé à cet endroit... Merci de cliquer ailleurs !?')
-                        }
-                    })
-                    .catch(_errorCallback)
-                    .finally(function finallyCallback() {
-                        MapService.changeCursor('crosshair');
-                    })
-            })
-        }
-
-        /**
-         * @ngdoc method
-         * @name  disableAddPOI
-         * @methodOf accessimapEditeurDerApp.EditService
-         * 
-         * @description 
-         * Disable the 'Add POI' mode by resetting CSS cursor.
-         * 
-         */
-        function disableAddPOI() {
-            MapService.resetCursor();
         }
 
         /**
@@ -749,53 +422,8 @@
             return deferred.promise;
         }
 
-        function fitBounds(points) {
-            MapService.getMap().fitBounds(points);
-        }
 
-        function panTo(point) {
-            MapService.getMap().panTo(point);
-        }
-
-        /**
-         * @ngdoc method
-         * @name  resetView
-         * @methodOf accessimapEditeurDerApp.EditService
-         *
-         * @description 
-         * If a center of the drawing is defined, 
-         * we pan / zoom to the initial state of the drawing.
-         *
-         * @param {function} callback
-         * Optional, function to be called when the setView is finished
-         */
-        function resetView(callback) {
-
-            if (center !== null && zoom !== null) {
-                // if the tile layer don't zoom, we're not going to load tiles
-                // we have to detect if we are going to change the zoom level or not
-                var zoomWillChange = ( MapService.getMap().getZoom() !== zoom );
-
-                if (zoomWillChange) {
-                    if (MapService.isMapVisible()) {
-                        MapService.getBaseLayer().once('load', function() { 
-                            if (callback) callback(); 
-                        })
-                    }
-                }
-
-                MapService.getMap().setView(center, zoom, {animate:false})
-
-                if ( callback && ( ( ! zoomWillChange ) || ( zoomWillChange && ! MapService.isMapVisible() ) ) ) {
-                    callback();
-                }
-
-            } else {
-                if (callback) callback();
-            }
-
-        }
-
+        
         function uploadFile(element) {
 
             UtilService.uploadFile(element)
@@ -1030,6 +658,7 @@
                             'UtilService',
                             'ImportService',
                             'FeatureService',
+                            'EventsService',
                             ];
 
 })();

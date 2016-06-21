@@ -15,10 +15,11 @@
 
     function DrawingService(LayerService, ToolboxService, SettingsService) {
 
-        this.initDrawing     = initDrawing;
+        this.initDrawing = initDrawing;
         
-        this.toolbox         = ToolboxService;
-        this.layers          = LayerService;
+        this.toolbox     = ToolboxService;
+        this.layers      = LayerService;
+        this.updatePoint = updatePoint;
 
         /**
          * @ngdoc method
@@ -45,6 +46,43 @@
                                 LayerService.overlay.getLayer(), 
                                 LayerService.overlay.getZoom )
 
+        }
+
+        /**
+         * @ngdoc method
+         * @name  updateFeatureStyleAndColor
+         * @methodOf accessimapEditeurDerApp.DrawingService
+         *
+         * @description 
+         * Update the style (pattern) & color of a feature.
+         * Could be a geojson feature or a drawing feature.
+         * 
+         * @param {Object} style 
+         * SettingsService.STYLES object
+         * 
+         * @param {Object} color 
+         * SettingsService.COLORS object
+         */
+        function updatePoint(style) {
+
+            var currentSelection = d3.select('.styleEdition'),
+                featureId = currentSelection.attr('id'),
+                featureFrom = currentSelection.attr('data-from');
+
+            if (featureFrom === 'drawing') {
+                ToolboxService.updateFeatureStyleAndColor(style, null);
+            } else if (featureFrom === 'osm') {
+                // find the id of the current feature
+                var idFound = null,
+                    currentParent = currentSelection.node().parentNode;
+                
+                while (! currentParent.getAttribute('id')) {
+                    currentParent = currentParent.parentNode;
+                }
+
+                layers.geojson.updateFeature(currentParent.getAttribute('id'), style)
+            }
+            currentSelection.classed('styleEdition', false)
         }
 
     }

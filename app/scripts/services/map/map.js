@@ -61,6 +61,7 @@
         
         this.searchAddress          = SearchService.searchAddress
         this.resetZoom              = resetZoom;
+        this.resetView              = resetView;
         this.setMinimumSize         = setMinimumSize;
 
         /**
@@ -397,6 +398,46 @@
         function resetZoom() {
             map.setZoom(SettingsService.leaflet.GLOBAL_MAP_DEFAULT_ZOOM);
         }
+
+        /**
+         * @ngdoc method
+         * @name  resetView
+         * @methodOf accessimapEditeurDerApp.EditService
+         *
+         * @description 
+         * If a center of the drawing is defined, 
+         * we pan / zoom to the initial state of the drawing.
+         *
+         * @param {function} callback
+         * Optional, function to be called when the setView is finished
+         */
+        function resetView(center, zoom, callback) {
+
+            if (center !== null && zoom !== null) {
+                // if the tile layer don't zoom, we're not going to load tiles
+                // we have to detect if we are going to change the zoom level or not
+                var zoomWillChange = ( map.getZoom() !== zoom );
+
+                if (zoomWillChange) {
+                    if (_isMapVisible) {
+                        getBaseLayer().once('load', function() { 
+                            if (callback) callback(); 
+                        })
+                    }
+                }
+
+                map.setView(center, zoom, {animate:false})
+
+                if ( callback && ( ( ! zoomWillChange ) || ( zoomWillChange && ! _isMapVisible ) ) ) {
+                    callback();
+                }
+
+            } else {
+                if (callback) callback();
+            }
+
+        }
+
 
     }
 

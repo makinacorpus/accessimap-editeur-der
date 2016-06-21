@@ -18,11 +18,12 @@
          * @methodOf accessimapEditeurDerApp.DefsService
          *
          */
-        function createDefs(node) {
+        function createDefs(id) {
 
-            var _defs = node.append('svg')
-                            .attr("data-name", "defs")
-                            .append("defs");
+            var _defs = d3.select(id)
+                          .append('svg')
+                          .attr("data-name", "defs")
+                          .append("defs");
 
             _defs.append('marker')
                     .attr('id', 'arrowStartMarker')

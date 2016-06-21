@@ -110,7 +110,11 @@
 
     angular.module(moduleApp).factory('SettingsService', SettingsService);
 
-    SettingsService.$inject = ['SettingsActions', 'SettingsColors', 'SettingsFonts', 'SettingsFormats', 
-                        'SettingsQuery', 'SettingsStyles'];
+    SettingsService.$inject = ['SettingsActions', 
+                               'SettingsColors', 
+                               'SettingsFonts', 
+                               'SettingsFormats',
+                               'SettingsQuery', 
+                               'SettingsStyles'];
 
 })();

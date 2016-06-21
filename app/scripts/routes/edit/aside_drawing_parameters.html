@@ -89,7 +89,7 @@
 
     <div 
         class="form-group"
-        ng-if="$ctrl.mode === 'point' || $ctrl.mode === 'line' || $ctrl.mode === 'polygon' || $ctrl.mode === 'circle'">
+        ng-if="$ctrl.mode !== 'default' && $ctrl.mode !== '' && $ctrl.mode !== 'text'">
         <label>Style</label>
         <ui-select 
             ng-model="$ctrl.styleChosen" 
