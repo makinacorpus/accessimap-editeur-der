@@ -31,22 +31,13 @@
 </li>
 <li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.ImportService">ImportService</a></code>
 </li>
+<li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.EventsService">EventsService</a></code>
+</li>
 </ul>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_appendpdf">appendPdf(image)</h3>
 <div class="appendpdf"><div class="appendpdf-page"><p>Append the first page of a pdf in the background layer</p>
 </div><h5 id="methods_appendpdf_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>image</td><td><a href="" class="label type-hint type-hint-dataurl">dataUrl</a></td><td><div class="appendpdf-page"><p>dataUrl (could be png, jpg, ...) to insert in the background</p>
-</div></td></tr></tbody></table></div>
-</li>
-<li><h3 id="methods_disableaddpoi">disableAddPOI()</h3>
-<div class="disableaddpoi"><div class="disableaddpoi-page"><p>Disable the &#39;Add POI&#39; mode by resetting CSS cursor.</p>
-</div></div>
-</li>
-<li><h3 id="methods_enableaddpoi">enableAddPOI(_successCallback, _errorCallback)</h3>
-<div class="enableaddpoi"><div class="enableaddpoi-page"><p>Enable the &#39;Add POI&#39; mode, 
-allowing user to click on the map and retrieve data from OSM</p>
-</div><h5 id="methods_enableaddpoi_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>_successCallback</td><td><a href="" class="label type-hint type-hint-function">function</a></td><td><div class="enableaddpoi-page"><p>Callback function called when data has been retrieved, data is passed in first argument</p>
-</div></td></tr><tr><td>_errorCallback</td><td><a href="" class="label type-hint type-hint-function">function</a></td><td><div class="enableaddpoi-page"><p>Callback function called when an error occured, error is passed in first argument</p>
 </div></td></tr></tbody></table></div>
 </li>
 <li><h3 id="methods_init">init(drawingFormat, legendFormat)</h3>
@@ -87,13 +78,6 @@ and allow the user to choose the right one...</p>
 </div><h5 id="methods_searchanddisplayaddress_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>address</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="searchanddisplayaddress-page"><p>Address to search &amp; display</p>
 </div></td></tr></tbody></table><h5 id="methods_searchanddisplayaddress_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">Promise</a></td><td><div class="searchanddisplayaddress-page"><p>The promise of the search... could be successful, or not !</p>
 </div></td></tr></table></div>
-</li>
-<li><h3 id="methods_updatefeaturestyleandcolor">updateFeatureStyleAndColor(style, color)</h3>
-<div class="updatefeaturestyleandcolor"><div class="updatefeaturestyleandcolor-page"><p>Update the style (pattern) &amp; color of a feature.
-Could be a geojson feature or a drawing feature.</p>
-</div><h5 id="methods_updatefeaturestyleandcolor_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>style</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="updatefeaturestyleandcolor-page"><p>SettingsService.STYLES object</p>
-</div></td></tr><tr><td>color</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="updatefeaturestyleandcolor-page"><p>SettingsService.COLORS object</p>
-</div></td></tr></tbody></table></div>
 </li>
 </ul>
 </div>

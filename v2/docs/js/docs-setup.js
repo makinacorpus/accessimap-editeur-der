@@ -46,7 +46,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service providing drawing functions",
-      "keywords": "accessimapediteurderapp api area create d3svgoverlay display dom draw drawing drawings drawingservice element elements features format functions geojson help init initdrawing landscapea3 layer layerservice map method object place proj properties property provide providing sel service settingsservice size specific svg toolboxservice"
+      "keywords": "accessimapediteurderapp api area color colors create d3svgoverlay display dom draw drawing drawings drawingservice element elements feature features format functions geojson help init initdrawing landscapea3 layer layerservice map method object place proj properties property provide providing sel service settingsservice size specific style styles svg toolboxservice update updatefeaturestyleandcolor"
     },
     {
       "section": "api",
@@ -55,34 +55,25 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service used for the &#39;EditController&#39;, and the &#39;edit&#39; view",
-      "keywords": "_errorcallback _successcallback accessimapediteurderapp add address allow allowing angle api append appendpdf area argument background callback called center choose clever click color colors container css cursor d3 data dataurl defined defsservice degree disable disableaddpoi display displaying draw drawing drawingformat drawingservice edit editcontroller editservice elements enable enableaddpoi error events export exportservice feature features finished format function functions future geojson image importservice init initial initialize insert insertosmdata interactionservice jpg layer legend legendformat legendservice link map mapleaflet mapservice method mode move nominatim object occured optional osm pan passed pdf png poi printing promise provide query query_list resetting resetview result retrieve retrieved rotable rotate rotatemap rotation search searchanddisplayaddress service services settingsservice setview specific style styles successful update updatefeaturestyleandcolor user utilservice version view viewreset zoom"
+      "keywords": "_errorcallback _successcallback accessimapediteurderapp address allow angle api append appendpdf area argument background callback called center choose clever container d3 data dataurl defined defsservice degree display displaying draw drawing drawingformat drawingservice edit editcontroller editservice elements error events eventsservice export exportservice features finished format function functions future image importservice init initial initialize insert insertosmdata interactionservice jpg layer legend legendformat legendservice link map mapleaflet mapservice method move nominatim occured optional pan passed pdf png printing promise provide query query_list resetview result retrieve retrieved rotable rotate rotatemap rotation search searchanddisplayaddress service services settingsservice setview specific successful user utilservice version view viewreset zoom"
     },
     {
       "section": "api",
-      "id": "accessimapEditeurDerApp.editSvg",
-      "shortName": "accessimapEditeurDerApp.editSvg",
-      "type": "service",
-      "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "editSvg",
-      "keywords": "accessimapediteurderapp api editsvg service"
-    },
-    {
-      "section": "api",
-      "id": "accessimapEditeurDerApp.EmptyConfortService",
-      "shortName": "accessimapEditeurDerApp.EmptyConfortService",
+      "id": "accessimapEditeurDerApp.EmptyComfortService",
+      "shortName": "accessimapEditeurDerApp.EmptyComfortService",
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "",
-      "keywords": "7px accessimapediteurderapp add api area bigger bounding box calcemptycomfort calculate comfort d3 dom element empty emptyconfortservice extend extremities feature method object original path rect representing return service text"
+      "keywords": "7px accessimapediteurderapp add api area bigger bounding box calcemptycomfort calculate comfort d3 dom element empty emptycomfortservice extend extremities feature method object original path rect representing return service text"
     },
     {
       "section": "api",
-      "id": "accessimapEditeurDerApp.EventService",
-      "shortName": "accessimapEditeurDerApp.EventService",
+      "id": "accessimapEditeurDerApp.EventsService",
+      "shortName": "accessimapEditeurDerApp.EventsService",
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "Service providing events manager",
-      "keywords": "accessimapediteurderapp add addclicklistener adddoubleclicklistener addmovelistener api click doubleclick event events eventservice executed fired function listener manager map method mousemove providing remove removeeventlistener service todo"
+      "shortDescription": "Manage events (map, d3) in the editor",
+      "keywords": "_errorcallback _successcallback accessimapediteurderapp add allowing api argument callback called click context css cursor d3 data disable disableaddpoi edit editor enable enableaddpoi enabledefaultmode enableselectmode error events eventsservice function item items manage map menu method mode occured osm passed poi resetting retrieve retrieved select service user"
     },
     {
       "section": "api",
@@ -122,12 +113,12 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "accessimapEditeurDerApp.geometryutils",
-      "shortName": "accessimapEditeurDerApp.geometryutils",
+      "id": "accessimapEditeurDerApp.GeometryUtilsService",
+      "shortName": "accessimapEditeurDerApp.GeometryUtilsService",
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Useful functions for calc distances, angles, ...",
-      "keywords": "accessimapediteurderapp add angle angles api array axis bottom calc calculate composed coordinate coordinates cx cy degrees direction distance distances drawing extend extended extendpath extension ey functions geometryutils getpathdirection integer knowing left length matching method nearest order path point point1 point2 points realcoordinates return second service side substract targetpoint thales theorem top transform"
+      "keywords": "accessimapediteurderapp add angle angles api array axis bottom calc calculate composed coordinate coordinates cx cy degrees direction distance distances drawing extend extended extendpath extension ey functions geometryutilsservice getpathdirection integer knowing left length matching method nearest order path point point1 point2 points realcoordinates return second service side substract targetpoint thales theorem top transform"
     },
     {
       "section": "api",
@@ -137,15 +128,6 @@ NG_DOCS={
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Provide service to import a drawing :",
       "keywords": "accessimapediteurderapp api background data drawing element find geojson import importdrawing importservice interactions layer layers legend method provide purpose service svgelement"
-    },
-    {
-      "section": "api",
-      "id": "accessimapEditeurDerApp.initSvg",
-      "shortName": "accessimapEditeurDerApp.initSvg",
-      "type": "service",
-      "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "Service allowing user to create svg elements",
-      "keywords": "accessimapediteurderapp allowing api appended blank create createblanksvg created createdefs createdetachedsvg createdrawing createframe createlegend createlegendtext createmap createmaplayer createmargin createsource createsvg dom element elements height initsvg legend legendcontainter legendformat legendsvgnode map mapformat mapsvgnode margin method object service size specific svg svgs target user width"
     },
     {
       "section": "api",
@@ -239,6 +221,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "accessimapEditeurDerApp.SelectPathService",
+      "shortName": "accessimapEditeurDerApp.SelectPathService",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "Provide function to calculate the &#39;select path&#39; of a feature",
+      "keywords": "accessimapediteurderapp add api bbox calcselectpath calculate comfort d3 dom element empty feature function identical method object path provide rect representing select selectpathservice service"
+    },
+    {
+      "section": "api",
       "id": "accessimapEditeurDerApp.SettingsActions",
       "shortName": "accessimapEditeurDerApp.SettingsActions",
       "type": "service",
@@ -270,8 +261,8 @@ NG_DOCS={
       "shortName": "accessimapEditeurDerApp.SettingsFormats",
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "SettingsFormats",
-      "keywords": "accessimapediteurderapp api availables documents editing editsvg factory formats interactionservice property service settingsformats"
+      "shortDescription": "Provide different drawing formats",
+      "keywords": "accessimapediteurderapp api availables documents drawing editing formats property provide service settingsformats"
     },
     {
       "section": "api",
@@ -299,15 +290,6 @@ NG_DOCS={
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "",
       "keywords": "accessimapediteurderapp api service settingsstyles"
-    },
-    {
-      "section": "api",
-      "id": "accessimapEditeurDerApp.shareSvg",
-      "shortName": "accessimapEditeurDerApp.shareSvg",
-      "type": "service",
-      "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "shareSvg",
-      "keywords": "accessimapediteurderapp api service sharesvg"
     },
     {
       "section": "api",
@@ -347,6 +329,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "accessimapEditeurDerApp.ToolboxImageService",
+      "shortName": "accessimapEditeurDerApp.ToolboxImageService",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "Expose different methods to draw on the d3 svg area",
+      "keywords": "accessimapediteurderapp api area circle coordinate d3 der draw expose feature image import importimage key local method methods point pressed radius service shift shiftkeypressed svg toolboximageservice update updatecircleradius"
+    },
+    {
+      "section": "api",
       "id": "accessimapEditeurDerApp.ToolboxPolylineService",
       "shortName": "accessimapEditeurDerApp.ToolboxPolylineService",
       "type": "service",
@@ -370,7 +361,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Expose different methods to draw on the d3 svg area",
-      "keywords": "ability accessimapediteurderapp add addradialmenus api area arrow circle circles color coordinate coordinates d3 differents draw drawing drawpoint edit elements ellipses expose featureicon item lines menus method methods model path point points polygons radial rectangles right-clicking service set settingsservice shapes specific squares style svg text toolbox toolboxservice tools type user users"
+      "keywords": "ability accessimapediteurderapp add addcontextmenus api area arrow circle circles color coordinate coordinates d3 differents draw drawing drawpoint edit elements ellipses expose featureicon item lines menus method methods model path point points polygons radial rectangles right-clicking service set settingsservice shapes specific squares style svg text toolbox toolboxservice tools type user users"
     },
     {
       "section": "api",

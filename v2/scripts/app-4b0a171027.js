@@ -25,12 +25,12 @@
         .config(function($routeProvider) {
             $routeProvider
                 .when('/', {
-                    templateUrl: 'scripts/views/home/template.html',
+                    templateUrl: 'scripts/routes/home/template.html',
                     controller: 'HomeController',
                     controllerAs: '$ctrl'
                 })
                 .when('/edit', {
-                    templateUrl: 'scripts/views/edit/template.html',
+                    templateUrl: 'scripts/routes/edit/template.html',
                     controller: 'EditController',
                     controllerAs: '$ctrl'
                 })
@@ -79,475 +79,6 @@
             return filteredLayers;
         };
     });
-})();
-(function() {
-    'use strict';
-
-    /**
-     * @ngdoc service
-     * @name accessimapEditeurDerApp.editSvg
-     * @description
-     * # editSvg
-     * Service in the accessimapEditeurDerApp.
-     */
-    function editSvg() {
-        this.circlePath = function(cx, cy, r) {
-            var d = 'M ' + cx + ' ' + cy;
-            d += ' m -' + r + ', 0';
-            d += ' a ' + r + ',' + r + ' 0 1,0 ' + r * 2 + ',0';
-            d += ' a ' + r + ',' + r + ' 0 1,0 -' + r * 2 + ',0';
-
-            return d;
-        };
-
-        this.circleCrossPath = function(cx, cy, r) {
-            var d = 'M ' + cx + ' ' + cy;
-            d += ' m -' + r + ', 0';
-            d += ' a ' + r + ',' + r + ' 0 1,0 ' + r * 2 + ',0';
-            d += ' a ' + r + ',' + r + ' 0 1,0 -' + r * 2 + ',0';
-            d += ' Z';
-            r = r / Math.cos(45 * Math.PI / 180);
-            d += ' M ' + (cx - r / 2) + ' ' + (cy - r / 2);
-            d += ' L ' + (cx + r / 2) + ' ' + (cy + r / 2);
-            d += ' Z';
-            d += ' M ' + (cx - r / 2) + ' ' + (cy + r / 2);
-            d += ' L ' + (cx + r / 2) + ' ' + (cy - r / 2);
-            d += ' Z';
-
-            return d;
-        };
-
-        this.ovalPath = function(cx, cy, r) {
-            var d = 'M ' + cx + ' ' + cy;
-            d += ' m -' + r / 2 + ', 0';
-            d += ' a ' + r / 2 + ',' + r + ' 0 1,0 ' + r + ',0';
-            d += ' a ' + r / 2 + ',' + r + ' 0 1,0 -' + r + ',0';
-
-            return d;
-        };
-
-        this.trianglePath = function(cx, cy, r) {
-            var d = 'M ' + (cx - r / 2) + ' ' + cy;
-            d += ' L' + cx + ' ' + (cy - Math.sqrt(3 * r * r / 4));
-            d += ' L' + (cx + r / 2) + ' ' + cy;
-            d += ' Z';
-
-            return d;
-        };
-
-        this.squarePath = function(cx, cy, r) {
-            var d = 'M ' + (cx - r / 2) + ' ' + (cy - r / 2);
-            d += ' v' + r;
-            d += ' h' + r;
-            d += ' v' + (-r);
-            d += ' Z';
-
-            return d;
-        };
-
-        this.northOrientation = function(cx, cy, r) {
-            var d = 'M ' + (cx + r / 2) + ' ' + (cy + r / 2);
-            d += ' h' + (-r);
-            d += ' Z';
-            d += 'M ' + cx + ' ' + (cy + r / 2);
-            d += ' v' + (-r);
-            d += ' Z';
-
-            return d;
-        };
-
-        this.squareDiagPath = function(cx, cy, r) {
-            var d = 'M ' + (cx - r / 2) + ' ' + (cy - r / 2);
-            d += ' v' + r;
-            d += ' h' + r;
-            d += ' v' + (-r);
-            d += ' Z';
-            d += ' M ' + (cx - r / 2) + ' ' + (cy - r / 2);
-            d += ' L ' + (cx + r / 2) + ' ' + (cy + r / 2);
-            d += ' Z';
-
-            return d;
-        };
-
-        this.squareCrossPath = function(cx, cy, r) {
-            var d = 'M ' + (cx - r / 2) + ' ' + (cy - r / 2);
-            d += ' v' + r;
-            d += ' h' + r;
-            d += ' v' + (-r);
-            d += ' Z';
-            d += ' M ' + (cx - r / 2) + ' ' + (cy - r / 2);
-            d += ' L ' + (cx + r / 2) + ' ' + (cy + r / 2);
-            d += ' Z';
-            d += ' M ' + (cx - r / 2) + ' ' + (cy + r / 2);
-            d += ' L ' + (cx + r / 2) + ' ' + (cy - r / 2);
-            d += ' Z';
-
-            return d;
-        };
-
-        this.crossPath = function(cx, cy, r) {
-            var d = 'M ' + (cx - r / 2) + ' ' + cy;
-            d += ' h' + r;
-            d += ' Z';
-            d += 'M ' + cx + ' ' + (cy - r / 2);
-            d += ' v' + r;
-            d += ' Z';
-
-            return d;
-        };
-
-        this.horizontalRectPath = function(cx, cy, r) {
-            var d = 'M ' + (cx - r / 2) + ' ' + cy;
-            d += ' h' + r;
-            d += ' Z';
-
-            return d;
-        };
-
-        this.horizontalArrowPath = function(cx, cy, r) {
-            var d = 'M ' + cx + ' ' + cy;
-            d += ' L' + (cx - 3 * r / 10) + ' ' + (cy - 3 * r / 10);
-            d += ' L' + (cx - 3 * r / 10) + ' ' + (cy - 1 * r / 10);
-            d += ' L' + (cx - 12 * r / 10) + ' ' + (cy - 1 * r / 10);
-            d += ' L' + (cx - 12 * r / 10) + ' ' + (cy + 1 * r / 10);
-            d += ' L' + (cx - 3 * r / 10) + ' ' + (cy + 1 * r / 10);
-            d += ' L' + (cx - 3 * r / 10) + ' ' + (cy + 3 * r / 10);
-            d += ' Z';
-
-            return d;
-        };
-
-        this.horizontalSmallArrowPath = function(cx, cy, r) {
-            var d = 'M ' + cx + ' ' + cy;
-            d += ' L' + (cx - 5 * r / 10) + ' ' + (cy - 4 * r / 10);
-            d += ' L' + (cx - 5 * r / 10) + ' ' + (cy - 1 * r / 10);
-            d += ' L' + (cx - 12 * r / 10) + ' ' + (cy - 1 * r / 10);
-            d += ' L' + (cx - 12 * r / 10) + ' ' + (cy + 1 * r / 10);
-            d += ' L' + (cx - 5 * r / 10) + ' ' + (cy + 1 * r / 10);
-            d += ' L' + (cx - 5 * r / 10) + ' ' + (cy + 4 * r / 10);
-            d += ' Z';
-
-            return d;
-        };
-    }
-    
-    angular.module(moduleApp).service('editSvg', editSvg);
-})();
-(function() {
-    'use strict';
-
-    /**
-     * @ngdoc service
-     * @name accessimapEditeurDerApp.geometryutils
-     * 
-     * @description
-     * Useful functions for calc distances, angles, ...
-     */
-    function geometryutils() {
-
-        this.distance         = distance ;
-        this.nearest          = nearest ;
-        this.realCoordinates  = realCoordinates ;
-        this.angle            = angle ;
-        this.extendPath       = extendPath ;
-        this.getPathDirection = getPathDirection ;
-
-        /**
-         * @ngdoc method
-         * @name  distance
-         * @methodOf accessimapEditeurDerApp.geometryutils
-         * 
-         * @description 
-         * Return the distance between two points
-         * 
-         * @param  {Point} point1 
-         * Coordinates [x,y]
-         * 
-         * @param  {Point} point2 
-         * Coordinates [x,y]
-         * 
-         * @return {float}        
-         * Distance between the points
-         */
-        function distance(point1, point2) {
-            var distance = Math.sqrt(Math.pow((point1[0] - point2[0]), 2) 
-                                    + Math.pow((point1[1] - point2[1]), 2));
-
-            return distance;
-        }
-
-        /**
-         * @ngdoc method
-         * @name  nearest
-         * @methodOf accessimapEditeurDerApp.geometryutils
-         * 
-         * @description 
-         * Return the nearest point of a targetPoint 
-         * 
-         * @param  {Point} targetPoint  
-         * Coordinates [x,y]
-         * 
-         * @param  {[Point]} points
-         * Array of coordinates
-         * 
-         * @return {Point}
-         * Coordinates [x,y] of the nearest point
-         */
-        function nearest(targetPoint, points) {
-            var nearestPoint,
-                _this = this;
-            
-            points.forEach(function(pt) {
-                var dist = _this.distance(targetPoint, pt);
-
-                if (!nearestPoint) {
-                    nearestPoint = pt;
-                    nearestPoint[3] = dist;
-                } else {
-                    if (dist < nearestPoint[3]) {
-                        nearestPoint = pt;
-                        nearestPoint[3] = dist;
-                    }
-                }
-            });
-
-            return nearestPoint;
-        }
-
-        /**
-         * @ngdoc method
-         * @name  realCoordinates
-         * @methodOf accessimapEditeurDerApp.geometryutils
-         * 
-         * @param  {[type]} transform   [description]
-         * 
-         * @param  {[type]} coordinates [description]
-         * 
-         * @return {[type]}             [description]
-         */
-        function realCoordinates(transform, coordinates, bbox) {
-            
-            var translate = transform.translate,
-                realCoordinates = [];
-
-            if (! bbox) bbox = { x: 0, y: 0, width: 0, height: 0 }
-
-            realCoordinates[0] = (coordinates[0] - translate[0] - bbox.x - ( bbox.width / 2 ))
-            realCoordinates[1] = (coordinates[1] - translate[1] - bbox.y - ( bbox.height / 2 ))
-
-            return realCoordinates;
-        }
-
-        /**
-         * @ngdoc method
-         * @name  angle
-         * @methodOf accessimapEditeurDerApp.geometryutils
-         * 
-         * @param  {integer} cx 
-         * X coordinate of the first point
-         * 
-         * @param  {integer} cy 
-         * Y coordinate of the first point
-         * 
-         * @param  {integer} ex 
-         * X coordinate of the second point
-         * 
-         * @param  {integer} ey 
-         * Y coordinate of the second point
-         * 
-         * @return {integer}    
-         * angle, in degrees, between the two points
-         */
-        function angle(cx, cy, ex, ey) {
-            var dy = ey - cy,
-                dx = ex - cx,
-                theta = Math.atan2(dy, dx);
-            theta *= 180 / Math.PI;
-            //if (theta < 0) theta = 360 + theta; // range [0, 360)
-            return theta;
-        }
-
-        /**
-         * @ngdoc method
-         * @name  extendPath
-         * @methodOf accessimapEditeurDerApp.geometryutils
-         *
-         * @description
-         * Extend a path composed by two points
-         * 
-         * Use Thales theorem to calculate the new coordinates
-         *
-         * Upon the direction path, we add / substract the extended coordinates
-         * 
-         * @param  {Array} point1
-         * First point of the path
-         * 
-         * @param  {Array} point2
-         * Second point of the path
-         * 
-         * @param  {float} extension
-         * Length to add to each side of the path
-         * 
-         * @return {Array}
-         * Array of points extended drawing the new path, 
-         * in the same order than [ point1, point2 ]
-         * 
-         */
-        function extendPath(point1, point2, extension) {
-
-            var initialDistance = distance(point1,point2),
-                extendedPath = [],
-
-                vectorExtensionX = ((point1[0] - point2[0]) / initialDistance) * extension,
-                vectorExtensionY = ((point1[1] - point2[1]) / initialDistance) * extension;
-                
-            extendedPath[0] = [ point1[0] + vectorExtensionX, point1[1] + vectorExtensionY ]
-            extendedPath[1] = [ point2[0] - vectorExtensionX, point2[1] - vectorExtensionY ]
-            
-            return extendedPath;
-        }
-
-        /**
-         * @ngdoc method
-         * @name  getPathDirection
-         * @methodOf accessimapEditeurDerApp.geometryutils
-         *
-         * @description 
-         * Knowing the y axis is from top to bottom, 
-         * and x axis is from left to right,
-         * 
-         * Calculate the direction of a path : 
-         * - top right to bottom left (1)
-         * - bottom right to top left (2)
-         * - bottom left to top right (3)
-         * - top left to bottom right (4)
-         * 
-         * @param  {Array} point1
-         * First point of the path
-         * 
-         * @param  {Array} point2
-         * Second point of the path
-         * 
-         * @return {integer}
-         * The integer matching the direction
-         * 
-         */
-        function getPathDirection(point1, point2) {
-
-            var isLeftToRight,
-                isBottomToTop,
-                pathDirection;
-
-            // if point1 x is at the left of the point2 x
-            if (point1[0] < point2[0])
-                isLeftToRight = true;
-            else
-                isLeftToRight = false;
-
-            // if point1 y is above the point2 y
-            if (point1[1] < point2[1])
-                isBottomToTop = false;
-            else
-                isBottomToTop = true;
-
-            if (! isLeftToRight && ! isBottomToTop) 
-                pathDirection = 1
-            else if (! isLeftToRight && isBottomToTop) 
-                pathDirection = 2
-            else if (isLeftToRight && isBottomToTop) 
-                pathDirection = 3
-            else if (isLeftToRight && ! isBottomToTop) 
-                pathDirection = 4
-
-            return pathDirection;
-
-        }
-
-    }
-
-    angular.module(moduleApp).service('geometryutils', geometryutils);
-})();
-
-/**
- * @ngdoc service
- * @name accessimapEditeurDerApp.shareSvg
- * @description
- * # shareSvg
- * Service in the accessimapEditeurDerApp.
- */
-(function() {
-    'use strict';
-
-    function shareSvg($q) {
-        var map,
-            legend,
-            interactions;
-
-        function setMap(newMap) {
-            var deferred = $q.defer();
-            map = newMap;
-
-            deferred.resolve();
-
-            return deferred.promise;
-        };
-
-        function getMap() {
-            var deferred = $q.defer();
-
-            deferred.resolve(map);
-
-            return deferred.promise;
-        };
-
-        function setLegend(newLegend) {
-            var deferred = $q.defer();
-            legend = newLegend;
-
-            deferred.resolve();
-
-            return deferred.promise;
-        };
-
-        function getLegend() {
-            var deferred = $q.defer();
-
-            deferred.resolve(legend);
-
-            return deferred.promise;
-        };
-
-        function setInteractions(newInteractions) {
-            var deferred = $q.defer();
-            interactions = newInteractions;
-
-            deferred.resolve();
-
-            return deferred.promise;
-        };
-
-        function getInteractions() {
-            var deferred = $q.defer();
-
-            deferred.resolve(interactions);
-
-            return deferred.promise;
-        };
-
-        return {
-            setMap: setMap,
-            getMap: getMap,
-            setLegend: setLegend,
-            getLegend: getLegend,
-            setInteractions: setInteractions,
-            getInteractions: getInteractions
-        };
-    }
-
-    angular.module(moduleApp).service('shareSvg', shareSvg);
-
-    shareSvg.$inject = ['$q'];
-    
 })();
 /**
  * @ngdoc service
@@ -779,98 +310,6 @@
 })();
 /**
  * @ngdoc service
- * @name accessimapEditeurDerApp.EmptyConfortService
- * 
- * @description
- * 
- */
-(function() {
-    'use strict';
-
-    function EmptyConfortService(SVGService, geometryutils) {
-
-        this.calcEmptyComfort = calcEmptyComfort;
-
-        /**
-         * @ngdoc method
-         * @name  calcEmptyComfort
-         * @methodOf accessimapEditeurDerApp.EmptyConfortService
-         *
-         * @description 
-         * Calculate the empty area around an element.
-         * For a line path, we extend the path on the extremities,
-         * For a text feature, we return a rect bigger than 7px of the original bounding box
-         * 
-         * @param  {Object} feature
-         * d3 object
-         * 
-         * @return {DOMElement}
-         * element to add to DOM representing the empty comfort
-         */
-        function calcEmptyComfort(feature) {
-
-            var el = feature.node(),
-                bbox = el.getBBox(),
-                type = feature.attr('data-type'),
-                emptyArea,
-                path = feature.attr('d'),
-                transformString = null || feature.attr('transform');
-
-            switch (type) {
-                case 'text':
-                    var radius = Math.max(bbox.height, bbox.width) / 2 + 14;
-
-                    emptyArea = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-
-                    d3.select(emptyArea)
-                        .attr('x', bbox.x - 7)
-                        .attr('y', bbox.y - 7)
-                        .attr('width', bbox.width + 14)
-                        .attr('height', bbox.height + 14)
-                        .attr('fill', 'white');
-
-                    break;
-
-                default:
-                    
-                    emptyArea = el.cloneNode(true);
-
-                    d3.select(emptyArea)
-                        .attr('iid', null)
-                        .attr('fill', 'none')
-                        .attr('stroke', 'white')
-                        .attr('style', '')
-                        .attr('d', path)
-                        .attr('stroke-width', '20');
-
-
-                    if (type === 'line' || type === 'point')
-                        d3.select(emptyArea)
-                            .attr('stroke-linejoin', 'round')
-                            .attr('stroke-linecap', 'round')
-
-                    break;
-            }
-
-            d3.select(emptyArea)
-                .attr('transform', transformString)
-                .classed('c' + feature.attr('data-link'), true)
-                .classed('link_' + feature.attr('data-link'), true)
-                .classed('notDeletable', true);
-
-            return emptyArea;
-
-        }
-
-    }
-    
-    angular.module(moduleApp).service('EmptyConfortService', EmptyConfortService);
-
-    EmptyConfortService.$inject= ['SVGService', 'geometryutils'];
-
-})();
-/**
- * @ngdoc service
  * @name accessimapEditeurDerApp.SVGService
  * @description
  * Service exposing utils functions
@@ -880,9 +319,23 @@
 
     function SVGService() {
 
-        this.parseSVGPath         = parseSVGPath;
+        this.parseSVGPath             = parseSVGPath;
         this.serializeSVGPath         = serializeSVGPath;
         this.translateSVGPath         = translateSVGPath;
+        
+        this.circlePath               = circlePath;
+        this.circleCrossPath          = circleCrossPath;
+        this.ovalPath                 = ovalPath;
+        this.trianglePath             = trianglePath;
+        this.squarePath               = squarePath;
+        this.northOrientation         = northOrientation;
+        this.squareDiagPath           = squareDiagPath;
+        this.squareCrossPath          = squareCrossPath;
+        this.crossPath                = crossPath;
+        this.horizontalRectPath       = horizontalRectPath;
+        this.horizontalArrowPath      = horizontalArrowPath;
+        this.horizontalSmallArrowPath = horizontalSmallArrowPath;
+
 
         /**
          * https://github.com/jkroso/parse-svg-path/
@@ -1006,6 +459,145 @@
                 return str + seg[0] + seg.slice(1).join(',')
             }, '')
         }
+
+        function circlePath(cx, cy, r) {
+            var d = 'M ' + cx + ' ' + cy;
+            d += ' m -' + r + ', 0';
+            d += ' a ' + r + ',' + r + ' 0 1,0 ' + r * 2 + ',0';
+            d += ' a ' + r + ',' + r + ' 0 1,0 -' + r * 2 + ',0';
+
+            return d;
+        };
+
+        function circleCrossPath(cx, cy, r) {
+            var d = 'M ' + cx + ' ' + cy;
+            d += ' m -' + r + ', 0';
+            d += ' a ' + r + ',' + r + ' 0 1,0 ' + r * 2 + ',0';
+            d += ' a ' + r + ',' + r + ' 0 1,0 -' + r * 2 + ',0';
+            d += ' Z';
+            r = r / Math.cos(45 * Math.PI / 180);
+            d += ' M ' + (cx - r / 2) + ' ' + (cy - r / 2);
+            d += ' L ' + (cx + r / 2) + ' ' + (cy + r / 2);
+            d += ' Z';
+            d += ' M ' + (cx - r / 2) + ' ' + (cy + r / 2);
+            d += ' L ' + (cx + r / 2) + ' ' + (cy - r / 2);
+            d += ' Z';
+
+            return d;
+        };
+
+        function ovalPath(cx, cy, r) {
+            var d = 'M ' + cx + ' ' + cy;
+            d += ' m -' + r / 2 + ', 0';
+            d += ' a ' + r / 2 + ',' + r + ' 0 1,0 ' + r + ',0';
+            d += ' a ' + r / 2 + ',' + r + ' 0 1,0 -' + r + ',0';
+
+            return d;
+        };
+
+        function trianglePath(cx, cy, r) {
+            var d = 'M ' + (cx - r / 2) + ' ' + cy;
+            d += ' L' + cx + ' ' + (cy - Math.sqrt(3 * r * r / 4));
+            d += ' L' + (cx + r / 2) + ' ' + cy;
+            d += ' Z';
+
+            return d;
+        };
+
+        function squarePath(cx, cy, r) {
+            var d = 'M ' + (cx - r / 2) + ' ' + (cy - r / 2);
+            d += ' v' + r;
+            d += ' h' + r;
+            d += ' v' + (-r);
+            d += ' Z';
+
+            return d;
+        };
+
+        function northOrientation(cx, cy, r) {
+            var d = 'M ' + (cx + r / 2) + ' ' + (cy + r / 2);
+            d += ' h' + (-r);
+            d += ' Z';
+            d += 'M ' + cx + ' ' + (cy + r / 2);
+            d += ' v' + (-r);
+            d += ' Z';
+
+            return d;
+        };
+
+        function squareDiagPath(cx, cy, r) {
+            var d = 'M ' + (cx - r / 2) + ' ' + (cy - r / 2);
+            d += ' v' + r;
+            d += ' h' + r;
+            d += ' v' + (-r);
+            d += ' Z';
+            d += ' M ' + (cx - r / 2) + ' ' + (cy - r / 2);
+            d += ' L ' + (cx + r / 2) + ' ' + (cy + r / 2);
+            d += ' Z';
+
+            return d;
+        };
+
+        function squareCrossPath(cx, cy, r) {
+            var d = 'M ' + (cx - r / 2) + ' ' + (cy - r / 2);
+            d += ' v' + r;
+            d += ' h' + r;
+            d += ' v' + (-r);
+            d += ' Z';
+            d += ' M ' + (cx - r / 2) + ' ' + (cy - r / 2);
+            d += ' L ' + (cx + r / 2) + ' ' + (cy + r / 2);
+            d += ' Z';
+            d += ' M ' + (cx - r / 2) + ' ' + (cy + r / 2);
+            d += ' L ' + (cx + r / 2) + ' ' + (cy - r / 2);
+            d += ' Z';
+
+            return d;
+        };
+
+        function crossPath(cx, cy, r) {
+            var d = 'M ' + (cx - r / 2) + ' ' + cy;
+            d += ' h' + r;
+            d += ' Z';
+            d += 'M ' + cx + ' ' + (cy - r / 2);
+            d += ' v' + r;
+            d += ' Z';
+
+            return d;
+        };
+
+        function horizontalRectPath(cx, cy, r) {
+            var d = 'M ' + (cx - r / 2) + ' ' + cy;
+            d += ' h' + r;
+            d += ' Z';
+
+            return d;
+        };
+
+        function horizontalArrowPath(cx, cy, r) {
+            var d = 'M ' + cx + ' ' + cy;
+            d += ' L' + (cx - 3 * r / 10) + ' ' + (cy - 3 * r / 10);
+            d += ' L' + (cx - 3 * r / 10) + ' ' + (cy - 1 * r / 10);
+            d += ' L' + (cx - 12 * r / 10) + ' ' + (cy - 1 * r / 10);
+            d += ' L' + (cx - 12 * r / 10) + ' ' + (cy + 1 * r / 10);
+            d += ' L' + (cx - 3 * r / 10) + ' ' + (cy + 1 * r / 10);
+            d += ' L' + (cx - 3 * r / 10) + ' ' + (cy + 3 * r / 10);
+            d += ' Z';
+
+            return d;
+        };
+
+        function horizontalSmallArrowPath(cx, cy, r) {
+            var d = 'M ' + cx + ' ' + cy;
+            d += ' L' + (cx - 5 * r / 10) + ' ' + (cy - 4 * r / 10);
+            d += ' L' + (cx - 5 * r / 10) + ' ' + (cy - 1 * r / 10);
+            d += ' L' + (cx - 12 * r / 10) + ' ' + (cy - 1 * r / 10);
+            d += ' L' + (cx - 12 * r / 10) + ' ' + (cy + 1 * r / 10);
+            d += ' L' + (cx - 5 * r / 10) + ' ' + (cy + 1 * r / 10);
+            d += ' L' + (cx - 5 * r / 10) + ' ' + (cy + 4 * r / 10);
+            d += ' Z';
+
+            return d;
+        };
     }
     
     angular.module(moduleApp).service('SVGService', SVGService);
@@ -1289,14 +881,16 @@
 (function() {
     'use strict';
 
-    function FeatureService(InteractionService, EmptyConfortService, UtilService, geometryutils, GeneratorService) {
+    function FeatureService(InteractionService, EmptyComfortService, UtilService, 
+                            GeometryUtilsService, GeneratorService) {
         
         this.duplicatePath                 = duplicatePath;
         this.movePath                      = movePath;
         this.movePoint                     = movePoint;
         this.rotatePath                    = rotatePath;
-        this.removeObject                  = removeObject;
         this.skew                          = skew;
+        
+        this.removeObject                  = removeObject;
 
         this.undo                          = undo;
         this.isUndoAvailable               = isUndoAvailable;
@@ -1308,6 +902,7 @@
         this.changeColor                   = changeColor;
         this.changePattern                 = changePattern;
         this.changePoint                   = changePoint;
+
         this.lineToCardinal                = lineToCardinal;
         
         this.init                          = init;
@@ -1421,7 +1016,7 @@
                 if (d3.select(temporaryPath).classed('moved')) {
 
                     var p = projection.latLngToLayerPoint(e.latlng),
-                    realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y], bbox),
+                    realCoordinates = GeometryUtilsService.realCoordinates(transform, [p.x, p.y], bbox),
                     transformString = '';
 
                     if (hasRotate) {
@@ -1446,7 +1041,7 @@
             handlers.addMouseMoveListener(function(e) {
 
                 var p = projection.latLngToLayerPoint(e.latlng),
-                    realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y], bbox),
+                    realCoordinates = GeometryUtilsService.realCoordinates(transform, [p.x, p.y], bbox),
                     transformString = '';
 
                 if (hasRotate) {
@@ -1511,7 +1106,7 @@
                 if (d3.select(temporaryPath).classed('moved')) {
 
                     var p = projection.latLngToLayerPoint(e.latlng),
-                    realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y], bbox),
+                    realCoordinates = GeometryUtilsService.realCoordinates(transform, [p.x, p.y], bbox),
                     transformString = '';
 
                     if (hasRotate) {
@@ -1539,7 +1134,7 @@
             handlers.addMouseMoveListener(function(e) {
 
                 var p = projection.latLngToLayerPoint(e.latlng),
-                    realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y], bbox),
+                    realCoordinates = GeometryUtilsService.realCoordinates(transform, [p.x, p.y], bbox),
                     transformString = '';
 
                 if (hasRotate) {
@@ -1598,7 +1193,7 @@
             drag.on('dragstart', function(e) {
                 // silence other listeners
                 d3.event.sourceEvent.stopPropagation();
-                nearest = geometryutils.nearest(d3.mouse(this), features);
+                nearest = GeometryUtilsService.nearest(d3.mouse(this), features);
             });
 
             drag.on('drag', function() {
@@ -1684,7 +1279,7 @@
             handlers.addMouseMoveListener(function(e) {
 
                 var p = projection.latLngToLayerPoint(e.latlng),
-                    // realCoordinates = geometryutils.realCoordinates(transform, [p.x, p.y], bbox),
+                    // realCoordinates = GeometryUtilsService.realCoordinates(transform, [p.x, p.y], bbox),
                     transformString = initialTransform,
                     shiftKeyPressed = e.originalEvent.shiftKey,
                     transform = d3.svg.transform();
@@ -1792,13 +1387,13 @@
                 // silence other listeners
                 d3.event.sourceEvent.stopPropagation(); 
                 var mouse = d3.mouse(pointsLayer.node());
-                initialAngle = geometryutils.angle(pathCenterTranslate[0], 
+                initialAngle = GeometryUtilsService.angle(pathCenterTranslate[0], 
                                         pathCenterTranslate[1], 
                                         mouse[0], 
                                         mouse[1]);
             }).on('drag', function() {
                 var mouse = d3.mouse(pointsLayer.node()),
-                    currentAngle = geometryutils.angle(pathCenterTranslate[0], 
+                    currentAngle = GeometryUtilsService.angle(pathCenterTranslate[0], 
                                         pathCenterTranslate[1], 
                                         mouse[0], 
                                         mouse[1]),
@@ -1880,7 +1475,7 @@
             if (emptyCircleExists) {
                 emptyCircleExists.remove();
             } else {
-                var emptyArea = EmptyConfortService.calcEmptyComfort(feature);
+                var emptyArea = EmptyComfortService.calcEmptyComfort(feature);
 
                 feature.node().parentNode.insertBefore(emptyArea, feature.node());
             }
@@ -1996,8 +1591,8 @@
 
     angular.module(moduleApp).service('FeatureService', FeatureService);
 
-    FeatureService.$inject = ['InteractionService', 'EmptyConfortService', 'UtilService', 
-                                'geometryutils', 'GeneratorService']
+    FeatureService.$inject = ['InteractionService', 'EmptyComfortService', 'UtilService', 
+                                'GeometryUtilsService', 'GeneratorService']
 
 })();
 /*global textures */
@@ -2112,8 +1707,12 @@
 
     angular.module(moduleApp).factory('SettingsService', SettingsService);
 
-    SettingsService.$inject = ['SettingsActions', 'SettingsColors', 'SettingsFonts', 'SettingsFormats', 
-                        'SettingsQuery', 'SettingsStyles'];
+    SettingsService.$inject = ['SettingsActions', 
+                               'SettingsColors', 
+                               'SettingsFonts', 
+                               'SettingsFormats',
+                               'SettingsQuery', 
+                               'SettingsStyles'];
 
 })();
 // jscs:disable maximumNumberOfLines 
@@ -2126,7 +1725,7 @@
 (function() {
     'use strict';
 
-    function SettingsStyles (editSvg) {
+    function SettingsStyles (SVGService) {
 
         var POLYGON_STYLES = {
             'bighash': textures.lines().id('bighash').orientation('vertical'),
@@ -2784,7 +2383,7 @@
         'point': [{
             id: 'smallcircleempty',
             name: 'Petit cercle vide',
-            path: editSvg.circlePath,
+            path: SVGService.circlePath,
             radius: 10,
             style: [{
                 'k': 'stroke',
@@ -2799,7 +2398,7 @@
         },{
             id: 'bigcircleempty',
             name: 'Grand cercle vide',
-            path: editSvg.circlePath,
+            path: SVGService.circlePath,
             radius: 18,
             style: [{
                 'k': 'stroke',
@@ -2814,7 +2413,7 @@
         },{
             id: 'smallcircle',
             name: 'Petit cercle plein',
-            path: editSvg.circlePath,
+            path: SVGService.circlePath,
             radius: 10,
             style: [{
                 'k': 'stroke',
@@ -2829,7 +2428,7 @@
         },{
             id: 'bigcircle',
             name: 'Grand cercle',
-            path: editSvg.circlePath,
+            path: SVGService.circlePath,
             radius: 18,
             style: [{
                 'k': 'stroke',
@@ -2844,7 +2443,7 @@
         },{
             id: 'circleCross',
             name: 'Cercle croix',
-            path: editSvg.circleCrossPath,
+            path: SVGService.circleCrossPath,
             radius: 18,
             style: [{
                 'k': 'stroke',
@@ -2859,7 +2458,7 @@
         },{
             id: 'ovalempty',
             name: 'Ovale vide',
-            path: editSvg.ovalPath,
+            path: SVGService.ovalPath,
             radius: 18,
             style: [{
                 'k': 'stroke',
@@ -2874,7 +2473,7 @@
         },{
             id: 'oval',
             name: 'Ovale',
-            path: editSvg.ovalPath,
+            path: SVGService.ovalPath,
             radius: 18,
             style: [{
                 'k': 'stroke',
@@ -2889,7 +2488,7 @@
         },{
             id: 'triangleempty',
             name: 'Triangle vide',
-            path: editSvg.trianglePath,
+            path: SVGService.trianglePath,
             radius: 22,
             style: [{
                 'k': 'stroke',
@@ -2904,7 +2503,7 @@
         },{
             id: 'triangle',
             name: 'Triangle',
-            path: editSvg.trianglePath,
+            path: SVGService.trianglePath,
             radius: 22,
             style: [{
                 'k': 'stroke',
@@ -2919,7 +2518,7 @@
         },{
             id: 'squareempty',
             name: 'Carré vide',
-            path: editSvg.squarePath,
+            path: SVGService.squarePath,
             radius: 20,
             style: [{
                 'k': 'stroke',
@@ -2934,7 +2533,7 @@
         },{
             id: 'square',
             name: 'Carré',
-            path: editSvg.squarePath,
+            path: SVGService.squarePath,
             radius: 20,
             style: [{
                 'k': 'stroke',
@@ -2949,7 +2548,7 @@
         },{
             id: 'squareDiag',
             name: 'Carré Diag',
-            path: editSvg.squareDiagPath,
+            path: SVGService.squareDiagPath,
             radius: 25,
             style: [{
                 'k': 'stroke',
@@ -2964,7 +2563,7 @@
         },{
             id: 'squareCross',
             name: 'Carré croix',
-            path: editSvg.squareCrossPath,
+            path: SVGService.squareCrossPath,
             radius: 25,
             style: [{
                 'k': 'stroke',
@@ -2979,7 +2578,7 @@
         },{
             id: 'cross',
             name: 'Croix',
-            path: editSvg.crossPath,
+            path: SVGService.crossPath,
             radius: 25,
             style: [{
                 'k': 'stroke',
@@ -2994,7 +2593,7 @@
         },{
             id: 'cross2',
             name: 'Croix2',
-            path: editSvg.crossPath,
+            path: SVGService.crossPath,
             radius: 25,
             style: [{
                 'k': 'stroke',
@@ -3009,7 +2608,7 @@
         },{
             id: 'cross3',
             name: 'Croix3',
-            path: editSvg.crossPath,
+            path: SVGService.crossPath,
             radius: 30,
             style: [{
                 'k': 'stroke',
@@ -3024,7 +2623,7 @@
         },{
             id: 'horizontalRect',
             name: 'horizontalRect',
-            path: editSvg.horizontalRectPath,
+            path: SVGService.horizontalRectPath,
             radius: 20,
             style: [{
                 'k': 'stroke',
@@ -3039,7 +2638,7 @@
         },{
             id: 'horizontalArrow',
             name: 'horizontalArrow',
-            path: editSvg.horizontalArrowPath,
+            path: SVGService.horizontalArrowPath,
             radius: 100,
             style: [{
                 'k': 'stroke',
@@ -3054,7 +2653,7 @@
         },{
             id: 'horizontalArrowHash',
             name: 'horizontalArrowHash',
-            path: editSvg.horizontalArrowPath,
+            path: SVGService.horizontalArrowPath,
             radius: 100,
             style: [{
                 'k': 'stroke-width',
@@ -3066,7 +2665,7 @@
         },{
             id: 'horizontalArrowDots',
             name: 'horizontalArrowDots',
-            path: editSvg.horizontalArrowPath,
+            path: SVGService.horizontalArrowPath,
             radius: 100,
             style: [{
                 'k': 'stroke',
@@ -3081,7 +2680,7 @@
         },{
             id: 'horizontalArrowMedium',
             name: 'horizontalArrowMedium',
-            path: editSvg.horizontalArrowPath,
+            path: SVGService.horizontalArrowPath,
             radius: 60,
             style: [{
                 'k': 'stroke',
@@ -3096,7 +2695,7 @@
         },{
             id: 'horizontalArrowSmall',
             name: 'horizontalArrowSmall',
-            path: editSvg.horizontalSmallArrowPath,
+            path: SVGService.horizontalSmallArrowPath,
             radius: 30,
             style: [{
                 'k': 'stroke',
@@ -3111,7 +2710,7 @@
         },{
             id: 'northOrientation',
             name: 'Flèche du Nord',
-            path: editSvg.northOrientation,
+            path: SVGService.northOrientation,
             radius: 30,
             style: [{
                 'k': 'stroke',
@@ -3133,7 +2732,7 @@
 
     angular.module(moduleApp).service('SettingsStyles', SettingsStyles);
 
-    SettingsStyles.$inject = ['editSvg']
+    SettingsStyles.$inject = ['SVGService']
 
 })();
 /**
@@ -3241,16 +2840,12 @@
     angular.module(moduleApp).service('SettingsFonts', SettingsFonts);
 
 })();
-/*global textures */
-// jscs:disable maximumLineLength
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.SettingsFormats
- * @requires accessimapEditeurDerApp.editSvg
- * @requires accessimapEditeurDerApp.InteractionService
+ * 
  * @description
- * # SettingsFormats
- * Factory in the accessimapEditeurDerApp.
+ * Provide different drawing formats
  */
 (function() {
     'use strict';
@@ -3444,6 +3039,16 @@
                 { icon: 'assets/icons/crop_din.svg', action: FeatureService.toggleStroke },
             ],
             'rect': [
+                { icon: 'assets/icons/delete.svg', action: FeatureService.removeObject },
+                { icon: 'assets/icons/open_with.svg', action: FeatureService.movePath },
+                { icon: 'assets/icons/toolbox_skew.svg', action: FeatureService.skew },
+                { icon: 'assets/icons/copy.svg', action: FeatureService.duplicatePath },
+                { icon: 'assets/icons/texture.svg', action: FeatureService.changePattern },
+                { icon: 'assets/icons/palette.svg', action: FeatureService.changeColor },
+                { icon: 'assets/icons/radio_button_checked.svg', action: FeatureService.toggleEmptyComfortNearFeature },
+                { icon: 'assets/icons/crop_din.svg', action: FeatureService.toggleStroke },
+            ],
+            'triangle': [
                 { icon: 'assets/icons/delete.svg', action: FeatureService.removeObject },
                 { icon: 'assets/icons/open_with.svg', action: FeatureService.movePath },
                 { icon: 'assets/icons/toolbox_skew.svg', action: FeatureService.skew },
@@ -3648,15 +3253,21 @@
             _isMapVisible,
             map = {}, 
             overlay = null,
-            layer,
-            layerGroup,
+            layerDefault,
+            layerMapBox,
+            layerMapBoxId = 'mapbox.streets',
+            layerOSM,
+            layerOSMId = 'osm',
+            layerControl,
             minHeight,
-            minWidth;
+            minWidth,
+            currentLayer;
 
         this.isMapVisible           = function() { return _isMapVisible }
 
         this.getMap                 = getMap;
-        this.getTileLayer           = getTileLayer;
+        this.getBaseLayer           = getBaseLayer;
+        this.getBaseLayerId         = getBaseLayerId;
         this.getBounds              = getBounds;
         this.initMap                = initMap;
         this.resizeFunction         = resizeFunction;
@@ -3686,6 +3297,7 @@
         
         this.searchAddress          = SearchService.searchAddress
         this.resetZoom              = resetZoom;
+        this.resetView              = resetView;
         this.setMinimumSize         = setMinimumSize;
 
         /**
@@ -3722,21 +3334,30 @@
             var access_token = 
                 "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw";
             
-            layer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + access_token, {
+            layerMapBox = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' 
+                + access_token, {
                 maxZoom: 18,
                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
                     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
                     'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                id: 'mapbox.streets'
-            })
+                id: layerMapBoxId
+            });
 
-            // , layer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            // }).addTo(map);
-            // 
+            layerOSM = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+                id: layerOSMId
+            });
+
+            layerDefault = layerMapBox;
+
+            layerControl = L.control.layers({ 'Open Street Map': layerOSM, 'MapBox Street': layerMapBox})
 
             // Use Leaflet to implement a D3 geometric transformation.
             $(window).on("resize", _resizeFunction).trigger("resize");
+
+            map.on('baselayerchange', function(layerEvent) {
+                currentLayer = layerEvent.layer;
+            })
         }
 
         function setMinimumSize(width, height) {
@@ -3954,18 +3575,30 @@
             return map;
         }
 
-        function getTileLayer() {
-            return layer;
+        function getBaseLayer() {
+            return currentLayer;
         }
 
-        function showMapLayer() {
+        function getBaseLayerId() {
+            return currentLayer.options.id;
+        }
+
+        function showMapLayer(layerId) {
             _isMapVisible = true;
-            map.addLayer(layer);
+            layerControl.addTo(map)
+            if (layerId === layerOSMId) {
+                map.addLayer(layerOSM);
+            } else if (layerId === layerMapBoxId) {
+                map.addLayer(layerMapBox)
+            } else {
+                map.addLayer(layerDefault);
+            }
         }
 
         function hideMapLayer() {
             _isMapVisible = false;
-            map.removeLayer(layer);
+            layerControl.removeFrom(map)
+            map.removeLayer(layerDefault);
         }
 
         function freezeMap() {
@@ -4002,6 +3635,46 @@
             map.setZoom(SettingsService.leaflet.GLOBAL_MAP_DEFAULT_ZOOM);
         }
 
+        /**
+         * @ngdoc method
+         * @name  resetView
+         * @methodOf accessimapEditeurDerApp.EditService
+         *
+         * @description 
+         * If a center of the drawing is defined, 
+         * we pan / zoom to the initial state of the drawing.
+         *
+         * @param {function} callback
+         * Optional, function to be called when the setView is finished
+         */
+        function resetView(center, zoom, callback) {
+
+            if (center !== null && zoom !== null) {
+                // if the tile layer don't zoom, we're not going to load tiles
+                // we have to detect if we are going to change the zoom level or not
+                var zoomWillChange = ( map.getZoom() !== zoom );
+
+                if (zoomWillChange) {
+                    if (_isMapVisible) {
+                        getBaseLayer().once('load', function() { 
+                            if (callback) callback(); 
+                        })
+                    }
+                }
+
+                map.setView(center, zoom, {animate:false})
+
+                if ( callback && ( ( ! zoomWillChange ) || ( zoomWillChange && ! _isMapVisible ) ) ) {
+                    callback();
+                }
+
+            } else {
+                if (callback) callback();
+            }
+
+        }
+
+
     }
 
     angular.module(moduleApp).service('MapService', MapService);
@@ -4030,7 +3703,7 @@
          *
          */
         function createDefs(node) {
-
+ 
             var _defs = node.append('svg')
                             .attr("data-name", "defs")
                             .append("defs");
@@ -4412,6 +4085,393 @@
     angular.module(moduleApp).service('LegendService', LegendService);
 
     LegendService.$inject = ['SettingsService'];
+
+})();
+(function() {
+    'use strict';
+
+    /**
+     * @ngdoc service
+     * @name accessimapEditeurDerApp.GeometryUtilsService
+     * 
+     * @description
+     * Useful functions for calc distances, angles, ...
+     */
+    function GeometryUtilsService() {
+
+        this.distance         = distance ;
+        this.nearest          = nearest ;
+        this.realCoordinates  = realCoordinates ;
+        this.angle            = angle ;
+        this.extendPath       = extendPath ;
+        this.getPathDirection = getPathDirection ;
+
+        /**
+         * @ngdoc method
+         * @name  distance
+         * @methodOf accessimapEditeurDerApp.GeometryUtilsService
+         * 
+         * @description 
+         * Return the distance between two points
+         * 
+         * @param  {Point} point1 
+         * Coordinates [x,y]
+         * 
+         * @param  {Point} point2 
+         * Coordinates [x,y]
+         * 
+         * @return {float}        
+         * Distance between the points
+         */
+        function distance(point1, point2) {
+            var distance = Math.sqrt(Math.pow((point1[0] - point2[0]), 2) 
+                                    + Math.pow((point1[1] - point2[1]), 2));
+
+            return distance;
+        }
+
+        /**
+         * @ngdoc method
+         * @name  nearest
+         * @methodOf accessimapEditeurDerApp.GeometryUtilsService
+         * 
+         * @description 
+         * Return the nearest point of a targetPoint 
+         * 
+         * @param  {Point} targetPoint  
+         * Coordinates [x,y]
+         * 
+         * @param  {[Point]} points
+         * Array of coordinates
+         * 
+         * @return {Point}
+         * Coordinates [x,y] of the nearest point
+         */
+        function nearest(targetPoint, points) {
+            var nearestPoint,
+                _this = this;
+            
+            points.forEach(function(pt) {
+                var dist = _this.distance(targetPoint, pt);
+
+                if (!nearestPoint) {
+                    nearestPoint = pt;
+                    nearestPoint[3] = dist;
+                } else {
+                    if (dist < nearestPoint[3]) {
+                        nearestPoint = pt;
+                        nearestPoint[3] = dist;
+                    }
+                }
+            });
+
+            return nearestPoint;
+        }
+
+        /**
+         * @ngdoc method
+         * @name  realCoordinates
+         * @methodOf accessimapEditeurDerApp.GeometryUtilsService
+         * 
+         * @param  {[type]} transform   [description]
+         * 
+         * @param  {[type]} coordinates [description]
+         * 
+         * @return {[type]}             [description]
+         */
+        function realCoordinates(transform, coordinates, bbox) {
+            
+            var translate = transform.translate,
+                realCoordinates = [];
+
+            if (! bbox) bbox = { x: 0, y: 0, width: 0, height: 0 }
+
+            realCoordinates[0] = (coordinates[0] - translate[0] - bbox.x - ( bbox.width / 2 ))
+            realCoordinates[1] = (coordinates[1] - translate[1] - bbox.y - ( bbox.height / 2 ))
+
+            return realCoordinates;
+        }
+
+        /**
+         * @ngdoc method
+         * @name  angle
+         * @methodOf accessimapEditeurDerApp.GeometryUtilsService
+         * 
+         * @param  {integer} cx 
+         * X coordinate of the first point
+         * 
+         * @param  {integer} cy 
+         * Y coordinate of the first point
+         * 
+         * @param  {integer} ex 
+         * X coordinate of the second point
+         * 
+         * @param  {integer} ey 
+         * Y coordinate of the second point
+         * 
+         * @return {integer}    
+         * angle, in degrees, between the two points
+         */
+        function angle(cx, cy, ex, ey) {
+            var dy = ey - cy,
+                dx = ex - cx,
+                theta = Math.atan2(dy, dx);
+            theta *= 180 / Math.PI;
+            //if (theta < 0) theta = 360 + theta; // range [0, 360)
+            return theta;
+        }
+
+        /**
+         * @ngdoc method
+         * @name  extendPath
+         * @methodOf accessimapEditeurDerApp.GeometryUtilsService
+         *
+         * @description
+         * Extend a path composed by two points
+         * 
+         * Use Thales theorem to calculate the new coordinates
+         *
+         * Upon the direction path, we add / substract the extended coordinates
+         * 
+         * @param  {Array} point1
+         * First point of the path
+         * 
+         * @param  {Array} point2
+         * Second point of the path
+         * 
+         * @param  {float} extension
+         * Length to add to each side of the path
+         * 
+         * @return {Array}
+         * Array of points extended drawing the new path, 
+         * in the same order than [ point1, point2 ]
+         * 
+         */
+        function extendPath(point1, point2, extension) {
+
+            var initialDistance = distance(point1,point2),
+                extendedPath = [],
+
+                vectorExtensionX = ((point1[0] - point2[0]) / initialDistance) * extension,
+                vectorExtensionY = ((point1[1] - point2[1]) / initialDistance) * extension;
+                
+            extendedPath[0] = [ point1[0] + vectorExtensionX, point1[1] + vectorExtensionY ]
+            extendedPath[1] = [ point2[0] - vectorExtensionX, point2[1] - vectorExtensionY ]
+            
+            return extendedPath;
+        }
+
+        /**
+         * @ngdoc method
+         * @name  getPathDirection
+         * @methodOf accessimapEditeurDerApp.GeometryUtilsService
+         *
+         * @description 
+         * Knowing the y axis is from top to bottom, 
+         * and x axis is from left to right,
+         * 
+         * Calculate the direction of a path : 
+         * - top right to bottom left (1)
+         * - bottom right to top left (2)
+         * - bottom left to top right (3)
+         * - top left to bottom right (4)
+         * 
+         * @param  {Array} point1
+         * First point of the path
+         * 
+         * @param  {Array} point2
+         * Second point of the path
+         * 
+         * @return {integer}
+         * The integer matching the direction
+         * 
+         */
+        function getPathDirection(point1, point2) {
+
+            var isLeftToRight,
+                isBottomToTop,
+                pathDirection;
+
+            // if point1 x is at the left of the point2 x
+            if (point1[0] < point2[0])
+                isLeftToRight = true;
+            else
+                isLeftToRight = false;
+
+            // if point1 y is above the point2 y
+            if (point1[1] < point2[1])
+                isBottomToTop = false;
+            else
+                isBottomToTop = true;
+
+            if (! isLeftToRight && ! isBottomToTop) 
+                pathDirection = 1
+            else if (! isLeftToRight && isBottomToTop) 
+                pathDirection = 2
+            else if (isLeftToRight && isBottomToTop) 
+                pathDirection = 3
+            else if (isLeftToRight && ! isBottomToTop) 
+                pathDirection = 4
+
+            return pathDirection;
+
+        }
+
+    }
+
+    angular.module(moduleApp).service('GeometryUtilsService', GeometryUtilsService);
+})();
+/**
+ * @ngdoc service
+ * @name accessimapEditeurDerApp.EmptyComfortService
+ * 
+ * @description
+ * 
+ */
+(function() {
+    'use strict';
+
+    function EmptyComfortService(SVGService) {
+
+        this.calcEmptyComfort = calcEmptyComfort;
+
+        /**
+         * @ngdoc method
+         * @name  calcEmptyComfort
+         * @methodOf accessimapEditeurDerApp.EmptyComfortService
+         *
+         * @description 
+         * Calculate the empty area around an element.
+         * For a line path, we extend the path on the extremities,
+         * For a text feature, we return a rect bigger than 7px of the original bounding box
+         * 
+         * @param  {Object} feature
+         * d3 object
+         * 
+         * @return {DOMElement}
+         * element to add to DOM representing the empty comfort
+         */
+        function calcEmptyComfort(feature) {
+
+            var el = feature.node(),
+                bbox = el.getBBox(),
+                type = feature.attr('data-type'),
+                emptyArea,
+                path = feature.attr('d'),
+                transformString = null || feature.attr('transform');
+
+            switch (type) {
+                case 'text':
+                    var radius = Math.max(bbox.height, bbox.width) / 2 + 14;
+
+                    emptyArea = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+
+                    d3.select(emptyArea)
+                        .attr('x', bbox.x - 7)
+                        .attr('y', bbox.y - 7)
+                        .attr('width', bbox.width + 14)
+                        .attr('height', bbox.height + 14)
+                        .attr('fill', 'white');
+
+                    break;
+
+                default:
+                    
+                    emptyArea = el.cloneNode(true);
+
+                    d3.select(emptyArea)
+                        .attr('iid', null)
+                        .attr('fill', 'none')
+                        .attr('stroke', 'white')
+                        .attr('style', '')
+                        .attr('d', path)
+                        .attr('stroke-width', '20');
+
+
+                    if (type === 'line' || type === 'point')
+                        d3.select(emptyArea)
+                            .attr('stroke-linejoin', 'round')
+                            .attr('stroke-linecap', 'round')
+
+                    break;
+            }
+
+            d3.select(emptyArea)
+                .attr('transform', transformString)
+                .classed('c' + feature.attr('data-link'), true)
+                .classed('link_' + feature.attr('data-link'), true)
+                .classed('notDeletable', true);
+
+            return emptyArea;
+
+        }
+
+    }
+    
+    angular.module(moduleApp).service('EmptyComfortService', EmptyComfortService);
+
+    EmptyComfortService.$inject= ['SVGService'];
+
+})();
+/**
+ * @ngdoc service
+ * @name accessimapEditeurDerApp.SelectPathService
+ * 
+ * @description
+ * Provide function to calculate the 'select path' of a feature
+ * 
+ */
+(function() {
+    'use strict';
+
+    function SelectPathService() {
+
+        this.calcSelectPath   = calcSelectPath;
+
+        /**
+         * @ngdoc method
+         * @name  calcSelectPath
+         * @methodOf accessimapEditeurDerApp.SelectPathService
+         *
+         * @description 
+         * Calculate the select path around an element.
+         * It's a rect identical of the bbox.
+         * 
+         * @param  {Object} feature
+         * d3 object
+         * 
+         * @return {DOMElement}
+         * element to add to DOM representing the empty comfort
+         */
+        function calcSelectPath(feature) {
+
+            var el = feature.node(),
+                bbox = el.getBBox(),
+                type = feature.attr('data-type'),
+                selectPath,
+                path = feature.attr('d'),
+                transformString = null || feature.attr('transform');
+
+            selectPath = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+
+            d3.select(selectPath)
+                .attr('x', bbox.x)
+                .attr('y', bbox.y)
+                .attr('width', bbox.width)
+                .attr('height', bbox.height)
+                .attr('data-type', 'select-path')
+                .attr('fill', 'none')
+                .attr('stroke', 'red')
+                .attr('stroke-width', '2')
+                .attr('transform', transformString);
+
+            return selectPath;
+
+        }
+
+    }
+    
+    angular.module(moduleApp).service('SelectPathService', SelectPathService);
 
 })();
 /** 
@@ -5120,8 +5180,8 @@
 
             // rotate(rotationAngle);
 
-            RadialMenuService.addRadialMenu(d3.selectAll('path:not(.notDeletable)'));
-            RadialMenuService.addRadialMenu(d3.selectAll('circle:not(.notDeletable)'));
+            // RadialMenuService.addRadialMenu(d3.selectAll('path:not(.notDeletable)'));
+            // RadialMenuService.addRadialMenu(d3.selectAll('circle:not(.notDeletable)'));
         }
         
         /**
@@ -5616,12 +5676,22 @@
     'use strict';
 
     function ToolboxService(RadialMenuService, SettingsService, UtilService, 
-            ToolboxTriangleService, ToolboxRectangleService, 
-            ToolboxEllipseService, ToolboxTextService, ToolboxPolylineService) {
+            ToolboxTriangleService, 
+            ToolboxRectangleService, 
+            ToolboxEllipseService, 
+            ToolboxTextService, 
+            ToolboxPolylineService, 
+            ToolboxImageService, 
+            SelectPathService) {
 
         this.init                          = init;
         
-        this.addRadialMenus                = addRadialMenus;
+        this.addContextMenus               = addContextMenus;
+        this.hideContextMenus              = hideContextMenus;
+
+        this.addSelectPaths                = addSelectPaths;
+        this.hideSelectPaths               = hideSelectPaths;
+
         this.hideRadialMenu                = RadialMenuService.hideRadialMenu;
         
         this.drawPoint                     = drawPoint;
@@ -5663,7 +5733,7 @@
 
         /**
          * @ngdoc method
-         * @name  addRadialMenus
+         * @name  addContextMenus
          * @methodOf accessimapEditeurDerApp.ToolboxService
          * @description
          *
@@ -5676,11 +5746,53 @@
          *
          * @param {Object} model [description]
          */
-        function addRadialMenus() {
-            RadialMenuService.addRadialMenu(d3.selectAll('path:not(.notDeletable)'));
-            RadialMenuService.addRadialMenu(d3.selectAll('circle:not(.notDeletable)'));
-            RadialMenuService.addRadialMenu(d3.selectAll('text:not(.notDeletable)'));
-            RadialMenuService.addRadialMenu(d3.selectAll('image:not(.notDeletable)'));
+        var selectors = [
+            'path:not(.notDeletable)',
+            'circle:not(.notDeletable)',
+            'ellipse:not(.notDeletable)',
+            'rect:not(.notDeletable)',
+            'text:not(.notDeletable)',
+            'image:not(.notDeletable)',
+        ]
+
+        function addContextMenus() {
+            selectors.forEach(function(currentSelector, index, array) {
+                RadialMenuService.addRadialMenu(d3.selectAll(currentSelector));
+            })
+        }
+
+        function hideContextMenus() {
+            selectors.forEach(function(currentSelector, index, array) {
+                d3.selectAll(currentSelector).on('contextmenu', function() {});
+            })
+        }
+
+        function addSelectPaths() {
+            d3.selectAll(selectors)
+            selectors.forEach(function(currentSelector, index, array) {
+                d3.selectAll(currentSelector)
+                    .style('cursor', 'crosshair')
+                    .on('mouseover', function(event) {
+                        var feature = d3.select(this),
+                            selectPath = SelectPathService.calcSelectPath(feature);
+                        feature.node().parentNode.appendChild(selectPath);
+                    })
+                    .on('mouseout', function(event) {
+                        var feature = d3.select(this),
+                            selectPath = d3.select(feature.node().parentNode)
+                                           .selectAll('[data-type="select-path"]')
+                                           .remove();
+                    })
+            })
+        }
+
+        function hideSelectPaths() {
+            selectors.forEach(function(currentSelector, index, array) {
+                d3.selectAll(currentSelector).style('cursor', '')
+                                             .on('mouseover', function() {})
+                                             .on('mouseout', function() {})
+                                             .on('click', function() {})
+            })
         }
         
         /**
@@ -5721,8 +5833,10 @@
             
             applyStyle(feature, style.style, color);
 
-            RadialMenuService.addRadialMenu(feature);
+            // RadialMenuService.addRadialMenu(feature);
         }
+
+
 
         function changeTextColor(model) {
             model.fontColorChosen = model.fontColors[model.fontChosen.color][0];
@@ -5850,9 +5964,7 @@
                             });
                     break;
 
-                case 'polygon':
-                case 'editpolygon':
-                case 'circle':
+                default:
                     symbol = iconContainer.append('rect')
                                 .attr('x', 0)
                                 .attr('y', 0)
@@ -5867,9 +5979,9 @@
                     v = attribute.v;
 
                 if (k === 'fill-pattern') {
-                    symbol.attr('fill', SettingsService.POLYGON_STYLES[v].url());
+                    symbol.style('fill', SettingsService.POLYGON_STYLES[v].url());
                 } else {
-                    symbol.attr(k, v);
+                    symbol.style(k, v);
                 }
             });
 
@@ -5881,8 +5993,150 @@
     angular.module(moduleApp).service('ToolboxService', ToolboxService);
 
     ToolboxService.$inject = ['RadialMenuService', 'SettingsService', 'UtilService',
-                            'ToolboxTriangleService', 'ToolboxRectangleService', 'ToolboxEllipseService', 
-                            'ToolboxTextService', 'ToolboxPolylineService'];
+                            'ToolboxTriangleService', 
+                            'ToolboxRectangleService', 
+                            'ToolboxEllipseService', 
+                            'ToolboxTextService', 
+                            'ToolboxPolylineService',
+                            'ToolboxImageService', 
+                            'SelectPathService'];
+
+})();
+/**
+ * @ngdoc service
+ * @name accessimapEditeurDerApp.ToolboxImageService
+ * @description
+ * Expose different methods to draw on the d3 svg area
+ */
+(function() {
+    'use strict';
+
+    function ToolboxImageService(UtilService) {
+
+        this.init               = init;
+
+        var svgDrawing,
+            applyStyle ;
+        
+        function init(_svgDrawing, _applyStyle) {
+            svgDrawing = _svgDrawing;
+            applyStyle = _applyStyle;
+        }
+
+        /**
+         * @ngdoc method
+         * @name  importImage
+         * @methodOf accessimapEditeurDerApp.ToolboxImageService
+         *
+         * @description
+         * 
+         * Import a local image in the DER
+         * 
+         */
+        function importImage(x, y, style, color, contour) {
+
+            var feature;
+
+            if (d3.select('.edition')[0][0]) { // second click
+                feature = d3.select('.edition');
+                var xOffset = x - feature.attr('cx'),
+                    yOffset = y - feature.attr('cy'),
+                    r = Math.sqrt(Math.pow(xOffset, 2) + Math.pow(yOffset, 2))
+
+                if (r > 0) {
+                    
+                    // RadialMenuService.addRadialMenu(feature)
+
+                    feature.attr('r', r)
+                        .attr('e-style', style.id)
+                        .attr('e-color', color.color)
+                        .attr('data-origin-x', '')
+                        .attr('data-origin-y', '')
+                        .classed('edition', false)
+                } else {
+                    feature.remove()
+                }
+
+            } else { // first click
+                var iid = UtilService.getiid();
+                feature = svgDrawing.select('g[data-name="polygons-layer"]') 
+                    .append('ellipse')
+                    .attr('cx', x)
+                    .attr('cy', y)
+                    .classed('link_' + iid, true)
+                    .attr('data-origin-x', x)
+                    .attr('data-origin-y', y)
+                    .attr('data-link', iid)
+                    .attr('data-type', 'circle')
+                    .attr('data-from', 'drawing')
+                    .classed('edition', true);
+
+                applyStyle(feature, style.style, color);
+
+                if (contour && !feature.attr('stroke')) {
+                    feature
+                        .attr('stroke', 'black')
+                        .attr('stroke-width', '2');
+                }
+            }
+        }
+
+        /**
+         * @ngdoc method
+         * @name  updateCircleRadius
+         * @methodOf accessimapEditeurDerApp.ToolboxImageService
+         *
+         * @description
+         * Update the radius of a feature circle
+         * 
+         * @param  {integer} x     
+         * X coordinate of the point
+         * 
+         * @param  {integer} y     
+         * Y coordinate of the point
+         * 
+         * @param  {boolean} shiftKeyPressed     
+         * Whether or not the shift key is pressed
+         * 
+         */
+        function updateCircleRadius(x, y, shiftKeyPressed) {
+            var feature = d3.select('.edition');
+
+            if (feature[0][0]) {
+
+                var originX = parseFloat(feature.attr('data-origin-x')),
+                    originY = parseFloat(feature.attr('data-origin-y')),
+                    deltaX = x - originX,
+                    deltaY = y - originY,
+                    newX = originX + ( deltaX / 2 ),
+                    newY = originY + ( deltaY / 2 ),
+
+                    xOffset = Math.abs(x - originX),
+                    yOffset = Math.abs(y - originY);
+
+                // if shift key, we draw a circle, and not an ellipse
+                if (shiftKeyPressed) {
+                    if (xOffset < yOffset) {
+                        xOffset = yOffset
+                        newX = originX + ( Math.abs(deltaY) / 2 * ( x < originX ? -1 : 1 ) )
+                    } else {
+                        yOffset = xOffset;
+                        newY = originY + ( Math.abs(deltaX) / 2 * ( y < originY ? -1 : 1 ) )
+                    }
+                }
+
+                feature.attr('rx', xOffset / 2)
+                       .attr('ry', yOffset / 2)
+                       .attr('cx', newX)
+                       .attr('cy', newY);
+            }
+        }
+
+    }
+    
+    angular.module(moduleApp).service('ToolboxImageService', ToolboxImageService);
+
+    ToolboxImageService.$inject = ['UtilService'];
 
 })();
 /**
@@ -6077,7 +6331,7 @@
 
                 if (width !== 0 && height !== 0) {
                     
-                    RadialMenuService.addRadialMenu(feature)
+                    // RadialMenuService.addRadialMenu(feature)
 
                     feature
                         .attr('data-origin-x', '')
@@ -6231,7 +6485,7 @@
 
                 if (r > 0) {
                     
-                    RadialMenuService.addRadialMenu(feature)
+                    // RadialMenuService.addRadialMenu(feature)
 
                     feature.attr('r', r)
                         .attr('e-style', style.id)
@@ -6429,7 +6683,6 @@
                             var data = node.data;
 
                             if (data) {
-                                data = data.replace(/(\d+)/g, '¤$1');
                                 textElement
                                     .attr('text-anchor', 'start')
                                     .append('tspan')
@@ -6443,7 +6696,7 @@
                         });
                         d3.select(this.parentElement).remove();
 
-                        RadialMenuService.addRadialMenu(d3.select('.edition'));
+                        // RadialMenuService.addRadialMenu(d3.select('.edition'));
 
                         d3.select('.edition').classed('edition', false);
                         textElement.style('cursor','text')
@@ -6617,7 +6870,7 @@
         function finishLineOrPolygon(x, y, style, color, mode) {
             var iid = UtilService.getiid();
             
-            RadialMenuService.addRadialMenu(d3.select('.edition'));
+            // RadialMenuService.addRadialMenu(d3.select('.edition'));
 
             if (mode === 'line') {
                 d3.select('.edition.inner')
@@ -6694,12 +6947,12 @@
          */
         function drawMenu(target, mousePosition) {
             
-            if (currentTarget) {
-                currentTarget.classed('blink', false);
-            }
+            // if (currentTarget) {
+            //     currentTarget.classed('blink', false);
+            // }
                 
             currentTarget = target;
-            currentTarget.classed('blink', true);
+            // currentTarget.classed('blink', true);
 
             var type = target.attr('data-type') ? target.attr('data-type') : 'default' ;
 
@@ -6790,9 +7043,9 @@
                 menu = null
             }
             
-            if (currentTarget) {
-                currentTarget.classed('blink', false);
-            }
+            // if (currentTarget) {
+            //     currentTarget.classed('blink', false);
+            // }
                 
         }
 
@@ -6820,10 +7073,11 @@
 
     function DrawingService(LayerService, ToolboxService, SettingsService) {
 
-        this.initDrawing     = initDrawing;
+        this.initDrawing = initDrawing;
         
-        this.toolbox         = ToolboxService;
-        this.layers          = LayerService;
+        this.toolbox     = ToolboxService;
+        this.layers      = LayerService;
+        this.updatePoint = updatePoint;
 
         /**
          * @ngdoc method
@@ -6852,6 +7106,43 @@
 
         }
 
+        /**
+         * @ngdoc method
+         * @name  updateFeatureStyleAndColor
+         * @methodOf accessimapEditeurDerApp.DrawingService
+         *
+         * @description 
+         * Update the style (pattern) & color of a feature.
+         * Could be a geojson feature or a drawing feature.
+         * 
+         * @param {Object} style 
+         * SettingsService.STYLES object
+         * 
+         * @param {Object} color 
+         * SettingsService.COLORS object
+         */
+        function updatePoint(style) {
+
+            var currentSelection = d3.select('.styleEdition'),
+                featureId = currentSelection.attr('id'),
+                featureFrom = currentSelection.attr('data-from');
+
+            if (featureFrom === 'drawing') {
+                ToolboxService.updateFeatureStyleAndColor(style, null);
+            } else if (featureFrom === 'osm') {
+                // find the id of the current feature
+                var idFound = null,
+                    currentParent = currentSelection.node().parentNode;
+                
+                while (! currentParent.getAttribute('id')) {
+                    currentParent = currentParent.parentNode;
+                }
+
+                layers.geojson.updateFeature(currentParent.getAttribute('id'), style)
+            }
+            currentSelection.classed('styleEdition', false)
+        }
+
     }
 
     angular.module(moduleApp).service('DrawingService', DrawingService);
@@ -6859,289 +7150,6 @@
     DrawingService.$inject = ['LayerService', 'ToolboxService', 'SettingsService'];
 
 })();
-/**
- * @ngdoc service
- * @name accessimapEditeurDerApp.EventService
- * 
- * @description
- * Service providing events manager
- *
- * TODO: see if this service is useful ?
- */
-(function() {
-    'use strict';
-
-    function EventService() {
-
-        this.addClickListener       = addClickListener;
-        this.addMoveListener        = addMoveListener;
-        this.addDoubleClickListener = addDoubleClickListener;
-        this.removeEventListener    = removeEventListener;
-
-        var listeners = [];
-
-        /**
-         * @ngdoc method
-         * @name  addClickListener
-         * @methodOf accessimapEditeurDerApp.EventService
-         * 
-         * @description 
-         * Add a listener to the click event
-         * 
-         * @param {function} listener 
-         * function executed when click event is fired
-         */
-        function addClickListener(listener) {
-            listeners.push({event: 'click', function: listener})
-            d3.select('#d3drawing')
-                .on('click', listener)
-        }
-
-        /**
-         * @ngdoc method
-         * @name  addMoveListener
-         * @methodOf accessimapEditeurDerApp.EventService
-         * 
-         * @description 
-         * Add a listener to the mousemove event
-         * 
-         * @param {function} listener 
-         * function executed when mousemove event is fired
-         */
-        function addMoveListener(listener) {
-            listeners.push({event: 'mousemove', function: listener})
-            d3.select('#d3drawing')
-                .on('mousemove', listener)
-        }
-
-        /**
-         * @ngdoc method
-         * @name  addDoubleClickListener
-         * @methodOf accessimapEditeurDerApp.EventService
-         * 
-         * @description 
-         * Add a listener to the doubleclick event
-         * 
-         * @param {function} listener 
-         * function executed when doubleclick event is fired
-         */
-        function addDoubleClickListener(listener) {
-            listeners.push({event: 'contextmenu', function: listener})
-            d3.select('#d3drawing')
-                .on('dblclick', listener)
-        }
-
-        /**
-         * @ngdoc method
-         * @name  removeEventListener
-         * @methodOf accessimapEditeurDerApp.EventService
-         * 
-         * @description 
-         * Remove all the listener to the map
-         */
-        function removeEventListener() {
-            for (var listener in listeners) {
-                map.removeEventListener(listener.event, listener.function)
-            }
-        }
-
-    }
-
-    angular.module(moduleApp).service('EventService', EventService);
-
-    EventService.$inject = [];
-
-})();
-(function() {
-    'use strict';
-
-    /*global JSZip, saveAs */
-    /**
-     * @ngdoc service
-     * @name accessimapEditeurDerApp.ExportService
-     * @memberOf accessimapEditeurDerApp
-     * @module 
-     * @description
-     * Service in the accessimapEditeurDerApp.
-     */
-    function ExportService(InteractionService, LegendService, DrawingService, DefsService, MapService, $q) {
-
-        this.exportData = exportData;
-
-        var exportVersion = '0.1';
-
-        // TODO: add parameters to not have to use DOM selectors.
-        // this function have to be independant from the DOM
-        // To be added : drawingNode, legendNode, interactions
-        function exportData(model) {
-
-            var deferred = $q.defer();
-
-            if (! model.title)
-                model.title = 'der';
-
-            var node                   = MapService.getMap().getPanes().mapPane,
-                transformStyle         = $(node).css('transform'),
-                drawingNode            = MapService.getMap().getContainer(),
-                tilesNode              = null,
-                legendNode             = LegendService.getNode(),
-                comments               = $('#comment').val(),
-                interactionsContentXML = InteractionService.getXMLExport(),
-                titleDrawing           = document.createElementNS("http://www.w3.org/2000/svg", "title"),
-
-            zip        = new JSZip(),
-            exportNode = drawingNode ? drawingNode.cloneNode(true) : null,
-            size       = DrawingService.layers.overlay.getSize() ,
-            svgDrawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-
-            d3.select(svgDrawing)
-                .attr('data-version', exportVersion)
-                .attr('width', size.width)
-                .attr('height', size.height)
-                .style('overflow', 'visible')
-
-            // patterns
-            DefsService.createDefs(d3.select(svgDrawing))
-
-            // get transform attribute of margin / frame layers
-            var translateOverlayArray = DrawingService.layers.overlay.getTranslation(),
-                translateReverseOverlayPx = "translate(" + ( translateOverlayArray.x * -1 ) + 'px,' 
-                                                         + ( translateOverlayArray.y * -1 ) + 'px)';
-
-            d3.select(svgDrawing).attr('viewBox', translateOverlayArray.x + ' ' 
-                                                + translateOverlayArray.y + ' ' 
-                                                + size.width + ' ' + size.height)
-            
-            function filterDOM(node) {
-                return (node.tagName !== 'svg')
-            }
-
-
-            
-            // DefsService.createDefs(d3.select(node))
-            // TODO: union promises with a Promise.all to maintain a sequence programmation
-            $(node).css('transform', translateReverseOverlayPx)
-            domtoimage.toPng(node, {width: size.width, height: size.height, filter: filterDOM})
-                .then(function(dataUrl) { 
-                    
-                    // save the image in a file & add it to the current zip
-                    var imgBase64 = dataUrl.split('base64,')
-                    zip.file('carte.png', imgBase64[1], {base64: true});
-
-                    // add the current image to a svg:image element
-                    var image = document.createElementNS("http://www.w3.org/2000/svg", "image");
-                    d3.select(image)
-                        .attr('width', size.width)
-                        .attr('height', size.height)
-                        .attr('x', translateOverlayArray.x)
-                        .attr('y', translateOverlayArray.y)
-                        .attr('xlink:href', dataUrl)
-
-                    // create some metadata object 
-                    var metadataGeoJSON = document.createElementNS("http://www.w3.org/2000/svg", "metadata"),
-                        // metadataInteractions = document.createElementNS("http://www.w3.org/2000/svg", "metadata"),
-                        metadataModel = document.createElementNS("http://www.w3.org/2000/svg", "metadata");
-
-                    metadataGeoJSON.setAttribute('data-name', 'data-geojson')
-                    metadataGeoJSON.setAttribute('data-value', 
-                            JSON.stringify(DrawingService.layers.geojson.getFeatures()))
-
-                    // metadataInteractions.setAttribute('data-name', 'data-interactions')
-                    // metadataInteractions.setAttribute('data-value', interactionsContentXML)
-
-                    metadataModel.setAttribute('data-name', 'data-model')
-                    metadataModel.setAttribute('data-value', JSON.stringify(model))
-
-                    // Assembly of 'carte_avec_source.svg'
-                    svgDrawing.appendChild(metadataGeoJSON);
-                    // svgDrawing.appendChild(metadataInteractions);
-                    svgDrawing.appendChild(metadataModel);
-                    
-                    svgDrawing.appendChild(image);
-
-                    svgDrawing.appendChild(d3.select(exportNode)
-                                            .select("svg[data-name='background']")
-                                                .style('overflow', 'visible').node());
-                    svgDrawing.appendChild(d3.select(exportNode)
-                                            .select("svg[data-name='geojson']")
-                                                .style('overflow', 'visible').node());
-                    svgDrawing.appendChild(d3.select(exportNode)
-                                            .select("svg[data-name='drawing']")
-                                                .style('overflow', 'visible').node());
-                    svgDrawing.appendChild(d3.select(exportNode)
-                                            .select("svg[data-name='overlay']")
-                                                .style('overflow', 'visible').node());
-
-                    zip.file('carte_avec_source.svg', (new XMLSerializer()).serializeToString(svgDrawing));
-
-                    // Assembly of 'carte_sans_source.svg' => remove tiles
-                    svgDrawing.removeChild(image);
-
-                    zip.file('carte_sans_source.svg', (new XMLSerializer()).serializeToString(svgDrawing));
-
-                    // Assembly of legend
-                    if (legendNode) {
-
-                        var svgLegend = document.createElementNS("http://www.w3.org/2000/svg", "svg"),
-                            legendNodeClone = legendNode.cloneNode(true);
-
-                        DefsService.createDefs(d3.select(svgLegend))
-
-                        svgLegend.appendChild(legendNodeClone);
-
-                        zip.file('legende.svg', (new XMLSerializer()).serializeToString(svgLegend));
-                    }
-
-                    // Adding the comments
-                    zip.file('commentaires.txt', comments);
-
-                    // Adding the interactions
-                    zip.file('interactions.xml', interactionsContentXML);
-
-                    // TODO: inject DEFS ? il manque les fill patterns
-                    domtoimage.toPng(node, {width: size.width, height: size.height})
-                        .then(function(dataUrl) { 
-
-                            $(node).css('transform', transformStyle)
-
-                            // save the image in a file & add it to the current zip
-                            var imgBase64 = dataUrl.split('base64,')
-                            zip.file('der.png', imgBase64[1], {base64: true});
-
-                            // get the Braille Font & add it to the current zip
-                            $.ajax({
-                                url: "/assets/fonts/Braille_2007.ttf",
-                                type: "GET",
-                                dataType: 'binary',
-                                processData: false,
-                                success: function(result) {
-                                    zip.file('Braille_2007.ttf', result, {binary: true})
-                                    zip.generateAsync({type: 'blob'})
-                                        .then(function(content) {
-                                            saveAs(content, model.title + '.zip');
-                                            deferred.resolve(model.title + '.zip');
-                                        }).catch(deferred.reject)
-                                },
-                                error: function(error) {
-                                    deferred.reject('Braille font ' + error.statusText)
-                                }
-                            });             
-
-                        }).catch(deferred.reject)
-
-                }).catch(deferred.reject)
-            
-            return deferred.promise;
-        }
-
-    }
-
-    angular.module(moduleApp).service('ExportService', ExportService);
-
-    ExportService.$inject = ['InteractionService', 'LegendService', 'DrawingService', 
-                            'DefsService', 'MapService', '$q'];
-})();
-
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.GeneratorService
@@ -7154,20 +7162,17 @@
 
     function GeneratorService() {
 
-        this.lineFunction = d3.svg.line()
-                                        .x(function(d) { return d[0]; })
-                                        .y(function(d) { return d[1]; })
-                                        .interpolate('linear');
+        this.lineFunction = d3.svg.line().x(function(d) { return d[0]; })
+                                         .y(function(d) { return d[1]; })
+                                         .interpolate('linear');
 
-        this.cardinalLineFunction = d3.svg.line()
-                                        .x(function(d) { return d[0]; })
-                                        .y(function(d) { return d[1]; })
-                                        .interpolate('cardinal');
+        this.cardinalLineFunction = d3.svg.line().x(function(d) { return d[0]; })
+                                                 .y(function(d) { return d[1]; })
+                                                 .interpolate('cardinal');
 
-        this.polygonFunction = d3.svg.line()
-                                        .x(function(d) { return d[0]; })
-                                        .y(function(d) { return d[1]; })
-                                        .interpolate('linear-closed');
+        this.polygonFunction = d3.svg.line().x(function(d) { return d[0]; })
+                                            .y(function(d) { return d[1]; })
+                                            .interpolate('linear-closed');
                                      
         this.pathFunction = {
             'line': this.lineFunction,
@@ -7398,6 +7403,594 @@
     ImportService.$inject = ['LayerService', 'InteractionService', 'LegendService', 'SettingsService', 'UtilService'];
 
 })();
+(function() {
+    'use strict';
+
+    /*global JSZip, saveAs */
+    /**
+     * @ngdoc service
+     * @name accessimapEditeurDerApp.ExportService
+     * @memberOf accessimapEditeurDerApp
+     * @module 
+     * @description
+     * Service in the accessimapEditeurDerApp.
+     */
+    function ExportService(InteractionService, LegendService, DrawingService, DefsService, MapService, $q) {
+
+        this.exportData = exportData;
+
+        var exportVersion = '0.1';
+
+        // TODO: add parameters to not have to use DOM selectors.
+        // this function have to be independant from the DOM
+        // To be added : drawingNode, legendNode, interactions
+        function exportData(model) {
+
+            var deferred = $q.defer();
+
+            if (! model.title)
+                model.title = 'der';
+
+            var node                   = MapService.getMap().getPanes().mapPane,
+                transformStyle         = $(node).css('transform'),
+                drawingNode            = MapService.getMap().getContainer(),
+                tilesNode              = null,
+                legendNode             = LegendService.getNode(),
+                comments               = $('#comment').val(),
+                interactionsContentXML = InteractionService.getXMLExport(),
+                titleDrawing           = document.createElementNS("http://www.w3.org/2000/svg", "title"),
+
+            zip        = new JSZip(),
+            exportNode = drawingNode ? drawingNode.cloneNode(true) : null,
+            size       = DrawingService.layers.overlay.getSize() ,
+            svgDrawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+
+            d3.select(svgDrawing)
+                .attr('data-version', exportVersion)
+                .attr('width', size.width)
+                .attr('height', size.height)
+                .style('overflow', 'visible')
+
+            // patterns
+            DefsService.createDefs(d3.select(svgDrawing))
+
+            // get transform attribute of margin / frame layers
+            var translateOverlayArray = DrawingService.layers.overlay.getTranslation(),
+                translateReverseOverlayPx = "translate(" + ( translateOverlayArray.x * -1 ) + 'px,' 
+                                                         + ( translateOverlayArray.y * -1 ) + 'px)';
+
+            d3.select(svgDrawing).attr('viewBox', translateOverlayArray.x + ' ' 
+                                                + translateOverlayArray.y + ' ' 
+                                                + size.width + ' ' + size.height)
+            
+            function filterDOM(node) {
+                return (node.tagName !== 'svg')
+            }
+
+
+            
+            // DefsService.createDefs(d3.select(node))
+            // TODO: union promises with a Promise.all to maintain a sequence programmation
+            $(node).css('transform', translateReverseOverlayPx)
+            domtoimage.toPng(node, {width: size.width, height: size.height, filter: filterDOM})
+                .then(function(dataUrl) { 
+                    
+                    // save the image in a file & add it to the current zip
+                    var imgBase64 = dataUrl.split('base64,')
+                    zip.file('carte.png', imgBase64[1], {base64: true});
+
+                    // add the current image to a svg:image element
+                    var image = document.createElementNS("http://www.w3.org/2000/svg", "image");
+                    d3.select(image)
+                        .attr('width', size.width)
+                        .attr('height', size.height)
+                        .attr('x', translateOverlayArray.x)
+                        .attr('y', translateOverlayArray.y)
+                        .attr('xlink:href', dataUrl)
+
+                    // create some metadata object 
+                    var metadataGeoJSON = document.createElementNS("http://www.w3.org/2000/svg", "metadata"),
+                        // metadataInteractions = document.createElementNS("http://www.w3.org/2000/svg", "metadata"),
+                        metadataModel = document.createElementNS("http://www.w3.org/2000/svg", "metadata");
+
+                    metadataGeoJSON.setAttribute('data-name', 'data-geojson')
+                    metadataGeoJSON.setAttribute('data-value', 
+                            JSON.stringify(DrawingService.layers.geojson.getFeatures()))
+
+                    // metadataInteractions.setAttribute('data-name', 'data-interactions')
+                    // metadataInteractions.setAttribute('data-value', interactionsContentXML)
+
+                    metadataModel.setAttribute('data-name', 'data-model')
+                    metadataModel.setAttribute('data-value', JSON.stringify(model))
+
+                    // Assembly of 'carte_avec_source.svg'
+                    svgDrawing.appendChild(metadataGeoJSON);
+                    // svgDrawing.appendChild(metadataInteractions);
+                    svgDrawing.appendChild(metadataModel);
+                    
+                    svgDrawing.appendChild(image);
+
+                    svgDrawing.appendChild(d3.select(exportNode)
+                                             .select("svg[data-name='background']")
+                                             .style('overflow', 'visible').node());
+                    svgDrawing.appendChild(d3.select(exportNode)
+                                             .select("svg[data-name='geojson']")
+                                             .style('overflow', 'visible').node());
+                    svgDrawing.appendChild(d3.select(exportNode)
+                                             .select("svg[data-name='drawing']")
+                                             .style('overflow', 'visible').node());
+                    svgDrawing.appendChild(d3.select(exportNode)
+                                             .select("svg[data-name='overlay']")
+                                             .style('overflow', 'visible').node());
+
+                    zip.file('carte_avec_source.svg', (new XMLSerializer()).serializeToString(svgDrawing));
+
+                    // Assembly of 'carte_sans_source.svg' => remove tiles
+                    svgDrawing.removeChild(image);
+
+                    zip.file('carte_sans_source.svg', (new XMLSerializer()).serializeToString(svgDrawing));
+
+                    // Assembly of legend
+                    if (legendNode) {
+
+                        var svgLegend = document.createElementNS("http://www.w3.org/2000/svg", "svg"),
+                            legendNodeClone = legendNode.cloneNode(true);
+
+                        DefsService.createDefs(d3.select(svgLegend))
+
+                        svgLegend.appendChild(legendNodeClone);
+
+                        zip.file('legende.svg', (new XMLSerializer()).serializeToString(svgLegend));
+                    }
+
+                    // Adding the comments
+                    zip.file('commentaires.txt', comments);
+
+                    // Adding the interactions
+                    zip.file('interactions.xml', interactionsContentXML);
+
+                    // TODO: inject DEFS ? il manque les fill patterns
+                    domtoimage.toPng(node, {width: size.width, height: size.height})
+                        .then(function(dataUrl) { 
+
+                            $(node).css('transform', transformStyle)
+
+                            // save the image in a file & add it to the current zip
+                            var imgBase64 = dataUrl.split('base64,')
+                            zip.file('der.png', imgBase64[1], {base64: true});
+
+                            // get the Braille Font & add it to the current zip
+                            $.ajax({
+                                url: "/assets/fonts/Braille_2007.ttf",
+                                type: "GET",
+                                dataType: 'binary',
+                                processData: false,
+                                success: function(result) {
+                                    zip.file('Braille_2007.ttf', result, {binary: true})
+                                    zip.generateAsync({type: 'blob'})
+                                        .then(function(content) {
+                                            saveAs(content, model.title + '.zip');
+                                            deferred.resolve(model.title + '.zip');
+                                        }).catch(deferred.reject)
+                                },
+                                error: function(error) {
+                                    deferred.reject('Braille font ' + error.statusText)
+                                }
+                            });             
+
+                        }).catch(deferred.reject)
+
+                }).catch(deferred.reject)
+            
+            return deferred.promise;
+        }
+
+    }
+
+    angular.module(moduleApp).service('ExportService', ExportService);
+
+    ExportService.$inject = ['InteractionService', 'LegendService', 'DrawingService', 
+                            'DefsService', 'MapService', '$q'];
+})();
+/**
+ * @ngdoc service
+ * @name accessimapEditeurDerApp.EventsService
+ * 
+ * @description
+ * Manage events (map, d3) in the editor
+ * 
+ */
+(function() {
+    'use strict';
+
+    function EventsService(MapService, DrawingService, SettingsService, SelectPathService) {
+
+        this.init                    = init;
+
+        this.resetState              = resetState;
+        this.initMode                = initMode;
+
+        this.enableDefaultMode       = enableDefaultMode;
+        this.enableSelectMode        = enableSelectMode;
+        this.enablePointMode         = enablePointMode;
+        this.enableCircleMode        = enableCircleMode;
+        this.enableSquareMode        = enableSquareMode;
+        this.enableTriangleMode      = enableTriangleMode;
+        this.enableTextMode          = enableTextMode;
+        this.enableLineOrPolygonMode = enableLineOrPolygonMode;
+        this.enableAddPOI            = enableAddPOI;
+        this.disableAddPOI           = disableAddPOI;
+
+        var projection ;
+
+        function init(_projection) {
+            projection    = _projection;
+        }
+        
+        function initMode() {
+
+            MapService.resetCursor();
+            MapService.removeEventListeners();
+            MapService.addEventListener([ 'click', 'contextmenu', 'mousemove', 'mousedown', 'mouseup' ], function(e) {
+                e.originalEvent.stopImmediatePropagation();
+            })
+
+            DrawingService.toolbox.hideContextMenus();
+            DrawingService.toolbox.hideSelectPaths();
+
+        }
+
+        function resetState() {
+            d3.selectAll('path:not(.menu-segment)').on('click', function() {});
+            d3.selectAll('svg').on('click', function() {});
+            d3.select('body').on('keydown', function() {});
+
+            MapService.resetCursor();
+
+            d3.selectAll('.ongoing').remove();
+
+            // d3.selectAll('.blink').classed('blink', false);
+            d3.selectAll('.edition').classed('edition', false);
+            d3.selectAll('.styleEdition').classed('styleEdition', false);
+            d3.selectAll('.highlight').classed('highlight', false);
+
+            MapService.removeEventListeners();
+        }
+
+
+        /**
+         * @ngdoc method
+         * @name  enableSelectMode
+         * @methodOf accessimapEditeurDerApp.EventsService
+         *
+         * @description
+         
+         * Enable the select mode : 
+         * 
+         * - user can select items and edit them
+         *
+         * - user can right click on an item and get a context menu
+         */
+        function enableSelectMode() {
+
+            initMode();
+
+            DrawingService.toolbox.addContextMenus();
+            DrawingService.toolbox.addSelectPaths();
+
+            MapService.removeEventListener(['mousemove', 'mousedown', 'mouseup']);
+
+
+        }        
+
+        /**
+         * @ngdoc method
+         * @name  enableDefaultMode
+         * @methodOf accessimapEditeurDerApp.EventsService
+         *
+         * @description
+         * 
+         * Enable the select mode : 
+         * 
+         * - user can select items and edit them
+         *
+         * - user can right click on an item and get a context menu
+         */
+        function enableDefaultMode() {
+            MapService.resetCursor();
+            MapService.removeEventListeners();
+            DrawingService.toolbox.hideContextMenus();
+            DrawingService.toolbox.hideSelectPaths();
+        }
+        
+        function enablePointMode(getDrawingParameter) {
+
+            initMode();
+
+            MapService.changeCursor('crosshair');
+            // MapService.addClickListener(function(e) {
+            MapService.addEventListener([ 'mouseup' ] , function(e) {
+                var p = projection.latLngToLayerPoint(e.latlng),
+                    drawingParameters = getDrawingParameter();
+                DrawingService.toolbox.drawPoint(p.x, p.y, drawingParameters.style, drawingParameters.color);
+            })
+
+        }
+
+        function enableCircleMode(getDrawingParameter) {
+
+            initMode();
+
+            MapService.changeCursor('crosshair');
+            MapService.addEventListener([ 'mousedown', 'mouseup' ] , function(e) {
+                // only left click
+                if (e.originalEvent.button === 0) {
+                    
+                    e.originalEvent.stopImmediatePropagation()
+                    var p = projection.latLngToLayerPoint(e.latlng),
+                        drawingParameters = getDrawingParameter();
+                    
+                    DrawingService.toolbox.drawCircle(p.x, p.y, 
+                                            drawingParameters.style, 
+                                            drawingParameters.color, 
+                                            drawingParameters.contour)
+
+                    MapService.addMouseMoveListener(function(e) {
+                        var p = projection.latLngToLayerPoint(e.latlng),
+                            drawingParameters = getDrawingParameter();
+                        DrawingService.toolbox.updateCircleRadius(p.x, p.y, e.originalEvent.shiftKey);
+                    })
+                    
+                }
+            })
+
+
+        }
+
+        function enableSquareMode(getDrawingParameter) {
+
+            initMode();
+
+            MapService.changeCursor('crosshair');
+            MapService.addEventListener([ 'mousedown' ] , function(e) {
+                // only left click
+                // e.originalEvent.stopImmediatePropagation()
+                if (e.originalEvent.button === 0) {
+
+                    var p = projection.latLngToLayerPoint(e.latlng),
+                        drawingParameters = getDrawingParameter();
+
+                    DrawingService.toolbox.drawSquare(p.x, p.y, 
+                                                    drawingParameters.style, 
+                                                    drawingParameters.color, 
+                                                    drawingParameters.contour)
+
+                    MapService.addEventListener([ 'mousemove' ] , function(e) {
+
+                        var p = projection.latLngToLayerPoint(e.latlng),
+                            drawingParameters = getDrawingParameter();
+
+                        DrawingService.toolbox.updateSquare(p.x, p.y, e.originalEvent.shiftKey);
+
+                        MapService.addEventListener([ 'mouseup' ] , function(e) {
+                            // only left click
+                            e.originalEvent.stopImmediatePropagation()
+                            if (e.originalEvent.button === 0) {
+                                var p = projection.latLngToLayerPoint(e.latlng),
+                                    drawingParameters = getDrawingParameter();
+                                DrawingService.toolbox.drawSquare(p.x, p.y, 
+                                                                drawingParameters.style, 
+                                                                drawingParameters.color, 
+                                                                drawingParameters.contour)
+                                enableSquareMode(getDrawingParameter)
+                            }
+                        })
+
+                    })
+
+                }
+
+            })
+
+        }
+
+        function enableTriangleMode(getDrawingParameter) {
+
+            initMode();
+
+            MapService.changeCursor('crosshair');
+            MapService.addEventListener([ 'mousedown' ] , function(e) {
+                // only left click
+                // e.originalEvent.stopImmediatePropagation()
+                if (e.originalEvent.button === 0) {
+
+                    var p = projection.latLngToLayerPoint(e.latlng),
+                        drawingParameters = getDrawingParameter();
+
+                    DrawingService.toolbox.drawTriangle(p.x, p.y, 
+                                                    drawingParameters.style, 
+                                                    drawingParameters.color, 
+                                                    drawingParameters.contour)
+
+                    MapService.addEventListener([ 'mousemove' ] , function(e) {
+
+                        var p = projection.latLngToLayerPoint(e.latlng),
+                            drawingParameters = getDrawingParameter();
+
+                        DrawingService.toolbox.updateTriangle(p.x, p.y, e.originalEvent.shiftKey);
+
+                        MapService.addEventListener([ 'mouseup' ] , function(e) {
+                            // only left click
+                            e.originalEvent.stopImmediatePropagation()
+                            if (e.originalEvent.button === 0) {
+                                var p = projection.latLngToLayerPoint(e.latlng),
+                                    drawingParameters = getDrawingParameter();
+                                DrawingService.toolbox.drawTriangle(p.x, p.y, 
+                                                                drawingParameters.style, 
+                                                                drawingParameters.color, 
+                                                                drawingParameters.contour)
+                                enableTriangleMode(getDrawingParameter)
+                            }
+                        })
+
+                    })
+
+                }
+
+            })
+
+        }
+
+        function enableLineOrPolygonMode(getDrawingParameter) {
+
+            initMode();
+
+            var lastPoint = null,
+                lineEdit = [];
+
+            MapService.changeCursor('crosshair');
+            MapService.addEventListener([ 'click' ], function(e) {
+                var p = projection.latLngToLayerPoint(e.latlng),
+                    drawingParameters = getDrawingParameter();
+                DrawingService.toolbox.beginLineOrPolygon(p.x, 
+                                                p.y, 
+                                                drawingParameters.style, 
+                                                drawingParameters.color, 
+                                                drawingParameters.contour, 
+                                                drawingParameters.mode, 
+                                                lastPoint, 
+                                                lineEdit);
+                lastPoint = p;
+            })
+
+            MapService.addEventListener([ 'mousemove' ], function(e) {
+                var p = projection.latLngToLayerPoint(e.latlng),
+                    drawingParameters = getDrawingParameter();
+                DrawingService.toolbox.drawHelpLineOrPolygon(p.x, 
+                                                    p.y, 
+                                                    drawingParameters.style, 
+                                                    drawingParameters.color, 
+                                                    drawingParameters.contour, 
+                                                    drawingParameters.mode, 
+                                                    lastPoint);
+            })
+
+            MapService.addEventListener([ 'contextmenu' ], function(e) {
+                var p = projection.latLngToLayerPoint(e.latlng),
+                    drawingParameters = getDrawingParameter();
+                DrawingService.toolbox.finishLineOrPolygon(p.x, 
+                                                    p.y, 
+                                                    drawingParameters.style, 
+                                                    drawingParameters.color, 
+                                                    drawingParameters.mode);
+                lastPoint = null;
+                lineEdit = [];
+            })
+
+        }
+
+        function enableTextMode(getDrawingParameter) {
+
+            initMode();
+
+            MapService.changeCursor('crosshair');
+            MapService.addEventListener([ 'click' ], function(e) {
+                var p = projection.latLngToLayerPoint(e.latlng),
+                    drawingParameters = getDrawingParameter();
+
+                DrawingService.toolbox.writeText(p.x, p.y, drawingParameters.font, drawingParameters.fontColor)
+                    .then(function addAgainClickListener(element) {
+                        MapService.addEventListener([ 'click' ], function(e) {
+                            enableTextMode(getDrawingParameter)
+                        })
+                    })
+
+                // to prevent the draw of a new text feature
+                MapService.removeEventListener(['click']);
+            })
+
+        }
+
+        /**
+         * @ngdoc method
+         * @name  enableAddPOI
+         * @methodOf accessimapEditeurDerApp.EventsService
+         * 
+         * @description 
+         * Enable the 'Add POI' mode, 
+         * allowing user to click on the map and retrieve data from OSM
+         * 
+         * @param {function} _successCallback 
+         * Callback function called when data has been retrieved, data is passed in first argument
+         * 
+         * @param {function} _errorCallback 
+         * Callback function called when an error occured, error is passed in first argument
+         */
+        function enableAddPOI(_warningCallback, _errorCallback, _currentParametersFn) {
+
+            initMode();
+
+            MapService.changeCursor('crosshair');
+            MapService.addEventListener([ 'click' ], function(e) {
+
+                var currentParameters = _currentParametersFn(),
+                styleChosen = SettingsService.ALL_STYLES.find(function(element, index, array) {
+                    return element.id === currentParameters.style.id;
+                }),
+                colorChosen = SettingsService.ALL_COLORS.find(function(element, index, array) {
+                    return element.id === currentParameters.color.id;
+                })
+                // TODO: prevent any future click 
+                // user has to wait before click again
+                MapService.changeCursor('progress');
+                
+                MapService
+                    .retrieveData([e.latlng.lng,  e.latlng.lat], SettingsService.QUERY_LIST[0])
+                    .then(function successCallback(osmGeojson) {
+                        if (!osmGeojson) {
+                            _errorCallback('Erreur lors de la recherche de POI... Merci de recommencer.')
+                        }
+                        
+                        if (osmGeojson.features && osmGeojson.features.length > 0) {
+                            DrawingService.layers.geojson.geojsonToSvg(osmGeojson, 
+                                    null, 
+                                    'node_' + osmGeojson.features[0].properties.id, 
+                                    true, 
+                                    SettingsService.QUERY_POI, 
+                                    styleChosen, 
+                                    SettingsService.STYLES[SettingsService.QUERY_POI.type], 
+                                    colorChosen, null, null)
+                        } else {
+                            _warningCallback('Aucun POI trouvé à cet endroit... Merci de cliquer ailleurs !?')
+                        }
+                    })
+                    .catch(_errorCallback)
+                    .finally(function finallyCallback() {
+                        MapService.changeCursor('crosshair');
+                    })
+            })
+        }
+
+        /**
+         * @ngdoc method
+         * @name  disableAddPOI
+         * @methodOf accessimapEditeurDerApp.EventsService
+         * 
+         * @description 
+         * Disable the 'Add POI' mode by resetting CSS cursor.
+         * 
+         */
+        function disableAddPOI() {
+            MapService.resetCursor();
+        }
+
+    }
+
+    angular.module(moduleApp).service('EventsService', EventsService);
+
+    EventsService.$inject = ['MapService', 'DrawingService', 'SettingsService', 'SelectPathService'];
+
+})()
 // jscs:disable maximumNumberOfLines
 /**
  * @ngdoc service
@@ -7412,6 +8005,7 @@
  * @requires accessimapEditeurDerApp.ExportService
  * @requires accessimapEditeurDerApp.UtilService
  * @requires accessimapEditeurDerApp.ImportService
+ * @requires accessimapEditeurDerApp.EventsService
  * 
  * @description
  * Service used for the 'EditController', and the 'edit' view
@@ -7425,61 +8019,51 @@
     'use strict';
 
     function EditService($q, SettingsService, MapService, DrawingService, LegendService, 
-        DefsService, InteractionService, ExportService, UtilService, ImportService, FeatureService) {
+        DefsService, InteractionService, ExportService, UtilService, ImportService, FeatureService, EventsService) {
 
         this.init          = init;
         this.settings      = SettingsService;
         this.featureIcon   = DrawingService.toolbox.featureIcon;
-        this.enableAddPOI  = enableAddPOI;
         this.insertOSMData = insertOSMData;
-        this.disableAddPOI = disableAddPOI;
+
+        this.enableAddPOI  = EventsService.enableAddPOI;
+        this.disableAddPOI = EventsService.disableAddPOI;
 
         // Drawing services
         // TODO : reset action has to work correctly for event...
         // we have to use map event or d3 event... not both (mea culpa)
-        this.resetActions = function() {
-            d3.selectAll('path:not(.menu-segment)').on('click', function() {});
-            d3.selectAll('svg').on('click', function() {});
-            d3.select('body').on('keydown', function() {});
-            d3.selectAll('path').attr('marker-mid', null);
-
-            MapService.resetCursor();
-
-            d3.selectAll('.ongoing').remove();
-
-            d3.selectAll('.blink').classed('blink', false);
-            d3.selectAll('.edition').classed('edition', false);
-            d3.selectAll('.styleEdition').classed('styleEdition', false);
-            d3.selectAll('.highlight').classed('highlight', false);
-
-            MapService.removeEventListeners();
-        }
+        this.resetState    = EventsService.resetState;
 
         // Toolbox
+        this.drawPoint                     = DrawingService.toolbox.drawPoint;
+        this.drawCircle                    = DrawingService.toolbox.drawCircle;
         this.changeTextColor               = DrawingService.toolbox.changeTextColor;
         this.updateBackgroundStyleAndColor = DrawingService.toolbox.updateBackgroundStyleAndColor;
         this.updateFeatureStyleAndColor    = DrawingService.toolbox.updateFeatureStyleAndColor;
         this.updateMarker                  = DrawingService.toolbox.updateMarker;
-        this.updatePoint                   = updatePoint;
-        this.addRadialMenus                = DrawingService.toolbox.addRadialMenus;
+        // this.addRadialMenus                = DrawingService.toolbox.addRadialMenus;
+        this.updatePoint                   = DrawingService.updatePoint;
+        
         this.isUndoAvailable               = FeatureService.isUndoAvailable;
         this.undo                          = FeatureService.undo;
-        this.enablePointMode               = enablePointMode;
-        this.drawPoint                     = DrawingService.toolbox.drawPoint;
-        this.enableCircleMode              = enableCircleMode;
-        this.enableSquareMode              = enableSquareMode;
-        this.enableTriangleMode            = enableTriangleMode;
-        this.drawCircle                    = DrawingService.toolbox.drawCircle;
-        this.enableLineOrPolygonMode       = enableLineOrPolygonMode;
-        this.enableTextMode                = enableTextMode;
+
+        this.enableDefaultMode             = EventsService.enableDefaultMode;
+        this.enableSelectMode              = EventsService.enableSelectMode;
+        this.enablePointMode               = EventsService.enablePointMode;
+        this.enableCircleMode              = EventsService.enableCircleMode;
+        this.enableSquareMode              = EventsService.enableSquareMode;
+        this.enableTriangleMode            = EventsService.enableTriangleMode;
+        this.enableLineOrPolygonMode       = EventsService.enableLineOrPolygonMode;
+        this.enableTextMode                = EventsService.enableTextMode;
 
         this.exportData                    = function(model) {
             var deferred = $q.defer();
 
-            model.center = DrawingService.layers.overlay.getCenter();
-            model.zoom   = zoom   ? zoom   : MapService.getMap().getZoom();
+            model.center       = DrawingService.layers.overlay.getCenter();
+            model.zoom         = zoom   ? zoom   : MapService.getMap().getZoom();
+            model.mapIdVisible = MapService.getBaseLayerId();
 
-            resetView(function() { 
+            MapService.resetView(model.center, model.zoom, function() { 
                 ExportService.exportData(model).then(function() { 
                     deferred.resolve()
                 }) 
@@ -7490,33 +8074,35 @@
         }
 
         // Map services
-        this.showMapLayer                  = MapService.showMapLayer;
-        this.hideMapLayer                  = MapService.hideMapLayer;
-
-        this.geojsonToSvg                  = DrawingService.layers.geojson.geojsonToSvg;
-        this.getFeatures                   = DrawingService.layers.geojson.getFeatures;
+        this.showMapLayer            = MapService.showMapLayer;
+        this.hideMapLayer            = MapService.hideMapLayer;
         
-        this.removeFeature                 = DrawingService.layers.geojson.removeFeature;
-        this.updateFeature                 = DrawingService.layers.geojson.updateFeature;
-        this.rotateFeature                 = DrawingService.layers.geojson.rotateFeature;
+        this.geojsonToSvg            = DrawingService.layers.geojson.geojsonToSvg;
+        this.getFeatures             = DrawingService.layers.geojson.getFeatures;
         
-        this.searchAndDisplayAddress       = searchAndDisplayAddress;
-        this.fitBounds                     = fitBounds;
-        this.panTo                         = panTo;
+        this.removeFeature           = DrawingService.layers.geojson.removeFeature;
+        this.updateFeature           = DrawingService.layers.geojson.updateFeature;
+        this.rotateFeature           = DrawingService.layers.geojson.rotateFeature;
+        
+        this.searchAndDisplayAddress = searchAndDisplayAddress;
+        this.fitBounds               = MapService.getMap().fitBounds;
+        this.panTo                   = MapService.getMap().panTo;
+        
+        this.freezeMap               = freezeMap;
+        
+        this.resetView               = function(callback) {
+            MapService.resetView(center, zoom, callback);
+        }
 
-        this.freezeMap                     = freezeMap;
-
-        this.resetView                     = resetView;
-
-        this.rotateMap                     = rotateMap;
-
-        this.interactions                  = InteractionService;
-
+        this.rotateMap           = rotateMap;
+        
+        this.interactions        = InteractionService;
+        
         this.changeDrawingFormat = changeDrawingFormat;
         this.changeLegendFormat  = changeLegendFormat;
         this.showFontBraille     = LegendService.showFontBraille;
         this.hideFontBraille     = LegendService.hideFontBraille;
-
+        
         this.uploadFile          = uploadFile;
         this.appendSvg           = appendSvg;
         this.importDER           = importDER;
@@ -7577,225 +8163,6 @@
             zoom   = null;
         }
         
-        function initMode() {
-            MapService.changeCursor('crosshair');
-            MapService.removeEventListeners();
-        }
-        
-
-        function enablePointMode(getDrawingParameter) {
-
-            initMode();
-
-            MapService.addClickListener(function(e) {
-                var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    drawingParameters = getDrawingParameter();
-                DrawingService.toolbox.drawPoint(p.x, p.y, drawingParameters.style, drawingParameters.color);
-            })
-
-        }
-
-        function enableCircleMode(getDrawingParameter) {
-
-            initMode();
-
-            MapService.addEventListener([ 'click', 'contextmenu' ], function(e) {
-                e.originalEvent.stopImmediatePropagation();
-            })
-
-            MapService.addEventListener([ 'mousedown', 'mouseup' ] , function(e) {
-                // only left click
-                if (e.originalEvent.button === 0) {
-                    
-                    e.originalEvent.stopImmediatePropagation()
-                    var p = projDrawing.latLngToLayerPoint(e.latlng),
-                        drawingParameters = getDrawingParameter();
-                    
-                    DrawingService.toolbox.drawCircle(p.x, p.y, 
-                                            drawingParameters.style, 
-                                            drawingParameters.color, 
-                                            drawingParameters.contour)
-
-                    MapService.addMouseMoveListener(function(e) {
-                        var p = projDrawing.latLngToLayerPoint(e.latlng),
-                            drawingParameters = getDrawingParameter();
-                        DrawingService.toolbox.updateCircleRadius(p.x, p.y, e.originalEvent.shiftKey);
-                    })
-                    
-                }
-            })
-
-
-        }
-
-        function enableSquareMode(getDrawingParameter) {
-
-            initMode();
-
-            MapService.addEventListener([ 'click', 'contextmenu' ], function(e) {
-                e.originalEvent.stopImmediatePropagation();
-            })
-
-            MapService.addEventListener([ 'mousedown' ] , function(e) {
-                // only left click
-                e.originalEvent.stopImmediatePropagation()
-                if (e.originalEvent.button === 0) {
-
-                    var p = projDrawing.latLngToLayerPoint(e.latlng),
-                        drawingParameters = getDrawingParameter();
-
-                    DrawingService.toolbox.drawSquare(p.x, p.y, 
-                                                    drawingParameters.style, 
-                                                    drawingParameters.color, 
-                                                    drawingParameters.contour)
-
-                    MapService.addMouseMoveListener(function(e) {
-
-                        var p = projDrawing.latLngToLayerPoint(e.latlng),
-                            drawingParameters = getDrawingParameter();
-
-                        DrawingService.toolbox.updateSquare(p.x, p.y, e.originalEvent.shiftKey);
-
-                        MapService.addEventListener([ 'mouseup' ] , function(e) {
-                            // only left click
-                            e.originalEvent.stopImmediatePropagation()
-                            if (e.originalEvent.button === 0) {
-                                var p = projDrawing.latLngToLayerPoint(e.latlng),
-                                    drawingParameters = getDrawingParameter();
-                                DrawingService.toolbox.drawSquare(p.x, p.y, 
-                                                                drawingParameters.style, 
-                                                                drawingParameters.color, 
-                                                                drawingParameters.contour)
-                                enableSquareMode(getDrawingParameter)
-                            }
-                        })
-
-                    })
-
-                }
-
-            })
-
-        }
-
-        function enableTriangleMode(getDrawingParameter) {
-
-            initMode();
-
-            MapService.addEventListener([ 'click', 'contextmenu' ], function(e) {
-                e.originalEvent.stopImmediatePropagation();
-            })
-
-            MapService.addEventListener([ 'mousedown' ] , function(e) {
-                // only left click
-                e.originalEvent.stopImmediatePropagation()
-                if (e.originalEvent.button === 0) {
-
-                    var p = projDrawing.latLngToLayerPoint(e.latlng),
-                        drawingParameters = getDrawingParameter();
-
-                    DrawingService.toolbox.drawTriangle(p.x, p.y, 
-                                                    drawingParameters.style, 
-                                                    drawingParameters.color, 
-                                                    drawingParameters.contour)
-
-                    MapService.addMouseMoveListener(function(e) {
-
-                        var p = projDrawing.latLngToLayerPoint(e.latlng),
-                            drawingParameters = getDrawingParameter();
-
-                        DrawingService.toolbox.updateTriangle(p.x, p.y, e.originalEvent.shiftKey);
-
-                        MapService.addEventListener([ 'mouseup' ] , function(e) {
-                            // only left click
-                            e.originalEvent.stopImmediatePropagation()
-                            if (e.originalEvent.button === 0) {
-                                var p = projDrawing.latLngToLayerPoint(e.latlng),
-                                    drawingParameters = getDrawingParameter();
-                                DrawingService.toolbox.drawTriangle(p.x, p.y, 
-                                                                drawingParameters.style, 
-                                                                drawingParameters.color, 
-                                                                drawingParameters.contour)
-                                enableSquareMode(getDrawingParameter)
-                            }
-                        })
-
-                    })
-
-                }
-
-            })
-
-        }
-
-        function enableLineOrPolygonMode(getDrawingParameter) {
-
-            initMode();
-
-            var lastPoint = null,
-                lineEdit = [];
-
-            MapService.addClickListener(function(e) {
-                var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    drawingParameters = getDrawingParameter();
-                DrawingService.toolbox.beginLineOrPolygon(p.x, 
-                                                p.y, 
-                                                drawingParameters.style, 
-                                                drawingParameters.color, 
-                                                drawingParameters.contour, 
-                                                drawingParameters.mode, 
-                                                lastPoint, 
-                                                lineEdit);
-                lastPoint = p;
-            })
-
-            MapService.addMouseMoveListener(function(e) {
-                var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    drawingParameters = getDrawingParameter();
-                DrawingService.toolbox.drawHelpLineOrPolygon(p.x, 
-                                                    p.y, 
-                                                    drawingParameters.style, 
-                                                    drawingParameters.color, 
-                                                    drawingParameters.contour, 
-                                                    drawingParameters.mode, 
-                                                    lastPoint);
-            })
-
-            MapService.addDoubleClickListener(function(e) {
-                var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    drawingParameters = getDrawingParameter();
-                DrawingService.toolbox.finishLineOrPolygon(p.x, 
-                                                    p.y, 
-                                                    drawingParameters.style, 
-                                                    drawingParameters.color, 
-                                                    drawingParameters.mode);
-                lastPoint = null;
-                lineEdit = [];
-            })
-
-        }
-
-        function enableTextMode(getDrawingParameter) {
-
-            initMode();
-
-            MapService.addClickListener(function(e) {
-                var p = projDrawing.latLngToLayerPoint(e.latlng),
-                    drawingParameters = getDrawingParameter();
-
-                DrawingService.toolbox.writeText(p.x, p.y, drawingParameters.font, drawingParameters.fontColor)
-                    .then(function addAgainClickListener(element) {
-                        MapService.addClickListener(function(e) {
-                            enableTextMode(getDrawingParameter)
-                        })
-                    })
-
-                // to prevent the draw of a new text feature
-                MapService.removeEventListener(['click']);
-            })
-
-        }
-
         /**
          * @ngdoc method
          * @name  init
@@ -7830,10 +8197,7 @@
                                     ? SettingsService.FORMATS[SettingsService.DEFAULT_LEGEND_FORMAT]
                                     : SettingsService.FORMATS[legendFormat];
 
-            MapService.initMap('workspace', 
-                            drawingFormat, 
-                            SettingsService.ratioPixelPoint,
-                            MapService.resizeFunction);
+            MapService.initMap('workspace', drawingFormat, SettingsService.ratioPixelPoint, MapService.resizeFunction);
 
             // Background used to import images, svg or pdf to display a background helper
             overlayBackground = L.d3SvgOverlay(function(sel, proj) {
@@ -7903,135 +8267,24 @@
                                     SettingsService.ratioPixelPoint);
 
             FeatureService.init(selDrawing, projDrawing, MapService)
+            EventsService.init(projDrawing)
 
         }
 
         function changeDrawingFormat(format) {
             // first, we set the initial state, center & zoom
-            resetView()
+            MapService.resetView(center, zoom)
             DrawingService.layers.overlay.setFormat(format);
             MapService.setMinimumSize(SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint,
                                         SettingsService.FORMATS[format].height / SettingsService.ratioPixelPoint);
             MapService.resizeFunction();
             center = DrawingService.layers.overlay.getCenter();
-            resetView();
+            MapService.resetView(center, zoom);
         }
 
         function changeLegendFormat(format) {
             LegendService.draw(SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint, 
                                SettingsService.FORMATS[format].height / SettingsService.ratioPixelPoint);
-        }
-
-
-        /**
-         * @ngdoc method
-         * @name  updateFeatureStyleAndColor
-         * @methodOf accessimapEditeurDerApp.EditService
-         *
-         * @description 
-         * Update the style (pattern) & color of a feature.
-         * Could be a geojson feature or a drawing feature.
-         * 
-         * @param {Object} style 
-         * SettingsService.STYLES object
-         * 
-         * @param {Object} color 
-         * SettingsService.COLORS object
-         */
-        function updatePoint(style) {
-
-            var currentSelection = d3.select('.styleEdition'),
-                featureId = currentSelection.attr('id'),
-                featureFrom = currentSelection.attr('data-from');
-
-            if (featureFrom === 'drawing') {
-                DrawingService.toolbox.updateFeatureStyleAndColor(style, null);
-            } else if (featureFrom === 'osm') {
-                // find the id of the current feature
-                var idFound = null,
-                    currentParent = currentSelection.node().parentNode;
-                
-                console.log(currentParent.getAttribute('id'))
-                
-                while (! currentParent.getAttribute('id')) {
-                    currentParent = currentParent.parentNode;
-                }
-
-                DrawingService.layers.geojson.updateFeature(currentParent.getAttribute('id'), style)
-            }
-            currentSelection.classed('styleEdition', false)
-        }    
-
-        /**
-         * @ngdoc method
-         * @name  enableAddPOI
-         * @methodOf accessimapEditeurDerApp.EditService
-         * 
-         * @description 
-         * Enable the 'Add POI' mode, 
-         * allowing user to click on the map and retrieve data from OSM
-         * 
-         * @param {function} _successCallback 
-         * Callback function called when data has been retrieved, data is passed in first argument
-         * 
-         * @param {function} _errorCallback 
-         * Callback function called when an error occured, error is passed in first argument
-         */
-        function enableAddPOI(_warningCallback, _errorCallback, _currentParametersFn) {
-
-            initMode();
-
-            MapService.addClickListener(function(e) {
-
-                var currentParameters = _currentParametersFn(),
-                styleChosen = SettingsService.ALL_STYLES.find(function(element, index, array) {
-                    return element.id === currentParameters.style.id;
-                }),
-                colorChosen = SettingsService.ALL_COLORS.find(function(element, index, array) {
-                    return element.id === currentParameters.color.id;
-                })
-                // TODO: prevent any future click 
-                // user has to wait before click again
-                MapService.changeCursor('progress');
-                
-                MapService
-                    .retrieveData([e.latlng.lng,  e.latlng.lat], SettingsService.QUERY_LIST[0])
-                    .then(function successCallback(osmGeojson) {
-                        if (!osmGeojson) {
-                            _errorCallback('Erreur lors de la recherche de POI... Merci de recommencer.')
-                        }
-                        
-                        if (osmGeojson.features && osmGeojson.features.length > 0) {
-                            DrawingService.layers.geojson.geojsonToSvg(osmGeojson, 
-                                    null, 
-                                    'node_' + osmGeojson.features[0].properties.id, 
-                                    true, 
-                                    SettingsService.QUERY_POI, 
-                                    styleChosen, 
-                                    SettingsService.STYLES[SettingsService.QUERY_POI.type], 
-                                    colorChosen, null, null)
-                        } else {
-                            _warningCallback('Aucun POI trouvé à cet endroit... Merci de cliquer ailleurs !?')
-                        }
-                    })
-                    .catch(_errorCallback)
-                    .finally(function finallyCallback() {
-                        MapService.changeCursor('crosshair');
-                    })
-            })
-        }
-
-        /**
-         * @ngdoc method
-         * @name  disableAddPOI
-         * @methodOf accessimapEditeurDerApp.EditService
-         * 
-         * @description 
-         * Disable the 'Add POI' mode by resetting CSS cursor.
-         * 
-         */
-        function disableAddPOI() {
-            MapService.resetCursor();
         }
 
         /**
@@ -8148,53 +8401,8 @@
             return deferred.promise;
         }
 
-        function fitBounds(points) {
-            MapService.getMap().fitBounds(points);
-        }
 
-        function panTo(point) {
-            MapService.getMap().panTo(point);
-        }
-
-        /**
-         * @ngdoc method
-         * @name  resetView
-         * @methodOf accessimapEditeurDerApp.EditService
-         *
-         * @description 
-         * If a center of the drawing is defined, 
-         * we pan / zoom to the initial state of the drawing.
-         *
-         * @param {function} callback
-         * Optional, function to be called when the setView is finished
-         */
-        function resetView(callback) {
-
-            if (center !== null && zoom !== null) {
-                // if the tile layer don't zoom, we're not going to load tiles
-                // we have to detect if we are going to change the zoom level or not
-                var zoomWillChange = ( MapService.getMap().getZoom() !== zoom );
-
-                if (zoomWillChange) {
-                    if (MapService.isMapVisible()) {
-                        MapService.getTileLayer().once('load', function() { 
-                            if (callback) callback(); 
-                        })
-                    }
-                }
-
-                MapService.getMap().setView(center, zoom, {animate:false})
-
-                if ( callback && ( ( ! zoomWillChange ) || ( zoomWillChange && ! MapService.isMapVisible() ) ) ) {
-                    callback();
-                }
-
-            } else {
-                if (callback) callback();
-            }
-
-        }
-
+        
         function uploadFile(element) {
 
             UtilService.uploadFile(element)
@@ -8300,7 +8508,7 @@
 
             function initUpload() {
                 
-                resetView();
+                MapService.resetView(center, zoom);
                 
                 initWorkspace();
 
@@ -8373,19 +8581,20 @@
                                             changeDrawingFormat(model.mapFormat)
 
                                             if (model.isMapVisible) {
-                                                MapService.showMapLayer();
+                                                MapService.showMapLayer(model.mapIdVisible);
                                             }
 
                                             if (model.center !== null && model.zoom !== null) {
                                                 center = model.center;
                                                 zoom = model.zoom;
 
-                                                resetView();
+                                                MapService.resetView(center, zoom);
                                                 freezeMap();
                                             }
 
                                             ImportService.importDrawing(svgElement)
-                                            DrawingService.toolbox.addRadialMenus();
+                                            // DrawingService.toolbox.addRadialMenus();
+                                            EventsService.enableDefaultMode();
                                             deferred.resolve(model);
                                             
                                         })
@@ -8429,6 +8638,7 @@
                             'UtilService',
                             'ImportService',
                             'FeatureService',
+                            'EventsService',
                             ];
 
 })();
@@ -8722,7 +8932,7 @@
             $ctrl.isInteractionParametersVisible = false;
             $ctrl.isBackgroundParametersVisible  = false;
 
-            EditService.resetActions();
+            EditService.resetState();
 
         }
         $ctrl.displayMapParameters = function() {
@@ -8827,7 +9037,7 @@
         // adapt user's interactions
         $ctrl.enableDrawingMode = function(mode) {
 
-            EditService.resetActions();
+            EditService.resetState();
 
             $ctrl.mode = mode;
 
@@ -8839,7 +9049,11 @@
             switch ($ctrl.mode) {
 
                 case 'default':
-                    EditService.addRadialMenus();
+                    EditService.enableDefaultMode();
+                    break;
+
+                case 'select':
+                    EditService.enableSelectMode();
                     break;
 
                 case 'undo':
@@ -8965,39 +9179,39 @@
 
 angular.module('accessimapEditeurDerApp').run(['$templateCache', function($templateCache) {
 
-  $templateCache.put('scripts/views/home/template.html', '<div class="container jumbotron"><h3>Ajoutez de l\'interaction à vos dessins en reliefs (DER)</h3><h3>Configurez et personnalisez facilement vos documents avant de les imprimer !</h3><br><form class="form-inline"><div class="form-group"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="$ctrl.goToEdit()">Créer un nouveau DER</button></div></form></div>');
+  $templateCache.put('scripts/routes/edit/aside.html', '<div class="col-xs-12"><div ng-if="$ctrl.isParametersVisible" ng-include="\'scripts/routes/edit/aside_parameters.html\'"></div><div ng-if="$ctrl.isMapParametersVisible" class="btn-group pull-left" ng-include="\'scripts/routes/edit/aside_map_parameters.html\'"></div><div ng-if="$ctrl.isDrawingParametersVisible" ng-include="\'scripts/routes/edit/aside_drawing_parameters.html\'"></div><div ng-if="$ctrl.isLegendParametersVisible" ng-include="\'scripts/routes/edit/aside_legend_parameters.html\'"></div><div ng-if="$ctrl.isInteractionParametersVisible" ng-include="\'scripts/routes/edit/aside_interaction_parameters.html\'"></div><div ng-if="$ctrl.isBackgroundParametersVisible" ng-include="\'scripts/routes/edit/aside_background_parameters.html\'"></div></div>');
 
-  $templateCache.put('scripts/views/edit/aside.html', '<div class="col-xs-12"><div ng-if="$ctrl.isParametersVisible" ng-include="\'scripts/views/edit/aside_parameters.html\'"></div><div ng-if="$ctrl.isMapParametersVisible" class="btn-group pull-left" ng-include="\'scripts/views/edit/aside_map_parameters.html\'"></div><div ng-if="$ctrl.isDrawingParametersVisible" ng-include="\'scripts/views/edit/aside_drawing_parameters.html\'"></div><div ng-if="$ctrl.isLegendParametersVisible" ng-include="\'scripts/views/edit/aside_legend_parameters.html\'"></div><div ng-if="$ctrl.isInteractionParametersVisible" ng-include="\'scripts/views/edit/aside_interaction_parameters.html\'"></div><div ng-if="$ctrl.isBackgroundParametersVisible" ng-include="\'scripts/views/edit/aside_background_parameters.html\'"></div></div>');
+  $templateCache.put('scripts/routes/edit/aside_background_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-lg fa-picture-o" aria-hidden="true"></span> Trame de fond</h3><form class="row"><div class="form-group col-xs-12"><label>Trame de fond</label><ui-select ng-model="$ctrl.model.backgroundStyle" ng-change="$ctrl.updateBackgroundStyle($ctrl.model.backgroundStyle)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.backgroundStyleChoices | filter: $select.search"><span ng-bind-html="item.name | highlight: $select.search"></span> <span ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></span></ui-select-choices></ui-select></div><div class="form-group col-xs-12"><label>Couleur de fond</label><ui-select ng-model="$ctrl.model.backgroundColor" ng-change="$ctrl.updateBackgroundColor($ctrl.model.backgroundColor)" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez une couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" "><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div><div class="form-group col-xs-12"><label>Importer un fond (SVG/JPG/PNG/PDF)</label><input onchange="angular.element(this).scope().$ctrl.uploadFile(this)" type="file" accept="image/svg+xml,image/png,image/jpeg,application/pdf"></div><div class="form-group col-xs-12"><label>Choisir un fond de carte prédéfini</label><uib-accordion close-others="false"><uib-accordion-group heading="{{mapCategory.name}}" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled" ng-repeat="mapCategory in $ctrl.mapCategories"><ul class="row"><li ng-repeat="image in mapCategory.images"><img class="img-responsive" ng-src="{{image.path}}" ng-click="$ctrl.appendSvg(image.path)"></li></ul></uib-accordion-group></uib-accordion></div></form>');
 
-  $templateCache.put('scripts/views/edit/aside_background_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-lg fa-picture-o" aria-hidden="true"></span> Trame de fond</h3><form class="row"><div class="form-group col-xs-12"><label>Trame de fond</label><ui-select ng-model="$ctrl.model.backgroundStyle" ng-change="$ctrl.updateBackgroundStyle($ctrl.model.backgroundStyle)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.backgroundStyleChoices | filter: $select.search"><span ng-bind-html="item.name | highlight: $select.search"></span> <span ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></span></ui-select-choices></ui-select></div><div class="form-group col-xs-12"><label>Couleur de fond</label><ui-select ng-model="$ctrl.model.backgroundColor" ng-change="$ctrl.updateBackgroundColor($ctrl.model.backgroundColor)" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez une couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" "><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div><div class="form-group col-xs-12"><label>Importer un fond (SVG/JPG/PNG/PDF)</label><input onchange="angular.element(this).scope().$ctrl.uploadFile(this)" type="file" accept="image/svg+xml,image/png,image/jpeg,application/pdf"></div><div class="form-group col-xs-12"><label>Choisir un fond de carte prédéfini</label><uib-accordion close-others="false"><uib-accordion-group heading="{{mapCategory.name}}" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled" ng-repeat="mapCategory in $ctrl.mapCategories"><ul class="row"><li ng-repeat="image in mapCategory.images"><img class="img-responsive" ng-src="{{image.path}}" ng-click="$ctrl.appendSvg(image.path)"></li></ul></uib-accordion-group></uib-accordion></div></form>');
+  $templateCache.put('scripts/routes/edit/aside_drawing_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-pencil" aria-hidden="true"></span> Dessin</h3><div class="btn-group"><button ng-click="$ctrl.enableDrawingMode(\'default\')" ng-class="{ \'active\' : $ctrl.mode === \'default\' }" class="btn btn-default active"><span class="fa fa-hand-paper-o" aria-hidden="true"></span></button> <button ng-click="$ctrl.enableDrawingMode(\'select\')" ng-class="{ \'active\' : $ctrl.mode === \'select\' }" class="btn btn-default"><span class="fa fa-mouse-pointer" aria-hidden="true"></span></button><button ng-click="$ctrl.resetView()" class="btn btn-default"><span class="fa fa-arrows-alt" aria-hidden="true"></span></button></div><div class="btn-group"><button ng-click="$ctrl.enableDrawingMode(\'point\')" ng-class="{ \'active\' : $ctrl.mode === \'point\' }" class="btn btn-default"><img src="assets/icons/draw_point.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'line\')" ng-class="{ \'active\' : $ctrl.mode === \'line\' }" class="btn btn-default"><img src="assets/icons/draw_polygon.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'circle\')" ng-class="{ \'active\' : $ctrl.mode === \'circle\' }" class="btn btn-default"><img src="assets/icons/draw_ellipse.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'triangle\')" ng-class="{ \'active\' : $ctrl.mode === \'triangle\' }" class="btn btn-default"><img src="assets/icons/draw_triangle.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'square\')" ng-class="{ \'active\' : $ctrl.mode === \'square\' }" class="btn btn-default"><img src="assets/icons/draw_rectangle.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'polygon\')" ng-class="{ \'active\' : $ctrl.mode === \'polygon\' }" class="btn btn-default"><img src="assets/icons/draw_polygon_45.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'addtext\')" ng-class="{ \'active\' : $ctrl.mode === \'addtext\' }" class="btn btn-default"><img src="assets/icons/draw_text.png" width="20px" height="20px"></button></div><form><p ng-if="$ctrl.mode === \'default\' || $ctrl.mode === \'\'">Choisissez un outil de dessin pour paramétrer le style, la couleur, ...</p><div class="form-group" ng-if="$ctrl.mode !== \'default\' && $ctrl.mode !== \'\' && $ctrl.mode !== \'text\'"><label>Style</label><ui-select ng-model="$ctrl.styleChosen" ng-change="$ctrl.updatePolygonStyle()" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.styleChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div><div ng-bind-html="$ctrl.featureIcon(item, $ctrl.mode)"></div></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.mode === \'polygon\' || $ctrl.mode === \'circle\'"><label>Couleur de fond</label><ui-select ng-model="$ctrl.colorChosen" ng-change="$ctrl.changeColor()" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.mode === \'polygon\' || $ctrl.mode === \'circle\'"><label>Contour de forme</label> <span class="input-group-addon"><input type="checkbox" ng-model="$ctrl.checkboxModel.contour" ng-change="$ctrl.updatePolygonStyle()"></span></div><div class="form-group" ng-if="$ctrl.mode === \'addtext\'"><label>Police</label><ui-select ng-model="$ctrl.fontChosen" ng-change="$ctrl.changeTextColor()" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez une police">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.fonts | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.mode === \'addtext\'"><label>Couleur</label><ui-select ng-model="$ctrl.fontColorChosen" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez une couleur">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.fontColors[$ctrl.fontChosen.color] | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div></form>');
 
-  $templateCache.put('scripts/views/edit/aside_drawing_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-pencil" aria-hidden="true"></span> Dessin</h3><div class="btn-group"><button ng-click="$ctrl.enableDrawingMode(\'default\')" ng-class="{ \'active\' : $ctrl.mode == \'default\' }" class="btn btn-default active"><span class="fa fa-hand-paper-o" aria-hidden="true"></span></button><button ng-click="$ctrl.resetView()" class="btn btn-default"><span class="fa fa-arrows-alt" aria-hidden="true"></span></button></div><div class="btn-group"><button ng-click="$ctrl.enableDrawingMode(\'point\')" ng-class="{ \'active\' : $ctrl.mode == \'point\' }" class="btn btn-default"><img src="assets/icons/draw_point.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'line\')" ng-class="{ \'active\' : $ctrl.mode == \'line\' }" class="btn btn-default"><img src="assets/icons/draw_polygon.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'circle\')" ng-class="{ \'active\' : $ctrl.mode == \'circle\' }" class="btn btn-default"><img src="assets/icons/draw_ellipse.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'triangle\')" ng-class="{ \'active\' : $ctrl.mode == \'triangle\' }" class="btn btn-default"><img src="assets/icons/draw_triangle.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'square\')" ng-class="{ \'active\' : $ctrl.mode == \'square\' }" class="btn btn-default"><img src="assets/icons/draw_rectangle.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'polygon\')" ng-class="{ \'active\' : $ctrl.mode == \'polygon\' }" class="btn btn-default"><img src="assets/icons/draw_polygon_45.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'addtext\')" ng-class="{ \'active\' : $ctrl.mode == \'addtext\' }" class="btn btn-default"><img src="assets/icons/draw_text.png" width="20px" height="20px"></button></div><form><p ng-if="$ctrl.mode === \'default\' || $ctrl.mode === \'\'">Choisissez un outil de dessin pour paramétrer le style, la couleur, ...</p><div class="form-group" ng-if="$ctrl.mode === \'point\' || $ctrl.mode === \'line\' || $ctrl.mode === \'polygon\' || $ctrl.mode === \'circle\'"><label>Style</label><ui-select ng-model="$ctrl.styleChosen" ng-change="$ctrl.updatePolygonStyle()" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.styleChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div><div ng-bind-html="$ctrl.featureIcon(item, $ctrl.mode)"></div></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.mode === \'polygon\' || $ctrl.mode === \'circle\'"><label>Couleur de fond</label><ui-select ng-model="$ctrl.colorChosen" ng-change="$ctrl.changeColor()" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.mode === \'polygon\' || $ctrl.mode === \'circle\'"><label>Contour de forme</label> <span class="input-group-addon"><input type="checkbox" ng-model="$ctrl.checkboxModel.contour" ng-change="$ctrl.updatePolygonStyle()"></span></div><div class="form-group" ng-if="$ctrl.mode === \'addtext\'"><label>Police</label><ui-select ng-model="$ctrl.fontChosen" ng-change="$ctrl.changeTextColor()" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez une police">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.fonts | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.mode === \'addtext\'"><label>Couleur</label><ui-select ng-model="$ctrl.fontColorChosen" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez une couleur">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.fontColors[$ctrl.fontChosen.color] | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div></form>');
+  $templateCache.put('scripts/routes/edit/aside_interaction_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-hand-pointer-o" aria-hidden="true"></span> Interaction</h3><form class="row"><uib-tabset active="active"><uib-tab heading="Filtres"><uib-accordion close-others="false" class="col-xs-12" ng-if="$ctrl.interactions.getFilters().length > 0"><uib-accordion-group heading="{{filter.name}}" ng-repeat="filter in $ctrl.interactions.getFilters() track by filter.id"><table class="table table-hover"><tbody><tr><th>Nom</th><td><input type="text" ng-model="filter.name"></td></tr><tr><th>Type</th><td><select ng-model="filter.gesture"><option value="tap">tap</option><option value="double_tap">double_tap</option></select></td></tr><tr><th>Protocole</th><td><select ng-model="filter.protocol"><option>tts</option><option>mp3</option></select></td></tr></tbody></table><button class="btn btn-danger btn-block" ng-click="$ctrl.interactions.removeCategory(filter.id)">Supprimer filtre</button><table class="table table-hover" ng-if="$ctrl.interactions.getInteractions().length > 0"><thead><tr><th>Point</th><th>Valeur</th></tr></thead><tbody><tr ng-repeat="interaction in $ctrl.interactions.getInteractions()"><td>{{interaction.id}}</td><td><input type="text" ng-model="interaction.filters[filter.id]" ng-if="filter.protocol===\'tts\'" style="width:100%"> <input type="file" ng-model="interaction.filters[filter.id]" ng-if="filter.protocol===\'mp3\'" style="width:100%"></td></tr></tbody></table></uib-accordion-group><uib-accordion-group panel-class="panel-primary"><uib-accordion-heading>Créer un nouveau filtre</uib-accordion-heading><table class="table table-hover"><tbody><tr><th>Nom</th><td><input type="text" ng-model="name"></td></tr><tr><th>Type</th><td><select ng-model="gesture"><option value="tap">tap</option><option value="double_tap">double_tap</option></select></td></tr><tr><th>Protocole</th><td><select ng-model="protocol"><option>tts</option><option>mp3</option></select></td></tr></tbody></table><button class="btn btn-primary btn-block" ng-click="$ctrl.interactions.addFilter(name, gesture, protocol)"><span class="fa fa-plus"></span> Créer filtre</button></uib-accordion-group></uib-accordion></uib-tab><uib-tab heading="Interactions"><div ng-if="$ctrl.interactions.getInteractions().length === 0" class="col-xs-12">Pas encore d\'interaction définie !</div><uib-accordion close-others="false" class="col-xs-12" ng-if="$ctrl.interactions.getInteractions().length > 0"><uib-accordion-group heading="{{interaction.id}}" ng-repeat="interaction in $ctrl.interactions.getInteractions() track by interaction.id"><table class="table table-hover"><thead><tr><th>Filtres</th><th>Valeur</th></tr></thead><tbody><tr ng-repeat="filter in $ctrl.interactions.getFilters()"><td>{{filter.name}}</td><td><input type="text" ng-model="interaction.filters[filter.id]" ng-if="filter.protocol===\'tts\'" style="width:100%"> <input type="file" ng-model="interaction.filters[filter.id]" ng-if="filter.protocol===\'mp3\'" style="width:100%"></td></tr></tbody></table></uib-accordion-group></uib-accordion></uib-tab></uib-tabset></form><div ng-if="$ctrl.isAddressVisible" ng-include="\'scripts/routes/edit/aside_map_address.html\'"></div>');
 
-  $templateCache.put('scripts/views/edit/aside_interaction_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-hand-pointer-o" aria-hidden="true"></span> Interaction</h3><form class="row"><uib-tabset active="active"><uib-tab heading="Filtres"><uib-accordion close-others="false" class="col-xs-12" ng-if="$ctrl.interactions.getFilters().length > 0"><uib-accordion-group heading="{{filter.name}}" ng-repeat="filter in $ctrl.interactions.getFilters() track by filter.id"><table class="table table-hover"><tbody><tr><th>Nom</th><td><input type="text" ng-model="filter.name"></td></tr><tr><th>Type</th><td><select ng-model="filter.gesture"><option value="tap">tap</option><option value="double_tap">double_tap</option></select></td></tr><tr><th>Protocole</th><td><select ng-model="filter.protocol"><option>tts</option><option>mp3</option></select></td></tr></tbody></table><button class="btn btn-danger btn-block" ng-click="$ctrl.interactions.removeCategory(filter.id)">Supprimer filtre</button><table class="table table-hover" ng-if="$ctrl.interactions.getInteractions().length > 0"><thead><tr><th>Point</th><th>Valeur</th></tr></thead><tbody><tr ng-repeat="interaction in $ctrl.interactions.getInteractions()"><td>{{interaction.id}}</td><td><input type="text" ng-model="interaction.filters[filter.id]" ng-if="filter.protocol===\'tts\'" style="width:100%"> <input type="file" ng-model="interaction.filters[filter.id]" ng-if="filter.protocol===\'mp3\'" style="width:100%"></td></tr></tbody></table></uib-accordion-group><uib-accordion-group panel-class="panel-primary"><uib-accordion-heading>Créer un nouveau filtre</uib-accordion-heading><table class="table table-hover"><tbody><tr><th>Nom</th><td><input type="text" ng-model="name"></td></tr><tr><th>Type</th><td><select ng-model="gesture"><option value="tap">tap</option><option value="double_tap">double_tap</option></select></td></tr><tr><th>Protocole</th><td><select ng-model="protocol"><option>tts</option><option>mp3</option></select></td></tr></tbody></table><button class="btn btn-primary btn-block" ng-click="$ctrl.interactions.addFilter(name, gesture, protocol)"><span class="fa fa-plus"></span> Créer filtre</button></uib-accordion-group></uib-accordion></uib-tab><uib-tab heading="Interactions"><div ng-if="$ctrl.interactions.getInteractions().length === 0" class="col-xs-12">Pas encore d\'interaction définie !</div><uib-accordion close-others="false" class="col-xs-12" ng-if="$ctrl.interactions.getInteractions().length > 0"><uib-accordion-group heading="{{interaction.id}}" ng-repeat="interaction in $ctrl.interactions.getInteractions() track by interaction.id"><table class="table table-hover"><thead><tr><th>Filtres</th><th>Valeur</th></tr></thead><tbody><tr ng-repeat="filter in $ctrl.interactions.getFilters()"><td>{{filter.name}}</td><td><input type="text" ng-model="interaction.filters[filter.id]" ng-if="filter.protocol===\'tts\'" style="width:100%"> <input type="file" ng-model="interaction.filters[filter.id]" ng-if="filter.protocol===\'mp3\'" style="width:100%"></td></tr></tbody></table></uib-accordion-group></uib-accordion></uib-tab></uib-tabset></form><div ng-if="$ctrl.isAddressVisible" ng-include="\'scripts/views/edit/aside_map_address.html\'"></div>');
+  $templateCache.put('scripts/routes/edit/aside_legend_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-braille" aria-hidden="true"></span> Légende</h3><form class="row"><div class="form-group col-md-12"><label>Afficher en braille</label><br><div class="btn-group"><button class="btn btn-default" ng-class="{ \'active\' : $ctrl.isBrailleDisplayed }" ng-click="$ctrl.showFontBraille()">Oui</button><button class="btn btn-default" ng-class="{ \'active\' : ! $ctrl.isBrailleDisplayed }" ng-click="$ctrl.hideFontBraille()">Non</button></div></div><div class="form-group col-lg-6"><label>Format de la légende</label><select ng-model="$ctrl.model.legendFormat" ng-change="$ctrl.changeLegendFormat($ctrl.model.legendFormat)" class="form-control" ng-options="format as data.name for (format, data) in $ctrl.formats"></select></div></form>');
 
-  $templateCache.put('scripts/views/edit/aside_legend_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-braille" aria-hidden="true"></span> Légende</h3><form class="row"><div class="form-group col-md-12"><label>Afficher en braille</label><br><div class="btn-group"><button class="btn btn-default" ng-class="{ \'active\' : $ctrl.isBrailleDisplayed }" ng-click="$ctrl.showFontBraille()">Oui</button><button class="btn btn-default" ng-class="{ \'active\' : ! $ctrl.isBrailleDisplayed }" ng-click="$ctrl.hideFontBraille()">Non</button></div></div><div class="form-group col-lg-6"><label>Format de la légende</label><select ng-model="$ctrl.model.legendFormat" ng-change="$ctrl.changeLegendFormat($ctrl.model.legendFormat)" class="form-control" ng-options="format as data.name for (format, data) in $ctrl.formats"></select></div></form>');
+  $templateCache.put('scripts/routes/edit/aside_map_address.html', '<h4><span class="fa fa-search" aria-hidden="true"></span> Chercher une adresse</h4><form><div class="input-group"><span class="input-group-addon"><span class="fa fa-lg fa-map-marker" aria-hidden="true"></span></span> <input ng-model="$ctrl.address.start" type="text" class="form-control" id="startAddress" placeholder="Adresse de départ (ex : 37 rue Monplaisir, Toulouse)"> <input ng-model="$ctrl.address.stop" type="text" class="form-control" id="stopAddress" placeholder="Adresse d\'arrivée"></div><button class="btn btn-primary btn-block" ng-click="$ctrl.searchAddress()"><span class="fa fa-map-marker" aria-hidden="true"></span> Positionner</button></form>');
 
-  $templateCache.put('scripts/views/edit/aside_map_address.html', '<h4><span class="fa fa-search" aria-hidden="true"></span> Chercher une adresse</h4><form><div class="input-group"><span class="input-group-addon"><span class="fa fa-lg fa-map-marker" aria-hidden="true"></span></span> <input ng-model="$ctrl.address.start" type="text" class="form-control" id="startAddress" placeholder="Adresse de départ (ex : 37 rue Monplaisir, Toulouse)"> <input ng-model="$ctrl.address.stop" type="text" class="form-control" id="stopAddress" placeholder="Adresse d\'arrivée"></div><button class="btn btn-primary btn-block" ng-click="$ctrl.searchAddress()"><span class="fa fa-map-marker" aria-hidden="true"></span> Positionner</button></form>');
+  $templateCache.put('scripts/routes/edit/aside_map_feature_creation.html', '<h4><span class="fa fa-cloud-download" aria-hidden="true"></span> Obtenir des données d\'OSM</h4><form><div class="form-group"><label>Type de POI</label><ui-select ng-model="$ctrl.queryChosen" ng-disabled="$ctrl.disabled" theme="bootstrap" ng-change="$ctrl.changeStyle()" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un élément">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.queryChoices | filter: $select.search | layerNotSelected:this.geojson | orderBy:[\'icon\',\'type\']"><i class="icon-15px fa fa-{{item.icon}}"></i> <i ng-if="item.type === \'point\'" class="icon-15px fa fa-map-marker"></i> <i ng-if="item.type === \'line\'" class="icon-15px fa fa-minus"></i> <i ng-if="item.type === \'polygon\'" class="icon-15px fa fa-square-o"></i> <span ng-bind-html="item.name | highlight: $select.search"></span></ui-select-choices></ui-select></div><div class="form-group"><label>Style</label><ui-select ng-model="$ctrl.styleChosen" ng-disabled="$ctrl.disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.styleChoices | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span> <span style="max-height:30px;display:inline-block;" ng-bind-html="$ctrl.featureIcon(item, $ctrl.queryChosen.type)"></span></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.queryChosen.type === \'polygon\'"><label>Couleur</label><ui-select ng-model="$ctrl.colorChosen" ng-disabled="$ctrl.disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.queryChosen.type === \'polygon\'"><span class="input-group-addon">Contour de forme <input type="checkbox" ng-model="$ctrl.checkboxModel.contour"></span></div><button ng-if="$ctrl.queryChosen.id !== \'poi\'" class="btn btn-primary btn-block" ng-click="$ctrl.insertOSMData()" type="button"><span class="fa fa-cloud-download" aria-hidden="true"></span> Insérer les données d\'OSM</button></form>');
 
-  $templateCache.put('scripts/views/edit/aside_map_feature_creation.html', '<h4><span class="fa fa-cloud-download" aria-hidden="true"></span> Obtenir des données d\'OSM</h4><form><div class="form-group"><label>Type de POI</label><ui-select ng-model="$ctrl.queryChosen" ng-disabled="$ctrl.disabled" theme="bootstrap" ng-change="$ctrl.changeStyle()" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un élément">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.queryChoices | filter: $select.search | layerNotSelected:this.geojson | orderBy:[\'icon\',\'type\']"><i class="icon-15px fa fa-{{item.icon}}"></i> <i ng-if="item.type === \'point\'" class="icon-15px fa fa-map-marker"></i> <i ng-if="item.type === \'line\'" class="icon-15px fa fa-minus"></i> <i ng-if="item.type === \'polygon\'" class="icon-15px fa fa-square-o"></i> <span ng-bind-html="item.name | highlight: $select.search"></span></ui-select-choices></ui-select></div><div class="form-group"><label>Style</label><ui-select ng-model="$ctrl.styleChosen" ng-disabled="$ctrl.disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.styleChoices | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span> <span style="max-height:30px;display:inline-block;" ng-bind-html="$ctrl.featureIcon(item, $ctrl.queryChosen.type)"></span></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.queryChosen.type === \'polygon\'"><label>Couleur</label><ui-select ng-model="$ctrl.colorChosen" ng-disabled="$ctrl.disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.queryChosen.type === \'polygon\'"><span class="input-group-addon">Contour de forme <input type="checkbox" ng-model="$ctrl.checkboxModel.contour"></span></div><button ng-if="$ctrl.queryChosen.id !== \'poi\'" class="btn btn-primary btn-block" ng-click="$ctrl.insertOSMData()" type="button"><span class="fa fa-cloud-download" aria-hidden="true"></span> Insérer les données d\'OSM</button></form>');
+  $templateCache.put('scripts/routes/edit/aside_map_feature_management.html', '<h4><span class="fa fa-list"></span> Listing des éléments</h4><p ng-if="!$ctrl.getFeatures() || $ctrl.getFeatures().length === 0">Pas encore d\'éléments !<br>Vous verrez ici les éléments que vous allez créer via les boutons d\'ajouts de POI, d\'adresse ou de données OSM !</p><uib-accordion close-others="true" ng-if="$ctrl.getFeatures() && $ctrl.getFeatures().length > 0"><uib-accordion-group heading="{{feature.name}}" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled" ng-repeat="feature in $ctrl.getFeatures()"><div class="form-group"><label>Style</label><ui-select ng-model="feature.style" ng-disabled="$ctrl.disabled" ng-change="$ctrl.updateFeature(feature.id, feature.style)" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in feature.styleChoices | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span> <span style="max-height:30px;display:inline-block;" ng-bind-html="$ctrl.featureIcon(item, feature.type)"></span></ui-select-choices></ui-select></div><div class="form-group" ng-if="feature.type === \'point\'"><label>Rotation</label><div class="input-group"><span class="input-group-addon"><span class="fa fa-repeat" aria-hidden="true"></span></span><slider class="form-control slider-container" ng-model="feature.rotation" ng-change="$ctrl.rotateFeature(feature)" min="0" max="360"></slider></div></div><div class="form-group" ng-if="feature.type === \'polygon\'"><label>Couleur</label><ui-select ng-model="feature.color" ng-change="$ctrl.updateFeature(feature.id, feature.style)" ng-disabled="$ctrl.disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span></ui-select-choices></ui-select></div><div class="form-group" ng-if="feature.type === \'polygon\'"><span class="input-group-addon">Contour de forme <input type="checkbox" ng-model="feature.contour" ng-change="$ctrl.updateFeature(feature.id, feature.style)"></span></div><button class="btn btn-danger btn-block" type="button" ng-click="$ctrl.removeFeature(feature.id)"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Supprimer</button></uib-accordion-group></uib-accordion>');
 
-  $templateCache.put('scripts/views/edit/aside_map_feature_management.html', '<h4><span class="fa fa-list"></span> Listing des éléments</h4><p ng-if="!$ctrl.getFeatures() || $ctrl.getFeatures().length === 0">Pas encore d\'éléments !<br>Vous verrez ici les éléments que vous allez créer via les boutons d\'ajouts de POI, d\'adresse ou de données OSM !</p><uib-accordion close-others="true" ng-if="$ctrl.getFeatures() && $ctrl.getFeatures().length > 0"><uib-accordion-group heading="{{feature.name}}" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled" ng-repeat="feature in $ctrl.getFeatures()"><div class="form-group"><label>Style</label><ui-select ng-model="feature.style" ng-disabled="$ctrl.disabled" ng-change="$ctrl.updateFeature(feature.id, feature.style)" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in feature.styleChoices | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span> <span style="max-height:30px;display:inline-block;" ng-bind-html="$ctrl.featureIcon(item, feature.type)"></span></ui-select-choices></ui-select></div><div class="form-group" ng-if="feature.type === \'point\'"><label>Rotation</label><div class="input-group"><span class="input-group-addon"><span class="fa fa-repeat" aria-hidden="true"></span></span><slider class="form-control slider-container" ng-model="feature.rotation" ng-change="$ctrl.rotateFeature(feature)" min="0" max="360"></slider></div></div><div class="form-group" ng-if="feature.type === \'polygon\'"><label>Couleur</label><ui-select ng-model="feature.color" ng-change="$ctrl.updateFeature(feature.id, feature.style)" ng-disabled="$ctrl.disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span></ui-select-choices></ui-select></div><div class="form-group" ng-if="feature.type === \'polygon\'"><span class="input-group-addon">Contour de forme <input type="checkbox" ng-model="feature.contour" ng-change="$ctrl.updateFeature(feature.id, feature.style)"></span></div><button class="btn btn-danger btn-block" type="button" ng-click="$ctrl.removeFeature(feature.id)"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Supprimer</button></uib-accordion-group></uib-accordion>');
+  $templateCache.put('scripts/routes/edit/aside_map_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-map" aria-hidden="true"></span> Carte</h3><form class="row"><div class="form-group col-md-12"><label>Afficher la carte</label><br><div class="btn-group"><button class="btn btn-default" ng-class="{ \'active\' : $ctrl.model.isMapVisible }" ng-click="$ctrl.showMap()">Oui</button><button class="btn btn-default" ng-class="{ \'active\' : ! $ctrl.model.isMapVisible }" ng-click="$ctrl.hideMap()">Non</button></div></div><div class="form-group col-xs-12"><label>Rotation</label><div class="input-group"><span class="input-group-addon"><span class="fa fa-repeat" aria-hidden="true"></span></span><slider class="form-control slider-container" ng-model="$ctrl.rotationAngle" ng-change="$ctrl.rotateMap($ctrl.rotationAngle)" ng-disabled="! $ctrl.isMapVisible" min="0" max="360"></slider></div></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-class="{ \'active\' : $ctrl.isPoiCreationVisible }" ng-click="$ctrl.displayAddPOIForm()"><span class="fa fa-plus-circle" aria-hidden="true"></span><br>POI</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-class="{ \'active\' : $ctrl.isAddressVisible }" ng-click="$ctrl.displaySearchAddressForm()"><span class="fa fa-search" aria-hidden="true"></span><br>Adresses</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-class="{ \'active\' : $ctrl.isFeatureCreationVisible }" ng-click="$ctrl.displayGetDataFromOSMForm()"><span class="fa fa-cloud-download" aria-hidden="true"></span><br>Data OSM</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-default btn-tile" ng-class="{ \'active\' : $ctrl.isFeatureManagementVisible }" ng-click="$ctrl.displayFeatureManagement()"><span class="fa fa-list" aria-hidden="true"></span><br>Listing</button></div></form><div ng-if="$ctrl.isAddressVisible" ng-include="\'scripts/routes/edit/aside_map_address.html\'"></div><div ng-if="$ctrl.isPoiCreationVisible" ng-include="\'scripts/routes/edit/aside_map_poi_creation.html\'"></div><div ng-if="$ctrl.isFeatureCreationVisible" ng-include="\'scripts/routes/edit/aside_map_feature_creation.html\'"></div><div ng-if="$ctrl.isFeatureManagementVisible" ng-include="\'scripts/routes/edit/aside_map_feature_management.html\'"></div>');
 
-  $templateCache.put('scripts/views/edit/aside_map_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-map" aria-hidden="true"></span> Carte</h3><form class="row"><div class="form-group col-md-12"><label>Afficher la carte</label><br><div class="btn-group"><button class="btn btn-default" ng-class="{ \'active\' : $ctrl.model.isMapVisible }" ng-click="$ctrl.showMap()">Oui</button><button class="btn btn-default" ng-class="{ \'active\' : ! $ctrl.model.isMapVisible }" ng-click="$ctrl.hideMap()">Non</button></div></div><div class="form-group col-xs-12"><label>Rotation</label><div class="input-group"><span class="input-group-addon"><span class="fa fa-repeat" aria-hidden="true"></span></span><slider class="form-control slider-container" ng-model="$ctrl.rotationAngle" ng-change="$ctrl.rotateMap($ctrl.rotationAngle)" ng-disabled="! $ctrl.isMapVisible" min="0" max="360"></slider></div></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-class="{ \'active\' : $ctrl.isPoiCreationVisible }" ng-click="$ctrl.displayAddPOIForm()"><span class="fa fa-plus-circle" aria-hidden="true"></span><br>POI</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-class="{ \'active\' : $ctrl.isAddressVisible }" ng-click="$ctrl.displaySearchAddressForm()"><span class="fa fa-search" aria-hidden="true"></span><br>Adresses</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-class="{ \'active\' : $ctrl.isFeatureCreationVisible }" ng-click="$ctrl.displayGetDataFromOSMForm()"><span class="fa fa-cloud-download" aria-hidden="true"></span><br>Data OSM</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-default btn-tile" ng-class="{ \'active\' : $ctrl.isFeatureManagementVisible }" ng-click="$ctrl.displayFeatureManagement()"><span class="fa fa-list" aria-hidden="true"></span><br>Listing</button></div></form><div ng-if="$ctrl.isAddressVisible" ng-include="\'scripts/views/edit/aside_map_address.html\'"></div><div ng-if="$ctrl.isPoiCreationVisible" ng-include="\'scripts/views/edit/aside_map_poi_creation.html\'"></div><div ng-if="$ctrl.isFeatureCreationVisible" ng-include="\'scripts/views/edit/aside_map_feature_creation.html\'"></div><div ng-if="$ctrl.isFeatureManagementVisible" ng-include="\'scripts/views/edit/aside_map_feature_management.html\'"></div>');
+  $templateCache.put('scripts/routes/edit/aside_map_poi_creation.html', '<h4><span class="fa fa-plus-circle" aria-hidden="true"></span> Ajouter POI</h4><form><div class="form-group"><label>Style</label><ui-select ng-model="$ctrl.styleChosen" ng-disabled="$ctrl.disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.styleChoices | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span> <span style="max-height:30px" ng-bind-html="$ctrl.featureIcon(item, $ctrl.queryChosen.type)"></span></ui-select-choices></ui-select></div></form>');
 
-  $templateCache.put('scripts/views/edit/aside_map_poi_creation.html', '<h4><span class="fa fa-plus-circle" aria-hidden="true"></span> Ajouter POI</h4><form><div class="form-group"><label>Style</label><ui-select ng-model="$ctrl.styleChosen" ng-disabled="$ctrl.disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.styleChoices | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span> <span style="max-height:30px" ng-bind-html="$ctrl.featureIcon(item, $ctrl.queryChosen.type)"></span></ui-select-choices></ui-select></div></form>');
+  $templateCache.put('scripts/routes/edit/aside_parameters.html', '<h3><span class="fa fa-home" aria-hidden="true"></span> Menu principal</h3><form class="row"><div class="form-group col-xs-12"><label>Titre</label> <input type="text" ng-model="$ctrl.model.title" class="form-control input-lg"></div><div class="form-group col-xs-12"><label>Trame de fond</label> <button class="btn btn-primary btn-block" ng-click="$ctrl.displayBackgroundParameters()"><span class="fa fa-lg fa-picture-o" aria-hidden="true"></span> Configurer le fond&nbsp;</button></div><div class="form-group col-xs-12"><label>Format du dessin</label><select ng-model="$ctrl.model.mapFormat" ng-change="$ctrl.changeDrawingFormat($ctrl.model.mapFormat)" class="form-control" ng-options="format as data.name for (format, data) in $ctrl.formats"></select><label>Etat de la zone de dessin</label><br><div class="btn-group"><button class="btn btn-default" ng-class="{ \'active\' : $ctrl.isDrawingFreezed }" disabled>Figée</button><button class="btn btn-default" ng-class="{ \'active\' : ! $ctrl.isDrawingFreezed }" disabled>Non figée</button></div></div><div class="form-group col-xs-12"><label>Edition</label></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-click="$ctrl.displayDrawingParameters()"><span class="fa fa-lg fa-pencil" aria-hidden="true"></span><br>Dessin</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-click="$ctrl.displayMapParameters()"><span class="fa fa-lg fa-map-o" aria-hidden="true"></span><br>Carte</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-click="$ctrl.displayLegendParameters()"><span class="fa fa-lg fa-braille" aria-hidden="true"></span><br>Légende</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-click="$ctrl.displayInteractionParameters()"><span class="fa fa-lg fa-hand-pointer-o" aria-hidden="true"></span><br>Interaction</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-default btn-tile" ng-click="$ctrl.resetView()"><span class="fa fa-arrows-alt" aria-hidden="true"></span><br>Recentrer</button></div><div class="form-group col-xs-12"><label>Commentaires de transcription</label> <textarea class="form-control" ng-model="$ctrl.model.comment" rows="10" style="resize:none" id="comment">\n        </textarea></div><div class="form-group col-xs-12"><label>Importer un DER (svg/zip)</label> <input onchange="angular.element(this).scope().$ctrl.importDER(this)" type="file" accept="image/svg+xml,application/zip" name="Importer"></div><div class="form-group col-xs-12"><label>Exporter</label> <button class="btn btn-success btn-block text-center" ng-click="$ctrl.exportData()" type="button"><span class="fa fa-lg fa-download" aria-hidden="true"></span> Exporter</button></div></form>');
 
-  $templateCache.put('scripts/views/edit/aside_parameters.html', '<h3><span class="fa fa-home" aria-hidden="true"></span> Menu principal</h3><form class="row"><div class="form-group col-xs-12"><label>Titre</label> <input type="text" ng-model="$ctrl.model.title" class="form-control input-lg"></div><div class="form-group col-xs-12"><label>Trame de fond</label> <button class="btn btn-primary btn-block" ng-click="$ctrl.displayBackgroundParameters()"><span class="fa fa-lg fa-picture-o" aria-hidden="true"></span> Configurer le fond&nbsp;</button></div><div class="form-group col-xs-12"><label>Format du dessin</label><select ng-model="$ctrl.model.mapFormat" ng-change="$ctrl.changeDrawingFormat($ctrl.model.mapFormat)" class="form-control" ng-options="format as data.name for (format, data) in $ctrl.formats"></select><label>Etat de la zone de dessin</label><br><div class="btn-group"><button class="btn btn-default" ng-class="{ \'active\' : $ctrl.isDrawingFreezed }" disabled>Figée</button><button class="btn btn-default" ng-class="{ \'active\' : ! $ctrl.isDrawingFreezed }" disabled>Non figée</button></div></div><div class="form-group col-xs-12"><label>Edition</label></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-click="$ctrl.displayDrawingParameters()"><span class="fa fa-lg fa-pencil" aria-hidden="true"></span><br>Dessin</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-click="$ctrl.displayMapParameters()"><span class="fa fa-lg fa-map-o" aria-hidden="true"></span><br>Carte</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-click="$ctrl.displayLegendParameters()"><span class="fa fa-lg fa-braille" aria-hidden="true"></span><br>Légende</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-click="$ctrl.displayInteractionParameters()"><span class="fa fa-lg fa-hand-pointer-o" aria-hidden="true"></span><br>Interaction</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-default btn-tile" ng-click="$ctrl.resetView()"><span class="fa fa-arrows-alt" aria-hidden="true"></span><br>Recentrer</button></div><div class="form-group col-xs-12"><label>Commentaires de transcription</label> <textarea class="form-control" ng-model="$ctrl.model.comment" rows="10" style="resize:none" id="comment">\n        </textarea></div><div class="form-group col-xs-12"><label>Importer un DER (svg/zip)</label> <input onchange="angular.element(this).scope().$ctrl.importDER(this)" type="file" accept="image/svg+xml,application/zip" name="Importer"></div><div class="form-group col-xs-12"><label>Exporter</label> <button class="btn btn-success btn-block text-center" ng-click="$ctrl.exportData()" type="button"><span class="fa fa-lg fa-download" aria-hidden="true"></span> Exporter</button></div></form>');
+  $templateCache.put('scripts/routes/edit/modalchangearrows.html', '<div class="modal fade" id="changeArrowsModal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">Choisissez les extrémités de cette ligne</h4></div><div class="modal-body">Extrémité de départ<ui-select ng-model="$ctrl.markerStart" ng-change="$ctrl.updateMarker($ctrl.markerStart, $ctrl.markerStop)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.markerStartChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select><br>Extrémité de fin<ui-select ng-model="$ctrl.markerStop" ng-change="$ctrl.updateMarker($ctrl.markerStart, $ctrl.markerStop)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.markerStopChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button></div></div></div></div>');
 
-  $templateCache.put('scripts/views/edit/modalchangearrows.html', '<div class="modal fade" id="changeArrowsModal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">Choisissez les extrémités de cette ligne</h4></div><div class="modal-body">Extrémité de départ<ui-select ng-model="$ctrl.markerStart" ng-change="$ctrl.updateMarker($ctrl.markerStart, $ctrl.markerStop)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.markerStartChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select><br>Extrémité de fin<ui-select ng-model="$ctrl.markerStop" ng-change="$ctrl.updateMarker($ctrl.markerStart, $ctrl.markerStop)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.markerStopChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button></div></div></div></div>');
+  $templateCache.put('scripts/routes/edit/modalchangecolor.html', '<div class="modal fade" id="changeColorModal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">Choisissez une couleur de fond pour cet objet</h4></div><div class="modal-body"><ui-select ng-model="$ctrl.colorChosen" ng-change="$ctrl.updateColor($ctrl.colorChosen)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span></ui-select-choices></ui-select></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button></div></div></div></div>');
 
-  $templateCache.put('scripts/views/edit/modalchangecolor.html', '<div class="modal fade" id="changeColorModal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">Choisissez une couleur de fond pour cet objet</h4></div><div class="modal-body"><ui-select ng-model="$ctrl.colorChosen" ng-change="$ctrl.updateColor($ctrl.colorChosen)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span></ui-select-choices></ui-select></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button></div></div></div></div>');
+  $templateCache.put('scripts/routes/edit/modalchangepattern.html', '<div class="modal fade" id="changePatternModal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">Choisissez un motif pour cet objet</h4></div><div class="modal-body"><ui-select ng-model="$ctrl.styleChosen" ng-change="$ctrl.updateStyle($ctrl.styleChosen)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.styleChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div><div ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></div></ui-select-choices></ui-select></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button></div></div></div></div>');
 
-  $templateCache.put('scripts/views/edit/modalchangepattern.html', '<div class="modal fade" id="changePatternModal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">Choisissez un motif pour cet objet</h4></div><div class="modal-body"><ui-select ng-model="$ctrl.styleChosen" ng-change="$ctrl.updateStyle($ctrl.styleChosen)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.styleChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div><div ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></div></ui-select-choices></ui-select></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button></div></div></div></div>');
+  $templateCache.put('scripts/routes/edit/modalchangepoint.html', '<div class="modal fade" id="changePointModal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">Choisissez un motif pour cet objet</h4></div><div class="modal-body"><ui-select ng-model="$ctrl.pointChosen" ng-change="$ctrl.updatePoint($ctrl.pointChosen)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.pointChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div><div ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></div></ui-select-choices></ui-select></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button></div></div></div></div>');
 
-  $templateCache.put('scripts/views/edit/modalchangepoint.html', '<div class="modal fade" id="changePointModal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">Choisissez un motif pour cet objet</h4></div><div class="modal-body"><ui-select ng-model="$ctrl.pointChosen" ng-change="$ctrl.updatePoint($ctrl.pointChosen)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.pointChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div><div ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></div></ui-select-choices></ui-select></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button></div></div></div></div>');
+  $templateCache.put('scripts/routes/edit/template.html', '<aside class="col-lg-3 col-md-4 col-sm-4 right-side"><div class="aside-content row" ng-include="\'scripts/routes/edit/aside.html\'"></div></aside><main ng-init="$ctrl.init()"><div id="workspace" ng-show="$ctrl.isWorkspaceVisible"></div><div id="legend" ng-show="$ctrl.isLegendVisible"></div><div id="pattern"></div></main><div ng-include="\'scripts/routes/edit/modalchangecolor.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangepattern.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangearrows.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangepoint.html\'"></div>');
 
-  $templateCache.put('scripts/views/edit/template.html', '<aside class="col-lg-3 col-md-4 col-sm-4 right-side"><div class="aside-content row" ng-include="\'scripts/views/edit/aside.html\'"></div></aside><main ng-init="$ctrl.init()"><div id="workspace" ng-show="$ctrl.isWorkspaceVisible"></div><div id="legend" ng-show="$ctrl.isLegendVisible"></div><div id="pattern"></div></main><div ng-include="\'scripts/views/edit/modalchangecolor.html\'"></div><div ng-include="\'scripts/views/edit/modalchangepattern.html\'"></div><div ng-include="\'scripts/views/edit/modalchangearrows.html\'"></div><div ng-include="\'scripts/views/edit/modalchangepoint.html\'"></div>');
+  $templateCache.put('scripts/routes/home/template.html', '<div class="container jumbotron"><h3>Ajoutez de l\'interaction à vos dessins en reliefs (DER)</h3><h3>Configurez et personnalisez facilement vos documents avant de les imprimer !</h3><br><form class="form-inline"><div class="form-group"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="$ctrl.goToEdit()">Créer un nouveau DER</button></div></form></div>');
 
 }]);
 
