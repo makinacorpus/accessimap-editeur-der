@@ -265,7 +265,7 @@
             // we create defs svg in a different svg of workspace & legend
             // it's useful to let #legend & #workspace svg access to patterns
             // created inside #pattern svg
-            DefsService.createDefs('#pattern');
+            DefsService.createDefs(d3.select('#pattern'));
 
             LegendService.initLegend('#legend', 
                                     currentLegendFormat.width, 
