@@ -34,9 +34,9 @@
         }
         
         function initMode() {
-            MapService.changeCursor('crosshair');
-            MapService.removeEventListeners();
 
+            MapService.resetCursor();
+            MapService.removeEventListeners();
             MapService.addEventListener([ 'click', 'contextmenu', 'mousemove', 'mousedown', 'mouseup' ], function(e) {
                 e.originalEvent.stopImmediatePropagation();
             })
@@ -113,6 +113,7 @@
 
             initMode();
 
+            MapService.changeCursor('crosshair');
             // MapService.addClickListener(function(e) {
             MapService.addEventListener([ 'mouseup' ] , function(e) {
                 var p = projection.latLngToLayerPoint(e.latlng),
@@ -126,6 +127,7 @@
 
             initMode();
 
+            MapService.changeCursor('crosshair');
             MapService.addEventListener([ 'mousedown', 'mouseup' ] , function(e) {
                 // only left click
                 if (e.originalEvent.button === 0) {
@@ -155,6 +157,7 @@
 
             initMode();
 
+            MapService.changeCursor('crosshair');
             MapService.addEventListener([ 'mousedown' ] , function(e) {
                 // only left click
                 // e.originalEvent.stopImmediatePropagation()
@@ -201,6 +204,7 @@
 
             initMode();
 
+            MapService.changeCursor('crosshair');
             MapService.addEventListener([ 'mousedown' ] , function(e) {
                 // only left click
                 // e.originalEvent.stopImmediatePropagation()
@@ -250,6 +254,7 @@
             var lastPoint = null,
                 lineEdit = [];
 
+            MapService.changeCursor('crosshair');
             MapService.addEventListener([ 'click' ], function(e) {
                 var p = projection.latLngToLayerPoint(e.latlng),
                     drawingParameters = getDrawingParameter();
@@ -294,6 +299,7 @@
 
             initMode();
 
+            MapService.changeCursor('crosshair');
             MapService.addEventListener([ 'click' ], function(e) {
                 var p = projection.latLngToLayerPoint(e.latlng),
                     drawingParameters = getDrawingParameter();
@@ -330,6 +336,7 @@
 
             initMode();
 
+            MapService.changeCursor('crosshair');
             MapService.addEventListener([ 'click' ], function(e) {
 
                 var currentParameters = _currentParametersFn(),

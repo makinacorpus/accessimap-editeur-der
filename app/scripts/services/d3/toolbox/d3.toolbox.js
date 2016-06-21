@@ -105,8 +105,10 @@
         }
 
         function addSelectPaths() {
+            d3.selectAll(selectors)
             selectors.forEach(function(currentSelector, index, array) {
                 d3.selectAll(currentSelector)
+                    .style('cursor', 'crosshair')
                     .on('mouseover', function(event) {
                         var feature = d3.select(this),
                             selectPath = SelectPathService.calcSelectPath(feature);
@@ -116,14 +118,15 @@
                         var feature = d3.select(this),
                             selectPath = d3.select(feature.node().parentNode)
                                            .selectAll('[data-type="select-path"]')
-                                           .remove()
+                                           .remove();
                     })
             })
         }
 
         function hideSelectPaths() {
             selectors.forEach(function(currentSelector, index, array) {
-                d3.selectAll(currentSelector).on('mouseover', function() {})
+                d3.selectAll(currentSelector).style('cursor', '')
+                                             .on('mouseover', function() {})
                                              .on('mouseout', function() {})
                                              .on('click', function() {})
             })
