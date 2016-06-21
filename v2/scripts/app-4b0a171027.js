@@ -7990,7 +7990,7 @@
 
     EventsService.$inject = ['MapService', 'DrawingService', 'SettingsService', 'SelectPathService'];
 
-})()
+})();
 // jscs:disable maximumNumberOfLines
 /**
  * @ngdoc service
