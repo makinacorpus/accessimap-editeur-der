@@ -9,10 +9,15 @@
 (function() {
     'use strict';
 
-    function EventsService(MapService, DrawingService, SettingsService) {
+    function EventsService(MapService, DrawingService, SettingsService, SelectPathService) {
 
         this.init                    = init;
+
+        this.resetState              = resetState;
         this.initMode                = initMode;
+
+        this.enableDefaultMode       = enableDefaultMode;
+        this.enableSelectMode        = enableSelectMode;
         this.enablePointMode         = enablePointMode;
         this.enableCircleMode        = enableCircleMode;
         this.enableSquareMode        = enableSquareMode;
@@ -27,7 +32,6 @@
         function init(_projection) {
             projection    = _projection;
         }
-
         
         function initMode() {
             MapService.changeCursor('crosshair');
@@ -37,9 +41,74 @@
                 e.originalEvent.stopImmediatePropagation();
             })
 
+            DrawingService.toolbox.hideContextMenus();
+            DrawingService.toolbox.hideSelectPaths();
+
+        }
+
+        function resetState() {
+            d3.selectAll('path:not(.menu-segment)').on('click', function() {});
+            d3.selectAll('svg').on('click', function() {});
+            d3.select('body').on('keydown', function() {});
+
+            MapService.resetCursor();
+
+            d3.selectAll('.ongoing').remove();
+
+            // d3.selectAll('.blink').classed('blink', false);
+            d3.selectAll('.edition').classed('edition', false);
+            d3.selectAll('.styleEdition').classed('styleEdition', false);
+            d3.selectAll('.highlight').classed('highlight', false);
+
+            MapService.removeEventListeners();
+        }
+
+
+        /**
+         * @ngdoc method
+         * @name  enableSelectMode
+         * @methodOf accessimapEditeurDerApp.EventsService
+         *
+         * @description
+         
+         * Enable the select mode : 
+         * 
+         * - user can select items and edit them
+         *
+         * - user can right click on an item and get a context menu
+         */
+        function enableSelectMode() {
+
+            initMode();
+
+            DrawingService.toolbox.addContextMenus();
+            DrawingService.toolbox.addSelectPaths();
+
+            MapService.removeEventListener(['mousemove', 'mousedown', 'mouseup']);
+
+
+        }        
+
+        /**
+         * @ngdoc method
+         * @name  enableDefaultMode
+         * @methodOf accessimapEditeurDerApp.EventsService
+         *
+         * @description
+         * 
+         * Enable the select mode : 
+         * 
+         * - user can select items and edit them
+         *
+         * - user can right click on an item and get a context menu
+         */
+        function enableDefaultMode() {
+            MapService.resetCursor();
+            MapService.removeEventListeners();
+            DrawingService.toolbox.hideContextMenus();
+            DrawingService.toolbox.hideSelectPaths();
         }
         
-
         function enablePointMode(getDrawingParameter) {
 
             initMode();
@@ -181,7 +250,7 @@
             var lastPoint = null,
                 lineEdit = [];
 
-            MapService.addClickListener(function(e) {
+            MapService.addEventListener([ 'click' ], function(e) {
                 var p = projection.latLngToLayerPoint(e.latlng),
                     drawingParameters = getDrawingParameter();
                 DrawingService.toolbox.beginLineOrPolygon(p.x, 
@@ -195,7 +264,7 @@
                 lastPoint = p;
             })
 
-            MapService.addMouseMoveListener(function(e) {
+            MapService.addEventListener([ 'mousemove' ], function(e) {
                 var p = projection.latLngToLayerPoint(e.latlng),
                     drawingParameters = getDrawingParameter();
                 DrawingService.toolbox.drawHelpLineOrPolygon(p.x, 
@@ -207,7 +276,7 @@
                                                     lastPoint);
             })
 
-            MapService.addDoubleClickListener(function(e) {
+            MapService.addEventListener([ 'contextmenu' ], function(e) {
                 var p = projection.latLngToLayerPoint(e.latlng),
                     drawingParameters = getDrawingParameter();
                 DrawingService.toolbox.finishLineOrPolygon(p.x, 
@@ -225,13 +294,13 @@
 
             initMode();
 
-            MapService.addClickListener(function(e) {
+            MapService.addEventListener([ 'click' ], function(e) {
                 var p = projection.latLngToLayerPoint(e.latlng),
                     drawingParameters = getDrawingParameter();
 
                 DrawingService.toolbox.writeText(p.x, p.y, drawingParameters.font, drawingParameters.fontColor)
                     .then(function addAgainClickListener(element) {
-                        MapService.addClickListener(function(e) {
+                        MapService.addEventListener([ 'click' ], function(e) {
                             enableTextMode(getDrawingParameter)
                         })
                     })
@@ -261,7 +330,7 @@
 
             initMode();
 
-            MapService.addClickListener(function(e) {
+            MapService.addEventListener([ 'click' ], function(e) {
 
                 var currentParameters = _currentParametersFn(),
                 styleChosen = SettingsService.ALL_STYLES.find(function(element, index, array) {
@@ -318,6 +387,6 @@
 
     angular.module(moduleApp).service('EventsService', EventsService);
 
-    EventsService.$inject = ['MapService', 'DrawingService', 'SettingsService'];
+    EventsService.$inject = ['MapService', 'DrawingService', 'SettingsService', 'SelectPathService'];
 
 })()

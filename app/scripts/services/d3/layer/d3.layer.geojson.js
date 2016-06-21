@@ -452,8 +452,8 @@
 
             // rotate(rotationAngle);
 
-            RadialMenuService.addRadialMenu(d3.selectAll('path:not(.notDeletable)'));
-            RadialMenuService.addRadialMenu(d3.selectAll('circle:not(.notDeletable)'));
+            // RadialMenuService.addRadialMenu(d3.selectAll('path:not(.notDeletable)'));
+            // RadialMenuService.addRadialMenu(d3.selectAll('circle:not(.notDeletable)'));
         }
         
         /**

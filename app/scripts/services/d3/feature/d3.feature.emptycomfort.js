@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name accessimapEditeurDerApp.EmptyConfortService
+ * @name accessimapEditeurDerApp.EmptyComfortService
  * 
  * @description
  * 
@@ -8,14 +8,14 @@
 (function() {
     'use strict';
 
-    function EmptyConfortService(SVGService) {
+    function EmptyComfortService(SVGService) {
 
         this.calcEmptyComfort = calcEmptyComfort;
 
         /**
          * @ngdoc method
          * @name  calcEmptyComfort
-         * @methodOf accessimapEditeurDerApp.EmptyConfortService
+         * @methodOf accessimapEditeurDerApp.EmptyComfortService
          *
          * @description 
          * Calculate the empty area around an element.
@@ -85,8 +85,8 @@
 
     }
     
-    angular.module(moduleApp).service('EmptyConfortService', EmptyConfortService);
+    angular.module(moduleApp).service('EmptyComfortService', EmptyComfortService);
 
-    EmptyConfortService.$inject= ['SVGService'];
+    EmptyComfortService.$inject= ['SVGService'];
 
 })();

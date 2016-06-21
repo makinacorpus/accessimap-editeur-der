@@ -116,7 +116,7 @@
                         });
                         d3.select(this.parentElement).remove();
 
-                        RadialMenuService.addRadialMenu(d3.select('.edition'));
+                        // RadialMenuService.addRadialMenu(d3.select('.edition'));
 
                         d3.select('.edition').classed('edition', false);
                         textElement.style('cursor','text')

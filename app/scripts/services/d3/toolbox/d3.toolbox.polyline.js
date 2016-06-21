@@ -142,7 +142,7 @@
         function finishLineOrPolygon(x, y, style, color, mode) {
             var iid = UtilService.getiid();
             
-            RadialMenuService.addRadialMenu(d3.select('.edition'));
+            // RadialMenuService.addRadialMenu(d3.select('.edition'));
 
             if (mode === 'line') {
                 d3.select('.edition.inner')

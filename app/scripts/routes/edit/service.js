@@ -39,23 +39,7 @@
         // Drawing services
         // TODO : reset action has to work correctly for event...
         // we have to use map event or d3 event... not both (mea culpa)
-        this.resetActions = function() {
-            d3.selectAll('path:not(.menu-segment)').on('click', function() {});
-            d3.selectAll('svg').on('click', function() {});
-            d3.select('body').on('keydown', function() {});
-            d3.selectAll('path').attr('marker-mid', null);
-
-            MapService.resetCursor();
-
-            d3.selectAll('.ongoing').remove();
-
-            d3.selectAll('.blink').classed('blink', false);
-            d3.selectAll('.edition').classed('edition', false);
-            d3.selectAll('.styleEdition').classed('styleEdition', false);
-            d3.selectAll('.highlight').classed('highlight', false);
-
-            MapService.removeEventListeners();
-        }
+        this.resetState    = EventsService.resetState;
 
         // Toolbox
         this.drawPoint                     = DrawingService.toolbox.drawPoint;
@@ -64,12 +48,14 @@
         this.updateBackgroundStyleAndColor = DrawingService.toolbox.updateBackgroundStyleAndColor;
         this.updateFeatureStyleAndColor    = DrawingService.toolbox.updateFeatureStyleAndColor;
         this.updateMarker                  = DrawingService.toolbox.updateMarker;
-        this.addRadialMenus                = DrawingService.toolbox.addRadialMenus;
+        // this.addRadialMenus                = DrawingService.toolbox.addRadialMenus;
         this.updatePoint                   = DrawingService.updatePoint;
         
         this.isUndoAvailable               = FeatureService.isUndoAvailable;
         this.undo                          = FeatureService.undo;
 
+        this.enableDefaultMode             = EventsService.enableDefaultMode;
+        this.enableSelectMode              = EventsService.enableSelectMode;
         this.enablePointMode               = EventsService.enablePointMode;
         this.enableCircleMode              = EventsService.enableCircleMode;
         this.enableSquareMode              = EventsService.enableSquareMode;
@@ -84,7 +70,7 @@
             model.zoom         = zoom   ? zoom   : MapService.getMap().getZoom();
             model.mapIdVisible = MapService.getBaseLayerId();
 
-            resetView(model.center, model.zoom, function() { 
+            MapService.resetView(model.center, model.zoom, function() { 
                 ExportService.exportData(model).then(function() { 
                     deferred.resolve()
                 }) 
@@ -529,7 +515,7 @@
 
             function initUpload() {
                 
-                resetView();
+                MapService.resetView(center, zoom);
                 
                 initWorkspace();
 
@@ -609,12 +595,13 @@
                                                 center = model.center;
                                                 zoom = model.zoom;
 
-                                                resetView();
+                                                MapService.resetView(center, zoom);
                                                 freezeMap();
                                             }
 
                                             ImportService.importDrawing(svgElement)
-                                            DrawingService.toolbox.addRadialMenus();
+                                            // DrawingService.toolbox.addRadialMenus();
+                                            EventsService.enableDefaultMode();
                                             deferred.resolve(model);
                                             
                                         })

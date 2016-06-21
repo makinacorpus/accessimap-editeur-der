@@ -10,11 +10,19 @@
 
 <!-- editing modes -->
 <div class="btn-group">
+
     <button 
         ng-click="$ctrl.enableDrawingMode('default')" 
-        ng-class="{ 'active' : $ctrl.mode == 'default' }" 
+        ng-class="{ 'active' : $ctrl.mode === 'default' }" 
         class="btn btn-default active">
         <span class="fa fa-hand-paper-o" aria-hidden="true"></span> 
+    </button>
+
+    <button 
+        ng-click="$ctrl.enableDrawingMode('select')" 
+        ng-class="{ 'active' : $ctrl.mode === 'select' }" 
+        class="btn btn-default">
+        <span class="fa fa-mouse-pointer" aria-hidden="true"></span> 
     </button>
 
     <!-- <button 
@@ -33,49 +41,49 @@
 <div class="btn-group">
    <button 
         ng-click="$ctrl.enableDrawingMode('point')" 
-        ng-class="{ 'active' : $ctrl.mode == 'point' }" 
+        ng-class="{ 'active' : $ctrl.mode === 'point' }" 
         class="btn btn-default">
         <img src="assets/icons/draw_point.png" width="20px" height="20px"/>
     </button>
 
     <button 
         ng-click="$ctrl.enableDrawingMode('line')" 
-        ng-class="{ 'active' : $ctrl.mode == 'line' }" 
+        ng-class="{ 'active' : $ctrl.mode === 'line' }" 
         class="btn btn-default">
         <img src="assets/icons/draw_polygon.png" width="20px" height="20px"/>
     </button>
 
     <button 
         ng-click="$ctrl.enableDrawingMode('circle')" 
-        ng-class="{ 'active' : $ctrl.mode == 'circle' }" 
+        ng-class="{ 'active' : $ctrl.mode === 'circle' }" 
         class="btn btn-default">
         <img src="assets/icons/draw_ellipse.png" width="20px" height="20px"/>
     </button>
 
     <button 
         ng-click="$ctrl.enableDrawingMode('triangle')" 
-        ng-class="{ 'active' : $ctrl.mode == 'triangle' }" 
+        ng-class="{ 'active' : $ctrl.mode === 'triangle' }" 
         class="btn btn-default">
         <img src="assets/icons/draw_triangle.png" width="20px" height="20px"/>
     </button>
 
     <button 
         ng-click="$ctrl.enableDrawingMode('square')" 
-        ng-class="{ 'active' : $ctrl.mode == 'square' }" 
+        ng-class="{ 'active' : $ctrl.mode === 'square' }" 
         class="btn btn-default">
         <img src="assets/icons/draw_rectangle.png" width="20px" height="20px"/>
     </button>
 
     <button 
         ng-click="$ctrl.enableDrawingMode('polygon')" 
-        ng-class="{ 'active' : $ctrl.mode == 'polygon' }" 
+        ng-class="{ 'active' : $ctrl.mode === 'polygon' }" 
         class="btn btn-default">
         <img src="assets/icons/draw_polygon_45.png" width="20px" height="20px"/>
     </button>
     
     <button 
         ng-click="$ctrl.enableDrawingMode('addtext')" 
-        ng-class="{ 'active' : $ctrl.mode == 'addtext' }" 
+        ng-class="{ 'active' : $ctrl.mode === 'addtext' }" 
         class="btn btn-default">
         <img src="assets/icons/draw_text.png" width="20px" height="20px"/>
     </button>

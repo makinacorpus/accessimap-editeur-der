@@ -10,15 +10,16 @@
 (function() {
     'use strict';
 
-    function FeatureService(InteractionService, EmptyConfortService, UtilService, 
+    function FeatureService(InteractionService, EmptyComfortService, UtilService, 
                             GeometryUtilsService, GeneratorService) {
         
         this.duplicatePath                 = duplicatePath;
         this.movePath                      = movePath;
         this.movePoint                     = movePoint;
         this.rotatePath                    = rotatePath;
-        this.removeObject                  = removeObject;
         this.skew                          = skew;
+        
+        this.removeObject                  = removeObject;
 
         this.undo                          = undo;
         this.isUndoAvailable               = isUndoAvailable;
@@ -30,6 +31,7 @@
         this.changeColor                   = changeColor;
         this.changePattern                 = changePattern;
         this.changePoint                   = changePoint;
+
         this.lineToCardinal                = lineToCardinal;
         
         this.init                          = init;
@@ -602,7 +604,7 @@
             if (emptyCircleExists) {
                 emptyCircleExists.remove();
             } else {
-                var emptyArea = EmptyConfortService.calcEmptyComfort(feature);
+                var emptyArea = EmptyComfortService.calcEmptyComfort(feature);
 
                 feature.node().parentNode.insertBefore(emptyArea, feature.node());
             }
@@ -718,7 +720,7 @@
 
     angular.module(moduleApp).service('FeatureService', FeatureService);
 
-    FeatureService.$inject = ['InteractionService', 'EmptyConfortService', 'UtilService', 
+    FeatureService.$inject = ['InteractionService', 'EmptyComfortService', 'UtilService', 
                                 'GeometryUtilsService', 'GeneratorService']
 
 })();

@@ -287,7 +287,7 @@
             $ctrl.isInteractionParametersVisible = false;
             $ctrl.isBackgroundParametersVisible  = false;
 
-            EditService.resetActions();
+            EditService.resetState();
 
         }
         $ctrl.displayMapParameters = function() {
@@ -392,7 +392,7 @@
         // adapt user's interactions
         $ctrl.enableDrawingMode = function(mode) {
 
-            EditService.resetActions();
+            EditService.resetState();
 
             $ctrl.mode = mode;
 
@@ -404,7 +404,11 @@
             switch ($ctrl.mode) {
 
                 case 'default':
-                    EditService.addRadialMenus();
+                    EditService.enableDefaultMode();
+                    break;
+
+                case 'select':
+                    EditService.enableSelectMode();
                     break;
 
                 case 'undo':

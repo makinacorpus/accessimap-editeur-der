@@ -1,20 +1,20 @@
 'use strict';
 
-describe('Service: EmptyConfortService', function () {
+describe('Service: EmptyComfortService', function () {
 
     beforeEach(module('accessimapEditeurDerApp'));
 
-    var EmptyConfortService,
+    var EmptyComfortService,
         GeneratorService;
 
     beforeEach(inject(function ($injector) {
-        EmptyConfortService = $injector.get('EmptyConfortService');
+        EmptyComfortService = $injector.get('EmptyComfortService');
         GeneratorService = $injector.get('GeneratorService');
     }));
 
-    it('should create the EmptyConfortService service', function () {
-        expect(EmptyConfortService).toBeDefined();
-        expect(EmptyConfortService.calcEmptyComfort).toBeDefined();
+    it('should create the EmptyComfortService service', function () {
+        expect(EmptyComfortService).toBeDefined();
+        expect(EmptyComfortService.calcEmptyComfort).toBeDefined();
     });
 
     describe('calcEmptyComfort method', function() {
@@ -44,7 +44,7 @@ describe('Service: EmptyConfortService', function () {
             var initialBBox = d3.select(svgElement).select('#finalText').node().getBBox();
 
             // expected result
-            var result = EmptyConfortService.calcEmptyComfort(d3.select(svgElement).select('#finalText'))
+            var result = EmptyComfortService.calcEmptyComfort(d3.select(svgElement).select('#finalText'))
 
             // compare result
             expect(parseInt(result.getAttribute('width'))).toBe(initialBBox.width + 2*7)
@@ -70,7 +70,7 @@ describe('Service: EmptyConfortService', function () {
                 .attr('data-link', 1)
 
             // expected result
-            var result = EmptyConfortService.calcEmptyComfort(d3.select(svgElement).select('#line'))
+            var result = EmptyComfortService.calcEmptyComfort(d3.select(svgElement).select('#line'))
             expect(result.getAttribute('style')).toBe('')
             expect(result.getAttribute('stroke-linejoin')).toBe('round')
             expect(result.getAttribute('stroke-linecap')).toBe('round')

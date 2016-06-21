@@ -57,7 +57,7 @@
 
                 if (r > 0) {
                     
-                    RadialMenuService.addRadialMenu(feature)
+                    // RadialMenuService.addRadialMenu(feature)
 
                     feature.attr('r', r)
                         .attr('e-style', style.id)

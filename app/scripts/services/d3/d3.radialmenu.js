@@ -45,12 +45,12 @@
          */
         function drawMenu(target, mousePosition) {
             
-            if (currentTarget) {
-                currentTarget.classed('blink', false);
-            }
+            // if (currentTarget) {
+            //     currentTarget.classed('blink', false);
+            // }
                 
             currentTarget = target;
-            currentTarget.classed('blink', true);
+            // currentTarget.classed('blink', true);
 
             var type = target.attr('data-type') ? target.attr('data-type') : 'default' ;
 
@@ -141,9 +141,9 @@
                 menu = null
             }
             
-            if (currentTarget) {
-                currentTarget.classed('blink', false);
-            }
+            // if (currentTarget) {
+            //     currentTarget.classed('blink', false);
+            // }
                 
         }
 

@@ -19,11 +19,16 @@
 
     function ToolboxService(RadialMenuService, SettingsService, UtilService, 
             ToolboxTriangleService, ToolboxRectangleService, 
-            ToolboxEllipseService, ToolboxTextService, ToolboxPolylineService) {
+            ToolboxEllipseService, ToolboxTextService, ToolboxPolylineService, SelectPathService) {
 
         this.init                          = init;
         
-        this.addRadialMenus                = addRadialMenus;
+        this.addContextMenus               = addContextMenus;
+        this.hideContextMenus              = hideContextMenus;
+
+        this.addSelectPaths                = addSelectPaths;
+        this.hideSelectPaths               = hideSelectPaths;
+
         this.hideRadialMenu                = RadialMenuService.hideRadialMenu;
         
         this.drawPoint                     = drawPoint;
@@ -65,7 +70,7 @@
 
         /**
          * @ngdoc method
-         * @name  addRadialMenus
+         * @name  addContextMenus
          * @methodOf accessimapEditeurDerApp.ToolboxService
          * @description
          *
@@ -78,11 +83,50 @@
          *
          * @param {Object} model [description]
          */
-        function addRadialMenus() {
-            RadialMenuService.addRadialMenu(d3.selectAll('path:not(.notDeletable)'));
-            RadialMenuService.addRadialMenu(d3.selectAll('circle:not(.notDeletable)'));
-            RadialMenuService.addRadialMenu(d3.selectAll('text:not(.notDeletable)'));
-            RadialMenuService.addRadialMenu(d3.selectAll('image:not(.notDeletable)'));
+        var selectors = [
+            'path:not(.notDeletable)',
+            'circle:not(.notDeletable)',
+            'ellipse:not(.notDeletable)',
+            'rect:not(.notDeletable)',
+            'text:not(.notDeletable)',
+            'image:not(.notDeletable)',
+        ]
+
+        function addContextMenus() {
+            selectors.forEach(function(currentSelector, index, array) {
+                RadialMenuService.addRadialMenu(d3.selectAll(currentSelector));
+            })
+        }
+
+        function hideContextMenus() {
+            selectors.forEach(function(currentSelector, index, array) {
+                d3.selectAll(currentSelector).on('contextmenu', function() {});
+            })
+        }
+
+        function addSelectPaths() {
+            selectors.forEach(function(currentSelector, index, array) {
+                d3.selectAll(currentSelector)
+                    .on('mouseover', function(event) {
+                        var feature = d3.select(this),
+                            selectPath = SelectPathService.calcSelectPath(feature);
+                        feature.node().parentNode.appendChild(selectPath);
+                    })
+                    .on('mouseout', function(event) {
+                        var feature = d3.select(this),
+                            selectPath = d3.select(feature.node().parentNode)
+                                           .selectAll('[data-type="select-path"]')
+                                           .remove()
+                    })
+            })
+        }
+
+        function hideSelectPaths() {
+            selectors.forEach(function(currentSelector, index, array) {
+                d3.selectAll(currentSelector).on('mouseover', function() {})
+                                             .on('mouseout', function() {})
+                                             .on('click', function() {})
+            })
         }
         
         /**
@@ -123,8 +167,10 @@
             
             applyStyle(feature, style.style, color);
 
-            RadialMenuService.addRadialMenu(feature);
+            // RadialMenuService.addRadialMenu(feature);
         }
+
+
 
         function changeTextColor(model) {
             model.fontColorChosen = model.fontColors[model.fontChosen.color][0];
@@ -252,9 +298,7 @@
                             });
                     break;
 
-                case 'polygon':
-                case 'editpolygon':
-                case 'circle':
+                default:
                     symbol = iconContainer.append('rect')
                                 .attr('x', 0)
                                 .attr('y', 0)
@@ -269,9 +313,9 @@
                     v = attribute.v;
 
                 if (k === 'fill-pattern') {
-                    symbol.attr('fill', SettingsService.POLYGON_STYLES[v].url());
+                    symbol.style('fill', SettingsService.POLYGON_STYLES[v].url());
                 } else {
-                    symbol.attr(k, v);
+                    symbol.style(k, v);
                 }
             });
 
@@ -284,6 +328,6 @@
 
     ToolboxService.$inject = ['RadialMenuService', 'SettingsService', 'UtilService',
                             'ToolboxTriangleService', 'ToolboxRectangleService', 'ToolboxEllipseService', 
-                            'ToolboxTextService', 'ToolboxPolylineService'];
+                            'ToolboxTextService', 'ToolboxPolylineService', 'SelectPathService'];
 
 })();

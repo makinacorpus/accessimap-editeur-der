@@ -59,7 +59,7 @@
 
                 if (width !== 0 && height !== 0) {
                     
-                    RadialMenuService.addRadialMenu(feature)
+                    // RadialMenuService.addRadialMenu(feature)
 
                     feature
                         .attr('data-origin-x', '')
