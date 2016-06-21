@@ -102,7 +102,6 @@
                             var data = node.data;
 
                             if (data) {
-                                data = data.replace(/(\d+)/g, '¤$1');
                                 textElement
                                     .attr('text-anchor', 'start')
                                     .append('tspan')
