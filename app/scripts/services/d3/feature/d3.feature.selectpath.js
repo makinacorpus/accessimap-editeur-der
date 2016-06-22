@@ -11,7 +11,9 @@
 
     function SelectPathService() {
 
-        this.calcSelectPath   = calcSelectPath;
+        this.calcSelectPath = calcSelectPath;
+        this.addTo          = addTo;
+        this.removeTo       = removeTo;
 
         /**
          * @ngdoc method
@@ -52,6 +54,28 @@
 
             return selectPath;
 
+        }
+
+        function addTo(nodes) {
+            nodes.style('cursor', 'crosshair')
+                .on('mouseover', function(event) {
+                    var feature = d3.select(this),
+                        selectPath = calcSelectPath(feature);
+                    feature.node().parentNode.appendChild(selectPath);
+                })
+                .on('mouseout', function(event) {
+                    var feature = d3.select(this),
+                        selectPath = d3.select(feature.node().parentNode)
+                                       .selectAll('[data-type="select-path"]')
+                                       .remove();
+                })
+        }
+
+        function removeTo(nodes) {
+            nodes.style('cursor', '')
+                 .on('mouseover', function() {})
+                 .on('mouseout', function() {})
+                 .on('click', function() {})
         }
 
     }

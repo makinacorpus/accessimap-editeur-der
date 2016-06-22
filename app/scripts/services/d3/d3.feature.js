@@ -14,7 +14,8 @@
                             EmptyComfortService, 
                             UtilService, 
                             GeometryUtilsService, 
-                            GeneratorService) {
+                            GeneratorService,
+                            SelectPathService) {
         
         this.duplicatePath                 = duplicatePath;
         this.movePath                      = movePath;
@@ -231,7 +232,6 @@
             parentNode.appendChild(temporaryPath)
 
             handlers.removeEventListener(['click', 'mousemove']);
-            addRadialMenuFunction(d3.select(temporaryPath));
 
             handlers.addClickListener(function(e) {
 
@@ -257,6 +257,9 @@
                         .classed('moved', false)
                         .attr('opacity', '')
                         .attr('transform', transformString);
+
+                    addRadialMenuFunction(d3.select(temporaryPath));
+                    SelectPathService.addTo(d3.select(temporaryPath));
 
                     handlers.removeEventListener(['click', 'mousemove']);
 
@@ -718,6 +721,6 @@
     angular.module(moduleApp).service('FeatureService', FeatureService);
 
     FeatureService.$inject = ['InteractionService', 'EmptyComfortService', 'UtilService', 
-                                'GeometryUtilsService', 'GeneratorService']
+                                'GeometryUtilsService', 'GeneratorService', 'SelectPathService']
 
 })();

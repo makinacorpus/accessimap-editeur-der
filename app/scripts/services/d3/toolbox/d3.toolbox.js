@@ -17,9 +17,16 @@
 (function() {
     'use strict';
 
-    function ToolboxService(RadialMenuService, SettingsService, UtilService, 
-            ToolboxTriangleService, ToolboxRectangleService, 
-            ToolboxEllipseService, ToolboxTextService, ToolboxPolylineService, SelectPathService) {
+    function ToolboxService(RadialMenuService, 
+            SettingsService, 
+            UtilService, 
+            ToolboxTriangleService, 
+            ToolboxRectangleService, 
+            ToolboxEllipseService, 
+            ToolboxTextService, 
+            ToolboxPolylineService, 
+            ToolboxImageService, 
+            SelectPathService) {
 
         this.init                          = init;
         
@@ -105,33 +112,17 @@
         }
 
         function addSelectPaths() {
-            d3.selectAll(selectors)
-            selectors.forEach(function(currentSelector, index, array) {
-                d3.selectAll(currentSelector)
-                    .style('cursor', 'crosshair')
-                    .on('mouseover', function(event) {
-                        var feature = d3.select(this),
-                            selectPath = SelectPathService.calcSelectPath(feature);
-                        feature.node().parentNode.appendChild(selectPath);
-                    })
-                    .on('mouseout', function(event) {
-                        var feature = d3.select(this),
-                            selectPath = d3.select(feature.node().parentNode)
-                                           .selectAll('[data-type="select-path"]')
-                                           .remove();
-                    })
+            selectors.forEach(function(selector, index) {
+                SelectPathService.addTo(d3.selectAll(selector))
             })
         }
 
         function hideSelectPaths() {
-            selectors.forEach(function(currentSelector, index, array) {
-                d3.selectAll(currentSelector).style('cursor', '')
-                                             .on('mouseover', function() {})
-                                             .on('mouseout', function() {})
-                                             .on('click', function() {})
+            selectors.forEach(function(selector, index) {
+                SelectPathService.removeTo(d3.selectAll(selector))
             })
         }
-        
+
         /**
          * @ngdoc method
          * @name  drawPoint
@@ -330,7 +321,12 @@
     angular.module(moduleApp).service('ToolboxService', ToolboxService);
 
     ToolboxService.$inject = ['RadialMenuService', 'SettingsService', 'UtilService',
-                            'ToolboxTriangleService', 'ToolboxRectangleService', 'ToolboxEllipseService', 
-                            'ToolboxTextService', 'ToolboxPolylineService', 'SelectPathService'];
+                            'ToolboxTriangleService', 
+                            'ToolboxRectangleService', 
+                            'ToolboxEllipseService', 
+                            'ToolboxTextService', 
+                            'ToolboxPolylineService',
+                            'ToolboxImageService', 
+                            'SelectPathService'];
 
 })();
