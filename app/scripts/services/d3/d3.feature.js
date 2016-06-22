@@ -10,8 +10,11 @@
 (function() {
     'use strict';
 
-    function FeatureService(InteractionService, EmptyComfortService, UtilService, 
-                            GeometryUtilsService, GeneratorService) {
+    function FeatureService(InteractionService, 
+                            EmptyComfortService, 
+                            UtilService, 
+                            GeometryUtilsService, 
+                            GeneratorService) {
         
         this.duplicatePath                 = duplicatePath;
         this.movePath                      = movePath;
@@ -461,8 +464,7 @@
         function rotatePath(feature) {
             var el = feature.node(),
                 bbox = el.getBBox(),
-                pathCenter = [bbox.x + bbox.width / 2, 
-                                bbox.y + bbox.height / 2],
+                pathCenter = [ bbox.x + bbox.width / 2, bbox.y + bbox.height / 2 ],
                 pathCenterTranslate = [],
                 emptyCircle = d3.select('.c' + feature.attr('data-link')),
                 emptyCircleExists = emptyCircle.node();
@@ -470,14 +472,11 @@
             pathCenterTranslate[1] = pathCenter[1];
 
             if (feature.attr('transform')) {
-                var pathHasTranslate = /translate\((.*?)(?: |,)(.*?)\)/
-                                    .exec(feature.attr('transform'));
+                var pathHasTranslate = /translate\((.*?)(?: |,)(.*?)\)/.exec(feature.attr('transform'));
 
                 if (pathHasTranslate) {
-                    pathCenterTranslate[0] = pathCenter[0] 
-                                        + parseFloat(pathHasTranslate[1]);
-                    pathCenterTranslate[1] = pathCenter[1] 
-                                        + parseFloat(pathHasTranslate[2]);
+                    pathCenterTranslate[0] = pathCenter[0] + parseFloat(pathHasTranslate[1]);
+                    pathCenterTranslate[1] = pathCenter[1] + parseFloat(pathHasTranslate[2]);
                 }
             }
 
@@ -489,8 +488,7 @@
                 .attr('transform', 'translate(' 
                                     + pathCenterTranslate[0] 
                                     + ',' 
-                                    + (pathCenterTranslate[1] 
-                                    + bbox.height * 2) 
+                                    + (pathCenterTranslate[1] + bbox.height ) 
                                     + ')')
                 .attr('pathCenter', pathCenter)
                 .attr('pathCenterTranslate', pathCenterTranslate)
@@ -529,8 +527,7 @@
                     diffAngle = currentAngle - initialAngle,
 
                     transformString = '',
-                    hasTranslate = /translate\((.*?)\)/
-                                    .exec(feature.attr('transform'));
+                    hasTranslate = /translate\((.*?)\)/.exec(feature.attr('transform'));
 
                 if (hasTranslate) {
                     transformString += hasTranslate[0];
