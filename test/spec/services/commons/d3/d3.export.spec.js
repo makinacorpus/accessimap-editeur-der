@@ -95,7 +95,7 @@ describe('Service: ExportService', function () {
         it('should download font file', function(done) {
             ExportService.exportData({title: 'test'})
                 .then(function(filename) {
-                    expect(options.url).toBe('/assets/fonts/Braille_2007.ttf');
+                    expect(options.url).toBe(window.location.origin + '/assets/fonts/Braille_2007.ttf');
                     expect(options.dataType).toBe('binary');
                     done()
                 })
