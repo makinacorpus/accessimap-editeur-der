@@ -3583,7 +3583,7 @@
         }
 
         function getBaseLayerId() {
-            return currentLayer.options.id;
+            return currentLayer ? currentLayer.options.id : undefined; 
         }
 
         function showMapLayer(layerId) {
@@ -7567,8 +7567,16 @@
                             zip.file('der.png', imgBase64[1], {base64: true});
 
                             // get the Braille Font & add it to the current zip
+                            var urlFont = window.location.origin 
+                                    // pathname could be a path like 'xxx/#/route' or 'xxx/file.html'
+                                    // we have to obtain 'xxx' string
+                                    + ( window.location.pathname !== undefined
+                                        ? window.location.pathname.substring(0,window.location.pathname.indexOf('/'))
+                                        : '' )
+                                    + '/assets/fonts/Braille_2007.ttf';
+
                             $.ajax({
-                                url: "assets/fonts/Braille_2007.ttf",
+                                url: urlFont,
                                 type: "GET",
                                 dataType: 'binary',
                                 processData: false,
