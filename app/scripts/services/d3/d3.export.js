@@ -159,8 +159,8 @@
                                     // pathname could be a path like 'xxx/#/route' or 'xxx/file.html'
                                     // we have to obtain 'xxx' string
                                     + ( window.location.pathname !== undefined
-                                        ? window.location.pathname.substring(0,window.location.pathname.indexOf('/'))
-                                        : '' )
+                                    ? window.location.pathname.substring(0,window.location.pathname.lastIndexOf('/'))
+                                    : '' )
                                     + '/assets/fonts/Braille_2007.ttf';
 
                             $.ajax({
