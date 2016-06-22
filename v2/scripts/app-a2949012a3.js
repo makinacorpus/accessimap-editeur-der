@@ -881,8 +881,11 @@
 (function() {
     'use strict';
 
-    function FeatureService(InteractionService, EmptyComfortService, UtilService, 
-                            GeometryUtilsService, GeneratorService) {
+    function FeatureService(InteractionService, 
+                            EmptyComfortService, 
+                            UtilService, 
+                            GeometryUtilsService, 
+                            GeneratorService) {
         
         this.duplicatePath                 = duplicatePath;
         this.movePath                      = movePath;
@@ -1332,8 +1335,7 @@
         function rotatePath(feature) {
             var el = feature.node(),
                 bbox = el.getBBox(),
-                pathCenter = [bbox.x + bbox.width / 2, 
-                                bbox.y + bbox.height / 2],
+                pathCenter = [ bbox.x + bbox.width / 2, bbox.y + bbox.height / 2 ],
                 pathCenterTranslate = [],
                 emptyCircle = d3.select('.c' + feature.attr('data-link')),
                 emptyCircleExists = emptyCircle.node();
@@ -1341,14 +1343,11 @@
             pathCenterTranslate[1] = pathCenter[1];
 
             if (feature.attr('transform')) {
-                var pathHasTranslate = /translate\((.*?)(?: |,)(.*?)\)/
-                                    .exec(feature.attr('transform'));
+                var pathHasTranslate = /translate\((.*?)(?: |,)(.*?)\)/.exec(feature.attr('transform'));
 
                 if (pathHasTranslate) {
-                    pathCenterTranslate[0] = pathCenter[0] 
-                                        + parseFloat(pathHasTranslate[1]);
-                    pathCenterTranslate[1] = pathCenter[1] 
-                                        + parseFloat(pathHasTranslate[2]);
+                    pathCenterTranslate[0] = pathCenter[0] + parseFloat(pathHasTranslate[1]);
+                    pathCenterTranslate[1] = pathCenter[1] + parseFloat(pathHasTranslate[2]);
                 }
             }
 
@@ -1360,8 +1359,7 @@
                 .attr('transform', 'translate(' 
                                     + pathCenterTranslate[0] 
                                     + ',' 
-                                    + (pathCenterTranslate[1] 
-                                    + bbox.height * 2) 
+                                    + (pathCenterTranslate[1] + bbox.height ) 
                                     + ')')
                 .attr('pathCenter', pathCenter)
                 .attr('pathCenterTranslate', pathCenterTranslate)
@@ -1400,8 +1398,7 @@
                     diffAngle = currentAngle - initialAngle,
 
                     transformString = '',
-                    hasTranslate = /translate\((.*?)\)/
-                                    .exec(feature.attr('transform'));
+                    hasTranslate = /translate\((.*?)\)/.exec(feature.attr('transform'));
 
                 if (hasTranslate) {
                     transformString += hasTranslate[0];
@@ -3023,6 +3020,7 @@
                 { icon: 'assets/icons/delete.svg', action: FeatureService.removeObject },
                 { icon: 'assets/icons/open_with.svg', action: FeatureService.movePath },
                 { icon: 'assets/icons/copy.svg', action: FeatureService.duplicatePath },
+                { icon: 'assets/icons/autorenew.svg', action: FeatureService.rotatePath },
                 { icon: 'assets/icons/linear_scale.svg', action: FeatureService.movePoint },
                 { icon: 'assets/icons/texture.svg', action: FeatureService.changePattern },
                 { icon: 'assets/icons/palette.svg', action: FeatureService.changeColor },
@@ -3033,6 +3031,7 @@
                 { icon: 'assets/icons/delete.svg', action: FeatureService.removeObject },
                 { icon: 'assets/icons/open_with.svg', action: FeatureService.movePath },
                 { icon: 'assets/icons/copy.svg', action: FeatureService.duplicatePath },
+                { icon: 'assets/icons/autorenew.svg', action: FeatureService.rotatePath },
                 { icon: 'assets/icons/texture.svg', action: FeatureService.changePattern },
                 { icon: 'assets/icons/palette.svg', action: FeatureService.changeColor },
                 { icon: 'assets/icons/radio_button_checked.svg', action: FeatureService.toggleEmptyComfortNearFeature },
@@ -3043,6 +3042,7 @@
                 { icon: 'assets/icons/open_with.svg', action: FeatureService.movePath },
                 { icon: 'assets/icons/toolbox_skew.svg', action: FeatureService.skew },
                 { icon: 'assets/icons/copy.svg', action: FeatureService.duplicatePath },
+                { icon: 'assets/icons/autorenew.svg', action: FeatureService.rotatePath },
                 { icon: 'assets/icons/texture.svg', action: FeatureService.changePattern },
                 { icon: 'assets/icons/palette.svg', action: FeatureService.changeColor },
                 { icon: 'assets/icons/radio_button_checked.svg', action: FeatureService.toggleEmptyComfortNearFeature },
@@ -3053,6 +3053,7 @@
                 { icon: 'assets/icons/open_with.svg', action: FeatureService.movePath },
                 { icon: 'assets/icons/toolbox_skew.svg', action: FeatureService.skew },
                 { icon: 'assets/icons/copy.svg', action: FeatureService.duplicatePath },
+                { icon: 'assets/icons/autorenew.svg', action: FeatureService.rotatePath },
                 { icon: 'assets/icons/texture.svg', action: FeatureService.changePattern },
                 { icon: 'assets/icons/palette.svg', action: FeatureService.changeColor },
                 { icon: 'assets/icons/radio_button_checked.svg', action: FeatureService.toggleEmptyComfortNearFeature },
@@ -3061,6 +3062,7 @@
             'text': [
                 { icon: 'assets/icons/delete.svg', action: FeatureService.removeObject },
                 { icon: 'assets/icons/open_with.svg', action: FeatureService.movePath },
+                { icon: 'assets/icons/autorenew.svg', action: FeatureService.rotatePath },
                 { icon: 'assets/icons/copy.svg', action: FeatureService.duplicatePath },
                 { icon: 'assets/icons/radio_button_checked.svg', action: FeatureService.toggleEmptyComfortNearFeature },
             ],
@@ -3068,6 +3070,7 @@
                 { icon: 'assets/icons/delete.svg', action: FeatureService.removeObject },
                 { icon: 'assets/icons/open_with.svg', action: FeatureService.movePath },
                 { icon: 'assets/icons/copy.svg', action: FeatureService.duplicatePath },
+                { icon: 'assets/icons/autorenew.svg', action: FeatureService.rotatePath },
                 { icon: 'assets/icons/crop_din.svg', action: FeatureService.toggleStroke },
                 { icon: 'assets/icons/hearing.svg', action: InteractionService.addInteraction },
             ]
@@ -5769,30 +5772,34 @@
 
         function addSelectPaths() {
             d3.selectAll(selectors)
-            selectors.forEach(function(currentSelector, index, array) {
-                d3.selectAll(currentSelector)
-                    .style('cursor', 'crosshair')
-                    .on('mouseover', function(event) {
-                        var feature = d3.select(this),
-                            selectPath = SelectPathService.calcSelectPath(feature);
-                        feature.node().parentNode.appendChild(selectPath);
-                    })
-                    .on('mouseout', function(event) {
-                        var feature = d3.select(this),
-                            selectPath = d3.select(feature.node().parentNode)
-                                           .selectAll('[data-type="select-path"]')
-                                           .remove();
-                    })
-            })
+            selectors.forEach(addSelectPath)
+        }
+
+        function addSelectPath(selector) {
+            d3.selectAll(selector)
+                .style('cursor', 'crosshair')
+                .on('mouseover', function(event) {
+                    var feature = d3.select(this),
+                        selectPath = SelectPathService.calcSelectPath(feature);
+                    feature.node().parentNode.appendChild(selectPath);
+                })
+                .on('mouseout', function(event) {
+                    var feature = d3.select(this),
+                        selectPath = d3.select(feature.node().parentNode)
+                                       .selectAll('[data-type="select-path"]')
+                                       .remove();
+                })
         }
 
         function hideSelectPaths() {
-            selectors.forEach(function(currentSelector, index, array) {
-                d3.selectAll(currentSelector).style('cursor', '')
-                                             .on('mouseover', function() {})
-                                             .on('mouseout', function() {})
-                                             .on('click', function() {})
-            })
+            selectors.forEach(hideSelectPath)
+        }
+
+        function hideSelectPath(selector) {
+            d3.selectAll(selector).style('cursor', '')
+                                  .on('mouseover', function() {})
+                                  .on('mouseout', function() {})
+                                  .on('click', function() {})
         }
         
         /**
@@ -7200,7 +7207,7 @@
      * - interactions
      * - legend
      */
-    function ImportService(LayerService, InteractionService, LegendService, SettingsService, UtilService) {
+    function ImportService(LayerService, InteractionService, LegendService, SettingsService, SVGService) {
 
         this.importDrawing     = importDrawing;
         this.importInteraction = importInteraction;
@@ -7235,11 +7242,11 @@
                     var currentD = paths[i].getAttribute('d');
 
                     if (currentD) {
-                        var currentParseD = UtilService.parseSVGPath(currentD),
-                            currentTranslateD = UtilService.translateSVGPath(currentParseD, 
+                        var currentParseD = SVGService.parseSVGPath(currentD),
+                            currentTranslateD = SVGService.translateSVGPath(currentParseD, 
                                                                                 translationToApply.x, 
                                                                                 translationToApply.y),
-                            currentSerializeD = UtilService.serializeSVGPath(currentTranslateD);
+                            currentSerializeD = SVGService.serializeSVGPath(currentTranslateD);
 
                         paths[i].setAttribute('d', currentSerializeD)
                     } else {
@@ -7400,7 +7407,7 @@
 
     angular.module(moduleApp).service('ImportService', ImportService);
 
-    ImportService.$inject = ['LayerService', 'InteractionService', 'LegendService', 'SettingsService', 'UtilService'];
+    ImportService.$inject = ['LayerService', 'InteractionService', 'LegendService', 'SettingsService', 'SVGService'];
 
 })();
 (function() {
@@ -7561,7 +7568,7 @@
 
                             // get the Braille Font & add it to the current zip
                             $.ajax({
-                                url: "/assets/fonts/Braille_2007.ttf",
+                                url: "assets/fonts/Braille_2007.ttf",
                                 type: "GET",
                                 dataType: 'binary',
                                 processData: false,
@@ -9179,6 +9186,8 @@
 
 angular.module('accessimapEditeurDerApp').run(['$templateCache', function($templateCache) {
 
+  $templateCache.put('scripts/routes/home/template.html', '<div class="container jumbotron"><h3>Ajoutez de l\'interaction à vos dessins en reliefs (DER)</h3><h3>Configurez et personnalisez facilement vos documents avant de les imprimer !</h3><br><form class="form-inline"><div class="form-group"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="$ctrl.goToEdit()">Créer un nouveau DER</button></div></form></div>');
+
   $templateCache.put('scripts/routes/edit/aside.html', '<div class="col-xs-12"><div ng-if="$ctrl.isParametersVisible" ng-include="\'scripts/routes/edit/aside_parameters.html\'"></div><div ng-if="$ctrl.isMapParametersVisible" class="btn-group pull-left" ng-include="\'scripts/routes/edit/aside_map_parameters.html\'"></div><div ng-if="$ctrl.isDrawingParametersVisible" ng-include="\'scripts/routes/edit/aside_drawing_parameters.html\'"></div><div ng-if="$ctrl.isLegendParametersVisible" ng-include="\'scripts/routes/edit/aside_legend_parameters.html\'"></div><div ng-if="$ctrl.isInteractionParametersVisible" ng-include="\'scripts/routes/edit/aside_interaction_parameters.html\'"></div><div ng-if="$ctrl.isBackgroundParametersVisible" ng-include="\'scripts/routes/edit/aside_background_parameters.html\'"></div></div>');
 
   $templateCache.put('scripts/routes/edit/aside_background_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-lg fa-picture-o" aria-hidden="true"></span> Trame de fond</h3><form class="row"><div class="form-group col-xs-12"><label>Trame de fond</label><ui-select ng-model="$ctrl.model.backgroundStyle" ng-change="$ctrl.updateBackgroundStyle($ctrl.model.backgroundStyle)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.backgroundStyleChoices | filter: $select.search"><span ng-bind-html="item.name | highlight: $select.search"></span> <span ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></span></ui-select-choices></ui-select></div><div class="form-group col-xs-12"><label>Couleur de fond</label><ui-select ng-model="$ctrl.model.backgroundColor" ng-change="$ctrl.updateBackgroundColor($ctrl.model.backgroundColor)" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez une couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" "><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div><div class="form-group col-xs-12"><label>Importer un fond (SVG/JPG/PNG/PDF)</label><input onchange="angular.element(this).scope().$ctrl.uploadFile(this)" type="file" accept="image/svg+xml,image/png,image/jpeg,application/pdf"></div><div class="form-group col-xs-12"><label>Choisir un fond de carte prédéfini</label><uib-accordion close-others="false"><uib-accordion-group heading="{{mapCategory.name}}" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled" ng-repeat="mapCategory in $ctrl.mapCategories"><ul class="row"><li ng-repeat="image in mapCategory.images"><img class="img-responsive" ng-src="{{image.path}}" ng-click="$ctrl.appendSvg(image.path)"></li></ul></uib-accordion-group></uib-accordion></div></form>');
@@ -9210,8 +9219,6 @@ angular.module('accessimapEditeurDerApp').run(['$templateCache', function($templ
   $templateCache.put('scripts/routes/edit/modalchangepoint.html', '<div class="modal fade" id="changePointModal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">Choisissez un motif pour cet objet</h4></div><div class="modal-body"><ui-select ng-model="$ctrl.pointChosen" ng-change="$ctrl.updatePoint($ctrl.pointChosen)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.pointChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div><div ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></div></ui-select-choices></ui-select></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button></div></div></div></div>');
 
   $templateCache.put('scripts/routes/edit/template.html', '<aside class="col-lg-3 col-md-4 col-sm-4 right-side"><div class="aside-content row" ng-include="\'scripts/routes/edit/aside.html\'"></div></aside><main ng-init="$ctrl.init()"><div id="workspace" ng-show="$ctrl.isWorkspaceVisible"></div><div id="legend" ng-show="$ctrl.isLegendVisible"></div><div id="pattern"></div></main><div ng-include="\'scripts/routes/edit/modalchangecolor.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangepattern.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangearrows.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangepoint.html\'"></div>');
-
-  $templateCache.put('scripts/routes/home/template.html', '<div class="container jumbotron"><h3>Ajoutez de l\'interaction à vos dessins en reliefs (DER)</h3><h3>Configurez et personnalisez facilement vos documents avant de les imprimer !</h3><br><form class="form-inline"><div class="form-group"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="$ctrl.goToEdit()">Créer un nouveau DER</button></div></form></div>');
 
 }]);
 
