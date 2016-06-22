@@ -14,7 +14,7 @@
      * - interactions
      * - legend
      */
-    function ImportService(LayerService, InteractionService, LegendService, SettingsService, UtilService) {
+    function ImportService(LayerService, InteractionService, LegendService, SettingsService, SVGService) {
 
         this.importDrawing     = importDrawing;
         this.importInteraction = importInteraction;
@@ -49,11 +49,11 @@
                     var currentD = paths[i].getAttribute('d');
 
                     if (currentD) {
-                        var currentParseD = UtilService.parseSVGPath(currentD),
-                            currentTranslateD = UtilService.translateSVGPath(currentParseD, 
+                        var currentParseD = SVGService.parseSVGPath(currentD),
+                            currentTranslateD = SVGService.translateSVGPath(currentParseD, 
                                                                                 translationToApply.x, 
                                                                                 translationToApply.y),
-                            currentSerializeD = UtilService.serializeSVGPath(currentTranslateD);
+                            currentSerializeD = SVGService.serializeSVGPath(currentTranslateD);
 
                         paths[i].setAttribute('d', currentSerializeD)
                     } else {
@@ -214,6 +214,6 @@
 
     angular.module(moduleApp).service('ImportService', ImportService);
 
-    ImportService.$inject = ['LayerService', 'InteractionService', 'LegendService', 'SettingsService', 'UtilService'];
+    ImportService.$inject = ['LayerService', 'InteractionService', 'LegendService', 'SettingsService', 'SVGService'];
 
 })();

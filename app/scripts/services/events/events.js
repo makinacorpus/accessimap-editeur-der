@@ -396,4 +396,4 @@
 
     EventsService.$inject = ['MapService', 'DrawingService', 'SettingsService', 'SelectPathService'];
 
-})()
+})();
