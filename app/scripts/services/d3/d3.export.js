@@ -156,7 +156,7 @@
 
                             // get the Braille Font & add it to the current zip
                             $.ajax({
-                                url: "/assets/fonts/Braille_2007.ttf",
+                                url: window.origin + window.pathname + "assets/fonts/Braille_2007.ttf",
                                 type: "GET",
                                 dataType: 'binary',
                                 processData: false,
