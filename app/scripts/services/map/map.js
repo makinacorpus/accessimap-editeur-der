@@ -344,7 +344,7 @@
         }
 
         function getBaseLayerId() {
-            return currentLayer.options.id;
+            return currentLayer ? currentLayer.options.id : undefined; 
         }
 
         function showMapLayer(layerId) {
