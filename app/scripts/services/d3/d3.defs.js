@@ -19,9 +19,9 @@
          *
          */
         function createDefs(node) {
- 
-            var _defs = node.append('svg')
-                            .attr("data-name", "defs")
+            
+            var _svg = node.append('svg'),
+                _defs = _svg.attr("data-name", "defs")
                             .append("defs");
 
             _defs.append('marker')
@@ -60,6 +60,8 @@
             Object.keys(SettingsService.POLYGON_STYLES).forEach(function(value, index, array) {
                 _defs.call(SettingsService.POLYGON_STYLES[value]);
             });
+
+            return _svg;
 
         }
 

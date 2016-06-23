@@ -61,10 +61,7 @@
             function filterDOM(node) {
                 return (node.tagName !== 'svg')
             }
-
-
             
-            // DefsService.createDefs(d3.select(node))
             // TODO: union promises with a Promise.all to maintain a sequence programmation
             $(node).css('transform', translateReverseOverlayPx)
             domtoimage.toPng(node, {width: size.width, height: size.height, filter: filterDOM})
@@ -145,10 +142,16 @@
                     zip.file('interactions.xml', interactionsContentXML);
 
                     // TODO: inject DEFS ? il manque les fill patterns
+                    var defs = DefsService.createDefs(d3.select(node))
+                    function initNodeState() {
+                        defs.remove()
+                        $(node).css('transform', transformStyle)
+                    }
+
                     domtoimage.toPng(node, {width: size.width, height: size.height})
                         .then(function(dataUrl) { 
 
-                            $(node).css('transform', transformStyle)
+                            initNodeState();
 
                             // save the image in a file & add it to the current zip
                             var imgBase64 = dataUrl.split('base64,')
@@ -179,9 +182,12 @@
                                 error: function(error) {
                                     deferred.reject('Braille font ' + error.statusText)
                                 }
-                            });             
+                            })
 
-                        }).catch(deferred.reject)
+                        }).catch(function(error) {
+                            initNodeState();
+                            deferred.reject(error);
+                        })
 
                 }).catch(deferred.reject)
             
