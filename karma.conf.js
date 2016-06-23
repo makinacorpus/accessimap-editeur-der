@@ -20,7 +20,7 @@ module.exports = function(config) {
         files: [
             'node_modules/babel-polyfill/dist/polyfill.js',
 
-            'app/scripts/vendor/dom-to-image.js',
+            'app/vendor/dom-to-image.js',
             'bower_components/jszip/dist/jszip.js',
 
             'bower_components/jquery/dist/jquery.js',
@@ -42,7 +42,7 @@ module.exports = function(config) {
             'bower_components/pdfjs-dist/build/pdf.combined.js',
             'bower_components/leaflet/dist/leaflet.js',
 
-            'app/scripts/**/*.js',
+            'app/**/*.js',
             // 'test/mock/**/*.js',
             'test/spec/**/*.js'
         ],
@@ -69,8 +69,8 @@ module.exports = function(config) {
         reporters: ['coverage', 'coveralls'],
 
         preprocessors: {
-            'app/scripts/app.js': ['coverage', 'coveralls'],
-            'app/scripts/{components,routes,filters,services}/**/*.js': ['coverage', 'coveralls']
+            'app/app.js': ['coverage', 'coveralls'],
+            'app/{routes,filters,services}/**/*.js': ['coverage', 'coveralls']
         },
 
         coverageReporter: {

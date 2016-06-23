@@ -25,8 +25,8 @@ module.exports = {
         configFile: __dirname + '/karma.conf.js'
     },
     js: {
-        globs: app + 'scripts/**/*.js',
-        dest: dist + 'scripts/',
+        globs: app + '**/*.js',
+        dest: dist,
         jscs: {
             filter: ['**/*.js', '!**/vendor/**'],
             reporter: require('jshint-stylish')
@@ -34,7 +34,7 @@ module.exports = {
     },
     doc: {
         dest: dist + 'docs/',
-        globs: [app + 'scripts/**/*.js', '!' + app + 'scripts/vendor/**/*.js'],
+        globs: [app + '**/*.js', '!' + app + 'vendor/**/*.js'],
         options: {
             title: 'Editeur Documents en reliefs (DER)',
             readme: 'README.md',
@@ -42,8 +42,8 @@ module.exports = {
         }
     },
     assets: {
-        globs: [ app + '*', 
-                app + 'assets/**/*', 
+        globs: [ app + 'favicon.ico', 
+                 app + 'assets/**/*', 
                 '!' + app + 'assets/**/*.{zip,scss}'],
         base: './app',
         dest: dist
@@ -55,8 +55,8 @@ module.exports = {
     },
     templates: {
         moduleName: moduleName,
-        globs: app + 'scripts/**/*.html',
-        filePath: 'scripts/templates.js'
+        globs: app + '**/*.html',
+        filePath: 'templates.js'
     },
     usemin: {
         // js: [function() { console.log('hello world'); return uglify() }]
