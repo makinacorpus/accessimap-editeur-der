@@ -181,7 +181,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service providing drawing functions",
-      "keywords": "accessimapediteurderapp add addtolegend api appended area arguments arial border braille create created createframepath data display dom draw drawing element explain export features font format frame functions height hide hidefontbraille init initlegend legend legendservice linked map margin method millimeters pixel position print printing provide providing query ratiopixelpoint service showfontbraille size specific style svg telling text todo user width"
+      "keywords": "accessimapediteurderapp add addtolegend api appended area arguments arial border braille create created createframepath data display dom draw drawing element explain export features font format frame functions getsize height hide hidefontbraille init initlegend layer legend legendservice linked map margin method millimeters pixel position print printing provide providing query ratiopixelpoint representing return service showfontbraille size specific style svg telling text todo user width"
     },
     {
       "section": "api",

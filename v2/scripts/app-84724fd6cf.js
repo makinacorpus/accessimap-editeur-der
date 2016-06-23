@@ -3708,9 +3708,9 @@
          *
          */
         function createDefs(node) {
- 
-            var _defs = node.append('svg')
-                            .attr("data-name", "defs")
+            
+            var _svg = node.append('svg'),
+                _defs = _svg.attr("data-name", "defs")
                             .append("defs");
 
             _defs.append('marker')
@@ -3750,6 +3750,8 @@
                 _defs.call(SettingsService.POLYGON_STYLES[value]);
             });
 
+            return _svg;
+
         }
 
     }
@@ -3776,6 +3778,7 @@
     function LegendService(SettingsService) {
 
         this.initLegend        = initLegend;
+        this.getSize           = getSize;
         this.showFontBraille   = showFontBraille;
         this.hideFontBraille   = hideFontBraille;
         this.addToLegend       = addToLegend;
@@ -4084,6 +4087,22 @@
                     return query.name;
                 });
         }
+
+        /**
+         * @ngdoc method
+         * @name  getSize
+         * @methodOf accessimapEditeurDerApp.LegendService
+         *
+         * @description
+         * return the size of the layer, representing the size of the legend
+         * 
+         * @return {Object} 
+         * {width, height}
+         * 
+         */
+        function getSize() {
+            return {width: _width, height: _height}
+        }    
 
     }
 
@@ -7493,15 +7512,15 @@
                 interactionsContentXML = InteractionService.getXMLExport(),
                 titleDrawing           = document.createElementNS("http://www.w3.org/2000/svg", "title"),
 
-            zip        = new JSZip(),
-            exportNode = drawingNode ? drawingNode.cloneNode(true) : null,
-            size       = DrawingService.layers.overlay.getSize() ,
-            svgDrawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            zip         = new JSZip(),
+            exportNode  = drawingNode ? drawingNode.cloneNode(true) : null,
+            sizeDrawing = DrawingService.layers.overlay.getSize() ,
+            svgDrawing  = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 
             d3.select(svgDrawing)
                 .attr('data-version', exportVersion)
-                .attr('width', size.width)
-                .attr('height', size.height)
+                .attr('width', sizeDrawing.width)
+                .attr('height', sizeDrawing.height)
                 .style('overflow', 'visible')
 
             // patterns
@@ -7514,18 +7533,15 @@
 
             d3.select(svgDrawing).attr('viewBox', translateOverlayArray.x + ' ' 
                                                 + translateOverlayArray.y + ' ' 
-                                                + size.width + ' ' + size.height)
+                                                + sizeDrawing.width + ' ' + sizeDrawing.height)
             
             function filterDOM(node) {
                 return (node.tagName !== 'svg')
             }
-
-
             
-            // DefsService.createDefs(d3.select(node))
             // TODO: union promises with a Promise.all to maintain a sequence programmation
             $(node).css('transform', translateReverseOverlayPx)
-            domtoimage.toPng(node, {width: size.width, height: size.height, filter: filterDOM})
+            domtoimage.toPng(node, {width: sizeDrawing.width, height: sizeDrawing.height, filter: filterDOM})
                 .then(function(dataUrl) { 
                     
                     // save the image in a file & add it to the current zip
@@ -7535,8 +7551,8 @@
                     // add the current image to a svg:image element
                     var image = document.createElementNS("http://www.w3.org/2000/svg", "image");
                     d3.select(image)
-                        .attr('width', size.width)
-                        .attr('height', size.height)
+                        .attr('width', sizeDrawing.width)
+                        .attr('height', sizeDrawing.height)
                         .attr('x', translateOverlayArray.x)
                         .attr('y', translateOverlayArray.y)
                         .attr('xlink:href', dataUrl)
@@ -7587,9 +7603,17 @@
                     if (legendNode) {
 
                         var svgLegend = document.createElementNS("http://www.w3.org/2000/svg", "svg"),
+                            sizeLegend = LegendService.getSize(),
                             legendNodeClone = legendNode.cloneNode(true);
 
                         DefsService.createDefs(d3.select(svgLegend))
+
+                        d3.select(svgLegend)
+                            .attr('data-version', exportVersion)
+                            .attr('width', sizeLegend.width)
+                            .attr('height', sizeLegend.height)
+                            .attr('viewBox', '0 0 ' + sizeLegend.width + ' ' + sizeLegend.height)
+                            .style('overflow', 'visible')
 
                         svgLegend.appendChild(legendNodeClone);
 
@@ -7603,10 +7627,16 @@
                     zip.file('interactions.xml', interactionsContentXML);
 
                     // TODO: inject DEFS ? il manque les fill patterns
-                    domtoimage.toPng(node, {width: size.width, height: size.height})
+                    var defs = DefsService.createDefs(d3.select(node))
+                    function initNodeState() {
+                        defs.remove()
+                        $(node).css('transform', transformStyle)
+                    }
+
+                    domtoimage.toPng(node, {width: sizeDrawing.width, height: sizeDrawing.height})
                         .then(function(dataUrl) { 
 
-                            $(node).css('transform', transformStyle)
+                            initNodeState();
 
                             // save the image in a file & add it to the current zip
                             var imgBase64 = dataUrl.split('base64,')
@@ -7637,9 +7667,12 @@
                                 error: function(error) {
                                     deferred.reject('Braille font ' + error.statusText)
                                 }
-                            });             
+                            })
 
-                        }).catch(deferred.reject)
+                        }).catch(function(error) {
+                            initNodeState();
+                            deferred.reject(error);
+                        })
 
                 }).catch(deferred.reject)
             
@@ -9300,8 +9333,6 @@
 
 angular.module('accessimapEditeurDerApp').run(['$templateCache', function($templateCache) {
 
-  $templateCache.put('scripts/routes/home/template.html', '<div class="container jumbotron"><h3>Ajoutez de l\'interaction à vos dessins en reliefs (DER)</h3><h3>Configurez et personnalisez facilement vos documents avant de les imprimer !</h3><br><form class="form-inline"><div class="form-group"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="$ctrl.goToEdit()">Créer un nouveau DER</button></div></form></div>');
-
   $templateCache.put('scripts/routes/edit/aside.html', '<div class="col-xs-12"><div ng-if="$ctrl.isParametersVisible" ng-include="\'scripts/routes/edit/aside_parameters.html\'"></div><div ng-if="$ctrl.isMapParametersVisible" class="btn-group pull-left" ng-include="\'scripts/routes/edit/aside_map_parameters.html\'"></div><div ng-if="$ctrl.isDrawingParametersVisible" ng-include="\'scripts/routes/edit/aside_drawing_parameters.html\'"></div><div ng-if="$ctrl.isLegendParametersVisible" ng-include="\'scripts/routes/edit/aside_legend_parameters.html\'"></div><div ng-if="$ctrl.isInteractionParametersVisible" ng-include="\'scripts/routes/edit/aside_interaction_parameters.html\'"></div><div ng-if="$ctrl.isBackgroundParametersVisible" ng-include="\'scripts/routes/edit/aside_background_parameters.html\'"></div></div>');
 
   $templateCache.put('scripts/routes/edit/aside_background_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-lg fa-picture-o" aria-hidden="true"></span> Trame de fond</h3><form class="row"><div class="form-group col-xs-12"><label>Trame de fond</label><ui-select ng-model="$ctrl.model.backgroundStyle" ng-change="$ctrl.updateBackgroundStyle($ctrl.model.backgroundStyle)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.backgroundStyleChoices | filter: $select.search"><span ng-bind-html="item.name | highlight: $select.search"></span> <span ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></span></ui-select-choices></ui-select></div><div class="form-group col-xs-12"><label>Couleur de fond</label><ui-select ng-model="$ctrl.model.backgroundColor" ng-change="$ctrl.updateBackgroundColor($ctrl.model.backgroundColor)" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez une couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" "><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div><div class="form-group col-xs-12"><label>Importer un fond (SVG/JPG/PNG/PDF)</label><input onchange="angular.element(this).scope().$ctrl.importBackground(this)" type="file" accept="image/svg+xml,image/png,image/jpeg,application/pdf"></div><div class="form-group col-xs-12"><label>Choisir un fond de carte prédéfini</label><uib-accordion close-others="false"><uib-accordion-group heading="{{mapCategory.name}}" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled" ng-repeat="mapCategory in $ctrl.mapCategories"><ul class="row"><li ng-repeat="image in mapCategory.images"><img class="img-responsive" ng-src="{{image.path}}" ng-click="$ctrl.appendSvg(image.path)"></li></ul></uib-accordion-group></uib-accordion></div></form>');
@@ -9333,6 +9364,8 @@ angular.module('accessimapEditeurDerApp').run(['$templateCache', function($templ
   $templateCache.put('scripts/routes/edit/modalchangepoint.html', '<div class="modal fade" id="changePointModal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">Choisissez un motif pour cet objet</h4></div><div class="modal-body"><ui-select ng-model="$ctrl.pointChosen" ng-change="$ctrl.updatePoint($ctrl.pointChosen)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.pointChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div><div ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></div></ui-select-choices></ui-select></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button></div></div></div></div>');
 
   $templateCache.put('scripts/routes/edit/template.html', '<aside class="col-lg-3 col-md-4 col-sm-4 right-side"><div class="aside-content row" ng-include="\'scripts/routes/edit/aside.html\'"></div></aside><main ng-init="$ctrl.init()"><div id="workspace" ng-show="$ctrl.isWorkspaceVisible"></div><div id="legend" ng-show="$ctrl.isLegendVisible"></div><div id="pattern"></div></main><div ng-include="\'scripts/routes/edit/modalchangecolor.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangepattern.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangearrows.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangepoint.html\'"></div>');
+
+  $templateCache.put('scripts/routes/home/template.html', '<div class="container jumbotron"><h3>Ajoutez de l\'interaction à vos dessins en reliefs (DER)</h3><h3>Configurez et personnalisez facilement vos documents avant de les imprimer !</h3><br><form class="form-inline"><div class="form-group"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="$ctrl.goToEdit()">Créer un nouveau DER</button></div></form></div>');
 
 }]);
 
