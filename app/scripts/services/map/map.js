@@ -17,7 +17,6 @@
             _isMapVisible,
             map = {}, 
             overlay = null,
-            layerDefault,
             layerMapBox,
             layerMapBoxId = 'mapbox.streets',
             layerOSM,
@@ -33,7 +32,7 @@
         this.getBaseLayer           = getBaseLayer;
         this.getBaseLayerId         = getBaseLayerId;
         this.getBounds              = getBounds;
-        this.initMap                = initMap;
+        this.init                   = init;
         this.resizeFunction         = resizeFunction;
         
         this.addEventListener       = addEventListener;
@@ -76,7 +75,7 @@
 
         /**
          * @ngdoc method
-         * @name  initMap
+         * @name  init
          * @methodOf accessimapEditeurDerApp.MapService
          * 
          * @description 
@@ -85,7 +84,7 @@
          * @param  {string} selector 
          * Id of the leaflet's map container
          */
-        function initMap(selectorDOM, format, _ratioPixelPoint, _resizeFunction) {
+        function init(selectorDOM, format, _ratioPixelPoint, _resizeFunction) {
 
             _selectorDOM = selectorDOM;
             _isMapVisible = false;
@@ -112,7 +111,7 @@
                 id: layerOSMId
             });
 
-            layerDefault = layerMapBox;
+            currentLayer = layerMapBox;
 
             layerControl = L.control.layers({ 'Open Street Map': layerOSM, 'MapBox Street': layerMapBox})
 
@@ -355,14 +354,14 @@
             } else if (layerId === layerMapBoxId) {
                 map.addLayer(layerMapBox)
             } else {
-                map.addLayer(layerDefault);
+                map.addLayer(currentLayer);
             }
         }
 
         function hideMapLayer() {
             _isMapVisible = false;
             layerControl.removeFrom(map)
-            map.removeLayer(layerDefault);
+            map.removeLayer(currentLayer);
         }
 
         function freezeMap() {

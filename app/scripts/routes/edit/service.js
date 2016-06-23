@@ -204,7 +204,7 @@
                                     ? SettingsService.FORMATS[SettingsService.DEFAULT_LEGEND_FORMAT]
                                     : SettingsService.FORMATS[legendFormat];
 
-            MapService.initMap('workspace', drawingFormat, SettingsService.ratioPixelPoint, MapService.resizeFunction);
+            MapService.init('workspace', drawingFormat, SettingsService.ratioPixelPoint, MapService.resizeFunction);
 
             // Background used to import images, svg or pdf to display a background helper
             overlayBackground = L.d3SvgOverlay(function(sel, proj) {

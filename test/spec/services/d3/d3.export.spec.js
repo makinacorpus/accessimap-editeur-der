@@ -6,10 +6,10 @@ describe('Service: ExportService', function () {
     
     // instantiate service
     var ExportService,
+        EditService,
         $rootScope,
         content,
         filename,
-        initDone = false,
         $httpBackend,
         options = {};
 
@@ -17,19 +17,11 @@ describe('Service: ExportService', function () {
 
     beforeAll(module('accessimapEditeurDerApp'))
 
-    beforeAll(inject(function(_EditService_, $q, _$rootScope_, _ExportService_) {
+    beforeAll(inject(function($q, $injector) {
 
-        $rootScope    = _$rootScope_;
-        ExportService = _ExportService_;
-
-        if (! initDone) {
-            var workspace = document.createElement('div');
-            workspace.setAttribute('id', 'workspace');
-            document.body.appendChild(workspace)
-
-            _EditService_.init('landscapeA4', 'landscapeA4')
-            initDone = true;            
-        }
+        $rootScope    = $injector.get('$rootScope')
+        EditService   = $injector.get('EditService')
+        ExportService = $injector.get('ExportService')
 
         window.domtoimage = {
             toPng: function(node, options) {
@@ -64,7 +56,18 @@ describe('Service: ExportService', function () {
         filename      = '';
         $httpBackend = $injector.get('$httpBackend')
 
+        var workspace = document.createElement('div');
+        workspace.setAttribute('id', 'workspace');
+        document.body.appendChild(workspace)
+
+        EditService.init('landscapeA4', 'landscapeA4')
+
     }));
+
+    afterEach(inject(function() {
+        var workspace = document.getElementById('workspace');
+        workspace.remove();
+    }))
 
     describe('exportData function', function() {
     
