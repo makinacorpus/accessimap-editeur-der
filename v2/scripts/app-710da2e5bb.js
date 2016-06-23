@@ -3750,7 +3750,7 @@
                 _defs.call(SettingsService.POLYGON_STYLES[value]);
             });
 
-        };
+        }
 
     }
 
@@ -4521,24 +4521,22 @@
     function LayerService(LayerBackgroundService, LayerOverlayService, LayerGeoJSONService, LayerDrawingService) { 
  
         // layers functions 
-        this.createLayers     = createLayers; 
-         
-        this.geojson          = LayerGeoJSONService; 
-        this.geojson.getLayer = getGeoJSONLayer; 
-        this.geojson.getZoom  = getGeoJSONZoom; 
-         
-        this.overlay          = LayerOverlayService; 
-        this.overlay.getLayer = getOverlayLayer; 
-        this.overlay.getZoom  = getOverlayZoom; 
- 
-        this.drawing = { 
-            getLayer : getDrawingLayer, 
-            getZoom  : getDrawingZoom, 
-        } 
- 
-        this.background = LayerBackgroundService; 
+        this.createLayers        = createLayers; 
+        
+        this.geojson             = LayerGeoJSONService; 
+        this.geojson.getLayer    = getGeoJSONLayer; 
+        this.geojson.getZoom     = getGeoJSONZoom; 
+        
+        this.overlay             = LayerOverlayService; 
+        this.overlay.getLayer    = getOverlayLayer; 
+        this.overlay.getZoom     = getOverlayZoom; 
+        
+        this.drawing             = LayerDrawingService;
+        this.drawing.getLayer    = getDrawingLayer;
+        this.drawing.getZoom     = getDrawingZoom;
+        
+        this.background          = LayerBackgroundService; 
         this.background.getLayer = getBackgroundLayer; 
- 
  
         var _elements = { geojson: {}, drawing: {}, overlay: {}, background: {}}; 
         this._elements = _elements; 
@@ -4723,6 +4721,7 @@
             _g;
 
         this.createLayer = createLayer;
+        this.appendImage = appendImage;
 
         function createLayer(target) {
             
@@ -4742,11 +4741,50 @@
          * @param  {Object} target  [description]
          */
         function createDrawing() {
+            _g.append('g').attr('data-name', 'images-layer');
             _g.append('g').attr('data-name', 'polygons-layer');
             _g.append('g').attr('data-name', 'lines-layer');
             _g.append('g').attr('data-name', 'points-layer');
             _g.append('g').attr('data-name', 'texts-layer');
-        };
+        }
+
+        function appendImage(dataUrl, size, pixelOrigin, pixelBoundMin) {
+
+            var img = new Image();
+
+            img.src = dataUrl;
+            img.onload = function() { // need to load the image to obtain width & height
+                var width = this.width,
+                    height = this.height,
+                    ratio = height / width,
+
+                // calculate coordinates
+                x = 
+                    // to get x, we calc the space between left and the overlay
+                    ( ( size.x - width) / 2 ) 
+                    // and we substract the difference between the original point of the map 
+                    // and the actual bounding topleft point
+                    - (pixelOrigin.x - pixelBoundMin.x),
+
+                y = 
+                    // to get y, we calc the space between the middle axe and the top of the overlay
+                    height / -2 
+                    // and we substract the difference between the original point of the map
+                    // and the actual bounding topleft point
+                    - (pixelOrigin.y - pixelBoundMin.y - size.y / 2);
+
+                _g.select('[data-name="images-layer"]')
+                    .append('image')
+                    .attr('x', x)
+                    .attr('y', y)
+                    .attr('width', width)
+                    .attr('height', height)
+                    .attr('xlink:href', dataUrl);
+
+            };
+
+        }
+
 
     }
 
@@ -7617,7 +7655,7 @@
 })();
 /**
  * @ngdoc service
- * @name accessimapEditeurDerApp.EventsService
+ * @name accessimapEditeurDerApp.ModeService
  * 
  * @description
  * Manage events (map, d3) in the editor
@@ -7626,7 +7664,7 @@
 (function() {
     'use strict';
 
-    function EventsService(MapService, DrawingService, SettingsService, SelectPathService) {
+    function ModeService(MapService, DrawingService, SettingsService, SelectPathService) {
 
         this.init                    = init;
 
@@ -7640,6 +7678,7 @@
         this.enableSquareMode        = enableSquareMode;
         this.enableTriangleMode      = enableTriangleMode;
         this.enableTextMode          = enableTextMode;
+        this.enableImageMode         = enableImageMode;
         this.enableLineOrPolygonMode = enableLineOrPolygonMode;
         this.enableAddPOI            = enableAddPOI;
         this.disableAddPOI           = disableAddPOI;
@@ -7684,7 +7723,7 @@
         /**
          * @ngdoc method
          * @name  enableSelectMode
-         * @methodOf accessimapEditeurDerApp.EventsService
+         * @methodOf accessimapEditeurDerApp.ModeService
          *
          * @description
          
@@ -7709,7 +7748,7 @@
         /**
          * @ngdoc method
          * @name  enableDefaultMode
-         * @methodOf accessimapEditeurDerApp.EventsService
+         * @methodOf accessimapEditeurDerApp.ModeService
          *
          * @description
          * 
@@ -7934,10 +7973,16 @@
 
         }
 
+        function enableImageMode(getDrawingParameter) {
+
+            initMode();
+
+        }
+
         /**
          * @ngdoc method
          * @name  enableAddPOI
-         * @methodOf accessimapEditeurDerApp.EventsService
+         * @methodOf accessimapEditeurDerApp.ModeService
          * 
          * @description 
          * Enable the 'Add POI' mode, 
@@ -7997,7 +8042,7 @@
         /**
          * @ngdoc method
          * @name  disableAddPOI
-         * @methodOf accessimapEditeurDerApp.EventsService
+         * @methodOf accessimapEditeurDerApp.ModeService
          * 
          * @description 
          * Disable the 'Add POI' mode by resetting CSS cursor.
@@ -8009,9 +8054,9 @@
 
     }
 
-    angular.module(moduleApp).service('EventsService', EventsService);
+    angular.module(moduleApp).service('ModeService', ModeService);
 
-    EventsService.$inject = ['MapService', 'DrawingService', 'SettingsService', 'SelectPathService'];
+    ModeService.$inject = ['MapService', 'DrawingService', 'SettingsService', 'SelectPathService'];
 
 })();
 // jscs:disable maximumNumberOfLines
@@ -8028,7 +8073,7 @@
  * @requires accessimapEditeurDerApp.ExportService
  * @requires accessimapEditeurDerApp.UtilService
  * @requires accessimapEditeurDerApp.ImportService
- * @requires accessimapEditeurDerApp.EventsService
+ * @requires accessimapEditeurDerApp.ModeService
  * 
  * @description
  * Service used for the 'EditController', and the 'edit' view
@@ -8042,20 +8087,20 @@
     'use strict';
 
     function EditService($q, SettingsService, MapService, DrawingService, LegendService, 
-        DefsService, InteractionService, ExportService, UtilService, ImportService, FeatureService, EventsService) {
+        DefsService, InteractionService, ExportService, UtilService, ImportService, FeatureService, ModeService) {
 
         this.init          = init;
         this.settings      = SettingsService;
         this.featureIcon   = DrawingService.toolbox.featureIcon;
         this.insertOSMData = insertOSMData;
 
-        this.enableAddPOI  = EventsService.enableAddPOI;
-        this.disableAddPOI = EventsService.disableAddPOI;
+        this.enableAddPOI  = ModeService.enableAddPOI;
+        this.disableAddPOI = ModeService.disableAddPOI;
 
         // Drawing services
         // TODO : reset action has to work correctly for event...
         // we have to use map event or d3 event... not both (mea culpa)
-        this.resetState    = EventsService.resetState;
+        this.resetState    = ModeService.resetState;
 
         // Toolbox
         this.drawPoint                     = DrawingService.toolbox.drawPoint;
@@ -8070,14 +8115,15 @@
         this.isUndoAvailable               = FeatureService.isUndoAvailable;
         this.undo                          = FeatureService.undo;
 
-        this.enableDefaultMode             = EventsService.enableDefaultMode;
-        this.enableSelectMode              = EventsService.enableSelectMode;
-        this.enablePointMode               = EventsService.enablePointMode;
-        this.enableCircleMode              = EventsService.enableCircleMode;
-        this.enableSquareMode              = EventsService.enableSquareMode;
-        this.enableTriangleMode            = EventsService.enableTriangleMode;
-        this.enableLineOrPolygonMode       = EventsService.enableLineOrPolygonMode;
-        this.enableTextMode                = EventsService.enableTextMode;
+        this.enableDefaultMode             = ModeService.enableDefaultMode;
+        this.enableSelectMode              = ModeService.enableSelectMode;
+        this.enablePointMode               = ModeService.enablePointMode;
+        this.enableCircleMode              = ModeService.enableCircleMode;
+        this.enableSquareMode              = ModeService.enableSquareMode;
+        this.enableTriangleMode            = ModeService.enableTriangleMode;
+        this.enableLineOrPolygonMode       = ModeService.enableLineOrPolygonMode;
+        this.enableTextMode                = ModeService.enableTextMode;
+        this.enableImageMode               = ModeService.enableImageMode;
 
         this.exportData                    = function(model) {
             var deferred = $q.defer();
@@ -8126,7 +8172,8 @@
         this.showFontBraille     = LegendService.showFontBraille;
         this.hideFontBraille     = LegendService.hideFontBraille;
         
-        this.uploadFile          = uploadFile;
+        this.importBackground    = importBackground;
+        this.importImage         = importImage;
         this.appendSvg           = appendSvg;
         this.importDER           = importDER;
 
@@ -8290,7 +8337,7 @@
                                     SettingsService.ratioPixelPoint);
 
             FeatureService.init(selDrawing, projDrawing, MapService)
-            EventsService.init(projDrawing)
+            ModeService.init(projDrawing)
 
         }
 
@@ -8424,9 +8471,20 @@
             return deferred.promise;
         }
 
-
-        
-        function uploadFile(element) {
+        /**
+         * @ngdoc method
+         * @name  importBackground
+         * @methodOf accessimapEditeurDerApp.EditService
+         *
+         * @description 
+         * Import a file (SVG/PNG/JPEG/PDF) as a background of the current drawing
+         *
+         * Add it in the background layer
+         * 
+         * @param  {Object} element
+         * Input file to be uploaded & imported in the background
+         */
+        function importBackground(element) {
 
             UtilService.uploadFile(element)
                 .then(function(data) {
@@ -8449,7 +8507,39 @@
                     }
                 })
 
-        };
+        }
+
+        /**
+         * @ngdoc method
+         * @name  importImage
+         * @methodOf accessimapEditeurDerApp.EditService
+         *
+         * @description 
+         * Import an image file (SVG/PNG/JPEG) in the drawing layer, image group
+         *
+         * @param  {Object} element
+         * Input file to be uploaded & imported in the drawing layer
+         */
+        function importImage(element) {
+
+            UtilService.uploadFile(element)
+                .then(function(data) {
+                    switch (data.type) {
+                        case 'image/svg+xml':
+                        case 'image/png':
+                        case 'image/jpeg':
+                            DrawingService.layers.drawing.appendImage(data.dataUrl, 
+                                                                        MapService.getMap().getSize(), 
+                                                                        MapService.getMap().getPixelOrigin(), 
+                                                                        MapService.getMap().getPixelBounds().min);
+                            break;
+
+                        default:
+                            console.error('Mauvais format');
+                    }
+                })
+
+        }
 
         /**
          * @ngdoc method
@@ -8617,7 +8707,7 @@
 
                                             ImportService.importDrawing(svgElement)
                                             // DrawingService.toolbox.addRadialMenus();
-                                            EventsService.enableDefaultMode();
+                                            ModeService.enableDefaultMode();
                                             deferred.resolve(model);
                                             
                                         })
@@ -8661,7 +8751,7 @@
                             'UtilService',
                             'ImportService',
                             'FeatureService',
-                            'EventsService',
+                            'ModeService',
                             ];
 
 })();
@@ -8832,7 +8922,8 @@
         
         $ctrl.mapCategories       = EditService.settings.mapCategories;
         
-        $ctrl.uploadFile          = EditService.uploadFile;
+        $ctrl.importBackground    = EditService.importBackground;
+        $ctrl.importImage         = EditService.importImage;
         $ctrl.appendSvg           = EditService.appendSvg;
         
         $ctrl.importDER = function(file) {
@@ -8925,18 +9016,21 @@
             $ctrl.isFeatureCreationVisible   = false;
             $ctrl.isFeatureManagementVisible = false;
         }
+
         $ctrl.displayGetDataFromOSMForm = function() {
             $ctrl.isAddressVisible           = false;
             $ctrl.isPoiCreationVisible       = false;
             $ctrl.isFeatureCreationVisible   = true;
             $ctrl.isFeatureManagementVisible = false;
         }
+
         $ctrl.insertOSMData = function()  {
             EditService.insertOSMData($ctrl.queryChosen, 
                                         ToasterService.warning, 
                                         ToasterService.error, 
                                         getDrawingParameters)
         }
+
         $ctrl.displayFeatureManagement = function() {
             $ctrl.isAddressVisible           = false;
             $ctrl.isPoiCreationVisible       = false;
@@ -9112,6 +9206,10 @@
                 case 'addtext':
                     EditService.enableTextMode(getDrawingParameters);
                     break;
+
+                case 'image':
+                    EditService.enableImageMode(getDrawingParameters);
+                    break;
             }
 
         }
@@ -9202,11 +9300,13 @@
 
 angular.module('accessimapEditeurDerApp').run(['$templateCache', function($templateCache) {
 
+  $templateCache.put('scripts/routes/home/template.html', '<div class="container jumbotron"><h3>Ajoutez de l\'interaction à vos dessins en reliefs (DER)</h3><h3>Configurez et personnalisez facilement vos documents avant de les imprimer !</h3><br><form class="form-inline"><div class="form-group"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="$ctrl.goToEdit()">Créer un nouveau DER</button></div></form></div>');
+
   $templateCache.put('scripts/routes/edit/aside.html', '<div class="col-xs-12"><div ng-if="$ctrl.isParametersVisible" ng-include="\'scripts/routes/edit/aside_parameters.html\'"></div><div ng-if="$ctrl.isMapParametersVisible" class="btn-group pull-left" ng-include="\'scripts/routes/edit/aside_map_parameters.html\'"></div><div ng-if="$ctrl.isDrawingParametersVisible" ng-include="\'scripts/routes/edit/aside_drawing_parameters.html\'"></div><div ng-if="$ctrl.isLegendParametersVisible" ng-include="\'scripts/routes/edit/aside_legend_parameters.html\'"></div><div ng-if="$ctrl.isInteractionParametersVisible" ng-include="\'scripts/routes/edit/aside_interaction_parameters.html\'"></div><div ng-if="$ctrl.isBackgroundParametersVisible" ng-include="\'scripts/routes/edit/aside_background_parameters.html\'"></div></div>');
 
-  $templateCache.put('scripts/routes/edit/aside_background_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-lg fa-picture-o" aria-hidden="true"></span> Trame de fond</h3><form class="row"><div class="form-group col-xs-12"><label>Trame de fond</label><ui-select ng-model="$ctrl.model.backgroundStyle" ng-change="$ctrl.updateBackgroundStyle($ctrl.model.backgroundStyle)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.backgroundStyleChoices | filter: $select.search"><span ng-bind-html="item.name | highlight: $select.search"></span> <span ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></span></ui-select-choices></ui-select></div><div class="form-group col-xs-12"><label>Couleur de fond</label><ui-select ng-model="$ctrl.model.backgroundColor" ng-change="$ctrl.updateBackgroundColor($ctrl.model.backgroundColor)" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez une couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" "><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div><div class="form-group col-xs-12"><label>Importer un fond (SVG/JPG/PNG/PDF)</label><input onchange="angular.element(this).scope().$ctrl.uploadFile(this)" type="file" accept="image/svg+xml,image/png,image/jpeg,application/pdf"></div><div class="form-group col-xs-12"><label>Choisir un fond de carte prédéfini</label><uib-accordion close-others="false"><uib-accordion-group heading="{{mapCategory.name}}" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled" ng-repeat="mapCategory in $ctrl.mapCategories"><ul class="row"><li ng-repeat="image in mapCategory.images"><img class="img-responsive" ng-src="{{image.path}}" ng-click="$ctrl.appendSvg(image.path)"></li></ul></uib-accordion-group></uib-accordion></div></form>');
+  $templateCache.put('scripts/routes/edit/aside_background_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-lg fa-picture-o" aria-hidden="true"></span> Trame de fond</h3><form class="row"><div class="form-group col-xs-12"><label>Trame de fond</label><ui-select ng-model="$ctrl.model.backgroundStyle" ng-change="$ctrl.updateBackgroundStyle($ctrl.model.backgroundStyle)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.backgroundStyleChoices | filter: $select.search"><span ng-bind-html="item.name | highlight: $select.search"></span> <span ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></span></ui-select-choices></ui-select></div><div class="form-group col-xs-12"><label>Couleur de fond</label><ui-select ng-model="$ctrl.model.backgroundColor" ng-change="$ctrl.updateBackgroundColor($ctrl.model.backgroundColor)" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez une couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" "><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div><div class="form-group col-xs-12"><label>Importer un fond (SVG/JPG/PNG/PDF)</label><input onchange="angular.element(this).scope().$ctrl.importBackground(this)" type="file" accept="image/svg+xml,image/png,image/jpeg,application/pdf"></div><div class="form-group col-xs-12"><label>Choisir un fond de carte prédéfini</label><uib-accordion close-others="false"><uib-accordion-group heading="{{mapCategory.name}}" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled" ng-repeat="mapCategory in $ctrl.mapCategories"><ul class="row"><li ng-repeat="image in mapCategory.images"><img class="img-responsive" ng-src="{{image.path}}" ng-click="$ctrl.appendSvg(image.path)"></li></ul></uib-accordion-group></uib-accordion></div></form>');
 
-  $templateCache.put('scripts/routes/edit/aside_drawing_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-pencil" aria-hidden="true"></span> Dessin</h3><div class="btn-group"><button ng-click="$ctrl.enableDrawingMode(\'default\')" ng-class="{ \'active\' : $ctrl.mode === \'default\' }" class="btn btn-default active"><span class="fa fa-hand-paper-o" aria-hidden="true"></span></button> <button ng-click="$ctrl.enableDrawingMode(\'select\')" ng-class="{ \'active\' : $ctrl.mode === \'select\' }" class="btn btn-default"><span class="fa fa-mouse-pointer" aria-hidden="true"></span></button><button ng-click="$ctrl.resetView()" class="btn btn-default"><span class="fa fa-arrows-alt" aria-hidden="true"></span></button></div><div class="btn-group"><button ng-click="$ctrl.enableDrawingMode(\'point\')" ng-class="{ \'active\' : $ctrl.mode === \'point\' }" class="btn btn-default"><img src="assets/icons/draw_point.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'line\')" ng-class="{ \'active\' : $ctrl.mode === \'line\' }" class="btn btn-default"><img src="assets/icons/draw_polygon.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'circle\')" ng-class="{ \'active\' : $ctrl.mode === \'circle\' }" class="btn btn-default"><img src="assets/icons/draw_ellipse.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'triangle\')" ng-class="{ \'active\' : $ctrl.mode === \'triangle\' }" class="btn btn-default"><img src="assets/icons/draw_triangle.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'square\')" ng-class="{ \'active\' : $ctrl.mode === \'square\' }" class="btn btn-default"><img src="assets/icons/draw_rectangle.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'polygon\')" ng-class="{ \'active\' : $ctrl.mode === \'polygon\' }" class="btn btn-default"><img src="assets/icons/draw_polygon_45.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'addtext\')" ng-class="{ \'active\' : $ctrl.mode === \'addtext\' }" class="btn btn-default"><img src="assets/icons/draw_text.png" width="20px" height="20px"></button></div><form><p ng-if="$ctrl.mode === \'default\' || $ctrl.mode === \'\'">Choisissez un outil de dessin pour paramétrer le style, la couleur, ...</p><div class="form-group" ng-if="$ctrl.mode !== \'default\' && $ctrl.mode !== \'\' && $ctrl.mode !== \'text\'"><label>Style</label><ui-select ng-model="$ctrl.styleChosen" ng-change="$ctrl.updatePolygonStyle()" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.styleChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div><div ng-bind-html="$ctrl.featureIcon(item, $ctrl.mode)"></div></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.mode === \'polygon\' || $ctrl.mode === \'circle\'"><label>Couleur de fond</label><ui-select ng-model="$ctrl.colorChosen" ng-change="$ctrl.changeColor()" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.mode === \'polygon\' || $ctrl.mode === \'circle\'"><label>Contour de forme</label> <span class="input-group-addon"><input type="checkbox" ng-model="$ctrl.checkboxModel.contour" ng-change="$ctrl.updatePolygonStyle()"></span></div><div class="form-group" ng-if="$ctrl.mode === \'addtext\'"><label>Police</label><ui-select ng-model="$ctrl.fontChosen" ng-change="$ctrl.changeTextColor()" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez une police">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.fonts | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.mode === \'addtext\'"><label>Couleur</label><ui-select ng-model="$ctrl.fontColorChosen" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez une couleur">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.fontColors[$ctrl.fontChosen.color] | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div></form>');
+  $templateCache.put('scripts/routes/edit/aside_drawing_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-pencil" aria-hidden="true"></span> Dessin</h3><div class="btn-group"><button ng-click="$ctrl.enableDrawingMode(\'default\')" ng-class="{ \'active\' : $ctrl.mode === \'default\' }" class="btn btn-default active" aria-label="Naviguer" title="Naviguer"><span class="fa fa-hand-paper-o" aria-hidden="true"></span></button> <button ng-click="$ctrl.enableDrawingMode(\'select\')" ng-class="{ \'active\' : $ctrl.mode === \'select\' }" class="btn btn-default" aria-label="Editer" title="Editer"><span class="fa fa-mouse-pointer" aria-hidden="true"></span></button><button ng-click="$ctrl.resetView()" class="btn btn-default" aria-label="Centrer le dessin" title="Centrer le dessin"><span class="fa fa-arrows-alt" aria-hidden="true"></span></button></div><div class="btn-group"><button ng-click="$ctrl.enableDrawingMode(\'point\')" ng-class="{ \'active\' : $ctrl.mode === \'point\' }" class="btn btn-default" aria-label="Point" title="Point"><img src="assets/icons/draw_point.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'line\')" ng-class="{ \'active\' : $ctrl.mode === \'line\' }" class="btn btn-default" aria-label="Ligne (clic droit pour finir)" title="Ligne (clic droit pour finir)"><img src="assets/icons/draw_polygon.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'circle\')" ng-class="{ \'active\' : $ctrl.mode === \'circle\' }" class="btn btn-default" aria-label="Ellipse / Cercle" title="Ellipse / Cercle"><img src="assets/icons/draw_ellipse.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'triangle\')" ng-class="{ \'active\' : $ctrl.mode === \'triangle\' }" class="btn btn-default" aria-label="Triangle" title="Triangle"><img src="assets/icons/draw_triangle.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'square\')" ng-class="{ \'active\' : $ctrl.mode === \'square\' }" class="btn btn-default" aria-label="Rectangle / Carré" title="Rectangle / Carré"><img src="assets/icons/draw_rectangle.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'polygon\')" ng-class="{ \'active\' : $ctrl.mode === \'polygon\' }" class="btn btn-default" aria-label="Polygone (clic droit pour finir)" title="Polygone (clic droit pour finir)"><img src="assets/icons/draw_polygon_45.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'addtext\')" ng-class="{ \'active\' : $ctrl.mode === \'addtext\' }" class="btn btn-default" aria-label="Zone de texte" title="Zone de texte"><img src="assets/icons/draw_text.png" width="20px" height="20px"></button> <button ng-click="$ctrl.enableDrawingMode(\'image\')" ng-class="{ \'active\' : $ctrl.mode === \'image\' }" class="btn btn-default" aria-label="Importer une image" title="Importer une image"><img src="assets/icons/image.png" width="20px" height="20px"></button></div><form><p ng-if="$ctrl.mode === \'default\' || $ctrl.mode === \'\'">Choisissez un outil de dessin pour paramétrer le style, la couleur, ...</p><div class="form-group" ng-if="$ctrl.mode !== \'default\' && $ctrl.mode !== \'\' && $ctrl.mode !== \'text\' && $ctrl.mode !== \'image\'"><label>Style</label><ui-select ng-model="$ctrl.styleChosen" ng-change="$ctrl.updatePolygonStyle()" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.styleChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div><div ng-bind-html="$ctrl.featureIcon(item, $ctrl.mode)"></div></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.mode === \'polygon\' || $ctrl.mode === \'circle\'"><label>Couleur de fond</label><ui-select ng-model="$ctrl.colorChosen" ng-change="$ctrl.changeColor()" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.mode === \'polygon\' || $ctrl.mode === \'circle\'"><label>Contour de forme</label> <span class="input-group-addon"><input type="checkbox" ng-model="$ctrl.checkboxModel.contour" ng-change="$ctrl.updatePolygonStyle()"></span></div><div class="form-group" ng-if="$ctrl.mode === \'addtext\'"><label>Police</label><ui-select ng-model="$ctrl.fontChosen" ng-change="$ctrl.changeTextColor()" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez une police">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.fonts | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.mode === \'addtext\'"><label>Couleur</label><ui-select ng-model="$ctrl.fontColorChosen" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez une couleur">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.fontColors[$ctrl.fontChosen.color] | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div><div class="form-group" ng-if="$ctrl.mode === \'image\'"><label>Importer une image (SVG/JPG/PNG)</label><input onchange="angular.element(this).scope().$ctrl.importImage(this)" type="file" accept="image/svg+xml,image/png,image/jpeg"></div></form>');
 
   $templateCache.put('scripts/routes/edit/aside_interaction_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-hand-pointer-o" aria-hidden="true"></span> Interaction</h3><form class="row"><uib-tabset active="active"><uib-tab heading="Filtres"><uib-accordion close-others="false" class="col-xs-12" ng-if="$ctrl.interactions.getFilters().length > 0"><uib-accordion-group heading="{{filter.name}}" ng-repeat="filter in $ctrl.interactions.getFilters() track by filter.id"><table class="table table-hover"><tbody><tr><th>Nom</th><td><input type="text" ng-model="filter.name"></td></tr><tr><th>Type</th><td><select ng-model="filter.gesture"><option value="tap">tap</option><option value="double_tap">double_tap</option></select></td></tr><tr><th>Protocole</th><td><select ng-model="filter.protocol"><option>tts</option><option>mp3</option></select></td></tr></tbody></table><button class="btn btn-danger btn-block" ng-click="$ctrl.interactions.removeCategory(filter.id)">Supprimer filtre</button><table class="table table-hover" ng-if="$ctrl.interactions.getInteractions().length > 0"><thead><tr><th>Point</th><th>Valeur</th></tr></thead><tbody><tr ng-repeat="interaction in $ctrl.interactions.getInteractions()"><td>{{interaction.id}}</td><td><input type="text" ng-model="interaction.filters[filter.id]" ng-if="filter.protocol===\'tts\'" style="width:100%"> <input type="file" ng-model="interaction.filters[filter.id]" ng-if="filter.protocol===\'mp3\'" style="width:100%"></td></tr></tbody></table></uib-accordion-group><uib-accordion-group panel-class="panel-primary"><uib-accordion-heading>Créer un nouveau filtre</uib-accordion-heading><table class="table table-hover"><tbody><tr><th>Nom</th><td><input type="text" ng-model="name"></td></tr><tr><th>Type</th><td><select ng-model="gesture"><option value="tap">tap</option><option value="double_tap">double_tap</option></select></td></tr><tr><th>Protocole</th><td><select ng-model="protocol"><option>tts</option><option>mp3</option></select></td></tr></tbody></table><button class="btn btn-primary btn-block" ng-click="$ctrl.interactions.addFilter(name, gesture, protocol)"><span class="fa fa-plus"></span> Créer filtre</button></uib-accordion-group></uib-accordion></uib-tab><uib-tab heading="Interactions"><div ng-if="$ctrl.interactions.getInteractions().length === 0" class="col-xs-12">Pas encore d\'interaction définie !</div><uib-accordion close-others="false" class="col-xs-12" ng-if="$ctrl.interactions.getInteractions().length > 0"><uib-accordion-group heading="{{interaction.id}}" ng-repeat="interaction in $ctrl.interactions.getInteractions() track by interaction.id"><table class="table table-hover"><thead><tr><th>Filtres</th><th>Valeur</th></tr></thead><tbody><tr ng-repeat="filter in $ctrl.interactions.getFilters()"><td>{{filter.name}}</td><td><input type="text" ng-model="interaction.filters[filter.id]" ng-if="filter.protocol===\'tts\'" style="width:100%"> <input type="file" ng-model="interaction.filters[filter.id]" ng-if="filter.protocol===\'mp3\'" style="width:100%"></td></tr></tbody></table></uib-accordion-group></uib-accordion></uib-tab></uib-tabset></form><div ng-if="$ctrl.isAddressVisible" ng-include="\'scripts/routes/edit/aside_map_address.html\'"></div>');
 
@@ -9233,8 +9333,6 @@ angular.module('accessimapEditeurDerApp').run(['$templateCache', function($templ
   $templateCache.put('scripts/routes/edit/modalchangepoint.html', '<div class="modal fade" id="changePointModal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">Choisissez un motif pour cet objet</h4></div><div class="modal-body"><ui-select ng-model="$ctrl.pointChosen" ng-change="$ctrl.updatePoint($ctrl.pointChosen)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.pointChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div><div ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></div></ui-select-choices></ui-select></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button></div></div></div></div>');
 
   $templateCache.put('scripts/routes/edit/template.html', '<aside class="col-lg-3 col-md-4 col-sm-4 right-side"><div class="aside-content row" ng-include="\'scripts/routes/edit/aside.html\'"></div></aside><main ng-init="$ctrl.init()"><div id="workspace" ng-show="$ctrl.isWorkspaceVisible"></div><div id="legend" ng-show="$ctrl.isLegendVisible"></div><div id="pattern"></div></main><div ng-include="\'scripts/routes/edit/modalchangecolor.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangepattern.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangearrows.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangepoint.html\'"></div>');
-
-  $templateCache.put('scripts/routes/home/template.html', '<div class="container jumbotron"><h3>Ajoutez de l\'interaction à vos dessins en reliefs (DER)</h3><h3>Configurez et personnalisez facilement vos documents avant de les imprimer !</h3><br><form class="form-inline"><div class="form-group"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="$ctrl.goToEdit()">Créer un nouveau DER</button></div></form></div>');
 
 }]);
 

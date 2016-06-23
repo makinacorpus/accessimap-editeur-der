@@ -55,7 +55,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service used for the &#39;EditController&#39;, and the &#39;edit&#39; view",
-      "keywords": "_errorcallback _successcallback accessimapediteurderapp address allow angle api append appendpdf area argument background callback called center choose clever container d3 data dataurl defined defsservice degree display displaying draw drawing drawingformat drawingservice edit editcontroller editservice elements error events eventsservice export exportservice features finished format function functions future image importservice init initial initialize insert insertosmdata interactionservice jpg layer legend legendformat legendservice link map mapleaflet mapservice method move nominatim occured optional pan passed pdf png printing promise provide query query_list resetview result retrieve retrieved rotable rotate rotatemap rotation search searchanddisplayaddress service services settingsservice setview specific successful user utilservice version view viewreset zoom"
+      "keywords": "_errorcallback _successcallback accessimapediteurderapp add address allow angle api append appendpdf area argument background callback called center choose clever container current d3 data dataurl defined defsservice degree display displaying draw drawing drawingformat drawingservice edit editcontroller editservice element elements error events export exportservice features file finished format function functions future group image import importbackground imported importimage importservice init initial initialize input insert insertosmdata interactionservice jpg layer legend legendformat legendservice link map mapleaflet mapservice method modeservice move nominatim occured optional pan passed pdf png printing promise provide query query_list resetview result retrieve retrieved rotable rotate rotatemap rotation search searchanddisplayaddress service services settingsservice setview specific successful uploaded user utilservice version view viewreset zoom"
     },
     {
       "section": "api",
@@ -65,15 +65,6 @@ NG_DOCS={
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "",
       "keywords": "7px accessimapediteurderapp add api area bigger bounding box calcemptycomfort calculate comfort d3 dom element empty emptycomfortservice extend extremities feature method object original path rect representing return service text"
-    },
-    {
-      "section": "api",
-      "id": "accessimapEditeurDerApp.EventsService",
-      "shortName": "accessimapEditeurDerApp.EventsService",
-      "type": "service",
-      "moduleName": "accessimapEditeurDerApp",
-      "shortDescription": "Manage events (map, d3) in the editor",
-      "keywords": "_errorcallback _successcallback accessimapediteurderapp add allowing api argument callback called click context css cursor d3 data disable disableaddpoi edit editor enable enableaddpoi enabledefaultmode enableselectmode error events eventsservice function item items manage map menu method mode occured osm passed poi resetting retrieve retrieved select service user"
     },
     {
       "section": "api",
@@ -200,6 +191,15 @@ NG_DOCS={
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service used for initializing leaflet maps",
       "keywords": "accessimapediteurderapp add addclicklistener adddoubleclicklistener addmousemovelistener alias api appearance apply array calc change changecursor changes click container coordinates crosshair css current cursor d3 default doubleclick event events example executed fired function geographical getbounds getmap getter height html http https init initializing latitude latlngbounds layer leaflet library listener listeners longitude map map-getbounds maps mapservice method mousemove mozilla org point project projected projections projectpoint property remove removeeventlistener removeeventlisteners representing reset resetcursor resizefunction retrievedata returns searchservice selector service settingsservice siblings size space string style substracting view"
+    },
+    {
+      "section": "api",
+      "id": "accessimapEditeurDerApp.ModeService",
+      "shortName": "accessimapEditeurDerApp.ModeService",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "Manage events (map, d3) in the editor",
+      "keywords": "_errorcallback _successcallback accessimapediteurderapp add allowing api argument callback called click context css cursor d3 data disable disableaddpoi edit editor enable enableaddpoi enabledefaultmode enableselectmode error events function item items manage map menu method mode modeservice occured osm passed poi resetting retrieve retrieved select service user"
     },
     {
       "section": "api",

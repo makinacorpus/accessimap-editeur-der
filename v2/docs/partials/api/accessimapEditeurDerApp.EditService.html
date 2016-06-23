@@ -31,13 +31,24 @@
 </li>
 <li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.ImportService">ImportService</a></code>
 </li>
-<li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.EventsService">EventsService</a></code>
+<li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.ModeService">ModeService</a></code>
 </li>
 </ul>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_appendpdf">appendPdf(image)</h3>
 <div class="appendpdf"><div class="appendpdf-page"><p>Append the first page of a pdf in the background layer</p>
 </div><h5 id="methods_appendpdf_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>image</td><td><a href="" class="label type-hint type-hint-dataurl">dataUrl</a></td><td><div class="appendpdf-page"><p>dataUrl (could be png, jpg, ...) to insert in the background</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_importbackground">importBackground(element)</h3>
+<div class="importbackground"><div class="importbackground-page"><p>Import a file (SVG/PNG/JPEG/PDF) as a background of the current drawing</p>
+<p>Add it in the background layer</p>
+</div><h5 id="methods_importbackground_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>element</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="importbackground-page"><p>Input file to be uploaded &amp; imported in the background</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_importimage">importImage(element)</h3>
+<div class="importimage"><div class="importimage-page"><p>Import an image file (SVG/PNG/JPEG) in the drawing layer, image group</p>
+</div><h5 id="methods_importimage_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>element</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="importimage-page"><p>Input file to be uploaded &amp; imported in the drawing layer</p>
 </div></td></tr></tbody></table></div>
 </li>
 <li><h3 id="methods_init">init(drawingFormat, legendFormat)</h3>
