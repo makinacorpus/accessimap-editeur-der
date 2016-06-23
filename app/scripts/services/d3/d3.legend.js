@@ -14,6 +14,7 @@
     function LegendService(SettingsService) {
 
         this.initLegend        = initLegend;
+        this.getSize           = getSize;
         this.showFontBraille   = showFontBraille;
         this.hideFontBraille   = hideFontBraille;
         this.addToLegend       = addToLegend;
@@ -322,6 +323,22 @@
                     return query.name;
                 });
         }
+
+        /**
+         * @ngdoc method
+         * @name  getSize
+         * @methodOf accessimapEditeurDerApp.LegendService
+         *
+         * @description
+         * return the size of the layer, representing the size of the legend
+         * 
+         * @return {Object} 
+         * {width, height}
+         * 
+         */
+        function getSize() {
+            return {width: _width, height: _height}
+        }    
 
     }
 

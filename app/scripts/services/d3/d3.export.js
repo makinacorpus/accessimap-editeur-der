@@ -35,15 +35,15 @@
                 interactionsContentXML = InteractionService.getXMLExport(),
                 titleDrawing           = document.createElementNS("http://www.w3.org/2000/svg", "title"),
 
-            zip        = new JSZip(),
-            exportNode = drawingNode ? drawingNode.cloneNode(true) : null,
-            size       = DrawingService.layers.overlay.getSize() ,
-            svgDrawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            zip         = new JSZip(),
+            exportNode  = drawingNode ? drawingNode.cloneNode(true) : null,
+            sizeDrawing = DrawingService.layers.overlay.getSize() ,
+            svgDrawing  = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 
             d3.select(svgDrawing)
                 .attr('data-version', exportVersion)
-                .attr('width', size.width)
-                .attr('height', size.height)
+                .attr('width', sizeDrawing.width)
+                .attr('height', sizeDrawing.height)
                 .style('overflow', 'visible')
 
             // patterns
@@ -56,7 +56,7 @@
 
             d3.select(svgDrawing).attr('viewBox', translateOverlayArray.x + ' ' 
                                                 + translateOverlayArray.y + ' ' 
-                                                + size.width + ' ' + size.height)
+                                                + sizeDrawing.width + ' ' + sizeDrawing.height)
             
             function filterDOM(node) {
                 return (node.tagName !== 'svg')
@@ -64,7 +64,7 @@
             
             // TODO: union promises with a Promise.all to maintain a sequence programmation
             $(node).css('transform', translateReverseOverlayPx)
-            domtoimage.toPng(node, {width: size.width, height: size.height, filter: filterDOM})
+            domtoimage.toPng(node, {width: sizeDrawing.width, height: sizeDrawing.height, filter: filterDOM})
                 .then(function(dataUrl) { 
                     
                     // save the image in a file & add it to the current zip
@@ -74,8 +74,8 @@
                     // add the current image to a svg:image element
                     var image = document.createElementNS("http://www.w3.org/2000/svg", "image");
                     d3.select(image)
-                        .attr('width', size.width)
-                        .attr('height', size.height)
+                        .attr('width', sizeDrawing.width)
+                        .attr('height', sizeDrawing.height)
                         .attr('x', translateOverlayArray.x)
                         .attr('y', translateOverlayArray.y)
                         .attr('xlink:href', dataUrl)
@@ -126,9 +126,17 @@
                     if (legendNode) {
 
                         var svgLegend = document.createElementNS("http://www.w3.org/2000/svg", "svg"),
+                            sizeLegend = LegendService.getSize(),
                             legendNodeClone = legendNode.cloneNode(true);
 
                         DefsService.createDefs(d3.select(svgLegend))
+
+                        d3.select(svgLegend)
+                            .attr('data-version', exportVersion)
+                            .attr('width', sizeLegend.width)
+                            .attr('height', sizeLegend.height)
+                            .attr('viewBox', '0 0 ' + sizeLegend.width + ' ' + sizeLegend.height)
+                            .style('overflow', 'visible')
 
                         svgLegend.appendChild(legendNodeClone);
 
@@ -148,7 +156,7 @@
                         $(node).css('transform', transformStyle)
                     }
 
-                    domtoimage.toPng(node, {width: size.width, height: size.height})
+                    domtoimage.toPng(node, {width: sizeDrawing.width, height: sizeDrawing.height})
                         .then(function(dataUrl) { 
 
                             initNodeState();
