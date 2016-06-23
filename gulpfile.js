@@ -152,7 +152,7 @@ gulp.task('test', function(done) {
     new karmaRunner({
         configFile: config.karma.configFile,
         singleRun: true,
-        reporters: ['progress', 'coverage'],
+        reporters: ['progress', 'coverage', 'coveralls'],
     }, done).start();
 })
 

@@ -69,8 +69,8 @@ module.exports = function(config) {
         reporters: ['coverage', 'coveralls'],
 
         preprocessors: {
-            'app/scripts/app.js': ['coverage'],
-            'app/scripts/{commons,components,views,filters}/**/*.js': ['coverage']
+            'app/scripts/app.js': ['coverage', 'coveralls'],
+            'app/scripts/{components,routes,filters,services}/**/*.js': ['coverage', 'coveralls']
         },
 
         coverageReporter: {
