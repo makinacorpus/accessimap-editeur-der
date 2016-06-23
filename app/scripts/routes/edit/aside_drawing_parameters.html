@@ -14,15 +14,17 @@
     <button 
         ng-click="$ctrl.enableDrawingMode('default')" 
         ng-class="{ 'active' : $ctrl.mode === 'default' }" 
-        class="btn btn-default active">
-        <span class="fa fa-hand-paper-o" aria-hidden="true"></span> 
+        class="btn btn-default active"
+        aria-label="Naviguer" title="Naviguer">
+        <span class="fa fa-hand-paper-o" aria-hidden="true" ></span> 
     </button>
 
     <button 
         ng-click="$ctrl.enableDrawingMode('select')" 
         ng-class="{ 'active' : $ctrl.mode === 'select' }" 
-        class="btn btn-default">
-        <span class="fa fa-mouse-pointer" aria-hidden="true"></span> 
+        class="btn btn-default"
+        aria-label="Editer" title="Editer">
+        <span class="fa fa-mouse-pointer" aria-hidden="true" ></span> 
     </button>
 
     <!-- <button 
@@ -33,7 +35,8 @@
         Annuler
     </button>
      -->
-    <button ng-click="$ctrl.resetView()" class="btn btn-default">
+    <button ng-click="$ctrl.resetView()" class="btn btn-default"
+        aria-label="Centrer le dessin" title="Centrer le dessin">
         <span class="fa fa-arrows-alt" aria-hidden="true"></span> 
     </button>
 </div>
@@ -42,49 +45,56 @@
    <button 
         ng-click="$ctrl.enableDrawingMode('point')" 
         ng-class="{ 'active' : $ctrl.mode === 'point' }" 
-        class="btn btn-default">
+        class="btn btn-default"
+        aria-label="Point" title="Point">
         <img src="assets/icons/draw_point.png" width="20px" height="20px"/>
     </button>
 
     <button 
         ng-click="$ctrl.enableDrawingMode('line')" 
         ng-class="{ 'active' : $ctrl.mode === 'line' }" 
-        class="btn btn-default">
+        class="btn btn-default"
+        aria-label="Ligne (clic droit pour finir)" title="Ligne (clic droit pour finir)">
         <img src="assets/icons/draw_polygon.png" width="20px" height="20px"/>
     </button>
 
     <button 
         ng-click="$ctrl.enableDrawingMode('circle')" 
         ng-class="{ 'active' : $ctrl.mode === 'circle' }" 
-        class="btn btn-default">
+        class="btn btn-default"
+        aria-label="Ellipse / Cercle" title="Ellipse / Cercle">
         <img src="assets/icons/draw_ellipse.png" width="20px" height="20px"/>
     </button>
 
     <button 
         ng-click="$ctrl.enableDrawingMode('triangle')" 
         ng-class="{ 'active' : $ctrl.mode === 'triangle' }" 
-        class="btn btn-default">
+        class="btn btn-default"
+        aria-label="Triangle" title="Triangle">
         <img src="assets/icons/draw_triangle.png" width="20px" height="20px"/>
     </button>
 
     <button 
         ng-click="$ctrl.enableDrawingMode('square')" 
         ng-class="{ 'active' : $ctrl.mode === 'square' }" 
-        class="btn btn-default">
+        class="btn btn-default"
+        aria-label="Rectangle / Carré" title="Rectangle / Carré">
         <img src="assets/icons/draw_rectangle.png" width="20px" height="20px"/>
     </button>
 
     <button 
         ng-click="$ctrl.enableDrawingMode('polygon')" 
         ng-class="{ 'active' : $ctrl.mode === 'polygon' }" 
-        class="btn btn-default">
+        class="btn btn-default"
+        aria-label="Polygone (clic droit pour finir)" title="Polygone (clic droit pour finir)">
         <img src="assets/icons/draw_polygon_45.png" width="20px" height="20px"/>
     </button>
     
     <button 
         ng-click="$ctrl.enableDrawingMode('addtext')" 
         ng-class="{ 'active' : $ctrl.mode === 'addtext' }" 
-        class="btn btn-default">
+        class="btn btn-default"
+        aria-label="Zone de texte" title="Zone de texte">
         <img src="assets/icons/draw_text.png" width="20px" height="20px"/>
     </button>
 </div>
