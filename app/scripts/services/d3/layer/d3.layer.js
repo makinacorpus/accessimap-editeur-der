@@ -16,24 +16,22 @@
     function LayerService(LayerBackgroundService, LayerOverlayService, LayerGeoJSONService, LayerDrawingService) { 
  
         // layers functions 
-        this.createLayers     = createLayers; 
-         
-        this.geojson          = LayerGeoJSONService; 
-        this.geojson.getLayer = getGeoJSONLayer; 
-        this.geojson.getZoom  = getGeoJSONZoom; 
-         
-        this.overlay          = LayerOverlayService; 
-        this.overlay.getLayer = getOverlayLayer; 
-        this.overlay.getZoom  = getOverlayZoom; 
- 
-        this.drawing = { 
-            getLayer : getDrawingLayer, 
-            getZoom  : getDrawingZoom, 
-        } 
- 
-        this.background = LayerBackgroundService; 
+        this.createLayers        = createLayers; 
+        
+        this.geojson             = LayerGeoJSONService; 
+        this.geojson.getLayer    = getGeoJSONLayer; 
+        this.geojson.getZoom     = getGeoJSONZoom; 
+        
+        this.overlay             = LayerOverlayService; 
+        this.overlay.getLayer    = getOverlayLayer; 
+        this.overlay.getZoom     = getOverlayZoom; 
+        
+        this.drawing             = LayerDrawingService;
+        this.drawing.getLayer    = getDrawingLayer;
+        this.drawing.getZoom     = getDrawingZoom;
+        
+        this.background          = LayerBackgroundService; 
         this.background.getLayer = getBackgroundLayer; 
- 
  
         var _elements = { geojson: {}, drawing: {}, overlay: {}, background: {}}; 
         this._elements = _elements; 

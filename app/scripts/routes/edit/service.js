@@ -12,7 +12,7 @@
  * @requires accessimapEditeurDerApp.ExportService
  * @requires accessimapEditeurDerApp.UtilService
  * @requires accessimapEditeurDerApp.ImportService
- * @requires accessimapEditeurDerApp.EventsService
+ * @requires accessimapEditeurDerApp.ModeService
  * 
  * @description
  * Service used for the 'EditController', and the 'edit' view
@@ -26,20 +26,20 @@
     'use strict';
 
     function EditService($q, SettingsService, MapService, DrawingService, LegendService, 
-        DefsService, InteractionService, ExportService, UtilService, ImportService, FeatureService, EventsService) {
+        DefsService, InteractionService, ExportService, UtilService, ImportService, FeatureService, ModeService) {
 
         this.init          = init;
         this.settings      = SettingsService;
         this.featureIcon   = DrawingService.toolbox.featureIcon;
         this.insertOSMData = insertOSMData;
 
-        this.enableAddPOI  = EventsService.enableAddPOI;
-        this.disableAddPOI = EventsService.disableAddPOI;
+        this.enableAddPOI  = ModeService.enableAddPOI;
+        this.disableAddPOI = ModeService.disableAddPOI;
 
         // Drawing services
         // TODO : reset action has to work correctly for event...
         // we have to use map event or d3 event... not both (mea culpa)
-        this.resetState    = EventsService.resetState;
+        this.resetState    = ModeService.resetState;
 
         // Toolbox
         this.drawPoint                     = DrawingService.toolbox.drawPoint;
@@ -54,14 +54,15 @@
         this.isUndoAvailable               = FeatureService.isUndoAvailable;
         this.undo                          = FeatureService.undo;
 
-        this.enableDefaultMode             = EventsService.enableDefaultMode;
-        this.enableSelectMode              = EventsService.enableSelectMode;
-        this.enablePointMode               = EventsService.enablePointMode;
-        this.enableCircleMode              = EventsService.enableCircleMode;
-        this.enableSquareMode              = EventsService.enableSquareMode;
-        this.enableTriangleMode            = EventsService.enableTriangleMode;
-        this.enableLineOrPolygonMode       = EventsService.enableLineOrPolygonMode;
-        this.enableTextMode                = EventsService.enableTextMode;
+        this.enableDefaultMode             = ModeService.enableDefaultMode;
+        this.enableSelectMode              = ModeService.enableSelectMode;
+        this.enablePointMode               = ModeService.enablePointMode;
+        this.enableCircleMode              = ModeService.enableCircleMode;
+        this.enableSquareMode              = ModeService.enableSquareMode;
+        this.enableTriangleMode            = ModeService.enableTriangleMode;
+        this.enableLineOrPolygonMode       = ModeService.enableLineOrPolygonMode;
+        this.enableTextMode                = ModeService.enableTextMode;
+        this.enableImageMode               = ModeService.enableImageMode;
 
         this.exportData                    = function(model) {
             var deferred = $q.defer();
@@ -110,7 +111,8 @@
         this.showFontBraille     = LegendService.showFontBraille;
         this.hideFontBraille     = LegendService.hideFontBraille;
         
-        this.uploadFile          = uploadFile;
+        this.importBackground    = importBackground;
+        this.importImage         = importImage;
         this.appendSvg           = appendSvg;
         this.importDER           = importDER;
 
@@ -274,7 +276,7 @@
                                     SettingsService.ratioPixelPoint);
 
             FeatureService.init(selDrawing, projDrawing, MapService)
-            EventsService.init(projDrawing)
+            ModeService.init(projDrawing)
 
         }
 
@@ -408,9 +410,20 @@
             return deferred.promise;
         }
 
-
-        
-        function uploadFile(element) {
+        /**
+         * @ngdoc method
+         * @name  importBackground
+         * @methodOf accessimapEditeurDerApp.EditService
+         *
+         * @description 
+         * Import a file (SVG/PNG/JPEG/PDF) as a background of the current drawing
+         *
+         * Add it in the background layer
+         * 
+         * @param  {Object} element
+         * Input file to be uploaded & imported in the background
+         */
+        function importBackground(element) {
 
             UtilService.uploadFile(element)
                 .then(function(data) {
@@ -433,7 +446,39 @@
                     }
                 })
 
-        };
+        }
+
+        /**
+         * @ngdoc method
+         * @name  importImage
+         * @methodOf accessimapEditeurDerApp.EditService
+         *
+         * @description 
+         * Import an image file (SVG/PNG/JPEG) in the drawing layer, image group
+         *
+         * @param  {Object} element
+         * Input file to be uploaded & imported in the drawing layer
+         */
+        function importImage(element) {
+
+            UtilService.uploadFile(element)
+                .then(function(data) {
+                    switch (data.type) {
+                        case 'image/svg+xml':
+                        case 'image/png':
+                        case 'image/jpeg':
+                            DrawingService.layers.drawing.appendImage(data.dataUrl, 
+                                                                        MapService.getMap().getSize(), 
+                                                                        MapService.getMap().getPixelOrigin(), 
+                                                                        MapService.getMap().getPixelBounds().min);
+                            break;
+
+                        default:
+                            console.error('Mauvais format');
+                    }
+                })
+
+        }
 
         /**
          * @ngdoc method
@@ -601,7 +646,7 @@
 
                                             ImportService.importDrawing(svgElement)
                                             // DrawingService.toolbox.addRadialMenus();
-                                            EventsService.enableDefaultMode();
+                                            ModeService.enableDefaultMode();
                                             deferred.resolve(model);
                                             
                                         })
@@ -645,7 +690,7 @@
                             'UtilService',
                             'ImportService',
                             'FeatureService',
-                            'EventsService',
+                            'ModeService',
                             ];
 
 })();

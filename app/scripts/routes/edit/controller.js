@@ -164,7 +164,8 @@
         
         $ctrl.mapCategories       = EditService.settings.mapCategories;
         
-        $ctrl.uploadFile          = EditService.uploadFile;
+        $ctrl.importBackground    = EditService.importBackground;
+        $ctrl.importImage         = EditService.importImage;
         $ctrl.appendSvg           = EditService.appendSvg;
         
         $ctrl.importDER = function(file) {
@@ -257,18 +258,21 @@
             $ctrl.isFeatureCreationVisible   = false;
             $ctrl.isFeatureManagementVisible = false;
         }
+
         $ctrl.displayGetDataFromOSMForm = function() {
             $ctrl.isAddressVisible           = false;
             $ctrl.isPoiCreationVisible       = false;
             $ctrl.isFeatureCreationVisible   = true;
             $ctrl.isFeatureManagementVisible = false;
         }
+
         $ctrl.insertOSMData = function()  {
             EditService.insertOSMData($ctrl.queryChosen, 
                                         ToasterService.warning, 
                                         ToasterService.error, 
                                         getDrawingParameters)
         }
+
         $ctrl.displayFeatureManagement = function() {
             $ctrl.isAddressVisible           = false;
             $ctrl.isPoiCreationVisible       = false;
@@ -443,6 +447,10 @@
 
                 case 'addtext':
                     EditService.enableTextMode(getDrawingParameters);
+                    break;
+
+                case 'image':
+                    EditService.enableImageMode(getDrawingParameters);
                     break;
             }
 

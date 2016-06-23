@@ -18,6 +18,7 @@
             _g;
 
         this.createLayer = createLayer;
+        this.appendImage = appendImage;
 
         function createLayer(target) {
             
@@ -37,11 +38,50 @@
          * @param  {Object} target  [description]
          */
         function createDrawing() {
+            _g.append('g').attr('data-name', 'images-layer');
             _g.append('g').attr('data-name', 'polygons-layer');
             _g.append('g').attr('data-name', 'lines-layer');
             _g.append('g').attr('data-name', 'points-layer');
             _g.append('g').attr('data-name', 'texts-layer');
-        };
+        }
+
+        function appendImage(dataUrl, size, pixelOrigin, pixelBoundMin) {
+
+            var img = new Image();
+
+            img.src = dataUrl;
+            img.onload = function() { // need to load the image to obtain width & height
+                var width = this.width,
+                    height = this.height,
+                    ratio = height / width,
+
+                // calculate coordinates
+                x = 
+                    // to get x, we calc the space between left and the overlay
+                    ( ( size.x - width) / 2 ) 
+                    // and we substract the difference between the original point of the map 
+                    // and the actual bounding topleft point
+                    - (pixelOrigin.x - pixelBoundMin.x),
+
+                y = 
+                    // to get y, we calc the space between the middle axe and the top of the overlay
+                    height / -2 
+                    // and we substract the difference between the original point of the map
+                    // and the actual bounding topleft point
+                    - (pixelOrigin.y - pixelBoundMin.y - size.y / 2);
+
+                _g.select('[data-name="images-layer"]')
+                    .append('image')
+                    .attr('x', x)
+                    .attr('y', y)
+                    .attr('width', width)
+                    .attr('height', height)
+                    .attr('xlink:href', dataUrl);
+
+            };
+
+        }
+
 
     }
 

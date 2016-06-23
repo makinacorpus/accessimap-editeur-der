@@ -61,7 +61,7 @@
                 _defs.call(SettingsService.POLYGON_STYLES[value]);
             });
 
-        };
+        }
 
     }
 

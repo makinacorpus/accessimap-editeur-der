@@ -97,6 +97,14 @@
         aria-label="Zone de texte" title="Zone de texte">
         <img src="assets/icons/draw_text.png" width="20px" height="20px"/>
     </button>
+
+    <button 
+        ng-click="$ctrl.enableDrawingMode('image')" 
+        ng-class="{ 'active' : $ctrl.mode === 'image' }" 
+        class="btn btn-default"
+        aria-label="Importer une image" title="Importer une image">
+        <img src="assets/icons/image.png" width="20px" height="20px"/>
+    </button>
 </div>
 
 <form>
@@ -107,7 +115,7 @@
 
     <div 
         class="form-group"
-        ng-if="$ctrl.mode !== 'default' && $ctrl.mode !== '' && $ctrl.mode !== 'text'">
+        ng-if="$ctrl.mode !== 'default' && $ctrl.mode !== '' && $ctrl.mode !== 'text' && $ctrl.mode !== 'image'">
         <label>Style</label>
         <ui-select 
             ng-model="$ctrl.styleChosen" 
@@ -194,5 +202,17 @@
 
         </ui-select>
     </div>
+
+    <div 
+        class="form-group"
+        ng-if="$ctrl.mode === 'image'" >
+        <label>Importer une image (SVG/JPG/PNG)</label>
+        <!-- http://stackoverflow.com/questions/17922557/angularjs-how-to-check-for-changes-in-file-input-fields -->
+        <input onchange="angular.element(this).scope().$ctrl.importImage(this)" 
+            type="file" 
+            accept="image/svg+xml,image/png,image/jpeg" />
+    </div>
+
+
 
 </form>

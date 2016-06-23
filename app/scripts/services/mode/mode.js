@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name accessimapEditeurDerApp.EventsService
+ * @name accessimapEditeurDerApp.ModeService
  * 
  * @description
  * Manage events (map, d3) in the editor
@@ -9,7 +9,7 @@
 (function() {
     'use strict';
 
-    function EventsService(MapService, DrawingService, SettingsService, SelectPathService) {
+    function ModeService(MapService, DrawingService, SettingsService, SelectPathService) {
 
         this.init                    = init;
 
@@ -23,6 +23,7 @@
         this.enableSquareMode        = enableSquareMode;
         this.enableTriangleMode      = enableTriangleMode;
         this.enableTextMode          = enableTextMode;
+        this.enableImageMode         = enableImageMode;
         this.enableLineOrPolygonMode = enableLineOrPolygonMode;
         this.enableAddPOI            = enableAddPOI;
         this.disableAddPOI           = disableAddPOI;
@@ -67,7 +68,7 @@
         /**
          * @ngdoc method
          * @name  enableSelectMode
-         * @methodOf accessimapEditeurDerApp.EventsService
+         * @methodOf accessimapEditeurDerApp.ModeService
          *
          * @description
          
@@ -92,7 +93,7 @@
         /**
          * @ngdoc method
          * @name  enableDefaultMode
-         * @methodOf accessimapEditeurDerApp.EventsService
+         * @methodOf accessimapEditeurDerApp.ModeService
          *
          * @description
          * 
@@ -317,10 +318,16 @@
 
         }
 
+        function enableImageMode(getDrawingParameter) {
+
+            initMode();
+
+        }
+
         /**
          * @ngdoc method
          * @name  enableAddPOI
-         * @methodOf accessimapEditeurDerApp.EventsService
+         * @methodOf accessimapEditeurDerApp.ModeService
          * 
          * @description 
          * Enable the 'Add POI' mode, 
@@ -380,7 +387,7 @@
         /**
          * @ngdoc method
          * @name  disableAddPOI
-         * @methodOf accessimapEditeurDerApp.EventsService
+         * @methodOf accessimapEditeurDerApp.ModeService
          * 
          * @description 
          * Disable the 'Add POI' mode by resetting CSS cursor.
@@ -392,8 +399,8 @@
 
     }
 
-    angular.module(moduleApp).service('EventsService', EventsService);
+    angular.module(moduleApp).service('ModeService', ModeService);
 
-    EventsService.$inject = ['MapService', 'DrawingService', 'SettingsService', 'SelectPathService'];
+    ModeService.$inject = ['MapService', 'DrawingService', 'SettingsService', 'SelectPathService'];
 
 })();

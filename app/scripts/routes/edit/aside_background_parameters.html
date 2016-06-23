@@ -54,7 +54,7 @@
     <div class="form-group col-xs-12">
         <label>Importer un fond (SVG/JPG/PNG/PDF)</label>
         <!-- http://stackoverflow.com/questions/17922557/angularjs-how-to-check-for-changes-in-file-input-fields -->
-        <input onchange="angular.element(this).scope().$ctrl.uploadFile(this)" 
+        <input onchange="angular.element(this).scope().$ctrl.importBackground(this)" 
             type="file" 
             accept="image/svg+xml,image/png,image/jpeg,application/pdf" />
     </div>

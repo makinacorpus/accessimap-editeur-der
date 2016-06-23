@@ -58,7 +58,8 @@ describe('Controller: EditController', function () {
         expect(EditController.rotateMap).toBeDefined();
         expect(EditController.changeDrawingFormat).toBeDefined();
         expect(EditController.changeLegendFormat).toBeDefined();
-        expect(EditController.uploadFile).toBeDefined();
+        expect(EditController.importBackground).toBeDefined();
+        expect(EditController.importImage).toBeDefined();
         expect(EditController.appendSvg).toBeDefined();
         expect(EditController.importDER).toBeDefined();
         expect(EditController.showMap).toBeDefined();
