@@ -199,7 +199,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service used for initializing leaflet maps",
-      "keywords": "accessimapediteurderapp add addclicklistener adddoubleclicklistener addmousemovelistener alias api appearance apply array calc change changecursor changes click container coordinates crosshair css current cursor d3 default doubleclick event events example executed fired function geographical getbounds getmap getter height html http https init initializing initmap latitude latlngbounds layer leaflet library listener listeners longitude map map-getbounds maps mapservice method mousemove mozilla org point project projected projections projectpoint property remove removeeventlistener removeeventlisteners representing reset resetcursor resizefunction retrievedata returns searchservice selector service settingsservice siblings size space string style substracting view"
+      "keywords": "accessimapediteurderapp add addclicklistener adddoubleclicklistener addmousemovelistener alias api appearance apply array calc change changecursor changes click container coordinates crosshair css current cursor d3 default doubleclick event events example executed fired function geographical getbounds getmap getter height html http https init initializing latitude latlngbounds layer leaflet library listener listeners longitude map map-getbounds maps mapservice method mousemove mozilla org point project projected projections projectpoint property remove removeeventlistener removeeventlisteners representing reset resetcursor resizefunction retrievedata returns searchservice selector service settingsservice siblings size space string style substracting view"
     },
     {
       "section": "api",
