@@ -85,6 +85,10 @@ div[ng-view] {
         background-color: #fff;
       }
     }
+
+    #workspace {
+      flex: 1;
+    }
   }
 
   aside.right-side {
