@@ -179,7 +179,13 @@
                 var currentStyle = SettingsService.STYLES[element.type].find(function(style, index, array) {
                     return style.id = element.style.id;
                 })
-                LegendService.addToLegend(element, currentStyle, index, element.color, {contour: element.contour})
+                LegendService.addItem(element.id, 
+                                      element.name, 
+                                      element.type, 
+                                      currentStyle, 
+                                      index, 
+                                      element.color, 
+                                      element.contour)
             })
         }
 

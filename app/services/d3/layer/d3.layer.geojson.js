@@ -180,11 +180,13 @@
                             styleChoices: styleChoices,
                             rotation: 0
                         };
-                        LegendService.addToLegend({'type': 'point', 'name': name, 'id': id}, 
-                                    styleChosen, 
-                                    _geojson.length, 
-                                    colorChosen, 
-                                    checkboxModel);
+                        LegendService.addItem(id, 
+                                              name, 
+                                              'point', 
+                                              styleChosen, 
+                                              _geojson.length, 
+                                              colorChosen, 
+                                              checkboxModel.contour);
                     } else {
                         obj = {
                             id: queryChosen.id,
@@ -197,8 +199,13 @@
                             contour: checkboxModel.contour,
                             color: colorChosen
                         };
-                        LegendService.addToLegend(queryChosen, styleChosen, _geojson.length, 
-                                                    colorChosen, checkboxModel);
+                        LegendService.addItem(queryChosen.id, 
+                                              queryChosen.name, 
+                                              queryChosen.type, 
+                                              styleChosen, 
+                                              _geojson.length, 
+                                              colorChosen, 
+                                              checkboxModel.contour);
                     }
                     _geojson.push(obj);
                     drawFeature(data, [obj], null, styleChosen, colorChosen, checkboxModel, rotationAngle);
@@ -533,6 +540,7 @@
                     .attr('stroke', null)
                     .attr('stroke-width', null);
             }
+
             angular.forEach(style.style, function(attribute) {
                 var k = attribute.k,
                     v = attribute.v;
@@ -566,6 +574,15 @@
                     return style.path(symbol.attr('cx'), symbol.attr('cy'), style.radius);
                 })
             }
+
+            // update the legend
+            LegendService.updateItem(id, 
+                                     _geojson[objectId].name, 
+                                     _geojson[objectId].type, 
+                                     _geojson[objectId].style, 
+                                     _geojson[objectId].color, 
+                                     _geojson[objectId].contour)
+
         }
  
         /**

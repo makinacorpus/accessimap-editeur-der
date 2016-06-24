@@ -292,7 +292,7 @@
         }
 
         function changeLegendFormat(format) {
-            LegendService.draw(SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint, 
+            LegendService.setFormat(SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint, 
                                SettingsService.FORMATS[format].height / SettingsService.ratioPixelPoint);
         }
 
