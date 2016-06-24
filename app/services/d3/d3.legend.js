@@ -70,8 +70,6 @@
             
             _svg = d3.select(id).append('svg');
 
-            frameGroup  = _svg.append('g');
-
             setFormat(_width, _height);
 
             showFontBraille();
@@ -148,9 +146,8 @@
             var w40 = _width - _margin,
                 h40 = _height - _margin;
 
-            frameGroup.selectAll("*").remove();
-
-            frameGroup.append('path')
+            frameGroup  = _svg.append('g')
+                .append('path')
                 .attr('d', function() {
                     return 'M ' + _margin + ' ' + _margin + ' L ' 
                                     + w40 
@@ -196,14 +193,13 @@
          * Add an item in the model, and redraw the legend
          * 
          */
-        function addItem(id, name, type, style, position, color, contour) {
+        function addItem(id, name, type, style, color, contour) {
 
             _model.push({
                 id       : id,
                 name     : name,
                 type     : type,
                 style    : style,
-                position : position,
                 color    : color, 
                 contour  : contour
             })
@@ -223,6 +219,10 @@
          */
         function removeItem(id) {
 
+            _model = _model.filter(function filterModel(currentItem, index) { 
+                return currentItem.id !== id 
+            })
+
             drawLegend();
         }
 
@@ -239,11 +239,11 @@
 
             var itemToUpdate = _model.find(function findItem(currentItem) { return currentItem.id === id })
 
+            itemToUpdate.name = name;
+            itemToUpdate.type = type;
             itemToUpdate.style = style;
             itemToUpdate.color = color;
             itemToUpdate.contour = contour;
-            itemToUpdate.name = name;
-            itemToUpdate.type = type;
 
             drawLegend();
         }
@@ -258,6 +258,8 @@
          * 
          */
         function drawLegend() {
+
+            _svg.selectAll('*').remove();
 
             createFramePath();
 
@@ -287,13 +289,13 @@
                                 return _margin * 2;
                             })
                             .attr('y1', function() {
-                                return ( item.position + 1 ) * 40 +_margin * 2;
+                                return ( index + 1 ) * 40 +_margin * 2;
                             })
                             .attr('x2', function() {
                                 return _margin * 2 + 40;
                             })
                             .attr('y2', function() {
-                                return ( item.position + 1 ) * 40 +_margin * 2;
+                                return ( index + 1 ) * 40 +_margin * 2;
                             })
                             .attr('class', 'symbol')
                             .attr('fill', 'red');
@@ -303,13 +305,13 @@
                                 return _margin * 2;
                             })
                             .attr('y1', function() {
-                                return ( item.position + 1 ) * 40 +_margin * 2;
+                                return ( index + 1 ) * 40 +_margin * 2;
                             })
                             .attr('x2', function() {
                                 return _margin * 2 + 40;
                             })
                             .attr('y2', function() {
-                                return ( item.position + 1 ) * 40 +_margin * 2;
+                                return ( index + 1 ) * 40 +_margin * 2;
                             })
                             .attr('class', 'symbol')
                             .attr('class', 'inner')
@@ -341,7 +343,7 @@
                     case 'point':
                         symbol = legendGroup.append('path')
                             .attr('cx',_margin * 2 + 20)
-                            .attr('cy', ( item.position + 1 ) * 40 +_margin * 2 + item.style.radius / 2)
+                            .attr('cy', ( index + 1 ) * 40 +_margin * 2 + item.style.radius / 2)
                             .attr('d', function() {
                                 var x = parseFloat(d3.select(this).attr('cx')),
                                     y = parseFloat(d3.select(this).attr('cy'));
@@ -358,7 +360,7 @@
                                 return _margin * 2;
                             })
                             .attr('y', function() {
-                                return ( item.position + 1 ) * 40 +_margin * 2 - 15;
+                                return ( index + 1 ) * 40 +_margin * 2 - 15;
                             })
                             .attr('width', function() {
                                 return 40;
@@ -396,7 +398,7 @@
                         return _margin * 2 + 50;
                     })
                     .attr('y', function() {
-                        return ( item.position + 1 )* 40 +_margin * 2 ;
+                        return ( index + 1 )* 40 +_margin * 2 ;
                     })
                     .attr('font-size', '35px')
                     .text(function() {

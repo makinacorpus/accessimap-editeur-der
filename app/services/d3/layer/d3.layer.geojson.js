@@ -184,7 +184,6 @@
                                               name, 
                                               'point', 
                                               styleChosen, 
-                                              _geojson.length, 
                                               colorChosen, 
                                               checkboxModel.contour);
                     } else {
@@ -203,7 +202,6 @@
                                               queryChosen.name, 
                                               queryChosen.type, 
                                               styleChosen, 
-                                              _geojson.length, 
                                               colorChosen, 
                                               checkboxModel.contour);
                     }
@@ -613,8 +611,8 @@
                 d3.select('.vector.inner#' + id).remove();
             }
 
-            // Remove object from legend
-            d3.select('.legend#' + id).remove();
+            LegendService.removeItem(id)
+
         }
 
         /**

@@ -183,7 +183,6 @@
                                       element.name, 
                                       element.type, 
                                       currentStyle, 
-                                      index, 
                                       element.color, 
                                       element.contour)
             })
