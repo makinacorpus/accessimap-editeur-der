@@ -25,8 +25,8 @@ module.exports = {
         configFile: __dirname + '/karma.conf.js'
     },
     js: {
-        globs: app + '**/*.js',
         dest: dist,
+        globs: app + '**/*.js',
         jscs: {
             filter: ['**/*.js', '!**/vendor/**'],
             reporter: require('jshint-stylish')

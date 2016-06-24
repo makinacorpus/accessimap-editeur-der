@@ -25,6 +25,7 @@
         this.enableTextMode          = enableTextMode;
         this.enableImageMode         = enableImageMode;
         this.enableLineOrPolygonMode = enableLineOrPolygonMode;
+
         this.enableAddPOI            = enableAddPOI;
         this.disableAddPOI           = disableAddPOI;
 
@@ -344,6 +345,7 @@
             initMode();
 
             MapService.changeCursor('crosshair');
+
             MapService.addEventListener([ 'click' ], function(e) {
 
                 var currentParameters = _currentParametersFn(),

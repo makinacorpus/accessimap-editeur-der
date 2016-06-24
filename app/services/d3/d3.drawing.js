@@ -3,7 +3,6 @@
  * @name accessimapEditeurDerApp.DrawingService
  * @requires accessimapEditeurDerApp.LayerService
  * @requires accessimapEditeurDerApp.ToolboxService
- * @requires accessimapEditeurDerApp.SettingsService
  * @description
  * Service providing drawing functions
  * Provide functions to 
@@ -13,7 +12,7 @@
 (function() {
     'use strict';
 
-    function DrawingService(LayerService, ToolboxService, SettingsService) {
+    function DrawingService(LayerService, ToolboxService) {
 
         this.initDrawing = initDrawing;
         
@@ -60,8 +59,6 @@
          * @param {Object} style 
          * SettingsService.STYLES object
          * 
-         * @param {Object} color 
-         * SettingsService.COLORS object
          */
         function updatePoint(style) {
 
@@ -89,6 +86,6 @@
 
     angular.module(moduleApp).service('DrawingService', DrawingService);
 
-    DrawingService.$inject = ['LayerService', 'ToolboxService', 'SettingsService'];
+    DrawingService.$inject = ['LayerService', 'ToolboxService'];
 
 })();

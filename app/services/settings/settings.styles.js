@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    function SettingsStyles (SVGService) {
+    function SettingsStyles(SVGService) {
 
         var POLYGON_STYLES = {
             'bighash': textures.lines().id('bighash').orientation('vertical'),
