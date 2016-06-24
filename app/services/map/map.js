@@ -347,21 +347,25 @@
         }
 
         function showMapLayer(layerId) {
-            _isMapVisible = true;
-            layerControl.addTo(map)
-            if (layerId === layerOSMId) {
-                map.addLayer(layerOSM);
-            } else if (layerId === layerMapBoxId) {
-                map.addLayer(layerMapBox)
-            } else {
-                map.addLayer(currentLayer);
+            if (! _isMapVisible) {
+                _isMapVisible = true;
+                layerControl.addTo(map)
+                if (layerId === layerOSMId) {
+                    map.addLayer(layerOSM);
+                } else if (layerId === layerMapBoxId) {
+                    map.addLayer(layerMapBox)
+                } else {
+                    map.addLayer(currentLayer);
+                }
             }
         }
 
         function hideMapLayer() {
-            _isMapVisible = false;
-            layerControl.removeFrom(map)
-            map.removeLayer(currentLayer);
+            if (_isMapVisible) {
+                _isMapVisible = false;
+                layerControl.removeFrom(map)
+                map.removeLayer(currentLayer);
+            }
         }
 
         function freezeMap() {
