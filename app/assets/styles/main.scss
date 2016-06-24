@@ -44,11 +44,6 @@ body {
   height: 0px;
 }
 
-#workspace {
-  height: calc(100vh - #{$header-height});
-  width: auto;
-}
-
 .btn,
 .form-control {
   border-radius: 2px;
@@ -74,11 +69,11 @@ div[ng-view] {
 
   main {
     flex: 1 1 100%;
-    display: flex;
 
     #legend {
-      display: flex;
+      height: calc(100vh - #{$header-height});
       background-color: #ddd;
+      display: flex;
 
       svg {
         margin: auto;
@@ -87,7 +82,8 @@ div[ng-view] {
     }
 
     #workspace {
-      flex: 1;
+      height: calc(100vh - #{$header-height});
+      width: auto;
     }
   }
 
