@@ -39,7 +39,7 @@ gulp.task('clean:css', function() {
     return gulp.src('.tmp/styles/*').pipe(clean())
 });
 gulp.task('clean:js', function() {
-    return gulp.src(config.js.dest).pipe(clean())
+    return gulp.src(config.js.dest + '**/*.js').pipe(clean())
 });
 gulp.task('clean:doc', function() {
     return gulp.src(config.doc.dest).pipe(clean())
@@ -176,7 +176,7 @@ gulp.task('doc', ['clean:doc'], function() {
 /**
  * Main task to launch the server
  */
-gulp.task('serve', ['build:css', 'connect', 'copy:js', 'copy:assets', 'build:templatejs', 'doc'], function() {
+gulp.task('serve', ['build:css', 'connect', 'copy:js', 'copy:assets', 'build:templatejs'], function() {
 
     // wachers configuration
     gulp.watch(config.compass.globs, ['build:css']);

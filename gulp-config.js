@@ -43,6 +43,7 @@ module.exports = {
     },
     assets: {
         globs: [ app + 'favicon.ico', 
+                 app + 'index.html', 
                  app + 'assets/**/*', 
                 '!' + app + 'assets/**/*.{zip,scss}'],
         base: './app',
