@@ -65,7 +65,7 @@
         var svgDrawing;
         
         function init(_svgDrawing, svgMenu, getCurrentZoom) {
-            RadialMenuService.init(svgMenu, getCurrentZoom);
+            RadialMenuService.init(d3.select(_svgDrawing.node().parentNode.parentNode), getCurrentZoom);
             svgDrawing = _svgDrawing;
 
             ToolboxTriangleService.init(_svgDrawing, applyStyle)

@@ -45,12 +45,7 @@
          */
         function drawMenu(target, mousePosition) {
             
-            // if (currentTarget) {
-            //     currentTarget.classed('blink', false);
-            // }
-                
             currentTarget = target;
-            // currentTarget.classed('blink', true);
 
             var type = target.attr('data-type') ? target.attr('data-type') : 'default' ;
 
@@ -77,15 +72,7 @@
                     .appendTo(svg.node())
                     .show(data);
 
-                MapService.addClickListener(function(e) {
-                    e.originalEvent.preventDefault();
-                    e.originalEvent.stopPropagation();
-                    hideRadialMenu();
-                })
-
-                var clickOutsideMenu = svg.on('click', function(e) {
-                    hideRadialMenu();
-                });
+                svg.on('click', hideRadialMenu);
 
                 return m;
             }
@@ -138,7 +125,8 @@
         function hideRadialMenu() {
             if (menu) {
                 menu.hide();
-                menu = null
+                menu = null;
+                svg.on('click', function() {})
             }
             
             // if (currentTarget) {
