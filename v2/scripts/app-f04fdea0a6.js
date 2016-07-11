@@ -8783,7 +8783,7 @@
                             break;
 
                         case 'application/zip':
-                        case 'application/x-zip-compressed                              ':
+                        case 'application/x-zip-compressed':
                         case 'application/binary':
                             initUpload();
                             JSZip.loadAsync(element.files[0]).then(function loadDrawingFromZip(zip) {
