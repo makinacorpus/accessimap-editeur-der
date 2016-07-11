@@ -2,7 +2,7 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.EditService
- * 
+ *
  * @requires accessimapEditeurDerApp.SettingsService
  * @requires accessimapEditeurDerApp.MapService
  * @requires accessimapEditeurDerApp.DrawingService
@@ -13,11 +13,11 @@
  * @requires accessimapEditeurDerApp.UtilService
  * @requires accessimapEditeurDerApp.ImportService
  * @requires accessimapEditeurDerApp.ModeService
- * 
+ *
  * @description
  * Service used for the 'EditController', and the 'edit' view
- * 
- * Provide functions to 
+ *
+ * Provide functions to
  * - init a map/draw area
  * - draw features
  * - export data
@@ -25,7 +25,7 @@
 (function() {
     'use strict';
 
-    function EditService($q, SettingsService, MapService, DrawingService, LegendService, 
+    function EditService($q, SettingsService, MapService, DrawingService, LegendService,
         DefsService, InteractionService, ExportService, UtilService, ImportService, FeatureService, ModeService) {
 
         this.init          = init;
@@ -50,7 +50,7 @@
         this.updateMarker                  = DrawingService.toolbox.updateMarker;
         // this.addRadialMenus                = DrawingService.toolbox.addRadialMenus;
         this.updatePoint                   = DrawingService.updatePoint;
-        
+
         this.isUndoAvailable               = FeatureService.isUndoAvailable;
         this.undo                          = FeatureService.undo;
 
@@ -71,10 +71,10 @@
             model.zoom         = zoom   ? zoom   : MapService.getMap().getZoom();
             model.mapIdVisible = MapService.getBaseLayerId();
 
-            MapService.resetView(model.center, model.zoom, function() { 
-                ExportService.exportData(model).then(function() { 
+            MapService.resetView(model.center, model.zoom, function() {
+                ExportService.exportData(model).then(function() {
                     deferred.resolve()
-                }) 
+                })
                 .catch(deferred.reject)
             });
 
@@ -84,49 +84,49 @@
         // Map services
         this.showMapLayer            = MapService.showMapLayer;
         this.hideMapLayer            = MapService.hideMapLayer;
-        
+
         this.geojsonToSvg            = DrawingService.layers.geojson.geojsonToSvg;
         this.getFeatures             = DrawingService.layers.geojson.getFeatures;
-        
+
         this.removeFeature           = DrawingService.layers.geojson.removeFeature;
         this.updateFeature           = DrawingService.layers.geojson.updateFeature;
         this.rotateFeature           = DrawingService.layers.geojson.rotateFeature;
-        
+
         this.searchAndDisplayAddress = searchAndDisplayAddress;
         this.fitBounds               = MapService.getMap().fitBounds;
         this.panTo                   = MapService.getMap().panTo;
-        
+
         this.freezeMap               = freezeMap;
-        
+
         this.resetView               = function(callback) {
             MapService.resetView(center, zoom, callback);
         }
 
         this.rotateMap           = rotateMap;
-        
+
         this.interactions        = InteractionService;
-        
+
         this.changeDrawingFormat = changeDrawingFormat;
         this.changeLegendFormat  = changeLegendFormat;
         this.showFontBraille     = LegendService.showFontBraille;
         this.hideFontBraille     = LegendService.hideFontBraille;
-        
+
         this.importBackground    = importBackground;
         this.importImage         = importImage;
         this.appendSvg           = appendSvg;
         this.importDER           = importDER;
 
-        var d3Element = null, 
-            overlayDrawing, 
-            overlayGeoJSON, 
-            overlayBackground, 
-            overlay, 
+        var d3Element = null,
+            overlayDrawing,
+            overlayGeoJSON,
+            overlayBackground,
+            overlay,
             center = null,
             zoom = null,
             referenceBounds, // useful to remember where to center view
-            // useful to know if the map is 'freezed', 
+            // useful to know if the map is 'freezed',
             // that is to say it's not moving anymore inside the 'format overlay'
-            mapFreezed, 
+            mapFreezed,
             // indicates if the initial scaled have been defined
             // to be used in d3svgoverlay
             // if true, we don't need to init overlay anymore
@@ -156,13 +156,13 @@
             scaleDefined = false;
 
             MapService.addMoveHandler(function(size, pixelOrigin, pixelBoundMin) {
-                // if scale is not defined, 
+                // if scale is not defined,
                 // we have to re draw the overlay to keep the initial format / position
                 if (scaleDefined!==true) {
                     DrawingService.layers.overlay.refresh(size, pixelOrigin, pixelBoundMin);
                 }
             })
-            
+
             overlay.freezeScaling();
             overlayGeoJSON.freezeScaling();
             overlayDrawing.freezeScaling();
@@ -171,7 +171,7 @@
             center = null;
             zoom   = null;
         }
-        
+
         /**
          * @ngdoc method
          * @name  init
@@ -184,25 +184,25 @@
          * - Legend to init the legend container
          *
          * Link the map & the d3 container on 'move' and 'viewreset' events
-         * 
+         *
          * @param  {[type]} drawingFormat
          * Printing format of the d3 container and the map container
-         * 
+         *
          * @param  {[type]} legendFormat
          * Printing format of the legend container
          */
-        var selBackground, selOverlay, selDrawing, selGeoJSON, 
+        var selBackground, selOverlay, selDrawing, selGeoJSON,
                 projBackground, projOverlay, projDrawing, projGeoJSON,
                 currentDrawingFormat, currentLegendFormat ;
 
         function init(drawingFormat, legendFormat) {
 
-            currentDrawingFormat = (drawingFormat === undefined 
-                                    && SettingsService.FORMATS[drawingFormat] === undefined) 
+            currentDrawingFormat = (drawingFormat === undefined
+                                    && SettingsService.FORMATS[drawingFormat] === undefined)
                                     ? SettingsService.FORMATS[SettingsService.DEFAULT_DRAWING_FORMAT]
                                     : SettingsService.FORMATS[drawingFormat];
-            currentLegendFormat = (legendFormat === undefined 
-                                    && SettingsService.FORMATS[legendFormat] === undefined) 
+            currentLegendFormat = (legendFormat === undefined
+                                    && SettingsService.FORMATS[legendFormat] === undefined)
                                     ? SettingsService.FORMATS[SettingsService.DEFAULT_LEGEND_FORMAT]
                                     : SettingsService.FORMATS[legendFormat];
 
@@ -257,7 +257,7 @@
                             overlay: {sel: selOverlay, proj: projOverlay },
                             drawing: {sel: selDrawing, proj: projDrawing },
                             geojson: {sel: selGeoJSON, proj: projGeoJSON }
-                        }, 
+                        },
                         drawingFormat)
 
             initWorkspace();
@@ -269,10 +269,10 @@
             // created inside #pattern svg
             DefsService.createDefs(d3.select('#pattern'));
 
-            LegendService.initLegend('#legend', 
-                                    currentLegendFormat.width, 
-                                    currentLegendFormat.height, 
-                                    SettingsService.margin, 
+            LegendService.initLegend('#legend',
+                                    currentLegendFormat.width,
+                                    currentLegendFormat.height,
+                                    SettingsService.margin,
                                     SettingsService.ratioPixelPoint);
 
             FeatureService.init(selDrawing, projDrawing, MapService)
@@ -292,7 +292,7 @@
         }
 
         function changeLegendFormat(format) {
-            LegendService.setFormat(SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint, 
+            LegendService.setFormat(SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint,
                                SettingsService.FORMATS[format].height / SettingsService.ratioPixelPoint);
         }
 
@@ -300,17 +300,17 @@
          * @ngdoc method
          * @name  insertOSMData
          * @methodOf accessimapEditeurDerApp.EditService
-         * 
-         * @description 
+         *
+         * @description
          * Retrieve data from nominatim (via MapService) for a specific 'query'
-         * 
-         * @param {function} query 
+         *
+         * @param {function} query
          * Query SettingsService from SettingsService.QUERY_LIST
-         * 
-         * @param {function} _successCallback 
+         *
+         * @param {function} _successCallback
          * Callback function called when data has been retrieved, data is passed in first argument
-         * 
-         * @param {function} _errorCallback 
+         *
+         * @param {function} _errorCallback
          * Callback function called when an error occured, error is passed in first argument
          */
         function insertOSMData(query, _warningCallback, _errorCallback, _currentParametersFn) {
@@ -335,15 +335,15 @@
                     if (!osmGeojson) {
                         _errorCallback('Erreur lors de la recherche de donnée OSM... Merci de recommencer.')
                     }
-                    
+
                     if (osmGeojson.features && osmGeojson.features.length > 0) {
-                        DrawingService.layers.geojson.geojsonToSvg(osmGeojson, 
-                                null, 
-                                'node_' + osmGeojson.features[0].properties.id, 
-                                false, 
-                                queryChosen, 
-                                styleChosen, 
-                                SettingsService.STYLES[queryChosen.type], 
+                        DrawingService.layers.geojson.geojsonToSvg(osmGeojson,
+                                null,
+                                'node_' + osmGeojson.features[0].properties.id,
+                                false,
+                                queryChosen,
+                                styleChosen,
+                                SettingsService.STYLES[queryChosen.type],
                                 colorChosen, checkboxModel, null)
                     } else {
                         _warningCallback('Aucune donnée trouvée... Merci de chercher autre chose !?')
@@ -360,17 +360,17 @@
          * @ngdoc method
          * @name  rotateMap
          * @methodOf accessimapEditeurDerApp.EditService
-         * 
-         * @description 
-         * Rotate all '.rotable' elements 
-         * 
-         * @param  {Object} angle 
+         *
+         * @description
+         * Rotate all '.rotable' elements
+         *
+         * @param  {Object} angle
          * Angle in degree of the rotation
          */
         function rotateMap(angle) {
             var size = MapService.getMap().getSize();
 
-            $('.leaflet-layer').css('transform', 'rotate(' + angle + 'deg)'); 
+            $('.leaflet-layer').css('transform', 'rotate(' + angle + 'deg)');
             //' ' + size.x / 2 + ' ' + size.y / 2 + ')');
             d3.selectAll('.rotable').attr('transform', 'rotate(' + angle + ')');
             //' ' + _width / 2 + ' ' + _height / 2 + ')');
@@ -381,14 +381,14 @@
          * @name  searchAndDisplayAddress
          * @methodOf accessimapEditeurDerApp.EditService
          *
-         * @description 
+         * @description
          * Search via nominatim & display the first result in d3 drawing
          *
-         * Could be more clever by displaying all the results 
+         * Could be more clever by displaying all the results
          * and allow the user to choose the right one...
          *
          * In a future version maybe !
-         * 
+         *
          * @param  {String} address
          * Address to search & display
          *
@@ -415,11 +415,11 @@
          * @name  importBackground
          * @methodOf accessimapEditeurDerApp.EditService
          *
-         * @description 
+         * @description
          * Import a file (SVG/PNG/JPEG/PDF) as a background of the current drawing
          *
          * Add it in the background layer
-         * 
+         *
          * @param  {Object} element
          * Input file to be uploaded & imported in the background
          */
@@ -431,9 +431,9 @@
                         case 'image/svg+xml':
                         case 'image/png':
                         case 'image/jpeg':
-                            DrawingService.layers.background.appendImage(data.dataUrl, 
-                                                                        MapService.getMap().getSize(), 
-                                                                        MapService.getMap().getPixelOrigin(), 
+                            DrawingService.layers.background.appendImage(data.dataUrl,
+                                                                        MapService.getMap().getSize(),
+                                                                        MapService.getMap().getPixelOrigin(),
                                                                         MapService.getMap().getPixelBounds().min);
                             break;
 
@@ -453,7 +453,7 @@
          * @name  importImage
          * @methodOf accessimapEditeurDerApp.EditService
          *
-         * @description 
+         * @description
          * Import an image file (SVG/PNG/JPEG) in the drawing layer, image group
          *
          * @param  {Object} element
@@ -467,9 +467,9 @@
                         case 'image/svg+xml':
                         case 'image/png':
                         case 'image/jpeg':
-                            DrawingService.layers.drawing.appendImage(data.dataUrl, 
-                                                                        MapService.getMap().getSize(), 
-                                                                        MapService.getMap().getPixelOrigin(), 
+                            DrawingService.layers.drawing.appendImage(data.dataUrl,
+                                                                        MapService.getMap().getSize(),
+                                                                        MapService.getMap().getPixelOrigin(),
                                                                         MapService.getMap().getPixelBounds().min);
                             break;
 
@@ -485,12 +485,12 @@
          * @name  appendPdf
          * @methodOf accessimapEditeurDerApp.EditService
          *
-         * @description 
+         * @description
          * Append the first page of a pdf in the background layer
-         * 
+         *
          * @param  {dataUrl} image
          * dataUrl (could be png, jpg, ...) to insert in the background
-         * 
+         *
          */
         function appendPdf(dataURI) {
             var BASE64_MARKER = ';base64,',
@@ -519,7 +519,7 @@
                         viewport: viewport
                     };
                     page.render(renderContext).then(function() {
-                        DrawingService.layers.background.appendImage(canvas.toDataURL(), MapService.getMap().getSize(), 
+                        DrawingService.layers.background.appendImage(canvas.toDataURL(), MapService.getMap().getSize(),
                             MapService.getMap().getPixelOrigin(), MapService.getMap().getPixelBounds().min);
                     });
                 });
@@ -527,11 +527,11 @@
         }
 
         function appendSvg(path) {
-            
+
             d3.xml(path, function(xml) {
                 // adapt the format of the drawing
                 $(xml.documentElement).data('format')
-                
+
                 // Load polygon fill styles taht will be used on common map
                 var originalSvg = d3.select(xml.documentElement),
                     children = originalSvg[0][0].children,
@@ -559,34 +559,34 @@
             var deferred = $q.defer();
 
             function initUpload() {
-                
+
                 MapService.resetView(center, zoom);
-                
+
                 initWorkspace();
 
                 // empty the svg:g
                 var currentGeoJSONLayer = DrawingService.layers.geojson.getLayer().node(),
                     currentDrawingLayer = DrawingService.layers.drawing.getLayer().node(),
                     currentBackgroundLayer = DrawingService.layers.background.getLayer().node();
-                
+
                 // if map displayed, display it and center on the right place
                 function removeChildren(node) {
                     var children = node.children,
                         length = children.length;
 
                     for (var i = 0; i < length; i++) {
-                        node.removeChild(children[0]); // children list is live, removing a child change the list... 
+                        node.removeChild(children[0]); // children list is live, removing a child change the list...
                     }
                 }
 
                 removeChildren(currentGeoJSONLayer);
                 removeChildren(currentDrawingLayer);
                 removeChildren(currentBackgroundLayer);
-                
+
                 DrawingService.layers.geojson.resetFeatures();
 
             }
-            
+
             UtilService.uploadFile(element)
                 .then(function(data) {
 
@@ -601,10 +601,11 @@
                             break;
 
                         case 'application/zip':
+                        case 'application/x-zip-compressed                              ':
                         case 'application/binary':
                             initUpload();
                             JSZip.loadAsync(element.files[0]).then(function loadDrawingFromZip(zip) {
-                                    
+
                                     var commentairesPath,
                                         legendPath,
                                         drawingPath,
@@ -612,7 +613,7 @@
                                         legendElement, svgElement, interactionData;
 
                                     zip.forEach(function getPath(relativePath, zipEntry) {
-                                        
+
                                         if (relativePath.indexOf("carte_sans_source.svg") >= 0) {
                                             drawingPath = relativePath;
                                         }
@@ -648,7 +649,7 @@
                                             // DrawingService.toolbox.addRadialMenus();
                                             ModeService.enableDefaultMode();
                                             deferred.resolve(model);
-                                            
+
                                         })
                                     }
 
@@ -666,9 +667,9 @@
                             break;
 
                         default:
-                            console.error('Mauvais format');
+                            deferred.reject('Fichier au mauvais format !...' + data.type)
                     }
-                    
+
                 })
 
             return deferred.promise;
@@ -680,9 +681,9 @@
     angular.module(moduleApp).service('EditService', EditService);
 
     EditService.$inject = ['$q',
-                            'SettingsService', 
-                            'MapService', 
-                            'DrawingService', 
+                            'SettingsService',
+                            'MapService',
+                            'DrawingService',
                             'LegendService',
                             'DefsService',
                             'InteractionService',
