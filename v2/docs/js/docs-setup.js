@@ -46,7 +46,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service providing drawing functions",
-      "keywords": "accessimapediteurderapp api area color colors create d3svgoverlay display dom draw drawing drawings drawingservice element elements feature features format functions geojson help init initdrawing landscapea3 layer layerservice map method object place proj properties property provide providing sel service settingsservice size specific style styles svg toolboxservice update updatefeaturestyleandcolor"
+      "keywords": "accessimapediteurderapp api area color create d3svgoverlay display dom draw drawing drawings drawingservice element elements feature features format functions geojson help init initdrawing landscapea3 layer layerservice map method object place proj properties property provide providing sel service settingsservice size specific style styles svg toolboxservice update updatefeaturestyleandcolor"
     },
     {
       "section": "api",
@@ -181,7 +181,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service providing drawing functions",
-      "keywords": "accessimapediteurderapp add addtolegend api appended area arguments arial border braille create created createframepath data display dom draw drawing element explain export features font format frame functions getsize height hide hidefontbraille init initlegend layer legend legendservice linked map margin method millimeters pixel position print printing provide providing query ratiopixelpoint representing return service showfontbraille size specific style svg telling text todo user width"
+      "keywords": "_model accessimapediteurderapp add additem api appended area arguments arial array based border braille create created createframepath data display dom draw drawing drawlegend element explain export features font format frame functions getsize height hide hidefontbraille init initlegend item layer legend legendservice linked map margin method millimeters model params pixel print printing provide providing ratiopixelpoint redraw remove representing return service setformat showfontbraille size specific svg telling todo update user width"
     },
     {
       "section": "api",

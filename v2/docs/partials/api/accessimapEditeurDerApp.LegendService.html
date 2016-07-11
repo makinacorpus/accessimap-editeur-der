@@ -13,22 +13,25 @@ Provide functions to </p>
 </ul>
 </div></div>
 <div class="member method"><h2 id="methods">Methods</h2>
-<ul class="methods"><li><h3 id="methods_addtolegend">addToLegend(query, style, position)</h3>
-<div class="addtolegend"><div class="addtolegend-page"><p>Add a text in the legend</p>
-</div><h5 id="methods_addtolegend_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="addtolegend-page"><p>[description]</p>
-</div></td></tr><tr><td>style</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="addtolegend-page"><p>[description]</p>
-</div></td></tr><tr><td>position</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="addtolegend-page"><p>[description]</p>
-</div></td></tr></tbody></table></div>
+<ul class="methods"><li><h3 id="methods_additem">addItem()</h3>
+<div class="additem"><div class="additem-page"><p>Add an item in the model, and redraw the legend</p>
+</div></div>
+</li>
+<li><h3 id="methods_additem">addItem()</h3>
+<div class="additem"><div class="additem-page"><p>Remove an item from the model, thanks to the id params</p>
+</div></div>
+</li>
+<li><h3 id="methods_additem">addItem()</h3>
+<div class="additem"><div class="additem-page"><p>Update an item from the model, thanks to the id params</p>
+</div></div>
 </li>
 <li><h3 id="methods_createframepath">createFramePath()</h3>
 <div class="createframepath"><div class="createframepath-page"><p>Create a frame of the legend, telling user about the print format</p>
 </div></div>
 </li>
-<li><h3 id="methods_draw">draw(width, height)</h3>
-<div class="draw"><div class="draw-page"><p>Draw a frame linked to the width &amp; height arguments</p>
-</div><h5 id="methods_draw_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>width</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="draw-page"><p>Width in pixel of the printing format</p>
-</div></td></tr><tr><td>height</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="draw-page"><p>Height in pixel of the printing format</p>
-</div></td></tr></tbody></table></div>
+<li><h3 id="methods_drawlegend">drawLegend()</h3>
+<div class="drawlegend"><div class="drawlegend-page"><p>Draw the legend, based on the _model array.</p>
+</div></div>
 </li>
 <li><h3 id="methods_getsize">getSize()</h3>
 <div class="getsize"><div class="getsize-page"><p>return the size of the layer, representing the size of the legend</p>
@@ -46,6 +49,12 @@ Provide functions to </p>
 </div></td></tr><tr><td>height</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="initlegend-page"><p>height in millimeters of the svg created</p>
 </div></td></tr><tr><td>margin</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="initlegend-page"><p>margin of border in millimeters of the svg created</p>
 </div></td></tr><tr><td>ratioPixelPoint</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="initlegend-page"><p>ratioPixelPoint ? TODO please explain it...</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_setformat">setFormat(width, height)</h3>
+<div class="setformat"><div class="setformat-page"><p>Draw a frame linked to the width &amp; height arguments</p>
+</div><h5 id="methods_setformat_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>width</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="setformat-page"><p>Width in pixel of the printing format</p>
+</div></td></tr><tr><td>height</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="setformat-page"><p>Height in pixel of the printing format</p>
 </div></td></tr></tbody></table></div>
 </li>
 <li><h3 id="methods_showfontbraille">showFontBraille()</h3>
