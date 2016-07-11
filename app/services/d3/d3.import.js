@@ -169,7 +169,7 @@
 
             } else {
                 // it's not a draw from the der, but we will append each element in the 'drawing section'
-                LayerService.drawing.getLayer().node().appendChild(svgElement.childNodes[0])
+                LayerService.drawing.appendSvg(svgElement)
             }
 
         }

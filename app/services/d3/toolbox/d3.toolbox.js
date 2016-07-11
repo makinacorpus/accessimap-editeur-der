@@ -209,8 +209,10 @@
                     y = parseInt(path.attr('data-y'))
                 path.attr('d', style.path(x,y,style.radius))
             }
-
-            applyStyle(path, style.style, color);
+            
+            if (style && color) {
+                applyStyle(path, style.style, color);
+            }
         };
 
         function updateMarker(markerStart, markerStop) {

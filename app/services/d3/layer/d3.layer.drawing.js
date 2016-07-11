@@ -19,6 +19,7 @@
 
         this.createLayer = createLayer;
         this.appendImage = appendImage;
+        this.appendSvg   = appendSvg;
 
         function createLayer(target) {
             
@@ -82,6 +83,14 @@
 
         }
 
+        function appendSvg(svgElement) {
+            var children = svgElement.childNodes;
+
+            for (var i = 0; i < children.length; i++) {
+                if (children[i].localName === 'svg')
+                    _g.select('[data-name="images-layer"]').node().appendChild(children[i])
+            }
+        }
 
     }
 
