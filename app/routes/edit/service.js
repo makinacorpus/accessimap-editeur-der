@@ -651,6 +651,8 @@
                                             deferred.resolve(model);
 
                                         })
+                                    } else {
+                                        deferred.reject('Fichier carte_sans_source.svg non trouvé dans l\'archive')
                                     }
 
                                     if (interactionPath) {
