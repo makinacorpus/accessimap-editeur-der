@@ -4956,6 +4956,7 @@
 
         this.createLayer = createLayer;
         this.appendImage = appendImage;
+        this.appendSvg   = appendSvg;
 
         function createLayer(target) {
             
@@ -5019,6 +5020,14 @@
 
         }
 
+        function appendSvg(svgElement) {
+            var children = svgElement.childNodes;
+
+            for (var i = 0; i < children.length; i++) {
+                if (children[i].localName === 'svg')
+                    _g.select('[data-name="images-layer"]').node().appendChild(children[i])
+            }
+        }
 
     }
 
@@ -6183,8 +6192,10 @@
                     y = parseInt(path.attr('data-y'))
                 path.attr('d', style.path(x,y,style.radius))
             }
-
-            applyStyle(path, style.style, color);
+            
+            if (style && color) {
+                applyStyle(path, style.style, color);
+            }
         };
 
         function updateMarker(markerStart, markerStop) {
@@ -7333,7 +7344,7 @@
      * @ngdoc service
      * @name accessimapEditeurDerApp.ImportService
      * @memberOf accessimapEditeurDerApp
-     *
+     * 
      * @description
      * Provide service to import a drawing :
      * - background layer
@@ -7349,7 +7360,7 @@
         this.getModelFromSVG   = getModelFromSVG;
 
         function isVersionOfSVGAcceptable(svgElement) {
-
+            
             return svgElement.querySelector('svg').getAttribute('data-version') >= '0.1';
 
         }
@@ -7363,10 +7374,10 @@
                     return JSON.parse(metadataModel.getAttribute('data-value'));
                 }
             }
-
+            
             return null;
         }
-
+        
         function cloneChildrenFromNodeAToB(nodeFrom, nodeTo, translationToApply) {
 
             var children = nodeFrom.children,
@@ -7378,8 +7389,8 @@
 
                     if (currentD) {
                         var currentParseD = SVGService.parseSVGPath(currentD),
-                            currentTranslateD = SVGService.translateSVGPath(currentParseD,
-                                                                                translationToApply.x,
+                            currentTranslateD = SVGService.translateSVGPath(currentParseD, 
+                                                                                translationToApply.x, 
                                                                                 translationToApply.y),
                             currentSerializeD = SVGService.serializeSVGPath(currentTranslateD);
 
@@ -7389,7 +7400,7 @@
                             cy = paths[i].getAttribute('cy'),
                             x = paths[i].getAttribute('x'),
                             y = paths[i].getAttribute('y');
-
+                        
                         if (cx !== null ) {
                             paths[i].setAttribute('cx', parseFloat(cx) + translationToApply.x)
                             paths[i].setAttribute('cy', parseFloat(cy) + translationToApply.y)
@@ -7414,9 +7425,9 @@
          * @name  importDrawing
          * @methodOf accessimapEditeurDerApp.ImportService
          *
-         * @description
+         * @description 
          * Import data from the svgElement by trying to find the layers
-         *
+         * 
          * @param  {DOM Element} svgElement
          * the element to import for drawing purpose
          */
@@ -7425,7 +7436,7 @@
 
             if (isVersionOfSVGAcceptable(svgElement)) {
 
-                var
+                var 
 
                 currentGeoJSONLayer    = LayerService.geojson.getLayer().node(),
                 currentDrawingLayer    = LayerService.drawing.getLayer().node(),
@@ -7435,42 +7446,42 @@
                 drawingLayer    = svgElement.querySelector('g[data-name="drawing-layer"]'),
                 backgroundLayer = svgElement.querySelector('g[data-name="background-layer"]'),
                 overlayLayer    = svgElement.querySelector('svg[data-name="overlay"]'),
-
+                
                 metadataGeoJSON      = svgElement.querySelector('metadata[data-name="data-geojson"]'),
                 // metadataInteractions = svgElement.querySelector('metadata[data-name="data-interactions"]'),
-
+                
                 format = svgElement.querySelector('svg').getAttribute('data-format'),
                 center = svgElement.querySelector('svg').getAttribute('data-center'),
 
                 currentOverlayTranslation = LayerService.overlay.getTranslation(),
 
                 translateScaleOverlayGroup = overlayLayer.getAttribute('transform'),
-
-                translateOverlayGroup = ( translateScaleOverlayGroup === null )
-                                        ? null
+                
+                translateOverlayGroup = ( translateScaleOverlayGroup === null ) 
+                                        ? null 
                                         : translateScaleOverlayGroup
-                                                .substring(translateScaleOverlayGroup.indexOf('(') + 1,
+                                                .substring(translateScaleOverlayGroup.indexOf('(') + 1, 
                                                             translateScaleOverlayGroup.indexOf(')')),
-
-                translateOverlayGroupArray = ( translateOverlayGroup === null ) ? [0, 0]
+                
+                translateOverlayGroupArray = ( translateOverlayGroup === null ) ? [0, 0] 
                     : translateOverlayGroup.slice(0, translateOverlayGroup.length).split(','),
-
+                
                 translateMarginGroup = overlayLayer.querySelector('g[id="margin-layer"]').getAttribute('transform'),
 
-                translateMargin = ( translateMarginGroup === null )
-                                    ? null
+                translateMargin = ( translateMarginGroup === null ) 
+                                    ? null 
                                     : translateMarginGroup
-                                            .substring(translateMarginGroup.indexOf('(') + 1,
+                                            .substring(translateMarginGroup.indexOf('(') + 1, 
                                                         translateMarginGroup.indexOf(')')),
-
-                translateMarginArray = ( translateMargin === null ) ? [0, 0]
+                
+                translateMarginArray = ( translateMargin === null ) ? [0, 0] 
                     : translateMargin.slice(0, translateMargin.length).split(','),
 
-                translationToApply = { x: currentOverlayTranslation.x
-                                            - translateOverlayGroupArray[0]
+                translationToApply = { x: currentOverlayTranslation.x 
+                                            - translateOverlayGroupArray[0] 
                                             - translateMarginArray[0],
-                                        y: currentOverlayTranslation.y
-                                            - translateOverlayGroupArray[1]
+                                       y: currentOverlayTranslation.y 
+                                            - translateOverlayGroupArray[1] 
                                             - translateMarginArray[1]
                                     }
 
@@ -7483,7 +7494,7 @@
                 if (drawingLayer) {
                     cloneChildrenFromNodeAToB(drawingLayer, currentDrawingLayer, translationToApply);
                 }
-
+                
                 // if exists, inserts data of the drawing layers
                 if (backgroundLayer) {
                     cloneChildrenFromNodeAToB(backgroundLayer, currentBackgroundLayer, translationToApply);
@@ -7497,7 +7508,7 @@
 
             } else {
                 // it's not a draw from the der, but we will append each element in the 'drawing section'
-                LayerService.drawing.getLayer().node().appendChild(svgElement.childNodes[0])
+                LayerService.drawing.appendSvg(svgElement)
             }
 
         }
@@ -7507,11 +7518,11 @@
                 var currentStyle = SettingsService.STYLES[element.type].find(function(style, index, array) {
                     return style.id = element.style.id;
                 })
-                LegendService.addItem(element.id,
-                                      element.name,
-                                      element.type,
-                                      currentStyle,
-                                      element.color,
+                LegendService.addItem(element.id, 
+                                      element.name, 
+                                      element.type, 
+                                      currentStyle, 
+                                      element.color, 
                                       element.contour)
             })
         }
@@ -7523,8 +7534,8 @@
 
             // we don't take the first filter, because it's the OSM Value by default in a DER
             for (var i = 1; i < filters.length; i++) {
-                InteractionService.addFilter(filters[i].getAttribute('name'),
-                                            filters[i].getAttribute('gesture'),
+                InteractionService.addFilter(filters[i].getAttribute('name'), 
+                                            filters[i].getAttribute('gesture'), 
                                             filters[i].getAttribute('protocol') )
             }
 
@@ -7535,8 +7546,8 @@
                 var actions = pois[i].querySelectorAll('action');
 
                 for (var j = 0; j < actions.length; j++) {
-                    InteractionService.setInteraction(pois[i].getAttribute('id'),
-                                                        actions[j].getAttribute('filter'),
+                    InteractionService.setInteraction(pois[i].getAttribute('id'), 
+                                                        actions[j].getAttribute('filter'), 
                                                         actions[j].getAttribute('value'));
                 }
             }
@@ -7550,7 +7561,6 @@
     ImportService.$inject = ['LayerService', 'InteractionService', 'LegendService', 'SettingsService', 'SVGService'];
 
 })();
-
 (function() {
     'use strict';
 
@@ -8737,23 +8747,23 @@
                 initWorkspace();
 
                 // empty the svg:g
-                var currentGeoJSONLayer = DrawingService.layers.geojson.getLayer().node(),
-                    currentDrawingLayer = DrawingService.layers.drawing.getLayer().node(),
-                    currentBackgroundLayer = DrawingService.layers.background.getLayer().node();
-
-                // if map displayed, display it and center on the right place
-                function removeChildren(node) {
-                    var children = node.children,
-                        length = children.length;
-
-                    for (var i = 0; i < length; i++) {
-                        node.removeChild(children[0]); // children list is live, removing a child change the list...
-                    }
-                }
-
-                removeChildren(currentGeoJSONLayer);
-                removeChildren(currentDrawingLayer);
-                removeChildren(currentBackgroundLayer);
+                // var currentGeoJSONLayer = DrawingService.layers.geojson.getLayer().node(),
+                //     currentDrawingLayer = DrawingService.layers.drawing.getLayer().node(),
+                //     currentBackgroundLayer = DrawingService.layers.background.getLayer().node();
+                //
+                // // if map displayed, display it and center on the right place
+                // function removeChildren(node) {
+                //     var children = node.children,
+                //         length = children.length;
+                //
+                //     for (var i = 0; i < length; i++) {
+                //         node.removeChild(children[0]); // children list is live, removing a child change the list...
+                //     }
+                // }
+                //
+                // removeChildren(currentGeoJSONLayer);
+                // removeChildren(currentDrawingLayer);
+                // removeChildren(currentBackgroundLayer);
 
                 DrawingService.layers.geojson.resetFeatures();
 
@@ -8823,6 +8833,8 @@
                                             deferred.resolve(model);
 
                                         })
+                                    } else {
+                                        deferred.reject('Fichier carte_sans_source.svg non trouvé dans l\'archive')
                                     }
 
                                     if (interactionPath) {
@@ -9416,8 +9428,6 @@ angular.module('accessimapEditeurDerApp').run(['$templateCache', function($templ
 
   $templateCache.put('scripts/index.html', '<!doctype html><html class="no-js"><head><meta charset="utf-8"><title></title><meta name="description" content><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css"><link rel="stylesheet" href="bower_components/select2/select2.css"><link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css"><link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css"><link rel="stylesheet" href="bower_components/toastr/toastr.min.css"><link rel="stylesheet" href="assets/styles/main.css"><link rel="stylesheet" href="assets/styles/map.css"><link rel="stylesheet" href="assets/fonts/font-awesome-4.6.1/css/font-awesome.css"></head><body ng-app="accessimapEditeurDerApp" class="container-fluid"><header><h2><a ng-href="#/">Accessimap</a></h2><h1 class="text-muted text-center">Accessimap - éditeur de dessins en relief (DER)</h1></header><div class="row" ng-view></div><footer ng-if="displayFooter"><div><table><thead><tr><td colspan="2">Projet Accessimap - Partenaires</td></tr></thead><tbody><tr><td><a href="http://www.ijatoulouse.org/"><img src="assets/images/logos/ija.jpg"> IJA Toulouse</a></td><td><a href="https://www.irit.fr/"><img src="assets/images/logos/irit.jpg"> IRIT</a></td></tr><tr><td><a href="http://www.telecom-paristech.fr/"><img src="assets/images/logos/telecom.png"> Télécom ParisTech</a></td><td><a href="http://makina-corpus.com/"><img src="assets/images/logos/makinacorpus.png"> Makina Corpus</a></td></tr></tbody></table></div><div><p><span class="fa fa-question fa-lg"></span>&nbsp;Pour toutes questions, n\'hésitez pas à <a href="mailto:contact@makina-corpus.com">nous contacter</a></p><p><span class="fa fa-github fa-lg"></span>&nbsp;Vous souhaitez contribuer au projet, accédez à <a href="https://github.com/makinacorpus/accessimap-editeur-der/issues" target="_blank">notre dépôt Github</a> ou à <a href="docs/" target="_blank">la documentation technique</a>.</p><p>Map tiles and data: © OpenStreetMap contributors</p></div></footer><script>\n            (function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){\n            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n            })(window,document,\'script\',\'//www.google-analytics.com/analytics.js\',\'ga\');\n\n            ga(\'create\', \'UA-62402664-1\');\n            ga(\'send\', \'pageview\');\n        </script><script src="bower_components/jquery/dist/jquery.js"></script><script src="bower_components/angular/angular.js"></script><script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script><script src="bower_components/angular-animate/angular-animate.js"></script><script src="bower_components/angular-cookies/angular-cookies.js"></script><script src="bower_components/angular-resource/angular-resource.js"></script><script src="bower_components/angular-route/angular-route.js"></script><script src="bower_components/angular-sanitize/angular-sanitize.js"></script><script src="bower_components/angular-touch/angular-touch.js"></script><script src="bower_components/angular-ui-select/dist/select.js"></script><script src="bower_components/select2/select2.js"></script><script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script><script src="bower_components/angular-bootstrap-slider/slider.js"></script><script src="bower_components/angular-ui-utils/ui-utils.js"></script><script src="bower_components/d3/d3.js"></script><script src="bower_components/d3-transform/src/d3-transform.js"></script><script src="bower_components/jszip/dist/jszip.js"></script><script src="bower_components/file-saver.js/FileSaver.js"></script><script src="bower_components/turf/turf.min.js"></script><script src="bower_components/pdfjs-dist/build/pdf.combined.js"></script><script src="bower_components/leaflet/dist/leaflet.js"></script><script src="bower_components/toastr/toastr.min.js"></script><script src="vendor/ui-bootstrap-custom-tpls-1.3.2.min.js"></script><script src="vendor/d3.radialmenu.js"></script><script src="vendor/osmtogeojson.js"></script><script src="vendor/textures-v2.js"></script><script src="vendor/path-data-polyfill.js/path-data-polyfill.js"></script><script src="vendor/blob.js"></script><script src="vendor/canvas-toblob.js"></script><script src="vendor/L.D3SvgOverlay.js"></script><script src="vendor/dom-to-image.js"></script><script src="vendor/jquery.binarytransport.js"></script><script src="app.js"></script><script src="filters/layernotselected.js"></script><script src="services/ui/ui.toaster.js"></script><script src="services/ui/ui.radialmenu.js"></script><script src="services/utils/util.js"></script><script src="services/utils/storage.js"></script><script src="services/utils/svg.js"></script><script src="services/d3/d3.interaction.js"></script><script src="services/d3/d3.feature.js"></script><script src="services/settings/settings.js"></script><script src="services/settings/settings.styles.js"></script><script src="services/settings/settings.colors.js"></script><script src="services/settings/settings.fonts.js"></script><script src="services/settings/settings.formats.js"></script><script src="services/settings/settings.query.js"></script><script src="services/settings/settings.actions.js"></script><script src="services/map/map.search.js"></script><script src="services/map/map.js"></script><script src="services/d3/d3.defs.js"></script><script src="services/d3/d3.legend.js"></script><script src="services/d3/d3.geometryutils.js"></script><script src="services/d3/feature/d3.feature.emptycomfort.js"></script><script src="services/d3/feature/d3.feature.selectpath.js"></script><script src="services/d3/layer/d3.layer.js"></script><script src="services/d3/layer/d3.layer.background.js"></script><script src="services/d3/layer/d3.layer.drawing.js"></script><script src="services/d3/layer/d3.layer.geojson.js"></script><script src="services/d3/layer/d3.layer.overlay.js"></script><script src="services/d3/toolbox/d3.toolbox.js"></script><script src="services/d3/toolbox/d3.toolbox.image.js"></script><script src="services/d3/toolbox/d3.toolbox.triangle.js"></script><script src="services/d3/toolbox/d3.toolbox.rectangle.js"></script><script src="services/d3/toolbox/d3.toolbox.ellipse.js"></script><script src="services/d3/toolbox/d3.toolbox.text.js"></script><script src="services/d3/toolbox/d3.toolbox.polyline.js"></script><script src="services/d3/d3.drawing.js"></script><script src="services/d3/d3.generator.js"></script><script src="services/d3/d3.import.js"></script><script src="services/d3/d3.export.js"></script><script src="services/mode/mode.js"></script><script src="routes/edit/service.js"></script><script src="routes/edit/controller.js"></script><script src="routes/home/controller.js"></script><script src="templates.js"></script></body></html>');
 
-  $templateCache.put('scripts/routes/home/template.html', '<div class="container jumbotron"><h3>Ajoutez de l\'interaction à vos dessins en reliefs (DER)</h3><h3>Configurez et personnalisez facilement vos documents avant de les imprimer !</h3><br><form class="form-inline"><div class="form-group"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="$ctrl.goToEdit()">Créer un nouveau DER</button></div></form></div>');
-
   $templateCache.put('scripts/routes/edit/aside.html', '<div class="col-xs-12"><div ng-if="$ctrl.isParametersVisible" ng-include="\'scripts/routes/edit/aside_parameters.html\'"></div><div ng-if="$ctrl.isMapParametersVisible" class="btn-group pull-left" ng-include="\'scripts/routes/edit/aside_map_parameters.html\'"></div><div ng-if="$ctrl.isDrawingParametersVisible" ng-include="\'scripts/routes/edit/aside_drawing_parameters.html\'"></div><div ng-if="$ctrl.isLegendParametersVisible" ng-include="\'scripts/routes/edit/aside_legend_parameters.html\'"></div><div ng-if="$ctrl.isInteractionParametersVisible" ng-include="\'scripts/routes/edit/aside_interaction_parameters.html\'"></div><div ng-if="$ctrl.isBackgroundParametersVisible" ng-include="\'scripts/routes/edit/aside_background_parameters.html\'"></div></div>');
 
   $templateCache.put('scripts/routes/edit/aside_background_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-lg fa-picture-o" aria-hidden="true"></span> Trame de fond</h3><form class="row"><div class="form-group col-xs-12"><label>Trame de fond</label><ui-select ng-model="$ctrl.model.backgroundStyle" ng-change="$ctrl.updateBackgroundStyle($ctrl.model.backgroundStyle)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.backgroundStyleChoices | filter: $select.search"><span ng-bind-html="item.name | highlight: $select.search"></span> <span ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></span></ui-select-choices></ui-select></div><div class="form-group col-xs-12"><label>Couleur de fond</label><ui-select ng-model="$ctrl.model.backgroundColor" ng-change="$ctrl.updateBackgroundColor($ctrl.model.backgroundColor)" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez une couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" "><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div><div class="form-group col-xs-12"><label>Importer un fond (SVG/JPG/PNG/PDF)</label><input onchange="angular.element(this).scope().$ctrl.importBackground(this)" type="file" accept="image/svg+xml,image/png,image/jpeg,application/pdf"></div><div class="form-group col-xs-12"><label>Choisir un fond de carte prédéfini</label><uib-accordion close-others="false"><uib-accordion-group heading="{{mapCategory.name}}" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled" ng-repeat="mapCategory in $ctrl.mapCategories"><ul class="row"><li ng-repeat="image in mapCategory.images"><img class="img-responsive" ng-src="{{image.path}}" ng-click="$ctrl.appendSvg(image.path)"></li></ul></uib-accordion-group></uib-accordion></div></form>');
@@ -9449,6 +9459,8 @@ angular.module('accessimapEditeurDerApp').run(['$templateCache', function($templ
   $templateCache.put('scripts/routes/edit/modalchangepoint.html', '<div class="modal fade" id="changePointModal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">Choisissez un motif pour cet objet</h4></div><div class="modal-body"><ui-select ng-model="$ctrl.pointChosen" ng-change="$ctrl.updatePoint($ctrl.pointChosen)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.pointChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div><div ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></div></ui-select-choices></ui-select></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button></div></div></div></div>');
 
   $templateCache.put('scripts/routes/edit/template.html', '<aside class="col-lg-3 col-md-4 col-sm-4 right-side"><div class="aside-content row" ng-include="\'scripts/routes/edit/aside.html\'"></div></aside><main ng-init="$ctrl.init()"><div id="workspace" ng-show="$ctrl.isWorkspaceVisible"></div><div id="legend" ng-show="$ctrl.isLegendVisible"></div><div id="pattern"></div></main><div ng-include="\'scripts/routes/edit/modalchangecolor.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangepattern.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangearrows.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangepoint.html\'"></div>');
+
+  $templateCache.put('scripts/routes/home/template.html', '<div class="container jumbotron"><h3>Ajoutez de l\'interaction à vos dessins en reliefs (DER)</h3><h3>Configurez et personnalisez facilement vos documents avant de les imprimer !</h3><br><form class="form-inline"><div class="form-group"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="$ctrl.goToEdit()">Créer un nouveau DER</button></div></form></div>');
 
 }]);
 
