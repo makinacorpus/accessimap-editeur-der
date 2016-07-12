@@ -1,7 +1,7 @@
 'use strict';
 
 var gulp = require('gulp'),
-    
+
     // gulp modules
     autoprefixer = require('gulp-autoprefixer'),
     clean        = require('gulp-clean'),
@@ -152,7 +152,7 @@ gulp.task('test', function(done) {
     new karmaRunner({
         configFile: config.karma.configFile,
         singleRun: true,
-        reporters: ['progress', 'coverage', 'coveralls'],
+        reporters: ['progress', 'coverage'],
     }, done).start();
 })
 

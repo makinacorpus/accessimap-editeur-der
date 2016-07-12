@@ -3,7 +3,7 @@
  * @name accessimapEditeurDerApp.LegendService
  * @description
  * Service providing drawing functions
- * Provide functions to 
+ * Provide functions to
  * - init a map/draw area
  * - draw features
  * - export data
@@ -13,21 +13,28 @@
 
     function LegendService(SettingsStyles) {
 
-        this.initLegend        = initLegend;
-        this.getSize           = getSize;
+        this.init            = init;
+        this.getSize         = getSize;
+        this.getModel        = getModel;
 
-        this.showFontBraille   = showFontBraille;
-        this.hideFontBraille   = hideFontBraille;
-        
-        this.addItem           = addItem;
-        this.updateItem        = updateItem;
-        this.removeItem        = removeItem;
+        this.showFontBraille = showFontBraille;
+        this.hideFontBraille = hideFontBraille;
 
-        this.setFormat         = setFormat;
+        this.addItem         = addItem;
+        this.updateItem      = updateItem;
+        this.removeItem      = removeItem;
 
-        this.drawLegend        = drawLegend;
+        this.removeObject    = removeObject;
+        this.goDownObject    = goDownObject;
+        this.goUpObject      = goUpObject;
 
-        this.getNode           = function() { return _svg !== undefined ? _svg.node() : undefined }
+        this.setFormat       = setFormat;
+
+        this.editText        = editText;
+
+        this.drawLegend      = drawLegend;
+
+        this.getNode         = function() { return _svg !== undefined ? _svg.node() : undefined }
 
         var _width,
             _height,
@@ -36,38 +43,40 @@
             _fontBraille,
             _svg,
             _model = [],
+            _addRadialMenuFunction,
             frameGroup;
 
         /**
          * @ngdoc method
-         * @name  initLegend
+         * @name  init
          * @methodOf accessimapEditeurDerApp.LegendService
          *
          * @description
          * Create the legend svg in a dom element with specific size
          *
-         * @param  {string} id     
+         * @param  {string} id
          * id of element in which will be appended svg
-         * 
-         * @param  {integer} width  
+         *
+         * @param  {integer} width
          * width in millimeters of the svg created
-         * 
-         * @param  {integer} height 
+         *
+         * @param  {integer} height
          * height in millimeters of the svg created
-         * 
-         * @param  {integer} margin 
+         *
+         * @param  {integer} margin
          * margin of border in millimeters of the svg created
-         * 
-         * @param  {integer} ratioPixelPoint 
+         *
+         * @param  {integer} ratioPixelPoint
          * ratioPixelPoint ? TODO please explain it...
          */
-        function initLegend(id, width, height, margin, ratioPixelPoint) {
-            
-            _width = width / ratioPixelPoint;
-            _height = height / ratioPixelPoint;
-            _margin = margin;
-            _ratioPixelPoint = ratioPixelPoint;
-            
+        function init(id, width, height, margin, ratioPixelPoint, addRadialMenuFunction) {
+
+            _width                 = width / ratioPixelPoint;
+            _height                = height / ratioPixelPoint;
+            _margin                = margin;
+            _ratioPixelPoint       = ratioPixelPoint;
+            _addRadialMenuFunction = addRadialMenuFunction;
+
             _svg = d3.select(id).append('svg');
 
             setFormat(_width, _height);
@@ -82,7 +91,7 @@
          * @name  showFontBraille
          * @methodOf accessimapEditeurDerApp.LegendService
          *
-         * @description 
+         * @description
          * Show the 'braille' font on the legend's svg.
          */
         function showFontBraille() {
@@ -97,7 +106,7 @@
          * @name  hideFontBraille
          * @methodOf accessimapEditeurDerApp.LegendService
          *
-         * @description 
+         * @description
          * Hide the 'braille' font on the legend's svg and display it in Arial
          */
         function hideFontBraille() {
@@ -112,13 +121,13 @@
          * @name  setFormat
          * @methodOf accessimapEditeurDerApp.LegendService
          *
-         * @description 
+         * @description
          * Draw a frame linked to the width & height arguments
-         * 
-         * @param  {integer} width  
+         *
+         * @param  {integer} width
          * Width in pixel of the printing format
-         * 
-         * @param  {integer} height 
+         *
+         * @param  {integer} height
          * Height in pixel of the printing format
          */
         function setFormat(width, height) {
@@ -139,7 +148,7 @@
          * @name  createFramePath
          * @methodOf accessimapEditeurDerApp.LegendService
          *
-         * @description 
+         * @description
          * Create a frame of the legend, telling user about the print format
          */
         function createFramePath() {
@@ -149,14 +158,14 @@
             frameGroup  = _svg.append('g')
                 .append('path')
                 .attr('d', function() {
-                    return 'M ' + _margin + ' ' + _margin + ' L ' 
-                                    + w40 
-                                    + ' ' + _margin + ' L ' 
-                                    + w40 
-                                    + ' ' 
-                                    + h40 
-                                    + ' L ' + _margin + ' ' 
-                                    + h40 
+                    return 'M ' + _margin + ' ' + _margin + ' L '
+                                    + w40
+                                    + ' ' + _margin + ' L '
+                                    + w40
+                                    + ' '
+                                    + h40
+                                    + ' L ' + _margin + ' '
+                                    + h40
                                     + ' L ' + _margin + ' ' + _margin + ' z';
                 })
                 .attr('fill', 'none')
@@ -175,13 +184,28 @@
          *
          * @description
          * return the size of the layer, representing the size of the legend
-         * 
-         * @return {Object} 
+         *
+         * @return {Object}
          * {width, height}
-         * 
+         *
          */
         function getSize() {
             return {width: _width, height: _height}
+        }
+        /**
+         * @ngdoc method
+         * @name  getModel
+         * @methodOf accessimapEditeurDerApp.LegendService
+         *
+         * @description
+         * return a clone of the current array of items
+         *
+         * @return {Array}
+         * The model
+         *
+         */
+        function getModel() {
+            return _model.slice()
         }
 
         /**
@@ -191,7 +215,7 @@
          *
          * @description
          * Add an item in the model, and redraw the legend
-         * 
+         *
          */
         function addItem(id, name, type, style, color, contour) {
 
@@ -200,7 +224,7 @@
                 name     : name,
                 type     : type,
                 style    : style,
-                color    : color, 
+                color    : color,
                 contour  : contour
             })
 
@@ -215,12 +239,12 @@
          *
          * @description
          * Remove an item from the model, thanks to the id params
-         * 
+         *
          */
         function removeItem(id) {
 
-            _model = _model.filter(function filterModel(currentItem, index) { 
-                return currentItem.id !== id 
+            _model = _model.filter(function filterModel(currentItem, index) {
+                return currentItem.id !== id
             })
 
             drawLegend();
@@ -233,7 +257,7 @@
          *
          * @description
          * Update an item from the model, thanks to the id params
-         * 
+         *
          */
         function updateItem(id, name, type, style, color, contour) {
 
@@ -253,9 +277,9 @@
          * @name  drawLegend
          * @methodOf accessimapEditeurDerApp.LegendService
          *
-         * @description 
+         * @description
          * Draw the legend, based on the _model array.
-         * 
+         *
          */
         function drawLegend() {
 
@@ -279,7 +303,9 @@
 
                 var legendGroup = _svg.append('g')
                         // .attr('id', query.id) // TODO: see if it's useful ?
-                        .attr('class', 'legend'),
+                        .attr('class', 'legend')
+                        .attr('data-type', 'legend')
+                        .attr('data-link', item.id),
                     symbol;
 
                 switch(item.type) {
@@ -403,8 +429,69 @@
                     .attr('font-size', '35px')
                     .text(function() {
                         return item.name;
-                    });
+                    })
+
+                if (_addRadialMenuFunction)
+                    _addRadialMenuFunction(legendGroup, _svg)
+
             })
+
+        }
+
+        function removeObject(target) {
+            removeItem(target.attr('data-link'))
+        }
+
+        function goDownObject(target) {
+            var currentId = target.attr('data-link'),
+                currentIndex = _model.findIndex(function findIndex(currentItem, index) {
+                    return currentItem.id === currentId
+                })
+
+            if (_model.length >= 2 && currentIndex < _model.length - 1) {
+                var currentItem = _model[currentIndex],
+                    itemToMove = _model[currentIndex + 1]
+
+                _model[currentIndex + 1] = currentItem;
+                _model[currentIndex] = itemToMove;
+            }
+
+            drawLegend()
+
+        }
+
+        function goUpObject(target) {
+
+            var currentId = target.attr('data-link'),
+                currentIndex = _model.findIndex(function findIndex(currentItem, index) {
+                    return currentItem.id === currentId
+                })
+
+            if (_model.length >= 2 && currentIndex > 0) {
+                var currentItem = _model[currentIndex],
+                    itemToMove = _model[currentIndex - 1]
+
+                _model[currentIndex - 1] = currentItem;
+                _model[currentIndex] = itemToMove;
+            }
+
+            drawLegend()
+
+        }
+
+        /**
+         * @ngdoc method
+         * @name  editText
+         * @methodOf accessimapEditeurDerApp.LegendService
+         *
+         * @description
+         * Enable the edition of the legend's item text
+         *
+         * @param  {Object} target
+         * Item in the legend which text will be edited
+         */
+        function editText(target) {
+
         }
 
     }

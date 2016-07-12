@@ -2,10 +2,10 @@
  * @ngdoc service
  * @name accessimapEditeurDerApp.LayerDrawingService
  * @requires accessimapEditeurDerApp.LayerService
- * 
+ *
  * @description
  * Service providing drawing functions
- * Provide functions to 
+ * Provide functions to
  * - init a map/draw area
  * - draw features
  */
@@ -20,9 +20,10 @@
         this.createLayer = createLayer;
         this.appendImage = appendImage;
         this.appendSvg   = appendSvg;
+        this.clean       = clean;
 
         function createLayer(target) {
-            
+
             _target = target;
 
             _g = _target.attr("data-name", "drawing-layer")
@@ -57,16 +58,16 @@
                     ratio = height / width,
 
                 // calculate coordinates
-                x = 
+                x =
                     // to get x, we calc the space between left and the overlay
-                    ( ( size.x - width) / 2 ) 
-                    // and we substract the difference between the original point of the map 
+                    ( ( size.x - width) / 2 )
+                    // and we substract the difference between the original point of the map
                     // and the actual bounding topleft point
                     - (pixelOrigin.x - pixelBoundMin.x),
 
-                y = 
+                y =
                     // to get y, we calc the space between the middle axe and the top of the overlay
-                    height / -2 
+                    height / -2
                     // and we substract the difference between the original point of the map
                     // and the actual bounding topleft point
                     - (pixelOrigin.y - pixelBoundMin.y - size.y / 2);
@@ -92,6 +93,13 @@
             }
         }
 
+        function clean() {
+            _g.select('[data-name="images-layer"]').selectAll('*').remove()
+            _g.select('[data-name="polygons-layer"]').selectAll('*').remove()
+            _g.select('[data-name="lines-layer"]').selectAll('*').remove()
+            _g.select('[data-name="points-layer"]').selectAll('*').remove()
+            _g.select('[data-name="texts-layer"]').selectAll('*').remove()
+        }
     }
 
     angular.module(moduleApp).service('LayerDrawingService', LayerDrawingService);

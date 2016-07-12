@@ -5,7 +5,7 @@
  * @requires accessimapEditeurDerApp.LayerService
  * @description
  * Service providing drawing functions
- * Provide functions to 
+ * Provide functions to
  * - init a map/draw area
  * - draw features
  */
@@ -21,21 +21,22 @@
             _lastTranslationY;
 
         this.createLayer   = createLayer;
-        
+
         this.geojsonToSvg  = geojsonToSvg;
         this.removeFeature = removeFeature;
         this.updateFeature = updateFeature;
         this.rotateFeature = rotateFeature;
         this.drawAddress   = drawAddress;
         this.transform     = transform;
-        
-        this.getFeatures   = function() { 
+        this.clean         = clean;
+
+        this.getFeatures   = function() {
             return _geojson.slice(0)
         }
-        this.setFeatures   = function(features) { 
+        this.setFeatures   = function(features) {
             _geojson = features ;
         }
-        this.resetFeatures   = function() { 
+        this.resetFeatures   = function() {
             _geojson = [] ;
         }
 
@@ -71,14 +72,14 @@
          * @ngdoc method
          * @name refresh
          * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
-         * 
-         * @description 
+         *
+         * @description
          * Project all paths from _geojson
          */
         function refresh(projectPoint) {
 
             if (projectPoint) _projection = projectPoint;
-            
+
             _geojson.forEach(function (geojson) {
 
                 d3.selectAll('path.' + geojson.id)
@@ -98,15 +99,15 @@
                             return d.geometry.type === 'Point'; })
                         .attr('stroke-width', 2 / _projection.scale)
                         .attr('cx', function(d) {
-                            return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                            return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1],
                                                                 d.geometry.coordinates[0])).x;
                         })
                         .attr('cy', function(d) {
-                            return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                            return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1],
                                                                 d.geometry.coordinates[0])).y;
                         })
                         .attr('d', function(d) {
-                            var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                            var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1],
                                                                 d.geometry.coordinates[0]));
 
                             return geojson.style.path(coords.x, coords.y, geojson.style.radius / _projection.scale);
@@ -115,7 +116,7 @@
                             var result = '';
 
                             if (this.transform.baseVal.length > 0) {
-                                var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                                var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1],
                                                                                 d.geometry.coordinates[0]));
 
                                 result += 'rotate(' + geojson.rotation + ')';//' ' + coords.x + ' ' + coords.y + ');';
@@ -124,27 +125,27 @@
                             return result;
                         });
             });
-            
+
         }
 
         /**
          * @ngdoc method
          * @name  geojsonToSvg
          * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
-         * 
-         * @description 
+         *
+         * @description
          * simplify... ?
-         * 
-         * @param  {Object} data       
+         *
+         * @param  {Object} data
          * [description]
-         * 
-         * @param  {Object} feature       
+         *
+         * @param  {Object} feature
          * [description]
-         * 
-         * @param  {Object} optionalClass 
+         *
+         * @param  {Object} optionalClass
          * [description]
          */
-        function geojsonToSvg(data, simplification, id, poi, queryChosen, styleChosen, 
+        function geojsonToSvg(data, simplification, id, poi, queryChosen, styleChosen,
                                 styleChoices, colorChosen, checkboxModel, rotationAngle) {
             if (data) {
                 // data.features.forEach(function(feature, index) {
@@ -180,11 +181,11 @@
                             styleChoices: styleChoices,
                             rotation: 0
                         };
-                        LegendService.addItem(id, 
-                                              name, 
-                                              'point', 
-                                              styleChosen, 
-                                              colorChosen, 
+                        LegendService.addItem(id,
+                                              name,
+                                              'point',
+                                              styleChosen,
+                                              colorChosen,
                                               checkboxModel.contour);
                     } else {
                         obj = {
@@ -198,11 +199,11 @@
                             contour: checkboxModel.contour,
                             color: colorChosen
                         };
-                        LegendService.addItem(queryChosen.id, 
-                                              queryChosen.name, 
-                                              queryChosen.type, 
-                                              styleChosen, 
-                                              colorChosen, 
+                        LegendService.addItem(queryChosen.id,
+                                              queryChosen.name,
+                                              queryChosen.type,
+                                              styleChosen,
+                                              colorChosen,
                                               checkboxModel.contour);
                     }
                     _geojson.push(obj);
@@ -216,12 +217,12 @@
                     drawFeature(data, featureExists, null, styleChosen, colorChosen, checkboxModel, rotationAngle);
 
                     if (styleChosen.styleInner) {
-                        drawFeature(data, 
-                            featureExists, 
-                            'inner', 
-                            styleChosen, 
-                            colorChosen, 
-                            checkboxModel, 
+                        drawFeature(data,
+                            featureExists,
+                            'inner',
+                            styleChosen,
+                            colorChosen,
+                            checkboxModel,
                             rotationAngle);
                     }
                 }
@@ -233,23 +234,23 @@
          * @name  drawAddress
          * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
          *
-         * @description 
+         * @description
          * draw a circle for an address
-         * 
+         *
          * @param  {Object} data
          * data returned by a nominatim server, containing geometry & other stuff
          * to display the poi
-         * 
+         *
          * @param  {string} id
          * specific string identifying this address
          * useful to erase the d3 node
-         * 
+         *
          * @param  {SettingsService.STYLES} style
          * style of the point ... ?
-         * 
-         * @param  {SettingsService.COLORS} color 
+         *
+         * @param  {SettingsService.COLORS} color
          * Color of the POI
-         * 
+         *
          */
         function drawAddress(data, id, style, color) {
             var lon = data.lon,
@@ -283,36 +284,36 @@
          * @ngdoc method
          * @name  drawFeature
          * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
-         * 
-         * @description 
+         *
+         * @description
          * Draw the features
-         * 
-         * @param  {Object} data       
+         *
+         * @param  {Object} data
          * [description]
-         * 
-         * @param  {Object} feature       
+         *
+         * @param  {Object} feature
          * [description]
-         * 
-         * @param  {Object} optionalClass 
+         *
+         * @param  {Object} optionalClass
          * [description]
-         * 
-         * @param  {Object} styleChosen 
+         *
+         * @param  {Object} styleChosen
          * [description]
-         * 
-         * @param  {Object} colorChosen 
+         *
+         * @param  {Object} colorChosen
          * [description]
-         * 
-         * @param  {Object} checkboxModel 
+         *
+         * @param  {Object} checkboxModel
          * [description]
-         * 
-         * @param  {Object} rotationAngle 
+         *
+         * @param  {Object} rotationAngle
          * [description]
          */
         function drawFeature(data, feature, optionalClass, styleChosen, colorChosen, checkboxModel, rotationAngle) {
             var featureGroup,
                 type = feature[0].type,
-                drawingLayer = d3.select(_g).node().select('[data-name="' + type + 's-layer"]') ; 
-            
+                drawingLayer = d3.select(_g).node().select('[data-name="' + type + 's-layer"]') ;
+
             if (optionalClass) {
                 if (d3.select('.vector.' + optionalClass + '#' + feature[0].id).empty()) {
                     featureGroup = drawingLayer.append('g')
@@ -366,8 +367,8 @@
                     return _projection.pathFromGeojson(d);
                 })
                 .append('svg:title')
-                .text(function(d) { 
-                    return d.properties.tags.name; 
+                .text(function(d) {
+                    return d.properties.tags.name;
                 })
 
                 // specific for point's features
@@ -386,15 +387,15 @@
                 // TODO: useful for lines ?
                 // .attr('stroke-width', 2 / _projection.scale)
                 .attr('cx', function(d) {
-                    return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                    return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1],
                                                                     d.geometry.coordinates[0])).x;
                 })
                 .attr('cy', function(d) {
-                    return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                    return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1],
                                                                     d.geometry.coordinates[0])).y;
                 })
                 .attr('d', function(d) {
-                    var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                    var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1],
                                                                         d.geometry.coordinates[0]));
 
                     return feature[0].style.path(coords.x, coords.y, feature[0].style.radius);
@@ -433,8 +434,8 @@
                 });
             }
 
-            if (checkboxModel 
-                && checkboxModel.contour 
+            if (checkboxModel
+                && checkboxModel.contour
                 && !d3.select('#' + feature[0].id).attr('stroke')) {
                 d3.select('#' + feature[0].id)
                     .attr('stroke', 'black')
@@ -460,16 +461,16 @@
             // RadialMenuService.addRadialMenu(d3.selectAll('path:not(.notDeletable)'));
             // RadialMenuService.addRadialMenu(d3.selectAll('circle:not(.notDeletable)'));
         }
-        
+
         /**
          * @ngdoc method
          * @name  updateFeature
          * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
-         * 
-         * @description  
+         *
+         * @description
          * update the style of a 'feature' = item of '_geojson' collection.
          *
-         * @param  {Object} id 
+         * @param  {Object} id
          * id of the feature
          */
         function updateFeature(id, style, color) {
@@ -574,26 +575,26 @@
             }
 
             // update the legend
-            LegendService.updateItem(id, 
-                                     _geojson[objectId].name, 
-                                     _geojson[objectId].type, 
-                                     _geojson[objectId].style, 
-                                     _geojson[objectId].color, 
+            LegendService.updateItem(id,
+                                     _geojson[objectId].name,
+                                     _geojson[objectId].type,
+                                     _geojson[objectId].style,
+                                     _geojson[objectId].color,
                                      _geojson[objectId].contour)
 
         }
- 
+
         /**
          * @ngdoc method
          * @name  removeFeature
          * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
-         * 
-         * @description  
+         *
+         * @description
          * remove a 'feature' = item of '_geojson' collection.
          *
          * Remove it from the array and from the map / legend
-         * 
-         * @param  {Object} id 
+         *
+         * @param  {Object} id
          * id of the feature
          */
         function removeFeature(id) {
@@ -619,11 +620,11 @@
          * @ngdoc method
          * @name  rotateFeature
          * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
-         * 
-         * @description 
+         *
+         * @description
          * rotate a feature element (feature.id) of a feature.rotation
-         * 
-         * @param  {Object} feature       
+         *
+         * @param  {Object} feature
          * Object with id & rotation properties
          */
         function rotateFeature(feature) {
@@ -633,6 +634,29 @@
                     cy = d3.select(featurei).attr('cy');
                 d3.select(featurei).attr('transform', 'rotate(' + feature.rotation + ' ' + cx + ' ' + cy + ')');
             });
+        }
+
+        /**
+         * @ngdoc method
+         * @name clean
+         * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
+         *
+         * @description
+         * clean the layer by removing all paths inside the GeoJSON layer
+         */
+        function clean() {
+            _g.select('[data-name="polygons-layer"]').selectAll('*').remove()
+            _g.select('[data-name="lines-layer"]').selectAll('*').remove()
+            _g.select('[data-name="points-layer"]').selectAll('*').remove()
+            _g.select('[data-name="texts-layer"]').selectAll('*').remove()
+
+            // Remove object from _geojson
+            _geojson.forEach(function(element, index, array) {
+                LegendService.removeItem(element.id);
+            })
+
+            _geojson = [];
+
         }
 
     }

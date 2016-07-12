@@ -1,7 +1,7 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.ToolboxService
- * 
+ *
  * @description
  * Expose different methods to draw on the d3 svg area
  *
@@ -17,19 +17,19 @@
 (function() {
     'use strict';
 
-    function ToolboxService(RadialMenuService, 
-            SettingsService, 
-            UtilService, 
-            ToolboxTriangleService, 
-            ToolboxRectangleService, 
-            ToolboxEllipseService, 
-            ToolboxTextService, 
-            ToolboxPolylineService, 
-            ToolboxImageService, 
+    function ToolboxService(RadialMenuService,
+            SettingsService,
+            UtilService,
+            ToolboxTriangleService,
+            ToolboxRectangleService,
+            ToolboxEllipseService,
+            ToolboxTextService,
+            ToolboxPolylineService,
+            ToolboxImageService,
             SelectPathService) {
 
         this.init                          = init;
-        
+
         this.addContextMenus               = addContextMenus;
         this.hideContextMenus              = hideContextMenus;
 
@@ -37,15 +37,15 @@
         this.hideSelectPaths               = hideSelectPaths;
 
         this.hideRadialMenu                = RadialMenuService.hideRadialMenu;
-        
+
         this.drawPoint                     = drawPoint;
-        
+
         this.writeText                     = ToolboxTextService.writeText;
-        
+
         this.beginLineOrPolygon            = ToolboxPolylineService.beginLineOrPolygon;
         this.drawHelpLineOrPolygon         = ToolboxPolylineService.drawHelpLineOrPolygon;
         this.finishLineOrPolygon           = ToolboxPolylineService.finishLineOrPolygon;
-        
+
         this.drawCircle                    = ToolboxEllipseService.drawCircle;
         this.updateCircleRadius            = ToolboxEllipseService.updateCircleRadius;
 
@@ -54,7 +54,7 @@
 
         this.drawTriangle                  = ToolboxTriangleService.drawTriangle;
         this.updateTriangle                = ToolboxTriangleService.updateTriangle;
-        
+
         this.changeTextColor               = changeTextColor;
         this.updateBackgroundStyleAndColor = updateBackgroundStyleAndColor;
         this.updateFeatureStyleAndColor    = updateFeatureStyleAndColor;
@@ -63,7 +63,7 @@
         this.featureIcon                   = featureIcon;
 
         var svgDrawing;
-        
+
         function init(_svgDrawing, svgMenu, getCurrentZoom) {
             RadialMenuService.init(d3.select(_svgDrawing.node().parentNode.parentNode), getCurrentZoom);
             svgDrawing = _svgDrawing;
@@ -130,19 +130,19 @@
          *
          * @description
          * Draw a point (circle, arrow,...) at specific coordinates
-         * 
-         * @param  {integer} x     
+         *
+         * @param  {integer} x
          * X coordinate of the point
-         * 
-         * @param  {integer} y     
+         *
+         * @param  {integer} y
          * Y coordinate of the point
-         * 
-         * @param  {Object} style 
+         *
+         * @param  {Object} style
          * SettingsService.STYLE of the point
-         * 
-         * @param  {Object} color 
+         *
+         * @param  {Object} color
          * SettingsService.COLOR of the point
-         * 
+         *
          */
         function drawPoint(x, y, style, color) {
 
@@ -158,7 +158,7 @@
                         .attr('data-link', iid)
                         .attr('data-type', 'point')
                         .attr('data-from', 'drawing');
-            
+
             applyStyle(feature, style.style, color);
 
             // RadialMenuService.addRadialMenu(feature);
@@ -209,7 +209,7 @@
                     y = parseInt(path.attr('data-y'))
                 path.attr('d', style.path(x,y,style.radius))
             }
-            
+
             if (style && color) {
                 applyStyle(path, style.style, color);
             }
@@ -274,7 +274,7 @@
                         .attr('x2', 250)
                         .attr('y2', 15)
                         .attr('fill', 'red');
-                        
+
                     angular.forEach(item.styleInner, function(attribute) {
                         var k = attribute.k,
                             v = attribute.v;
@@ -318,16 +318,16 @@
         };
 
     }
-    
+
     angular.module(moduleApp).service('ToolboxService', ToolboxService);
 
     ToolboxService.$inject = ['RadialMenuService', 'SettingsService', 'UtilService',
-                            'ToolboxTriangleService', 
-                            'ToolboxRectangleService', 
-                            'ToolboxEllipseService', 
-                            'ToolboxTextService', 
+                            'ToolboxTriangleService',
+                            'ToolboxRectangleService',
+                            'ToolboxEllipseService',
+                            'ToolboxTextService',
                             'ToolboxPolylineService',
-                            'ToolboxImageService', 
+                            'ToolboxImageService',
                             'SelectPathService'];
 
 })();

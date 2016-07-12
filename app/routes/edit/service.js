@@ -269,7 +269,7 @@
             // created inside #pattern svg
             DefsService.createDefs(d3.select('#pattern'));
 
-            LegendService.initLegend('#legend',
+            LegendService.init('#legend',
                                     currentLegendFormat.width,
                                     currentLegendFormat.height,
                                     SettingsService.margin,
@@ -565,23 +565,23 @@
                 initWorkspace();
 
                 // empty the svg:g
-                var currentGeoJSONLayer = DrawingService.layers.geojson.getLayer().node(),
-                    currentDrawingLayer = DrawingService.layers.drawing.getLayer().node(),
-                    currentBackgroundLayer = DrawingService.layers.background.getLayer().node();
-
-                // if map displayed, display it and center on the right place
-                function removeChildren(node) {
-                    var children = node.children,
-                        length = children.length;
-
-                    for (var i = 0; i < length; i++) {
-                        node.removeChild(children[0]); // children list is live, removing a child change the list...
-                    }
-                }
-
-                removeChildren(currentGeoJSONLayer);
-                removeChildren(currentDrawingLayer);
-                removeChildren(currentBackgroundLayer);
+                // var currentGeoJSONLayer = DrawingService.layers.geojson.getLayer().node(),
+                //     currentDrawingLayer = DrawingService.layers.drawing.getLayer().node(),
+                //     currentBackgroundLayer = DrawingService.layers.background.getLayer().node();
+                //
+                // // if map displayed, display it and center on the right place
+                // function removeChildren(node) {
+                //     var children = node.children,
+                //         length = children.length;
+                //
+                //     for (var i = 0; i < length; i++) {
+                //         node.removeChild(children[0]); // children list is live, removing a child change the list...
+                //     }
+                // }
+                //
+                // removeChildren(currentGeoJSONLayer);
+                // removeChildren(currentDrawingLayer);
+                // removeChildren(currentBackgroundLayer);
 
                 DrawingService.layers.geojson.resetFeatures();
 
@@ -594,77 +594,78 @@
                         case 'image/svg+xml':
                             initUpload();
                             d3.xml(data.dataUrl, function loadDrawingFromSVG(svgElement) {
+                                var model = ImportService.getModelFromSVG(svgElement);
                                 ImportService.importDrawing(svgElement);
                                 freezeMap();
-                                deferred.resolve();
+                                deferred.resolve(model);
                             })
                             break;
 
                         case 'application/zip':
-                        case 'application/x-zip-compressed                              ':
+                        case 'application/x-zip-compressed':
                         case 'application/binary':
                             initUpload();
                             JSZip.loadAsync(element.files[0]).then(function loadDrawingFromZip(zip) {
 
-                                    var commentairesPath,
-                                        legendPath,
-                                        drawingPath,
-                                        interactionPath,
-                                        legendElement, svgElement, interactionData;
+                                var commentairesPath,
+                                    legendPath,
+                                    drawingPath,
+                                    interactionPath,
+                                    legendElement, svgElement, interactionData;
 
-                                    zip.forEach(function getPath(relativePath, zipEntry) {
+                                zip.forEach(function getPath(relativePath, zipEntry) {
 
-                                        if (relativePath.indexOf("carte_sans_source.svg") >= 0) {
-                                            drawingPath = relativePath;
-                                        }
-
-                                        if (relativePath.indexOf("interactions.xml") >= 0) {
-                                            interactionPath = relativePath;
-                                        }
-                                    });
-
-                                    var parser = new DOMParser();
-
-                                    if (drawingPath) {
-                                        zip.file(drawingPath).async("string").then(function importDrawing(data) {
-
-                                            var svgElement = parser.parseFromString(data, "text/xml"),
-                                                model = ImportService.getModelFromSVG(svgElement);
-
-                                            changeDrawingFormat(model.mapFormat)
-
-                                            if (model.isMapVisible) {
-                                                MapService.showMapLayer(model.mapIdVisible);
-                                            }
-
-                                            if (model.center !== null && model.zoom !== null) {
-                                                center = model.center;
-                                                zoom = model.zoom;
-
-                                                MapService.resetView(center, zoom);
-                                                freezeMap();
-                                            }
-
-                                            ImportService.importDrawing(svgElement)
-                                            // DrawingService.toolbox.addRadialMenus();
-                                            ModeService.enableDefaultMode();
-                                            deferred.resolve(model);
-
-                                        })
-                                    } else {
-                                        deferred.reject('Fichier carte_sans_source.svg non trouvé dans l\'archive')
+                                    if (relativePath.indexOf("carte_sans_source.svg") >= 0) {
+                                        drawingPath = relativePath;
                                     }
 
-                                    if (interactionPath) {
-                                        zip.file(interactionPath).async("string")
-                                        .then(function importInteraction(data) {
-                                            ImportService.importInteraction(parser.parseFromString(data, "text/xml"));
-                                        })
+                                    if (relativePath.indexOf("interactions.xml") >= 0) {
+                                        interactionPath = relativePath;
                                     }
-
-                                    // TODO: make a Promise.all to manage the import time
-
                                 });
+
+                                var parser = new DOMParser();
+
+                                if (drawingPath) {
+                                    zip.file(drawingPath).async("string").then(function importDrawing(data) {
+
+                                        var svgElement = parser.parseFromString(data, "text/xml"),
+                                            model = ImportService.getModelFromSVG(svgElement);
+
+                                        changeDrawingFormat(model.mapFormat)
+
+                                        if (model.isMapVisible) {
+                                            MapService.showMapLayer(model.mapIdVisible);
+                                        }
+
+                                        if (model.center !== null && model.zoom !== null) {
+                                            center = model.center;
+                                            zoom = model.zoom;
+
+                                            MapService.resetView(center, zoom);
+                                            freezeMap();
+                                        }
+
+                                        ImportService.importDrawing(svgElement)
+                                        // DrawingService.toolbox.addRadialMenus();
+                                        ModeService.enableDefaultMode();
+                                        deferred.resolve(model);
+
+                                    })
+                                } else {
+                                    deferred.reject('Fichier carte_sans_source.svg non trouvé dans l\'archive')
+                                }
+
+                                if (interactionPath) {
+                                    zip.file(interactionPath).async("string")
+                                    .then(function importInteraction(data) {
+                                        ImportService.importInteraction(parser.parseFromString(data, "text/xml"));
+                                    })
+                                }
+
+                                // TODO: make a Promise.all to manage the import time
+
+                            });
 
                             break;
 
