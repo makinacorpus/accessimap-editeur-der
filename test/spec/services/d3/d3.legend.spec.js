@@ -6,10 +6,12 @@ describe('Service: LegendService', function () {
     beforeEach(module('accessimapEditeurDerApp'));
 
     // instantiate service
-    var LegendService;
+    var LegendService, settings;
 
     beforeEach(inject(function ($injector) {
+
         LegendService = $injector.get('LegendService');
+        settings = $injector.get('SettingsService')
 
         var legend = document.createElement('div');
         legend.setAttribute('id', 'legend');
@@ -114,20 +116,10 @@ describe('Service: LegendService', function () {
 
     describe('the addItem function', function() {
 
-        var svg,
-            settings;
-
-        beforeEach(inject(function($injector) {
-
-            settings = $injector.get('SettingsService')
-
-            svg = LegendService.init('#legend', 200, 300, 10, 0.5)
-
-            LegendService.addItem('1', 'pouet', 'line', settings.STYLES.point[0], null, true)
-
-        }))
-
         it('should add the item to the model', function() {
+
+            LegendService.init('#legend', 200, 300, 10, 0.5)
+            LegendService.addItem('1', 'pouet', 'line', settings.STYLES.point[0], null, true)
 
             expect(Array.isArray(LegendService.getModel())).toBe(true);
             expect(LegendService.getModel().length).toBe(1);
@@ -142,6 +134,12 @@ describe('Service: LegendService', function () {
 
         it('should draw the item to the legend', function() {
 
+            var svg = LegendService.init('#legend', 200, 300, 10, 0.5)
+
+            expect(svg.selectAll('g.legend')[0].length).toBe(0)
+
+            LegendService.addItem('1', 'pouet', 'line', settings.STYLES.point[0], null, true)
+
             expect(svg.selectAll('g.legend')[0].length).toBe(1)
 
         })
@@ -154,12 +152,25 @@ describe('Service: LegendService', function () {
             var svg = LegendService.init('#legend', 200, 300, 10, 0.5)
 
             // add an item in the legend
+            LegendService.addItem('1', 'pouet', 'line', settings.STYLES.point[0], null, true)
+            expect(LegendService.getModel()[0].name).toBe('pouet');
+
+            console.log(svg)
 
             // select & enable the edition mode to the text of this item
+            LegendService.editText('1');
+
+            // check the text is now 'editable'
 
             // edit the text & see if it has been modified
 
-        });
+        })
+
+    })
+
+    describe('the updateItem function', function() {
+
+
 
     })
 

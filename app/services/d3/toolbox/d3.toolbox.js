@@ -36,8 +36,6 @@
         this.addSelectPaths                = addSelectPaths;
         this.hideSelectPaths               = hideSelectPaths;
 
-        this.hideRadialMenu                = RadialMenuService.hideRadialMenu;
-
         this.drawPoint                     = drawPoint;
 
         this.writeText                     = ToolboxTextService.writeText;
@@ -101,7 +99,7 @@
 
         function addContextMenus() {
             selectors.forEach(function(currentSelector, index, array) {
-                RadialMenuService.addRadialMenu(d3.selectAll(currentSelector));
+                RadialMenuService.addRadialMenu(d3.selectAll(currentSelector), svgDrawing);
             })
         }
 

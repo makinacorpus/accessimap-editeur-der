@@ -26,7 +26,8 @@
     'use strict';
 
     function EditService($q, SettingsService, MapService, DrawingService, LegendService,
-        DefsService, InteractionService, ExportService, UtilService, ImportService, FeatureService, ModeService) {
+        DefsService, InteractionService, ExportService, UtilService, ImportService,
+        FeatureService, ModeService, RadialMenuService) {
 
         this.init          = init;
         this.settings      = SettingsService;
@@ -48,7 +49,6 @@
         this.updateBackgroundStyleAndColor = DrawingService.toolbox.updateBackgroundStyleAndColor;
         this.updateFeatureStyleAndColor    = DrawingService.toolbox.updateFeatureStyleAndColor;
         this.updateMarker                  = DrawingService.toolbox.updateMarker;
-        // this.addRadialMenus                = DrawingService.toolbox.addRadialMenus;
         this.updatePoint                   = DrawingService.updatePoint;
 
         this.isUndoAvailable               = FeatureService.isUndoAvailable;
@@ -273,7 +273,8 @@
                                     currentLegendFormat.width,
                                     currentLegendFormat.height,
                                     SettingsService.margin,
-                                    SettingsService.ratioPixelPoint);
+                                    SettingsService.ratioPixelPoint,
+                                    RadialMenuService.addRadialMenu);
 
             FeatureService.init(selDrawing, projDrawing, MapService)
             ModeService.init(projDrawing)
@@ -695,6 +696,7 @@
                             'ImportService',
                             'FeatureService',
                             'ModeService',
+                            'RadialMenuService',
                             ];
 
 })();

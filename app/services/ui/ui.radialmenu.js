@@ -43,7 +43,7 @@
          * @return {Object}
          * The menu drawned
          */
-        function drawMenu(target, mousePosition) {
+        function drawMenu(target, mousePosition, svg) {
             
             currentTarget = target;
 
@@ -90,7 +90,7 @@
          * DOM Element(s) on which the event 'contextmenu' will be attached
          * 
          */
-        function addRadialMenu(elements) {
+        function addRadialMenu(elements, svg) {
             elements.on('contextmenu', function(event) {
 
                 // TODO: Block others click...
@@ -98,7 +98,7 @@
                 d3.event.stopPropagation();
 
                 if (menu) menu.hide();
-                menu = drawMenu(d3.select(this), d3.mouse(svg.node()), 1);
+                menu = drawMenu(d3.select(this), d3.mouse(svg.node()), svg);
                 
             });
 

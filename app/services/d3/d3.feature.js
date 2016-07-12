@@ -258,7 +258,7 @@
                         .attr('opacity', '')
                         .attr('transform', transformString);
 
-                    addRadialMenuFunction(d3.select(temporaryPath));
+                    addRadialMenuFunction(d3.select(temporaryPath), _layer);
                     SelectPathService.addTo(d3.select(temporaryPath));
 
                     handlers.removeEventListener(['click', 'mousemove']);

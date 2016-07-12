@@ -6,7 +6,7 @@
 (function() {
     'use strict';
 
-    function SettingsActions (FeatureService, InteractionService) {
+    function SettingsActions (FeatureService, InteractionService, LegendService) {
 
         var ACTIONS = {
             'point': [
@@ -84,6 +84,12 @@
                 { icon: 'assets/icons/autorenew.svg', action: FeatureService.rotatePath },
                 { icon: 'assets/icons/crop_din.svg', action: FeatureService.toggleStroke },
                 { icon: 'assets/icons/hearing.svg', action: InteractionService.addInteraction },
+            ],
+            'legend': [
+                { icon: 'assets/icons/delete.svg', action: LegendService.removeObject },
+                { icon: 'assets/icons/arrow-up2.svg', action: LegendService.goUpObject },
+                { icon: 'assets/icons/arrow-down2.svg', action: LegendService.goDownObject },
+                { icon: 'assets/icons/draw_text.png', action: LegendService.editText },
             ]
         }
 
@@ -92,6 +98,6 @@
 
     angular.module(moduleApp).service('SettingsActions', SettingsActions);
 
-    SettingsActions.$inject = ['FeatureService', 'InteractionService'];
+    SettingsActions.$inject = ['FeatureService', 'InteractionService', 'LegendService'];
 
 })();

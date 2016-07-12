@@ -7,7 +7,7 @@
 (function() {
     'use strict';
 
-    function ToolboxTextService(RadialMenuService, GeneratorService, UtilService, $q) {
+    function ToolboxTextService(GeneratorService, UtilService, $q) {
 
         this.writeText       = writeText;
         this.setTextEditable = setTextEditable;
@@ -115,7 +115,7 @@
                         });
                         d3.select(this.parentElement).remove();
 
-                        // RadialMenuService.addRadialMenu(d3.select('.edition'));
+                        // .addRadialMenu(d3.select('.edition'));
 
                         d3.select('.edition').classed('edition', false);
                         textElement.style('cursor','text')
@@ -142,6 +142,6 @@
     
     angular.module(moduleApp).service('ToolboxTextService', ToolboxTextService);
 
-    ToolboxTextService.$inject = ['RadialMenuService', 'GeneratorService', 'UtilService', '$q']
+    ToolboxTextService.$inject = ['GeneratorService', 'UtilService', '$q']
 
 })();

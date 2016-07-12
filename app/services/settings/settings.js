@@ -15,7 +15,7 @@
 (function() {
     'use strict';
 
-    function SettingsService (SettingsActions, SettingsColors, SettingsFonts, SettingsFormats, 
+    function SettingsService (SettingsColors, SettingsFonts, SettingsFormats, 
                         SettingsQuery, SettingsStyles) {
 
         var leafletConf = {
@@ -71,8 +71,8 @@
             name: 'Trait'
         }],
 
-        // XAPI_URL = 'http://overpass-api.de/api/interpreter?data=',
-        XAPI_URL = 'http://api.openstreetmap.fr/oapi/interpreter/?data=',
+        XAPI_URL = 'http://overpass-api.de/api/interpreter?data=',
+        // XAPI_URL = 'http://api.openstreetmap.fr/oapi/interpreter/?data=',
         NOMINATIM_URL = 'http://nominatim.openstreetmap.org/search/';
 
         // Public API here
@@ -97,7 +97,7 @@
             STYLES                 : SettingsStyles.STYLES,
             ALL_STYLES             : SettingsStyles.ALL_STYLES,
             
-            ACTIONS                : SettingsActions.ACTIONS,
+            // ACTIONS                : SettingsActions.ACTIONS,
             
             markerStart            : markerStart,
             markerStop             : markerStop,
@@ -110,7 +110,7 @@
 
     angular.module(moduleApp).factory('SettingsService', SettingsService);
 
-    SettingsService.$inject = ['SettingsActions', 
+    SettingsService.$inject = [ 
                                'SettingsColors', 
                                'SettingsFonts', 
                                'SettingsFormats',
