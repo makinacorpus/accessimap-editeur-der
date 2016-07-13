@@ -241,7 +241,7 @@
          * @return {Object}
          * The menu drawned
          */
-        function drawMenu(target, mousePosition) {
+        function drawMenu(target, mousePosition, svg) {
             
             currentTarget = target;
 
@@ -288,7 +288,7 @@
          * DOM Element(s) on which the event 'contextmenu' will be attached
          * 
          */
-        function addRadialMenu(elements) {
+        function addRadialMenu(elements, svg) {
             elements.on('contextmenu', function(event) {
 
                 // TODO: Block others click...
@@ -296,7 +296,7 @@
                 d3.event.stopPropagation();
 
                 if (menu) menu.hide();
-                menu = drawMenu(d3.select(this), d3.mouse(svg.node()), 1);
+                menu = drawMenu(d3.select(this), d3.mouse(svg.node()), svg);
                 
             });
 
@@ -1017,7 +1017,7 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.FeatureService
- * 
+ *
  * @description
  * Service providing actions to manage features
  * TODO: rename this service ? It's not clear about what it's doing
@@ -1025,36 +1025,36 @@
 (function() {
     'use strict';
 
-    function FeatureService(InteractionService, 
-                            EmptyComfortService, 
-                            UtilService, 
-                            GeometryUtilsService, 
+    function FeatureService(InteractionService,
+                            EmptyComfortService,
+                            UtilService,
+                            GeometryUtilsService,
                             GeneratorService,
                             SelectPathService) {
-        
+
         this.duplicatePath                 = duplicatePath;
         this.movePath                      = movePath;
         this.movePoint                     = movePoint;
         this.rotatePath                    = rotatePath;
         this.skew                          = skew;
-        
+
         this.removeObject                  = removeObject;
 
         this.undo                          = undo;
         this.isUndoAvailable               = isUndoAvailable;
-        
+
         this.toggleStroke                  = toggleStroke;
         this.toggleArrow                   = toggleArrow;
         this.toggleEmptyComfortNearFeature = toggleEmptyComfortNearFeature;
-        
+
         this.changeColor                   = changeColor;
         this.changePattern                 = changePattern;
         this.changePoint                   = changePoint;
 
         this.lineToCardinal                = lineToCardinal;
-        
+
         this.init                          = init;
-        
+
         // this var retain the last feature deleted
         // useful for cancel this deletion
         // TODO: need to be improved to integrate the history pattern (undo/redo)
@@ -1072,7 +1072,7 @@
             layer         = _layer;
             projection    = _projection;
             handlers      = _handlers;
-            
+
             pointsLayer   = layer.select('g[data-name="points-layer"]');
             polygonsLayer = layer.select('g[data-name="polygons-layer"]');
             linesLayer    = layer.select('g[data-name="lines-layer"]');
@@ -1085,7 +1085,7 @@
 
         function undo() {
             if (isUndoAvailable()) {
-                
+
                 var deletedElement = d3.select('#deletedElement').node(),
                     t = document.createElement('path');
 
@@ -1096,7 +1096,7 @@
                 removedFeature = null;
             }
         }
-        
+
         function removeFeature(feature) {
             var featuresToUpdate = feature;
 
@@ -1136,7 +1136,7 @@
         }
 
         function movePath(feature) {
-            
+
             var el            = feature.node(),
             parentNode        = el.parentNode,
             temporaryPath     = el.cloneNode(true),
@@ -1168,8 +1168,8 @@
                     transformString = '';
 
                     if (hasRotate) {
-                        transformString += 'rotate(' + [hasRotate[1], 
-                                (parseFloat(hasRotate[2]) + realCoordinates[0]), 
+                        transformString += 'rotate(' + [hasRotate[1],
+                                (parseFloat(hasRotate[2]) + realCoordinates[0]),
                                 (parseFloat(hasRotate[3]) + realCoordinates[1])] + ')';
                     }
                     transformString += 'translate(' + [realCoordinates[0], realCoordinates[1]] + ')';
@@ -1193,8 +1193,8 @@
                     transformString = '';
 
                 if (hasRotate) {
-                    transformString += 'rotate(' + [hasRotate[1], 
-                        (parseFloat(hasRotate[2]) + realCoordinates[0]), 
+                    transformString += 'rotate(' + [hasRotate[1],
+                        (parseFloat(hasRotate[2]) + realCoordinates[0]),
                         (parseFloat(hasRotate[3]) + realCoordinates[1])] + ')';
                 }
                 transformString += 'translate(' + [realCoordinates[0], realCoordinates[1]] + ')';
@@ -1212,7 +1212,7 @@
         }
 
         function duplicatePath(feature, addRadialMenuFunction) {
-            
+
             var el            = feature.node(),
             parentNode        = el.parentNode,
             temporaryPath     = el.cloneNode(true),
@@ -1257,8 +1257,8 @@
                     transformString = '';
 
                     if (hasRotate) {
-                        transformString += 'rotate(' + [hasRotate[1], 
-                                (parseFloat(hasRotate[2]) + realCoordinates[0]), 
+                        transformString += 'rotate(' + [hasRotate[1],
+                                (parseFloat(hasRotate[2]) + realCoordinates[0]),
                                 (parseFloat(hasRotate[3]) + realCoordinates[1])] + ')';
                     }
                     transformString += 'translate(' + [realCoordinates[0], realCoordinates[1]] + ')';
@@ -1273,7 +1273,7 @@
                         .attr('opacity', '')
                         .attr('transform', transformString);
 
-                    addRadialMenuFunction(d3.select(temporaryPath));
+                    addRadialMenuFunction(d3.select(temporaryPath), layer);
                     SelectPathService.addTo(d3.select(temporaryPath));
 
                     handlers.removeEventListener(['click', 'mousemove']);
@@ -1288,8 +1288,8 @@
                     transformString = '';
 
                 if (hasRotate) {
-                    transformString += 'rotate(' + [hasRotate[1], 
-                        (parseFloat(hasRotate[2]) + realCoordinates[0]), 
+                    transformString += 'rotate(' + [hasRotate[1],
+                        (parseFloat(hasRotate[2]) + realCoordinates[0]),
                         (parseFloat(hasRotate[3]) + realCoordinates[1])] + ')';
                 }
                 transformString += 'translate(' + [realCoordinates[0], realCoordinates[1]] + ')';
@@ -1368,34 +1368,34 @@
          * @name  skew
          * @methodOf accessimapEditeurDerApp.FeatureService
          *
-         * @description 
+         * @description
          * Enter into the skew mode for the feature selected.
          *
-         * When user click and move his mouse, 
+         * When user click and move his mouse,
          * we detect the axis by analyzing first direction of the move,
          * then apply a skew linked by the distance from initial click and actual position of the mouse
          *
          * When user 'mouseup', we act the skew transformation is finished.
-         * 
+         *
          * @param  {Object} feature
          * Feature on which the skew will operate
-         * 
+         *
          */
         function skew(feature) {
 
             var el            = feature.node(),
             parentNode        = el.parentNode,
             temporaryPath     = el.cloneNode(true),
-            
+
             emptyCircle       = d3.select('.c' + feature.attr('data-link')),
             emptyCircleExists = emptyCircle.node(),
             temporaryCircle   = emptyCircleExists ? emptyCircleExists.cloneNode(true) : null,
-            
+
             transform         = d3.transform(layer.attr('transform')),
             // hasRotate         = /rotate\((.*?)(?: |,)(.*?)(?: |,)(.*?)\)/.exec(feature.attr('transform')),
             bbox              = el.getBBox(),
             axis              = null,
-            originalPoint     = { x: null, y: null }, 
+            originalPoint     = { x: null, y: null },
             originalMove      = { x: 0, y: 0 },
             initialTransform  = feature.attr('transform') !== null ? feature.attr('transform') : '';
 
@@ -1442,8 +1442,8 @@
 
 
                 // if (hasRotate) {
-                //     transformString += 'rotate(' + [hasRotate[1], 
-                //         (parseFloat(hasRotate[2]) + realCoordinates[0]), 
+                //     transformString += 'rotate(' + [hasRotate[1],
+                //         (parseFloat(hasRotate[2]) + realCoordinates[0]),
                 //         (parseFloat(hasRotate[3]) + realCoordinates[1])] + ')';
                 // }
 
@@ -1451,7 +1451,7 @@
                     transform.skewX(( p.x - originalPoint.x ) / 5)
                              .skewY(( p.y - originalPoint.y ) / 5)
                 } else {
-                    
+
                     if ( originalMove.x > 5 || originalMove.y > 5 ) {
                         axis = ( originalMove.x < originalMove.y ) ? 'Y' : 'X';
                     }
@@ -1503,10 +1503,10 @@
             rotationMarker = pointsLayer
                 .append('g')
                 .classed('ongoing', true)
-                .attr('transform', 'translate(' 
-                                    + pathCenterTranslate[0] 
-                                    + ',' 
-                                    + (pathCenterTranslate[1] + bbox.height ) 
+                .attr('transform', 'translate('
+                                    + pathCenterTranslate[0]
+                                    + ','
+                                    + (pathCenterTranslate[1] + bbox.height )
                                     + ')')
                 .attr('pathCenter', pathCenter)
                 .attr('pathCenterTranslate', pathCenterTranslate)
@@ -1530,17 +1530,17 @@
 
             drag.on('dragstart', function() {
                 // silence other listeners
-                d3.event.sourceEvent.stopPropagation(); 
+                d3.event.sourceEvent.stopPropagation();
                 var mouse = d3.mouse(pointsLayer.node());
-                initialAngle = GeometryUtilsService.angle(pathCenterTranslate[0], 
-                                        pathCenterTranslate[1], 
-                                        mouse[0], 
+                initialAngle = GeometryUtilsService.angle(pathCenterTranslate[0],
+                                        pathCenterTranslate[1],
+                                        mouse[0],
                                         mouse[1]);
             }).on('drag', function() {
                 var mouse = d3.mouse(pointsLayer.node()),
-                    currentAngle = GeometryUtilsService.angle(pathCenterTranslate[0], 
-                                        pathCenterTranslate[1], 
-                                        mouse[0], 
+                    currentAngle = GeometryUtilsService.angle(pathCenterTranslate[0],
+                                        pathCenterTranslate[1],
+                                        mouse[0],
                                         mouse[1]),
                     diffAngle = currentAngle - initialAngle,
 
@@ -1551,12 +1551,12 @@
                     transformString += hasTranslate[0];
                 }
 
-                transformString += 'rotate(' 
-                                + diffAngle 
-                                + ' ' 
-                                + pathCenter[0] 
-                                + ' ' 
-                                + pathCenter[1] 
+                transformString += 'rotate('
+                                + diffAngle
+                                + ' '
+                                + pathCenter[0]
+                                + ' '
+                                + pathCenter[1]
                                 + ')';
 
                 feature.attr('transform', transformString);
@@ -1565,10 +1565,10 @@
                     emptyCircle.attr('transform', transformString);
                 }
 
-                rotationMarker.attr('transform', 'translate(' 
-                                                    + mouse[0] 
-                                                    + ',' 
-                                                    + mouse[1] 
+                rotationMarker.attr('transform', 'translate('
+                                                    + mouse[0]
+                                                    + ','
+                                                    + mouse[1]
                                                     + ')');
             }).on('dragend', function() {
                 pointsLayer.on('mousedown.drag', null);
@@ -1580,10 +1580,10 @@
          * @ngdoc method
          * @name  toggleStroke
          * @methodOf accessimapEditeurDerApp.FeatureService
-         * @description 
+         * @description
          * Add or remove (toggle) the stroke (2px border) on a feature.
-         * 
-         * @param  {Object} feature 
+         *
+         * @param  {Object} feature
          * Feature (shape) on which will be added the 'white area'
          */
         function toggleStroke(feature) {
@@ -1605,11 +1605,11 @@
          * @ngdoc method
          * @name  toggleEmptyComfortNearFeature
          * @methodOf accessimapEditeurDerApp.FeatureService
-         * 
-         * @description 
+         *
+         * @description
          * Add an empty (white) area around the feature shape.
-         * 
-         * @param  {Object} feature 
+         *
+         * @param  {Object} feature
          * Feature (shape) on which will be added the 'white area'
          */
         function toggleEmptyComfortNearFeature(feature) {
@@ -1644,7 +1644,7 @@
 
         function changePattern(feature) {
             // TODO: init correctly value of modal dialog
-            /* 
+            /*
             scope.styleChoices = scope.styles.polygon;
             var style = $.grep(scope.styleChoices, function(style) {
                 return style.id == feature.attr('e-style');
@@ -1669,19 +1669,19 @@
          * @name  lineToCardinal
          * @methodOf accessimapEditeurDerApp.FeatureService
          *
-         * @description 
+         * @description
          * Transform a line into a bezier curve ?
-         * 
+         *
          * @param  {Object} feature
          * Path to 'simplify'
-         * 
+         *
          */
         function lineToCardinal(feature) {
             var arr = feature.attr('d').split('L'),
                 featuresToUpdate = feature;
 
             if (feature.attr('data-link')) {
-                featuresToUpdate = 
+                featuresToUpdate =
                     d3.selectAll('.link_' + feature.attr('data-link'));
             }
             var coords = undefined;
@@ -1735,10 +1735,11 @@
 
     angular.module(moduleApp).service('FeatureService', FeatureService);
 
-    FeatureService.$inject = ['InteractionService', 'EmptyComfortService', 'UtilService', 
+    FeatureService.$inject = ['InteractionService', 'EmptyComfortService', 'UtilService',
                                 'GeometryUtilsService', 'GeneratorService', 'SelectPathService']
 
 })();
+
 /*global textures */
 /**
  * @ngdoc service
@@ -1756,7 +1757,7 @@
 (function() {
     'use strict';
 
-    function SettingsService (SettingsActions, SettingsColors, SettingsFonts, SettingsFormats, 
+    function SettingsService (SettingsColors, SettingsFonts, SettingsFormats, 
                         SettingsQuery, SettingsStyles) {
 
         var leafletConf = {
@@ -1812,8 +1813,8 @@
             name: 'Trait'
         }],
 
-        // XAPI_URL = 'http://overpass-api.de/api/interpreter?data=',
-        XAPI_URL = 'http://api.openstreetmap.fr/oapi/interpreter/?data=',
+        XAPI_URL = 'http://overpass-api.de/api/interpreter?data=',
+        // XAPI_URL = 'http://api.openstreetmap.fr/oapi/interpreter/?data=',
         NOMINATIM_URL = 'http://nominatim.openstreetmap.org/search/';
 
         // Public API here
@@ -1838,7 +1839,7 @@
             STYLES                 : SettingsStyles.STYLES,
             ALL_STYLES             : SettingsStyles.ALL_STYLES,
             
-            ACTIONS                : SettingsActions.ACTIONS,
+            // ACTIONS                : SettingsActions.ACTIONS,
             
             markerStart            : markerStart,
             markerStop             : markerStop,
@@ -1851,7 +1852,7 @@
 
     angular.module(moduleApp).factory('SettingsService', SettingsService);
 
-    SettingsService.$inject = ['SettingsActions', 
+    SettingsService.$inject = [ 
                                'SettingsColors', 
                                'SettingsFonts', 
                                'SettingsFormats',
@@ -3142,7 +3143,7 @@
 (function() {
     'use strict';
 
-    function SettingsActions (FeatureService, InteractionService) {
+    function SettingsActions (FeatureService, InteractionService, LegendService) {
 
         var ACTIONS = {
             'point': [
@@ -3220,6 +3221,12 @@
                 { icon: 'assets/icons/autorenew.svg', action: FeatureService.rotatePath },
                 { icon: 'assets/icons/crop_din.svg', action: FeatureService.toggleStroke },
                 { icon: 'assets/icons/hearing.svg', action: InteractionService.addInteraction },
+            ],
+            'legend': [
+                { icon: 'assets/icons/delete.svg', action: LegendService.removeObject },
+                { icon: 'assets/icons/arrow-up2.svg', action: LegendService.goUpObject },
+                { icon: 'assets/icons/arrow-down2.svg', action: LegendService.goDownObject },
+                { icon: 'assets/icons/draw_text.png', action: LegendService.editText },
             ]
         }
 
@@ -3228,9 +3235,10 @@
 
     angular.module(moduleApp).service('SettingsActions', SettingsActions);
 
-    SettingsActions.$inject = ['FeatureService', 'InteractionService'];
+    SettingsActions.$inject = ['FeatureService', 'InteractionService', 'LegendService'];
 
 })();
+
 
 /**
  * @ngdoc service
@@ -3837,85 +3845,10 @@
 })();
 /**
  * @ngdoc service
- * @name accessimapEditeurDerApp.DefsService
- * 
- * @description
- * Service provinding a method to add 'definitions' patterns to a svg
- */
-(function() {
-    'use strict';
-
-    function DefsService(SettingsService) {
-
-        this.createDefs = createDefs;
-
-        /**
-         * @ngdoc method
-         * @name  accessimapEditeurDerApp.DefsService.createDefs
-         * @methodOf accessimapEditeurDerApp.DefsService
-         *
-         */
-        function createDefs(node) {
-            
-            var _svg = node.append('svg'),
-                _defs = _svg.attr("data-name", "defs")
-                            .append("defs");
-
-            _defs.append('marker')
-                    .attr('id', 'arrowStartMarker')
-                    .attr('refX', 5)
-                    .attr('refY', 5)
-                    .attr('markerWidth', 10)
-                    .attr('markerHeight', 10)
-                    .attr('orient', 'auto')
-                .append('path')
-                    .attr('d', 'M9,1 L5,5 9,9')
-                    .attr('style', 'fill:none;stroke:#000000;stroke-opacity:1');
-
-            _defs.append('marker')
-                    .attr('id', 'arrowStopMarker')
-                    .attr('refX', 5)
-                    .attr('refY', 5)
-                    .attr('markerWidth', 10)
-                    .attr('markerHeight', 10)
-                    .attr('orient', 'auto')
-                .append('path')
-                    .attr('d', 'M1,1 L5,5 1,9')
-                    .attr('style', 'fill:none;stroke:#000000;stroke-opacity:1');
-
-            _defs.append('marker')
-                    .attr('id', 'straightMarker')
-                    .attr('refX', 1)
-                    .attr('refY', 5)
-                    .attr('markerWidth', 2)
-                    .attr('markerHeight', 10)
-                    .attr('orient', 'auto')
-                .append('path')
-                    .attr('d', 'M1,1 L1,9')
-                    .attr('style', 'fill:none;stroke:#000000;stroke-opacity:1');
-
-            Object.keys(SettingsService.POLYGON_STYLES).forEach(function(value, index, array) {
-                _defs.call(SettingsService.POLYGON_STYLES[value]);
-            });
-
-            return _svg;
-
-        }
-
-    }
-
-    angular.module(moduleApp).service('DefsService', DefsService);
-
-    DefsService.$inject = ['SettingsService'];
-
-})();
-
-/**
- * @ngdoc service
  * @name accessimapEditeurDerApp.LegendService
  * @description
  * Service providing drawing functions
- * Provide functions to 
+ * Provide functions to
  * - init a map/draw area
  * - draw features
  * - export data
@@ -3925,21 +3858,28 @@
 
     function LegendService(SettingsStyles) {
 
-        this.initLegend        = initLegend;
-        this.getSize           = getSize;
+        this.init            = init;
+        this.getSize         = getSize;
+        this.getModel        = getModel;
 
-        this.showFontBraille   = showFontBraille;
-        this.hideFontBraille   = hideFontBraille;
-        
-        this.addItem           = addItem;
-        this.updateItem        = updateItem;
-        this.removeItem        = removeItem;
+        this.showFontBraille = showFontBraille;
+        this.hideFontBraille = hideFontBraille;
 
-        this.setFormat         = setFormat;
+        this.addItem         = addItem;
+        this.updateItem      = updateItem;
+        this.removeItem      = removeItem;
 
-        this.drawLegend        = drawLegend;
+        this.removeObject    = removeObject;
+        this.goDownObject    = goDownObject;
+        this.goUpObject      = goUpObject;
 
-        this.getNode           = function() { return _svg !== undefined ? _svg.node() : undefined }
+        this.setFormat       = setFormat;
+
+        this.editText        = editText;
+
+        this.drawLegend      = drawLegend;
+
+        this.getNode         = function() { return _svg !== undefined ? _svg.node() : undefined }
 
         var _width,
             _height,
@@ -3948,38 +3888,40 @@
             _fontBraille,
             _svg,
             _model = [],
+            _addRadialMenuFunction,
             frameGroup;
 
         /**
          * @ngdoc method
-         * @name  initLegend
+         * @name  init
          * @methodOf accessimapEditeurDerApp.LegendService
          *
          * @description
          * Create the legend svg in a dom element with specific size
          *
-         * @param  {string} id     
+         * @param  {string} id
          * id of element in which will be appended svg
-         * 
-         * @param  {integer} width  
+         *
+         * @param  {integer} width
          * width in millimeters of the svg created
-         * 
-         * @param  {integer} height 
+         *
+         * @param  {integer} height
          * height in millimeters of the svg created
-         * 
-         * @param  {integer} margin 
+         *
+         * @param  {integer} margin
          * margin of border in millimeters of the svg created
-         * 
-         * @param  {integer} ratioPixelPoint 
+         *
+         * @param  {integer} ratioPixelPoint
          * ratioPixelPoint ? TODO please explain it...
          */
-        function initLegend(id, width, height, margin, ratioPixelPoint) {
-            
-            _width = width / ratioPixelPoint;
-            _height = height / ratioPixelPoint;
-            _margin = margin;
-            _ratioPixelPoint = ratioPixelPoint;
-            
+        function init(id, width, height, margin, ratioPixelPoint, addRadialMenuFunction) {
+
+            _width                 = width / ratioPixelPoint;
+            _height                = height / ratioPixelPoint;
+            _margin                = margin;
+            _ratioPixelPoint       = ratioPixelPoint;
+            _addRadialMenuFunction = addRadialMenuFunction;
+
             _svg = d3.select(id).append('svg');
 
             setFormat(_width, _height);
@@ -3994,7 +3936,7 @@
          * @name  showFontBraille
          * @methodOf accessimapEditeurDerApp.LegendService
          *
-         * @description 
+         * @description
          * Show the 'braille' font on the legend's svg.
          */
         function showFontBraille() {
@@ -4009,7 +3951,7 @@
          * @name  hideFontBraille
          * @methodOf accessimapEditeurDerApp.LegendService
          *
-         * @description 
+         * @description
          * Hide the 'braille' font on the legend's svg and display it in Arial
          */
         function hideFontBraille() {
@@ -4024,13 +3966,13 @@
          * @name  setFormat
          * @methodOf accessimapEditeurDerApp.LegendService
          *
-         * @description 
+         * @description
          * Draw a frame linked to the width & height arguments
-         * 
-         * @param  {integer} width  
+         *
+         * @param  {integer} width
          * Width in pixel of the printing format
-         * 
-         * @param  {integer} height 
+         *
+         * @param  {integer} height
          * Height in pixel of the printing format
          */
         function setFormat(width, height) {
@@ -4051,7 +3993,7 @@
          * @name  createFramePath
          * @methodOf accessimapEditeurDerApp.LegendService
          *
-         * @description 
+         * @description
          * Create a frame of the legend, telling user about the print format
          */
         function createFramePath() {
@@ -4061,14 +4003,14 @@
             frameGroup  = _svg.append('g')
                 .append('path')
                 .attr('d', function() {
-                    return 'M ' + _margin + ' ' + _margin + ' L ' 
-                                    + w40 
-                                    + ' ' + _margin + ' L ' 
-                                    + w40 
-                                    + ' ' 
-                                    + h40 
-                                    + ' L ' + _margin + ' ' 
-                                    + h40 
+                    return 'M ' + _margin + ' ' + _margin + ' L '
+                                    + w40
+                                    + ' ' + _margin + ' L '
+                                    + w40
+                                    + ' '
+                                    + h40
+                                    + ' L ' + _margin + ' '
+                                    + h40
                                     + ' L ' + _margin + ' ' + _margin + ' z';
                 })
                 .attr('fill', 'none')
@@ -4087,13 +4029,28 @@
          *
          * @description
          * return the size of the layer, representing the size of the legend
-         * 
-         * @return {Object} 
+         *
+         * @return {Object}
          * {width, height}
-         * 
+         *
          */
         function getSize() {
             return {width: _width, height: _height}
+        }
+        /**
+         * @ngdoc method
+         * @name  getModel
+         * @methodOf accessimapEditeurDerApp.LegendService
+         *
+         * @description
+         * return a clone of the current array of items
+         *
+         * @return {Array}
+         * The model
+         *
+         */
+        function getModel() {
+            return _model.slice()
         }
 
         /**
@@ -4103,7 +4060,7 @@
          *
          * @description
          * Add an item in the model, and redraw the legend
-         * 
+         *
          */
         function addItem(id, name, type, style, color, contour) {
 
@@ -4112,7 +4069,7 @@
                 name     : name,
                 type     : type,
                 style    : style,
-                color    : color, 
+                color    : color,
                 contour  : contour
             })
 
@@ -4127,12 +4084,12 @@
          *
          * @description
          * Remove an item from the model, thanks to the id params
-         * 
+         *
          */
         function removeItem(id) {
 
-            _model = _model.filter(function filterModel(currentItem, index) { 
-                return currentItem.id !== id 
+            _model = _model.filter(function filterModel(currentItem, index) {
+                return currentItem.id !== id
             })
 
             drawLegend();
@@ -4145,7 +4102,7 @@
          *
          * @description
          * Update an item from the model, thanks to the id params
-         * 
+         *
          */
         function updateItem(id, name, type, style, color, contour) {
 
@@ -4165,9 +4122,9 @@
          * @name  drawLegend
          * @methodOf accessimapEditeurDerApp.LegendService
          *
-         * @description 
+         * @description
          * Draw the legend, based on the _model array.
-         * 
+         *
          */
         function drawLegend() {
 
@@ -4191,7 +4148,9 @@
 
                 var legendGroup = _svg.append('g')
                         // .attr('id', query.id) // TODO: see if it's useful ?
-                        .attr('class', 'legend'),
+                        .attr('class', 'legend')
+                        .attr('data-type', 'legend')
+                        .attr('data-link', item.id),
                     symbol;
 
                 switch(item.type) {
@@ -4315,8 +4274,69 @@
                     .attr('font-size', '35px')
                     .text(function() {
                         return item.name;
-                    });
+                    })
+
+                if (_addRadialMenuFunction)
+                    _addRadialMenuFunction(legendGroup, _svg)
+
             })
+
+        }
+
+        function removeObject(target) {
+            removeItem(target.attr('data-link'))
+        }
+
+        function goDownObject(target) {
+            var currentId = target.attr('data-link'),
+                currentIndex = _model.findIndex(function findIndex(currentItem, index) {
+                    return currentItem.id === currentId
+                })
+
+            if (_model.length >= 2 && currentIndex < _model.length - 1) {
+                var currentItem = _model[currentIndex],
+                    itemToMove = _model[currentIndex + 1]
+
+                _model[currentIndex + 1] = currentItem;
+                _model[currentIndex] = itemToMove;
+            }
+
+            drawLegend()
+
+        }
+
+        function goUpObject(target) {
+
+            var currentId = target.attr('data-link'),
+                currentIndex = _model.findIndex(function findIndex(currentItem, index) {
+                    return currentItem.id === currentId
+                })
+
+            if (_model.length >= 2 && currentIndex > 0) {
+                var currentItem = _model[currentIndex],
+                    itemToMove = _model[currentIndex - 1]
+
+                _model[currentIndex - 1] = currentItem;
+                _model[currentIndex] = itemToMove;
+            }
+
+            drawLegend()
+
+        }
+
+        /**
+         * @ngdoc method
+         * @name  editText
+         * @methodOf accessimapEditeurDerApp.LegendService
+         *
+         * @description
+         * Enable the edition of the legend's item text
+         *
+         * @param  {Object} target
+         * Item in the legend which text will be edited
+         */
+        function editText(target) {
+
         }
 
     }
@@ -4326,6 +4346,82 @@
     LegendService.$inject = ['SettingsStyles'];
 
 })();
+
+/**
+ * @ngdoc service
+ * @name accessimapEditeurDerApp.DefsService
+ * 
+ * @description
+ * Service provinding a method to add 'definitions' patterns to a svg
+ */
+(function() {
+    'use strict';
+
+    function DefsService(SettingsService) {
+
+        this.createDefs = createDefs;
+
+        /**
+         * @ngdoc method
+         * @name  accessimapEditeurDerApp.DefsService.createDefs
+         * @methodOf accessimapEditeurDerApp.DefsService
+         *
+         */
+        function createDefs(node) {
+            
+            var _svg = node.append('svg'),
+                _defs = _svg.attr("data-name", "defs")
+                            .append("defs");
+
+            _defs.append('marker')
+                    .attr('id', 'arrowStartMarker')
+                    .attr('refX', 5)
+                    .attr('refY', 5)
+                    .attr('markerWidth', 10)
+                    .attr('markerHeight', 10)
+                    .attr('orient', 'auto')
+                .append('path')
+                    .attr('d', 'M9,1 L5,5 9,9')
+                    .attr('style', 'fill:none;stroke:#000000;stroke-opacity:1');
+
+            _defs.append('marker')
+                    .attr('id', 'arrowStopMarker')
+                    .attr('refX', 5)
+                    .attr('refY', 5)
+                    .attr('markerWidth', 10)
+                    .attr('markerHeight', 10)
+                    .attr('orient', 'auto')
+                .append('path')
+                    .attr('d', 'M1,1 L5,5 1,9')
+                    .attr('style', 'fill:none;stroke:#000000;stroke-opacity:1');
+
+            _defs.append('marker')
+                    .attr('id', 'straightMarker')
+                    .attr('refX', 1)
+                    .attr('refY', 5)
+                    .attr('markerWidth', 2)
+                    .attr('markerHeight', 10)
+                    .attr('orient', 'auto')
+                .append('path')
+                    .attr('d', 'M1,1 L1,9')
+                    .attr('style', 'fill:none;stroke:#000000;stroke-opacity:1');
+
+            Object.keys(SettingsService.POLYGON_STYLES).forEach(function(value, index, array) {
+                _defs.call(SettingsService.POLYGON_STYLES[value]);
+            });
+
+            return _svg;
+
+        }
+
+    }
+
+    angular.module(moduleApp).service('DefsService', DefsService);
+
+    DefsService.$inject = ['SettingsService'];
+
+})();
+
 (function() {
     'use strict';
 
@@ -4939,10 +5035,10 @@
  * @ngdoc service
  * @name accessimapEditeurDerApp.LayerDrawingService
  * @requires accessimapEditeurDerApp.LayerService
- * 
+ *
  * @description
  * Service providing drawing functions
- * Provide functions to 
+ * Provide functions to
  * - init a map/draw area
  * - draw features
  */
@@ -4957,9 +5053,10 @@
         this.createLayer = createLayer;
         this.appendImage = appendImage;
         this.appendSvg   = appendSvg;
+        this.clean       = clean;
 
         function createLayer(target) {
-            
+
             _target = target;
 
             _g = _target.attr("data-name", "drawing-layer")
@@ -4994,16 +5091,16 @@
                     ratio = height / width,
 
                 // calculate coordinates
-                x = 
+                x =
                     // to get x, we calc the space between left and the overlay
-                    ( ( size.x - width) / 2 ) 
-                    // and we substract the difference between the original point of the map 
+                    ( ( size.x - width) / 2 )
+                    // and we substract the difference between the original point of the map
                     // and the actual bounding topleft point
                     - (pixelOrigin.x - pixelBoundMin.x),
 
-                y = 
+                y =
                     // to get y, we calc the space between the middle axe and the top of the overlay
-                    height / -2 
+                    height / -2
                     // and we substract the difference between the original point of the map
                     // and the actual bounding topleft point
                     - (pixelOrigin.y - pixelBoundMin.y - size.y / 2);
@@ -5029,6 +5126,13 @@
             }
         }
 
+        function clean() {
+            _g.select('[data-name="images-layer"]').selectAll('*').remove()
+            _g.select('[data-name="polygons-layer"]').selectAll('*').remove()
+            _g.select('[data-name="lines-layer"]').selectAll('*').remove()
+            _g.select('[data-name="points-layer"]').selectAll('*').remove()
+            _g.select('[data-name="texts-layer"]').selectAll('*').remove()
+        }
     }
 
     angular.module(moduleApp).service('LayerDrawingService', LayerDrawingService);
@@ -5036,6 +5140,7 @@
     LayerDrawingService.$inject = [];
 
 })();
+
 // jscs:disable maximumNumberOfLines
 /**
  * @ngdoc service
@@ -5043,7 +5148,7 @@
  * @requires accessimapEditeurDerApp.LayerService
  * @description
  * Service providing drawing functions
- * Provide functions to 
+ * Provide functions to
  * - init a map/draw area
  * - draw features
  */
@@ -5059,21 +5164,22 @@
             _lastTranslationY;
 
         this.createLayer   = createLayer;
-        
+
         this.geojsonToSvg  = geojsonToSvg;
         this.removeFeature = removeFeature;
         this.updateFeature = updateFeature;
         this.rotateFeature = rotateFeature;
         this.drawAddress   = drawAddress;
         this.transform     = transform;
-        
-        this.getFeatures   = function() { 
+        this.clean         = clean;
+
+        this.getFeatures   = function() {
             return _geojson.slice(0)
         }
-        this.setFeatures   = function(features) { 
+        this.setFeatures   = function(features) {
             _geojson = features ;
         }
-        this.resetFeatures   = function() { 
+        this.resetFeatures   = function() {
             _geojson = [] ;
         }
 
@@ -5109,14 +5215,14 @@
          * @ngdoc method
          * @name refresh
          * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
-         * 
-         * @description 
+         *
+         * @description
          * Project all paths from _geojson
          */
         function refresh(projectPoint) {
 
             if (projectPoint) _projection = projectPoint;
-            
+
             _geojson.forEach(function (geojson) {
 
                 d3.selectAll('path.' + geojson.id)
@@ -5136,15 +5242,15 @@
                             return d.geometry.type === 'Point'; })
                         .attr('stroke-width', 2 / _projection.scale)
                         .attr('cx', function(d) {
-                            return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                            return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1],
                                                                 d.geometry.coordinates[0])).x;
                         })
                         .attr('cy', function(d) {
-                            return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                            return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1],
                                                                 d.geometry.coordinates[0])).y;
                         })
                         .attr('d', function(d) {
-                            var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                            var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1],
                                                                 d.geometry.coordinates[0]));
 
                             return geojson.style.path(coords.x, coords.y, geojson.style.radius / _projection.scale);
@@ -5153,7 +5259,7 @@
                             var result = '';
 
                             if (this.transform.baseVal.length > 0) {
-                                var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                                var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1],
                                                                                 d.geometry.coordinates[0]));
 
                                 result += 'rotate(' + geojson.rotation + ')';//' ' + coords.x + ' ' + coords.y + ');';
@@ -5162,27 +5268,27 @@
                             return result;
                         });
             });
-            
+
         }
 
         /**
          * @ngdoc method
          * @name  geojsonToSvg
          * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
-         * 
-         * @description 
+         *
+         * @description
          * simplify... ?
-         * 
-         * @param  {Object} data       
+         *
+         * @param  {Object} data
          * [description]
-         * 
-         * @param  {Object} feature       
+         *
+         * @param  {Object} feature
          * [description]
-         * 
-         * @param  {Object} optionalClass 
+         *
+         * @param  {Object} optionalClass
          * [description]
          */
-        function geojsonToSvg(data, simplification, id, poi, queryChosen, styleChosen, 
+        function geojsonToSvg(data, simplification, id, poi, queryChosen, styleChosen,
                                 styleChoices, colorChosen, checkboxModel, rotationAngle) {
             if (data) {
                 // data.features.forEach(function(feature, index) {
@@ -5218,11 +5324,11 @@
                             styleChoices: styleChoices,
                             rotation: 0
                         };
-                        LegendService.addItem(id, 
-                                              name, 
-                                              'point', 
-                                              styleChosen, 
-                                              colorChosen, 
+                        LegendService.addItem(id,
+                                              name,
+                                              'point',
+                                              styleChosen,
+                                              colorChosen,
                                               checkboxModel.contour);
                     } else {
                         obj = {
@@ -5236,11 +5342,11 @@
                             contour: checkboxModel.contour,
                             color: colorChosen
                         };
-                        LegendService.addItem(queryChosen.id, 
-                                              queryChosen.name, 
-                                              queryChosen.type, 
-                                              styleChosen, 
-                                              colorChosen, 
+                        LegendService.addItem(queryChosen.id,
+                                              queryChosen.name,
+                                              queryChosen.type,
+                                              styleChosen,
+                                              colorChosen,
                                               checkboxModel.contour);
                     }
                     _geojson.push(obj);
@@ -5254,12 +5360,12 @@
                     drawFeature(data, featureExists, null, styleChosen, colorChosen, checkboxModel, rotationAngle);
 
                     if (styleChosen.styleInner) {
-                        drawFeature(data, 
-                            featureExists, 
-                            'inner', 
-                            styleChosen, 
-                            colorChosen, 
-                            checkboxModel, 
+                        drawFeature(data,
+                            featureExists,
+                            'inner',
+                            styleChosen,
+                            colorChosen,
+                            checkboxModel,
                             rotationAngle);
                     }
                 }
@@ -5271,23 +5377,23 @@
          * @name  drawAddress
          * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
          *
-         * @description 
+         * @description
          * draw a circle for an address
-         * 
+         *
          * @param  {Object} data
          * data returned by a nominatim server, containing geometry & other stuff
          * to display the poi
-         * 
+         *
          * @param  {string} id
          * specific string identifying this address
          * useful to erase the d3 node
-         * 
+         *
          * @param  {SettingsService.STYLES} style
          * style of the point ... ?
-         * 
-         * @param  {SettingsService.COLORS} color 
+         *
+         * @param  {SettingsService.COLORS} color
          * Color of the POI
-         * 
+         *
          */
         function drawAddress(data, id, style, color) {
             var lon = data.lon,
@@ -5321,36 +5427,36 @@
          * @ngdoc method
          * @name  drawFeature
          * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
-         * 
-         * @description 
+         *
+         * @description
          * Draw the features
-         * 
-         * @param  {Object} data       
+         *
+         * @param  {Object} data
          * [description]
-         * 
-         * @param  {Object} feature       
+         *
+         * @param  {Object} feature
          * [description]
-         * 
-         * @param  {Object} optionalClass 
+         *
+         * @param  {Object} optionalClass
          * [description]
-         * 
-         * @param  {Object} styleChosen 
+         *
+         * @param  {Object} styleChosen
          * [description]
-         * 
-         * @param  {Object} colorChosen 
+         *
+         * @param  {Object} colorChosen
          * [description]
-         * 
-         * @param  {Object} checkboxModel 
+         *
+         * @param  {Object} checkboxModel
          * [description]
-         * 
-         * @param  {Object} rotationAngle 
+         *
+         * @param  {Object} rotationAngle
          * [description]
          */
         function drawFeature(data, feature, optionalClass, styleChosen, colorChosen, checkboxModel, rotationAngle) {
             var featureGroup,
                 type = feature[0].type,
-                drawingLayer = d3.select(_g).node().select('[data-name="' + type + 's-layer"]') ; 
-            
+                drawingLayer = d3.select(_g).node().select('[data-name="' + type + 's-layer"]') ;
+
             if (optionalClass) {
                 if (d3.select('.vector.' + optionalClass + '#' + feature[0].id).empty()) {
                     featureGroup = drawingLayer.append('g')
@@ -5404,8 +5510,8 @@
                     return _projection.pathFromGeojson(d);
                 })
                 .append('svg:title')
-                .text(function(d) { 
-                    return d.properties.tags.name; 
+                .text(function(d) {
+                    return d.properties.tags.name;
                 })
 
                 // specific for point's features
@@ -5424,15 +5530,15 @@
                 // TODO: useful for lines ?
                 // .attr('stroke-width', 2 / _projection.scale)
                 .attr('cx', function(d) {
-                    return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                    return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1],
                                                                     d.geometry.coordinates[0])).x;
                 })
                 .attr('cy', function(d) {
-                    return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                    return _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1],
                                                                     d.geometry.coordinates[0])).y;
                 })
                 .attr('d', function(d) {
-                    var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1], 
+                    var coords = _projection.latLngToLayerPoint(L.latLng(d.geometry.coordinates[1],
                                                                         d.geometry.coordinates[0]));
 
                     return feature[0].style.path(coords.x, coords.y, feature[0].style.radius);
@@ -5471,8 +5577,8 @@
                 });
             }
 
-            if (checkboxModel 
-                && checkboxModel.contour 
+            if (checkboxModel
+                && checkboxModel.contour
                 && !d3.select('#' + feature[0].id).attr('stroke')) {
                 d3.select('#' + feature[0].id)
                     .attr('stroke', 'black')
@@ -5498,16 +5604,16 @@
             // RadialMenuService.addRadialMenu(d3.selectAll('path:not(.notDeletable)'));
             // RadialMenuService.addRadialMenu(d3.selectAll('circle:not(.notDeletable)'));
         }
-        
+
         /**
          * @ngdoc method
          * @name  updateFeature
          * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
-         * 
-         * @description  
+         *
+         * @description
          * update the style of a 'feature' = item of '_geojson' collection.
          *
-         * @param  {Object} id 
+         * @param  {Object} id
          * id of the feature
          */
         function updateFeature(id, style, color) {
@@ -5612,26 +5718,26 @@
             }
 
             // update the legend
-            LegendService.updateItem(id, 
-                                     _geojson[objectId].name, 
-                                     _geojson[objectId].type, 
-                                     _geojson[objectId].style, 
-                                     _geojson[objectId].color, 
+            LegendService.updateItem(id,
+                                     _geojson[objectId].name,
+                                     _geojson[objectId].type,
+                                     _geojson[objectId].style,
+                                     _geojson[objectId].color,
                                      _geojson[objectId].contour)
 
         }
- 
+
         /**
          * @ngdoc method
          * @name  removeFeature
          * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
-         * 
-         * @description  
+         *
+         * @description
          * remove a 'feature' = item of '_geojson' collection.
          *
          * Remove it from the array and from the map / legend
-         * 
-         * @param  {Object} id 
+         *
+         * @param  {Object} id
          * id of the feature
          */
         function removeFeature(id) {
@@ -5657,11 +5763,11 @@
          * @ngdoc method
          * @name  rotateFeature
          * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
-         * 
-         * @description 
+         *
+         * @description
          * rotate a feature element (feature.id) of a feature.rotation
-         * 
-         * @param  {Object} feature       
+         *
+         * @param  {Object} feature
          * Object with id & rotation properties
          */
         function rotateFeature(feature) {
@@ -5673,6 +5779,29 @@
             });
         }
 
+        /**
+         * @ngdoc method
+         * @name clean
+         * @methodOf accessimapEditeurDerApp.LayerGeoJSONService
+         *
+         * @description
+         * clean the layer by removing all paths inside the GeoJSON layer
+         */
+        function clean() {
+            _g.select('[data-name="polygons-layer"]').selectAll('*').remove()
+            _g.select('[data-name="lines-layer"]').selectAll('*').remove()
+            _g.select('[data-name="points-layer"]').selectAll('*').remove()
+            _g.select('[data-name="texts-layer"]').selectAll('*').remove()
+
+            // Remove object from _geojson
+            _geojson.forEach(function(element, index, array) {
+                LegendService.removeItem(element.id);
+            })
+
+            _geojson = [];
+
+        }
+
     }
 
     angular.module(moduleApp).service('LayerGeoJSONService', LayerGeoJSONService);
@@ -5680,10 +5809,11 @@
     LayerGeoJSONService.$inject = ['SettingsService', 'LegendService', 'RadialMenuService'];
 
 })();
+
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.LayerOverlayService
- * 
+ *
  * @description
  * Service providing the management of overlay layer
  */
@@ -5699,21 +5829,24 @@
         this.getTranslation  = getTranslation;
         this.getSize         = getSize;
         this.setFormat       = setFormat;
-        
+
         this.getFormat       = function() { return _format }
         this.getTranslationX = function() { return _lastTranslationX }
         this.getTranslationY = function() { return _lastTranslationY }
-        
+
         var _marginGroup,
             _frameGroup,
             _format,
             _width,
             _height,
             _margin,
-            _target, 
+            _target,
             _projection,
             _lastTranslationX,
-            _lastTranslationY;
+            _lastTranslationY,
+            _framePath,
+            _marginPath,
+            _backgroundPath;
 
 
         /**
@@ -5721,31 +5854,35 @@
          * @name  accessimapEditeurDerApp.LayerOverlayService.createLayer
          * @methodOf accessimapEditeurDerApp.LayerOverlayService
          *
-         * @description 
+         * @description
          * create the overlay layer, with margin & frame groups
          *
-         * @param  {Object} target  
+         * @param  {Object} target
          * d3 area
-         * 
-         * @param  {integer} width  
+         *
+         * @param  {integer} width
          * Width of the d3 area
-         * 
-         * @param  {integer} height  
+         *
+         * @param  {integer} height
          * Height of the d3 area
-         * 
-         * @param  {integer} margin  
+         *
+         * @param  {integer} margin
          * Margin wished
          *
-         * @param  {function} projection  
+         * @param  {function} projection
          * Projection function to use for conversion between GPS & layer point
          */
         function createLayer(target, format, projection) {
-            _margin     = SettingsService.margin;
-            _target     = target;
-            _projection = projection;
+            _margin         = SettingsService.margin;
+            _target         = target;
+            _projection     = projection;
 
-            _marginGroup = _target.append('g').attr('id', 'margin-layer')
-            _frameGroup  = _target.append('g').attr('id', 'frame-layer');
+            _marginGroup    = _target.append('g').attr('id', 'margin-layer')
+            _frameGroup     = _target.append('g').attr('id', 'frame-layer')
+
+            _framePath      = _frameGroup.append('path')
+            _marginPath     = _marginGroup.append('path')
+            _backgroundPath = _marginGroup.append('path')
 
             setFormat(format)
 
@@ -5756,71 +5893,70 @@
          * @name  accessimapEditeurDerApp.LayerOverlayService.createMarginPath
          * @methodOf accessimapEditeurDerApp.LayerOverlayService
          *
-         * @description 
+         * @description
          * draw the margin path
          */
         function createMarginPath() {
             var w40 = _width - _margin,
                 h40 = _height - _margin;
 
-            _marginGroup.selectAll("*").remove();
-
-            _marginGroup.append('path')
-                .attr('d', function() {
-                    var outer = 'M 0 0 L 0 ' 
-                                    + _height 
-                                    + ' L ' 
-                                    + _width 
-                                    + ' ' 
-                                    + _height 
-                                    + ' L ' 
-                                    + _width 
+            _marginPath.attr('d', function() {
+                    var outer = 'M 0 0 L 0 '
+                                    + _height
+                                    + ' L '
+                                    + _width
+                                    + ' '
+                                    + _height
+                                    + ' L '
+                                    + _width
                                     + ' 0 L 0 0 z ',
-                        inner = 'M ' + _margin + ' ' + _margin + ' L ' 
-                                    + w40 
-                                    + ' ' + _margin + ' L ' 
-                                    + w40 
-                                    + ' ' 
-                                    + h40 
-                                    + ' L ' + _margin + ' ' 
-                                    + h40 
+                        inner = 'M ' + _margin + ' ' + _margin + ' L '
+                                    + w40
+                                    + ' ' + _margin + ' L '
+                                    + w40
+                                    + ' '
+                                    + h40
+                                    + ' L ' + _margin + ' '
+                                    + h40
                                     + ' L ' + _margin + ' ' + _margin + ' z';
 
                     return outer + inner;
                 })
-                .attr('style', 'fill:#ffffff;')
+                .style('fill', '#ffffff')
+                .style('pointer-events', 'none')
                 .attr('id', 'svgWhiteBorder')
                 .classed('notDeletable', true);
 
-            _marginGroup.append('path')
-                .attr('d', function() {
-                    var outer = 'M -10000 -10000 L -10000 ' 
+            _backgroundPath.attr('d', function() {
+                    var outer = 'M -10000 -10000 L -10000 '
                                     + ( _height + 10000 )
-                                    + ' L ' 
+                                    + ' L '
                                     + ( _width + 10000 )
-                                    + ' ' 
+                                    + ' '
                                     + ( _height + 10000 )
-                                    + ' L ' 
+                                    + ' L '
                                     + ( _width + 10000 )
                                     + ' -10000 L -10000 -10000 z ',
-                        inner = 'M 0 0 L ' 
-                                    + _width 
-                                    + ' 0 L ' 
+                        inner = 'M 0 0 L '
                                     + _width
-                                    + ' ' 
+                                    + ' 0 L '
+                                    + _width
+                                    + ' '
                                     + _height
-                                    + ' L ' + 0 + ' ' 
+                                    + ' L ' + 0 + ' '
                                     + _height + ' z';
 
                     return outer + inner;
                 })
-                .attr('style', 'fill:#bbb;fill-opacity:.5;')
+                .style('pointer-events', 'none')
+                .style('fill', '#bbb')
+                .style('fill-opacity', '.5')
                 .classed('notDeletable', true);
 
         };
 
         function getCenter() {
-            return _projection.layerPointToLatLng([( _width / 2 ) + _lastTranslationX, 
+            return _projection.layerPointToLatLng([( _width / 2 ) + _lastTranslationX,
                                                     ( _height / 2 ) + _lastTranslationY]);
         }
 
@@ -5829,31 +5965,28 @@
          * @name  accessimapEditeurDerApp.LayerOverlayService.createFramePath
          * @methodOf accessimapEditeurDerApp.LayerOverlayService
          *
-         * @param  {Object} target  
+         * @param  {Object} target
          * [description]
-         * 
-         * @param  {integer} width  
+         *
+         * @param  {integer} width
          * [description]
-         * 
-         * @param  {integer} height  
+         *
+         * @param  {integer} height
          * [description]
          */
         function createFramePath() {
             var w40 = _width - _margin,
                 h40 = _height - _margin;
 
-            _frameGroup.selectAll("*").remove();
-
-            _frameGroup.append('path')
-                .attr('d', function() {
-                    return 'M ' + _margin + ' ' + _margin + ' L ' 
-                                    + w40 
-                                    + ' ' + _margin + ' L ' 
-                                    + w40 
-                                    + ' ' 
-                                    + h40 
-                                    + ' L ' + _margin + ' ' 
-                                    + h40 
+            _framePath.attr('d', function() {
+                    return 'M ' + _margin + ' ' + _margin + ' L '
+                                    + w40
+                                    + ' ' + _margin + ' L '
+                                    + w40
+                                    + ' '
+                                    + h40
+                                    + ' L ' + _margin + ' '
+                                    + h40
                                     + ' L ' + _margin + ' ' + _margin + ' z';
                 })
                 .attr('fill', 'none')
@@ -5861,24 +5994,24 @@
                 .attr('stroke', '#000000')
                 .attr('stroke-width', '2px')
                 .attr('stroke-opacity', '1')
-                .attr('id', 'svgContainer')
-                .classed('notDeletable', true);
-        };
+                .style('pointer-events', 'none')
+                .classed('notDeletable', true)
+        }
 
         /**
          * @ngdoc method
          * @name  draw
          * @methodOf accessimapEditeurDerApp.LayerOverlayService
          *
-         * @description 
+         * @description
          * Draw margin & frame groups, id overlay.
          *
-         * @param  {integer} width  
+         * @param  {integer} width
          * Overlay's width
-         * 
-         * @param  {integer} height  
+         *
+         * @param  {integer} height
          * Overlay's height
-         * 
+         *
          */
         function draw() {
 
@@ -5903,23 +6036,23 @@
          * Function moving the overlay svg, thanks to map movements...
          *
          * This function has to be used only if we want the overlay be 'fixed'
-         * 
+         *
          * TODO: clear the dependencies to map... maybe, give the responsability to the map
          * and so, thanks to a 'class', we could 'freeze' the overlay thanks to this calc
          */
         function refresh(size, pixelOrigin, pixelBoundMin) {
             // x,y are coordinates to position overlay
             // coordinates 0,0 are not the top left, but the point at the middle left
-            _lastTranslationX = 
+            _lastTranslationX =
                 // to get x, we calc the space between left and the overlay
-                ( ( size.x - _width) / 2 ) 
-                // and we substract the difference between the original point of the map 
+                ( ( size.x - _width) / 2 )
+                // and we substract the difference between the original point of the map
                 // and the actual bounding topleft point
                 - (pixelOrigin.x - pixelBoundMin.x),
 
-            _lastTranslationY = 
+            _lastTranslationY =
                 // to get y, we calc the space between the middle axe and the top of the overlay
-                _height / -2 
+                _height / -2
                 // and we substract the difference between the original point of the map
                 // and the actual bounding topleft point
                 - (pixelOrigin.y - pixelBoundMin.y - size.y / 2);
@@ -5937,21 +6070,21 @@
          * calc the translation of the margin-layer group (or frame-layer, it's the same)
          *
          * take in consideration the parent group
-         * 
-         * @return {Object} 
+         *
+         * @return {Object}
          * {x, y} representing the translation on x axis & y axis
-         * 
+         *
          */
         function getTranslation() {
             var translateScaleOverlayGroup = _target.attr('transform'),
-                
-                translateOverlayGroup = ( translateScaleOverlayGroup === null ) ? null 
-                    : translateScaleOverlayGroup.substring(translateScaleOverlayGroup.indexOf('(') + 1, 
+
+                translateOverlayGroup = ( translateScaleOverlayGroup === null ) ? null
+                    : translateScaleOverlayGroup.substring(translateScaleOverlayGroup.indexOf('(') + 1,
                                                             translateScaleOverlayGroup.indexOf(')')),
-                
-                translateOverlayGroupArray = ( translateOverlayGroup === null ) ? [0, 0] 
+
+                translateOverlayGroupArray = ( translateOverlayGroup === null ) ? [0, 0]
                     : translateOverlayGroup.slice(0, translateOverlayGroup.length).split(','),
-                
+
                 translateOverlayArray = [ _lastTranslationX, _lastTranslationY ]
 
             return { x: ( parseInt(translateOverlayArray[0]) + parseInt(translateOverlayGroupArray[0]) ),
@@ -5965,10 +6098,10 @@
          *
          * @description
          * return the size of the layer, representing the size of the drawing
-         * 
-         * @return {Object} 
+         *
+         * @return {Object}
          * {width, height}
-         * 
+         *
          */
         function getSize() {
             return {width: _width, height: _height}
@@ -5981,10 +6114,11 @@
     LayerOverlayService.$inject = ['SettingsService'];
 
 })();
+
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.ToolboxService
- * 
+ *
  * @description
  * Expose different methods to draw on the d3 svg area
  *
@@ -6000,35 +6134,33 @@
 (function() {
     'use strict';
 
-    function ToolboxService(RadialMenuService, 
-            SettingsService, 
-            UtilService, 
-            ToolboxTriangleService, 
-            ToolboxRectangleService, 
-            ToolboxEllipseService, 
-            ToolboxTextService, 
-            ToolboxPolylineService, 
-            ToolboxImageService, 
+    function ToolboxService(RadialMenuService,
+            SettingsService,
+            UtilService,
+            ToolboxTriangleService,
+            ToolboxRectangleService,
+            ToolboxEllipseService,
+            ToolboxTextService,
+            ToolboxPolylineService,
+            ToolboxImageService,
             SelectPathService) {
 
         this.init                          = init;
-        
+
         this.addContextMenus               = addContextMenus;
         this.hideContextMenus              = hideContextMenus;
 
         this.addSelectPaths                = addSelectPaths;
         this.hideSelectPaths               = hideSelectPaths;
 
-        this.hideRadialMenu                = RadialMenuService.hideRadialMenu;
-        
         this.drawPoint                     = drawPoint;
-        
+
         this.writeText                     = ToolboxTextService.writeText;
-        
+
         this.beginLineOrPolygon            = ToolboxPolylineService.beginLineOrPolygon;
         this.drawHelpLineOrPolygon         = ToolboxPolylineService.drawHelpLineOrPolygon;
         this.finishLineOrPolygon           = ToolboxPolylineService.finishLineOrPolygon;
-        
+
         this.drawCircle                    = ToolboxEllipseService.drawCircle;
         this.updateCircleRadius            = ToolboxEllipseService.updateCircleRadius;
 
@@ -6037,7 +6169,7 @@
 
         this.drawTriangle                  = ToolboxTriangleService.drawTriangle;
         this.updateTriangle                = ToolboxTriangleService.updateTriangle;
-        
+
         this.changeTextColor               = changeTextColor;
         this.updateBackgroundStyleAndColor = updateBackgroundStyleAndColor;
         this.updateFeatureStyleAndColor    = updateFeatureStyleAndColor;
@@ -6046,7 +6178,7 @@
         this.featureIcon                   = featureIcon;
 
         var svgDrawing;
-        
+
         function init(_svgDrawing, svgMenu, getCurrentZoom) {
             RadialMenuService.init(d3.select(_svgDrawing.node().parentNode.parentNode), getCurrentZoom);
             svgDrawing = _svgDrawing;
@@ -6084,7 +6216,7 @@
 
         function addContextMenus() {
             selectors.forEach(function(currentSelector, index, array) {
-                RadialMenuService.addRadialMenu(d3.selectAll(currentSelector));
+                RadialMenuService.addRadialMenu(d3.selectAll(currentSelector), svgDrawing);
             })
         }
 
@@ -6113,19 +6245,19 @@
          *
          * @description
          * Draw a point (circle, arrow,...) at specific coordinates
-         * 
-         * @param  {integer} x     
+         *
+         * @param  {integer} x
          * X coordinate of the point
-         * 
-         * @param  {integer} y     
+         *
+         * @param  {integer} y
          * Y coordinate of the point
-         * 
-         * @param  {Object} style 
+         *
+         * @param  {Object} style
          * SettingsService.STYLE of the point
-         * 
-         * @param  {Object} color 
+         *
+         * @param  {Object} color
          * SettingsService.COLOR of the point
-         * 
+         *
          */
         function drawPoint(x, y, style, color) {
 
@@ -6141,7 +6273,7 @@
                         .attr('data-link', iid)
                         .attr('data-type', 'point')
                         .attr('data-from', 'drawing');
-            
+
             applyStyle(feature, style.style, color);
 
             // RadialMenuService.addRadialMenu(feature);
@@ -6192,7 +6324,7 @@
                     y = parseInt(path.attr('data-y'))
                 path.attr('d', style.path(x,y,style.radius))
             }
-            
+
             if (style && color) {
                 applyStyle(path, style.style, color);
             }
@@ -6257,7 +6389,7 @@
                         .attr('x2', 250)
                         .attr('y2', 15)
                         .attr('fill', 'red');
-                        
+
                     angular.forEach(item.styleInner, function(attribute) {
                         var k = attribute.k,
                             v = attribute.v;
@@ -6301,19 +6433,20 @@
         };
 
     }
-    
+
     angular.module(moduleApp).service('ToolboxService', ToolboxService);
 
     ToolboxService.$inject = ['RadialMenuService', 'SettingsService', 'UtilService',
-                            'ToolboxTriangleService', 
-                            'ToolboxRectangleService', 
-                            'ToolboxEllipseService', 
-                            'ToolboxTextService', 
+                            'ToolboxTriangleService',
+                            'ToolboxRectangleService',
+                            'ToolboxEllipseService',
+                            'ToolboxTextService',
                             'ToolboxPolylineService',
-                            'ToolboxImageService', 
+                            'ToolboxImageService',
                             'SelectPathService'];
 
 })();
+
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.ToolboxImageService
@@ -6900,7 +7033,7 @@
 (function() {
     'use strict';
 
-    function ToolboxTextService(RadialMenuService, GeneratorService, UtilService, $q) {
+    function ToolboxTextService(GeneratorService, UtilService, $q) {
 
         this.writeText       = writeText;
         this.setTextEditable = setTextEditable;
@@ -7008,7 +7141,7 @@
                         });
                         d3.select(this.parentElement).remove();
 
-                        // RadialMenuService.addRadialMenu(d3.select('.edition'));
+                        // .addRadialMenu(d3.select('.edition'));
 
                         d3.select('.edition').classed('edition', false);
                         textElement.style('cursor','text')
@@ -7035,7 +7168,7 @@
     
     angular.module(moduleApp).service('ToolboxTextService', ToolboxTextService);
 
-    ToolboxTextService.$inject = ['RadialMenuService', 'GeneratorService', 'UtilService', '$q']
+    ToolboxTextService.$inject = ['GeneratorService', 'UtilService', '$q']
 
 })();
 /**
@@ -7344,7 +7477,7 @@
      * @ngdoc service
      * @name accessimapEditeurDerApp.ImportService
      * @memberOf accessimapEditeurDerApp
-     * 
+     *
      * @description
      * Provide service to import a drawing :
      * - background layer
@@ -7360,24 +7493,38 @@
         this.getModelFromSVG   = getModelFromSVG;
 
         function isVersionOfSVGAcceptable(svgElement) {
-            
+
             return svgElement.querySelector('svg').getAttribute('data-version') >= '0.1';
 
         }
 
         function getModelFromSVG(svgElement) {
 
+            var model = null;
+
             if (isVersionOfSVGAcceptable(svgElement)) {
                 var metadataModel = svgElement.querySelector('metadata[data-name="data-model"]');
 
                 if (metadataModel) {
-                    return JSON.parse(metadataModel.getAttribute('data-value'));
+                    model = JSON.parse(metadataModel.getAttribute('data-value'));
                 }
             }
-            
-            return null;
+
+            if (! model) {
+                model = {
+                    title           : 'Titre du dessin',
+                    isMapVisible    : false,
+                    comment         : 'Pas de commentaire',
+                    mapFormat       : 'landscapeA4',
+                    legendFormat    : 'landscapeA4',
+                    backgroundColor : SettingsService.COLORS.transparent[0], // transparent
+                    backgroundStyle : SettingsService.STYLES.polygon[SettingsService.STYLES.polygon.length - 1],
+                }
+            }
+
+            return model;
         }
-        
+
         function cloneChildrenFromNodeAToB(nodeFrom, nodeTo, translationToApply) {
 
             var children = nodeFrom.children,
@@ -7389,8 +7536,8 @@
 
                     if (currentD) {
                         var currentParseD = SVGService.parseSVGPath(currentD),
-                            currentTranslateD = SVGService.translateSVGPath(currentParseD, 
-                                                                                translationToApply.x, 
+                            currentTranslateD = SVGService.translateSVGPath(currentParseD,
+                                                                                translationToApply.x,
                                                                                 translationToApply.y),
                             currentSerializeD = SVGService.serializeSVGPath(currentTranslateD);
 
@@ -7400,7 +7547,7 @@
                             cy = paths[i].getAttribute('cy'),
                             x = paths[i].getAttribute('x'),
                             y = paths[i].getAttribute('y');
-                        
+
                         if (cx !== null ) {
                             paths[i].setAttribute('cx', parseFloat(cx) + translationToApply.x)
                             paths[i].setAttribute('cy', parseFloat(cy) + translationToApply.y)
@@ -7425,9 +7572,9 @@
          * @name  importDrawing
          * @methodOf accessimapEditeurDerApp.ImportService
          *
-         * @description 
+         * @description
          * Import data from the svgElement by trying to find the layers
-         * 
+         *
          * @param  {DOM Element} svgElement
          * the element to import for drawing purpose
          */
@@ -7436,7 +7583,7 @@
 
             if (isVersionOfSVGAcceptable(svgElement)) {
 
-                var 
+                var
 
                 currentGeoJSONLayer    = LayerService.geojson.getLayer().node(),
                 currentDrawingLayer    = LayerService.drawing.getLayer().node(),
@@ -7446,42 +7593,42 @@
                 drawingLayer    = svgElement.querySelector('g[data-name="drawing-layer"]'),
                 backgroundLayer = svgElement.querySelector('g[data-name="background-layer"]'),
                 overlayLayer    = svgElement.querySelector('svg[data-name="overlay"]'),
-                
+
                 metadataGeoJSON      = svgElement.querySelector('metadata[data-name="data-geojson"]'),
                 // metadataInteractions = svgElement.querySelector('metadata[data-name="data-interactions"]'),
-                
+
                 format = svgElement.querySelector('svg').getAttribute('data-format'),
                 center = svgElement.querySelector('svg').getAttribute('data-center'),
 
                 currentOverlayTranslation = LayerService.overlay.getTranslation(),
 
                 translateScaleOverlayGroup = overlayLayer.getAttribute('transform'),
-                
-                translateOverlayGroup = ( translateScaleOverlayGroup === null ) 
-                                        ? null 
+
+                translateOverlayGroup = ( translateScaleOverlayGroup === null )
+                                        ? null
                                         : translateScaleOverlayGroup
-                                                .substring(translateScaleOverlayGroup.indexOf('(') + 1, 
+                                                .substring(translateScaleOverlayGroup.indexOf('(') + 1,
                                                             translateScaleOverlayGroup.indexOf(')')),
-                
-                translateOverlayGroupArray = ( translateOverlayGroup === null ) ? [0, 0] 
+
+                translateOverlayGroupArray = ( translateOverlayGroup === null ) ? [0, 0]
                     : translateOverlayGroup.slice(0, translateOverlayGroup.length).split(','),
-                
+
                 translateMarginGroup = overlayLayer.querySelector('g[id="margin-layer"]').getAttribute('transform'),
 
-                translateMargin = ( translateMarginGroup === null ) 
-                                    ? null 
+                translateMargin = ( translateMarginGroup === null )
+                                    ? null
                                     : translateMarginGroup
-                                            .substring(translateMarginGroup.indexOf('(') + 1, 
+                                            .substring(translateMarginGroup.indexOf('(') + 1,
                                                         translateMarginGroup.indexOf(')')),
-                
-                translateMarginArray = ( translateMargin === null ) ? [0, 0] 
+
+                translateMarginArray = ( translateMargin === null ) ? [0, 0]
                     : translateMargin.slice(0, translateMargin.length).split(','),
 
-                translationToApply = { x: currentOverlayTranslation.x 
-                                            - translateOverlayGroupArray[0] 
+                translationToApply = { x: currentOverlayTranslation.x
+                                            - translateOverlayGroupArray[0]
                                             - translateMarginArray[0],
-                                       y: currentOverlayTranslation.y 
-                                            - translateOverlayGroupArray[1] 
+                                       y: currentOverlayTranslation.y
+                                            - translateOverlayGroupArray[1]
                                             - translateMarginArray[1]
                                     }
 
@@ -7494,7 +7641,7 @@
                 if (drawingLayer) {
                     cloneChildrenFromNodeAToB(drawingLayer, currentDrawingLayer, translationToApply);
                 }
-                
+
                 // if exists, inserts data of the drawing layers
                 if (backgroundLayer) {
                     cloneChildrenFromNodeAToB(backgroundLayer, currentBackgroundLayer, translationToApply);
@@ -7508,6 +7655,9 @@
 
             } else {
                 // it's not a draw from the der, but we will append each element in the 'drawing section'
+                // we remove metadata, namedview elements because it crash the export
+                svgElement.querySelector('metadata').remove()
+                svgElement.querySelector('namedview').remove()
                 LayerService.drawing.appendSvg(svgElement)
             }
 
@@ -7518,11 +7668,11 @@
                 var currentStyle = SettingsService.STYLES[element.type].find(function(style, index, array) {
                     return style.id = element.style.id;
                 })
-                LegendService.addItem(element.id, 
-                                      element.name, 
-                                      element.type, 
-                                      currentStyle, 
-                                      element.color, 
+                LegendService.addItem(element.id,
+                                      element.name,
+                                      element.type,
+                                      currentStyle,
+                                      element.color,
                                       element.contour)
             })
         }
@@ -7534,8 +7684,8 @@
 
             // we don't take the first filter, because it's the OSM Value by default in a DER
             for (var i = 1; i < filters.length; i++) {
-                InteractionService.addFilter(filters[i].getAttribute('name'), 
-                                            filters[i].getAttribute('gesture'), 
+                InteractionService.addFilter(filters[i].getAttribute('name'),
+                                            filters[i].getAttribute('gesture'),
                                             filters[i].getAttribute('protocol') )
             }
 
@@ -7546,8 +7696,8 @@
                 var actions = pois[i].querySelectorAll('action');
 
                 for (var j = 0; j < actions.length; j++) {
-                    InteractionService.setInteraction(pois[i].getAttribute('id'), 
-                                                        actions[j].getAttribute('filter'), 
+                    InteractionService.setInteraction(pois[i].getAttribute('id'),
+                                                        actions[j].getAttribute('filter'),
                                                         actions[j].getAttribute('value'));
                 }
             }
@@ -7561,6 +7711,7 @@
     ImportService.$inject = ['LayerService', 'InteractionService', 'LegendService', 'SettingsService', 'SVGService'];
 
 })();
+
 (function() {
     'use strict';
 
@@ -8208,7 +8359,8 @@
     'use strict';
 
     function EditService($q, SettingsService, MapService, DrawingService, LegendService,
-        DefsService, InteractionService, ExportService, UtilService, ImportService, FeatureService, ModeService) {
+        DefsService, InteractionService, ExportService, UtilService, ImportService,
+        FeatureService, ModeService, RadialMenuService) {
 
         this.init          = init;
         this.settings      = SettingsService;
@@ -8230,7 +8382,6 @@
         this.updateBackgroundStyleAndColor = DrawingService.toolbox.updateBackgroundStyleAndColor;
         this.updateFeatureStyleAndColor    = DrawingService.toolbox.updateFeatureStyleAndColor;
         this.updateMarker                  = DrawingService.toolbox.updateMarker;
-        // this.addRadialMenus                = DrawingService.toolbox.addRadialMenus;
         this.updatePoint                   = DrawingService.updatePoint;
 
         this.isUndoAvailable               = FeatureService.isUndoAvailable;
@@ -8451,11 +8602,12 @@
             // created inside #pattern svg
             DefsService.createDefs(d3.select('#pattern'));
 
-            LegendService.initLegend('#legend',
+            LegendService.init('#legend',
                                     currentLegendFormat.width,
                                     currentLegendFormat.height,
                                     SettingsService.margin,
-                                    SettingsService.ratioPixelPoint);
+                                    SettingsService.ratioPixelPoint,
+                                    RadialMenuService.addRadialMenu);
 
             FeatureService.init(selDrawing, projDrawing, MapService)
             ModeService.init(projDrawing)
@@ -8776,9 +8928,10 @@
                         case 'image/svg+xml':
                             initUpload();
                             d3.xml(data.dataUrl, function loadDrawingFromSVG(svgElement) {
+                                var model = ImportService.getModelFromSVG(svgElement);
                                 ImportService.importDrawing(svgElement);
                                 freezeMap();
-                                deferred.resolve();
+                                deferred.resolve(model);
                             })
                             break;
 
@@ -8788,65 +8941,65 @@
                             initUpload();
                             JSZip.loadAsync(element.files[0]).then(function loadDrawingFromZip(zip) {
 
-                                    var commentairesPath,
-                                        legendPath,
-                                        drawingPath,
-                                        interactionPath,
-                                        legendElement, svgElement, interactionData;
+                                var commentairesPath,
+                                    legendPath,
+                                    drawingPath,
+                                    interactionPath,
+                                    legendElement, svgElement, interactionData;
 
-                                    zip.forEach(function getPath(relativePath, zipEntry) {
+                                zip.forEach(function getPath(relativePath, zipEntry) {
 
-                                        if (relativePath.indexOf("carte_sans_source.svg") >= 0) {
-                                            drawingPath = relativePath;
-                                        }
-
-                                        if (relativePath.indexOf("interactions.xml") >= 0) {
-                                            interactionPath = relativePath;
-                                        }
-                                    });
-
-                                    var parser = new DOMParser();
-
-                                    if (drawingPath) {
-                                        zip.file(drawingPath).async("string").then(function importDrawing(data) {
-
-                                            var svgElement = parser.parseFromString(data, "text/xml"),
-                                                model = ImportService.getModelFromSVG(svgElement);
-
-                                            changeDrawingFormat(model.mapFormat)
-
-                                            if (model.isMapVisible) {
-                                                MapService.showMapLayer(model.mapIdVisible);
-                                            }
-
-                                            if (model.center !== null && model.zoom !== null) {
-                                                center = model.center;
-                                                zoom = model.zoom;
-
-                                                MapService.resetView(center, zoom);
-                                                freezeMap();
-                                            }
-
-                                            ImportService.importDrawing(svgElement)
-                                            // DrawingService.toolbox.addRadialMenus();
-                                            ModeService.enableDefaultMode();
-                                            deferred.resolve(model);
-
-                                        })
-                                    } else {
-                                        deferred.reject('Fichier carte_sans_source.svg non trouvé dans l\'archive')
+                                    if (relativePath.indexOf("carte_sans_source.svg") >= 0) {
+                                        drawingPath = relativePath;
                                     }
 
-                                    if (interactionPath) {
-                                        zip.file(interactionPath).async("string")
-                                        .then(function importInteraction(data) {
-                                            ImportService.importInteraction(parser.parseFromString(data, "text/xml"));
-                                        })
+                                    if (relativePath.indexOf("interactions.xml") >= 0) {
+                                        interactionPath = relativePath;
                                     }
-
-                                    // TODO: make a Promise.all to manage the import time
-
                                 });
+
+                                var parser = new DOMParser();
+
+                                if (drawingPath) {
+                                    zip.file(drawingPath).async("string").then(function importDrawing(data) {
+
+                                        var svgElement = parser.parseFromString(data, "text/xml"),
+                                            model = ImportService.getModelFromSVG(svgElement);
+
+                                        changeDrawingFormat(model.mapFormat)
+
+                                        if (model.isMapVisible) {
+                                            MapService.showMapLayer(model.mapIdVisible);
+                                        }
+
+                                        if (model.center !== null && model.zoom !== null) {
+                                            center = model.center;
+                                            zoom = model.zoom;
+
+                                            MapService.resetView(center, zoom);
+                                            freezeMap();
+                                        }
+
+                                        ImportService.importDrawing(svgElement)
+                                        // DrawingService.toolbox.addRadialMenus();
+                                        ModeService.enableDefaultMode();
+                                        deferred.resolve(model);
+
+                                    })
+                                } else {
+                                    deferred.reject('Fichier carte_sans_source.svg non trouvé dans l\'archive')
+                                }
+
+                                if (interactionPath) {
+                                    zip.file(interactionPath).async("string")
+                                    .then(function importInteraction(data) {
+                                        ImportService.importInteraction(parser.parseFromString(data, "text/xml"));
+                                    })
+                                }
+
+                                // TODO: make a Promise.all to manage the import time
+
+                            });
 
                             break;
 
@@ -8876,6 +9029,7 @@
                             'ImportService',
                             'FeatureService',
                             'ModeService',
+                            'RadialMenuService',
                             ];
 
 })();
@@ -9426,7 +9580,7 @@ angular.module('accessimapEditeurDerApp').run(['$templateCache', function($templ
 
   $templateCache.put('scripts/404.html', '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Page Not Found :(</title><style>\n      ::-moz-selection {\n        background: #b3d4fc;\n        text-shadow: none;\n      }\n\n      ::selection {\n        background: #b3d4fc;\n        text-shadow: none;\n      }\n\n      html {\n        padding: 30px 10px;\n        font-size: 20px;\n        line-height: 1.4;\n        color: #737373;\n        background: #f0f0f0;\n        -webkit-text-size-adjust: 100%;\n        -ms-text-size-adjust: 100%;\n      }\n\n      html,\n      input {\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n      }\n\n      body {\n        max-width: 500px;\n        _width: 500px;\n        padding: 30px 20px 50px;\n        border: 1px solid #b3b3b3;\n        border-radius: 4px;\n        margin: 0 auto;\n        box-shadow: 0 1px 10px #a7a7a7, inset 0 1px 0 #fff;\n        background: #fcfcfc;\n      }\n\n      h1 {\n        margin: 0 10px;\n        font-size: 50px;\n        text-align: center;\n      }\n\n      h1 span {\n        color: #bbb;\n      }\n\n      h3 {\n        margin: 1.5em 0 0.5em;\n      }\n\n      p {\n        margin: 1em 0;\n      }\n\n      ul {\n        padding: 0 0 0 40px;\n        margin: 1em 0;\n      }\n\n      .container {\n        max-width: 380px;\n        _width: 380px;\n        margin: 0 auto;\n      }\n\n      /* google search */\n\n      #goog-fixurl ul {\n        list-style: none;\n        padding: 0;\n        margin: 0;\n      }\n\n      #goog-fixurl form {\n        margin: 0;\n      }\n\n      #goog-wm-qt,\n      #goog-wm-sb {\n        border: 1px solid #bbb;\n        font-size: 16px;\n        line-height: normal;\n        vertical-align: top;\n        color: #444;\n        border-radius: 2px;\n      }\n\n      #goog-wm-qt {\n        width: 220px;\n        height: 20px;\n        padding: 5px;\n        margin: 5px 10px 0 0;\n        box-shadow: inset 0 1px 1px #ccc;\n      }\n\n      #goog-wm-sb {\n        display: inline-block;\n        height: 32px;\n        padding: 0 10px;\n        margin: 5px 0 0;\n        white-space: nowrap;\n        cursor: pointer;\n        background-color: #f5f5f5;\n        background-image: -webkit-linear-gradient(rgba(255,255,255,0), #f1f1f1);\n        background-image: -moz-linear-gradient(rgba(255,255,255,0), #f1f1f1);\n        background-image: -ms-linear-gradient(rgba(255,255,255,0), #f1f1f1);\n        background-image: -o-linear-gradient(rgba(255,255,255,0), #f1f1f1);\n        -webkit-appearance: none;\n        -moz-appearance: none;\n        appearance: none;\n        *overflow: visible;\n        *display: inline;\n        *zoom: 1;\n      }\n\n      #goog-wm-sb:hover,\n      #goog-wm-sb:focus {\n        border-color: #aaa;\n        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);\n        background-color: #f8f8f8;\n      }\n\n      #goog-wm-qt:hover,\n      #goog-wm-qt:focus {\n        border-color: #105cb6;\n        outline: 0;\n        color: #222;\n      }\n\n      input::-moz-focus-inner {\n        padding: 0;\n        border: 0;\n      }\n    </style></head><body><div class="container"><h1>Not found <span>:(</span></h1><p>Sorry, but the page you were trying to view does not exist.</p><p>It looks like this was the result of either:</p><ul><li>a mistyped address</li><li>an out-of-date link</li></ul><script>\n        var GOOG_FIXURL_LANG = (navigator.language || \'\').slice(0,2),GOOG_FIXURL_SITE = location.host;\n      </script><script src="//linkhelp.clients.google.com/tbproxy/lh/wm/fixurl.js"></script></div></body></html>');
 
-  $templateCache.put('scripts/index.html', '<!doctype html><html class="no-js"><head><meta charset="utf-8"><title></title><meta name="description" content><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css"><link rel="stylesheet" href="bower_components/select2/select2.css"><link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css"><link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css"><link rel="stylesheet" href="bower_components/toastr/toastr.min.css"><link rel="stylesheet" href="assets/styles/main.css"><link rel="stylesheet" href="assets/styles/map.css"><link rel="stylesheet" href="assets/fonts/font-awesome-4.6.1/css/font-awesome.css"></head><body ng-app="accessimapEditeurDerApp" class="container-fluid"><header><h2><a ng-href="#/">Accessimap</a></h2><h1 class="text-muted text-center">Accessimap - éditeur de dessins en relief (DER)</h1></header><div class="row" ng-view></div><footer ng-if="displayFooter"><div><table><thead><tr><td colspan="2">Projet Accessimap - Partenaires</td></tr></thead><tbody><tr><td><a href="http://www.ijatoulouse.org/"><img src="assets/images/logos/ija.jpg"> IJA Toulouse</a></td><td><a href="https://www.irit.fr/"><img src="assets/images/logos/irit.jpg"> IRIT</a></td></tr><tr><td><a href="http://www.telecom-paristech.fr/"><img src="assets/images/logos/telecom.png"> Télécom ParisTech</a></td><td><a href="http://makina-corpus.com/"><img src="assets/images/logos/makinacorpus.png"> Makina Corpus</a></td></tr></tbody></table></div><div><p><span class="fa fa-question fa-lg"></span>&nbsp;Pour toutes questions, n\'hésitez pas à <a href="mailto:contact@makina-corpus.com">nous contacter</a></p><p><span class="fa fa-github fa-lg"></span>&nbsp;Vous souhaitez contribuer au projet, accédez à <a href="https://github.com/makinacorpus/accessimap-editeur-der/issues" target="_blank">notre dépôt Github</a> ou à <a href="docs/" target="_blank">la documentation technique</a>.</p><p>Map tiles and data: © OpenStreetMap contributors</p></div></footer><script>\n            (function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){\n            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n            })(window,document,\'script\',\'//www.google-analytics.com/analytics.js\',\'ga\');\n\n            ga(\'create\', \'UA-62402664-1\');\n            ga(\'send\', \'pageview\');\n        </script><script src="bower_components/jquery/dist/jquery.js"></script><script src="bower_components/angular/angular.js"></script><script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script><script src="bower_components/angular-animate/angular-animate.js"></script><script src="bower_components/angular-cookies/angular-cookies.js"></script><script src="bower_components/angular-resource/angular-resource.js"></script><script src="bower_components/angular-route/angular-route.js"></script><script src="bower_components/angular-sanitize/angular-sanitize.js"></script><script src="bower_components/angular-touch/angular-touch.js"></script><script src="bower_components/angular-ui-select/dist/select.js"></script><script src="bower_components/select2/select2.js"></script><script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script><script src="bower_components/angular-bootstrap-slider/slider.js"></script><script src="bower_components/angular-ui-utils/ui-utils.js"></script><script src="bower_components/d3/d3.js"></script><script src="bower_components/d3-transform/src/d3-transform.js"></script><script src="bower_components/jszip/dist/jszip.js"></script><script src="bower_components/file-saver.js/FileSaver.js"></script><script src="bower_components/turf/turf.min.js"></script><script src="bower_components/pdfjs-dist/build/pdf.combined.js"></script><script src="bower_components/leaflet/dist/leaflet.js"></script><script src="bower_components/toastr/toastr.min.js"></script><script src="vendor/ui-bootstrap-custom-tpls-1.3.2.min.js"></script><script src="vendor/d3.radialmenu.js"></script><script src="vendor/osmtogeojson.js"></script><script src="vendor/textures-v2.js"></script><script src="vendor/path-data-polyfill.js/path-data-polyfill.js"></script><script src="vendor/blob.js"></script><script src="vendor/canvas-toblob.js"></script><script src="vendor/L.D3SvgOverlay.js"></script><script src="vendor/dom-to-image.js"></script><script src="vendor/jquery.binarytransport.js"></script><script src="app.js"></script><script src="filters/layernotselected.js"></script><script src="services/ui/ui.toaster.js"></script><script src="services/ui/ui.radialmenu.js"></script><script src="services/utils/util.js"></script><script src="services/utils/storage.js"></script><script src="services/utils/svg.js"></script><script src="services/d3/d3.interaction.js"></script><script src="services/d3/d3.feature.js"></script><script src="services/settings/settings.js"></script><script src="services/settings/settings.styles.js"></script><script src="services/settings/settings.colors.js"></script><script src="services/settings/settings.fonts.js"></script><script src="services/settings/settings.formats.js"></script><script src="services/settings/settings.query.js"></script><script src="services/settings/settings.actions.js"></script><script src="services/map/map.search.js"></script><script src="services/map/map.js"></script><script src="services/d3/d3.defs.js"></script><script src="services/d3/d3.legend.js"></script><script src="services/d3/d3.geometryutils.js"></script><script src="services/d3/feature/d3.feature.emptycomfort.js"></script><script src="services/d3/feature/d3.feature.selectpath.js"></script><script src="services/d3/layer/d3.layer.js"></script><script src="services/d3/layer/d3.layer.background.js"></script><script src="services/d3/layer/d3.layer.drawing.js"></script><script src="services/d3/layer/d3.layer.geojson.js"></script><script src="services/d3/layer/d3.layer.overlay.js"></script><script src="services/d3/toolbox/d3.toolbox.js"></script><script src="services/d3/toolbox/d3.toolbox.image.js"></script><script src="services/d3/toolbox/d3.toolbox.triangle.js"></script><script src="services/d3/toolbox/d3.toolbox.rectangle.js"></script><script src="services/d3/toolbox/d3.toolbox.ellipse.js"></script><script src="services/d3/toolbox/d3.toolbox.text.js"></script><script src="services/d3/toolbox/d3.toolbox.polyline.js"></script><script src="services/d3/d3.drawing.js"></script><script src="services/d3/d3.generator.js"></script><script src="services/d3/d3.import.js"></script><script src="services/d3/d3.export.js"></script><script src="services/mode/mode.js"></script><script src="routes/edit/service.js"></script><script src="routes/edit/controller.js"></script><script src="routes/home/controller.js"></script><script src="templates.js"></script></body></html>');
+  $templateCache.put('scripts/index.html', '<!doctype html><html class="no-js"><head><meta charset="utf-8"><title></title><meta name="description" content><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css"><link rel="stylesheet" href="bower_components/select2/select2.css"><link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css"><link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css"><link rel="stylesheet" href="bower_components/toastr/toastr.min.css"><link rel="stylesheet" href="assets/styles/main.css"><link rel="stylesheet" href="assets/styles/map.css"><link rel="stylesheet" href="assets/fonts/font-awesome-4.6.1/css/font-awesome.css"></head><body ng-app="accessimapEditeurDerApp" class="container-fluid"><header><h2><a ng-href="#/">Accessimap</a></h2><h1 class="text-muted text-center">Accessimap - éditeur de dessins en relief (DER)</h1></header><div class="row" ng-view></div><footer ng-if="displayFooter"><div><table><thead><tr><td colspan="2">Projet Accessimap - Partenaires</td></tr></thead><tbody><tr><td><a href="http://www.ijatoulouse.org/"><img src="assets/images/logos/ija.jpg"> IJA Toulouse</a></td><td><a href="https://www.irit.fr/"><img src="assets/images/logos/irit.jpg"> IRIT</a></td></tr><tr><td><a href="http://www.telecom-paristech.fr/"><img src="assets/images/logos/telecom.png"> Télécom ParisTech</a></td><td><a href="http://makina-corpus.com/"><img src="assets/images/logos/makinacorpus.png"> Makina Corpus</a></td></tr></tbody></table></div><div><p><span class="fa fa-question fa-lg"></span>&nbsp;Pour toutes questions, n\'hésitez pas à <a href="mailto:contact@makina-corpus.com">nous contacter</a></p><p><span class="fa fa-github fa-lg"></span>&nbsp;Vous souhaitez contribuer au projet, accédez à <a href="https://github.com/makinacorpus/accessimap-editeur-der/issues" target="_blank">notre dépôt Github</a> ou à <a href="docs/" target="_blank">la documentation technique</a>.</p><p>Map tiles and data: © OpenStreetMap contributors</p></div></footer><script src="bower_components/jquery/dist/jquery.js"></script><script src="bower_components/angular/angular.js"></script><script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script><script src="bower_components/angular-animate/angular-animate.js"></script><script src="bower_components/angular-cookies/angular-cookies.js"></script><script src="bower_components/angular-resource/angular-resource.js"></script><script src="bower_components/angular-route/angular-route.js"></script><script src="bower_components/angular-sanitize/angular-sanitize.js"></script><script src="bower_components/angular-touch/angular-touch.js"></script><script src="bower_components/angular-ui-select/dist/select.js"></script><script src="bower_components/select2/select2.js"></script><script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script><script src="bower_components/angular-bootstrap-slider/slider.js"></script><script src="bower_components/angular-ui-utils/ui-utils.js"></script><script src="bower_components/d3/d3.js"></script><script src="bower_components/d3-transform/src/d3-transform.js"></script><script src="bower_components/jszip/dist/jszip.js"></script><script src="bower_components/file-saver.js/FileSaver.js"></script><script src="bower_components/turf/turf.min.js"></script><script src="bower_components/pdfjs-dist/build/pdf.combined.js"></script><script src="bower_components/leaflet/dist/leaflet.js"></script><script src="bower_components/toastr/toastr.min.js"></script><script src="vendor/ui-bootstrap-custom-tpls-1.3.2.min.js"></script><script src="vendor/d3.radialmenu.js"></script><script src="vendor/osmtogeojson.js"></script><script src="vendor/textures-v2.js"></script><script src="vendor/path-data-polyfill.js/path-data-polyfill.js"></script><script src="vendor/blob.js"></script><script src="vendor/canvas-toblob.js"></script><script src="vendor/L.D3SvgOverlay.js"></script><script src="vendor/dom-to-image.js"></script><script src="vendor/jquery.binarytransport.js"></script><script src="app.js"></script><script src="filters/layernotselected.js"></script><script src="services/ui/ui.toaster.js"></script><script src="services/ui/ui.radialmenu.js"></script><script src="services/utils/util.js"></script><script src="services/utils/storage.js"></script><script src="services/utils/svg.js"></script><script src="services/d3/d3.interaction.js"></script><script src="services/d3/d3.feature.js"></script><script src="services/settings/settings.js"></script><script src="services/settings/settings.styles.js"></script><script src="services/settings/settings.colors.js"></script><script src="services/settings/settings.fonts.js"></script><script src="services/settings/settings.formats.js"></script><script src="services/settings/settings.query.js"></script><script src="services/settings/settings.actions.js"></script><script src="services/map/map.search.js"></script><script src="services/map/map.js"></script><script src="services/d3/d3.legend.js"></script><script src="services/d3/d3.defs.js"></script><script src="services/d3/d3.geometryutils.js"></script><script src="services/d3/feature/d3.feature.emptycomfort.js"></script><script src="services/d3/feature/d3.feature.selectpath.js"></script><script src="services/d3/layer/d3.layer.js"></script><script src="services/d3/layer/d3.layer.background.js"></script><script src="services/d3/layer/d3.layer.drawing.js"></script><script src="services/d3/layer/d3.layer.geojson.js"></script><script src="services/d3/layer/d3.layer.overlay.js"></script><script src="services/d3/toolbox/d3.toolbox.js"></script><script src="services/d3/toolbox/d3.toolbox.image.js"></script><script src="services/d3/toolbox/d3.toolbox.triangle.js"></script><script src="services/d3/toolbox/d3.toolbox.rectangle.js"></script><script src="services/d3/toolbox/d3.toolbox.ellipse.js"></script><script src="services/d3/toolbox/d3.toolbox.text.js"></script><script src="services/d3/toolbox/d3.toolbox.polyline.js"></script><script src="services/d3/d3.drawing.js"></script><script src="services/d3/d3.generator.js"></script><script src="services/d3/d3.import.js"></script><script src="services/d3/d3.export.js"></script><script src="services/mode/mode.js"></script><script src="routes/edit/service.js"></script><script src="routes/edit/controller.js"></script><script src="routes/home/controller.js"></script><script src="templates.js"></script></body></html>');
 
   $templateCache.put('scripts/routes/edit/aside.html', '<div class="col-xs-12"><div ng-if="$ctrl.isParametersVisible" ng-include="\'scripts/routes/edit/aside_parameters.html\'"></div><div ng-if="$ctrl.isMapParametersVisible" class="btn-group pull-left" ng-include="\'scripts/routes/edit/aside_map_parameters.html\'"></div><div ng-if="$ctrl.isDrawingParametersVisible" ng-include="\'scripts/routes/edit/aside_drawing_parameters.html\'"></div><div ng-if="$ctrl.isLegendParametersVisible" ng-include="\'scripts/routes/edit/aside_legend_parameters.html\'"></div><div ng-if="$ctrl.isInteractionParametersVisible" ng-include="\'scripts/routes/edit/aside_interaction_parameters.html\'"></div><div ng-if="$ctrl.isBackgroundParametersVisible" ng-include="\'scripts/routes/edit/aside_background_parameters.html\'"></div></div>');
 
@@ -9448,7 +9602,7 @@ angular.module('accessimapEditeurDerApp').run(['$templateCache', function($templ
 
   $templateCache.put('scripts/routes/edit/aside_map_poi_creation.html', '<h4><span class="fa fa-plus-circle" aria-hidden="true"></span> Ajouter POI</h4><form><div class="form-group"><label>Style</label><ui-select ng-model="$ctrl.styleChosen" ng-disabled="$ctrl.disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.styleChoices | filter: $select.search" style="max-height: 500px;"><span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span> <span style="max-height:30px" ng-bind-html="$ctrl.featureIcon(item, $ctrl.queryChosen.type)"></span></ui-select-choices></ui-select></div></form>');
 
-  $templateCache.put('scripts/routes/edit/aside_parameters.html', '<h3><span class="fa fa-home" aria-hidden="true"></span> Menu principal</h3><form class="row"><div class="form-group col-xs-12"><label>Titre</label> <input type="text" ng-model="$ctrl.model.title" class="form-control input-lg"></div><div class="form-group col-xs-12"><label>Trame de fond</label> <button class="btn btn-primary btn-block" ng-click="$ctrl.displayBackgroundParameters()"><span class="fa fa-lg fa-picture-o" aria-hidden="true"></span> Configurer le fond&nbsp;</button></div><div class="form-group col-xs-12"><label>Format du dessin</label><select ng-model="$ctrl.model.mapFormat" ng-change="$ctrl.changeDrawingFormat($ctrl.model.mapFormat)" class="form-control" ng-options="format as data.name for (format, data) in $ctrl.formats"></select><label>Etat de la zone de dessin</label><br><div class="btn-group"><button class="btn btn-default" ng-class="{ \'active\' : $ctrl.isDrawingFreezed }" disabled>Figée</button><button class="btn btn-default" ng-class="{ \'active\' : ! $ctrl.isDrawingFreezed }" disabled>Non figée</button></div></div><div class="form-group col-xs-12"><label>Edition</label></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-click="$ctrl.displayDrawingParameters()"><span class="fa fa-lg fa-pencil" aria-hidden="true"></span><br>Dessin</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-click="$ctrl.displayMapParameters()"><span class="fa fa-lg fa-map-o" aria-hidden="true"></span><br>Carte</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-click="$ctrl.displayLegendParameters()"><span class="fa fa-lg fa-braille" aria-hidden="true"></span><br>Légende</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-click="$ctrl.displayInteractionParameters()"><span class="fa fa-lg fa-hand-pointer-o" aria-hidden="true"></span><br>Interaction</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-default btn-tile" ng-click="$ctrl.resetView()"><span class="fa fa-arrows-alt" aria-hidden="true"></span><br>Recentrer</button></div><div class="form-group col-xs-12"><label>Commentaires de transcription</label> <textarea class="form-control" ng-model="$ctrl.model.comment" rows="10" style="resize:none" id="comment">\n        </textarea></div><div class="form-group col-xs-12"><label>Importer un DER (svg/zip)</label> <input onchange="angular.element(this).scope().$ctrl.importDER(this)" type="file" accept="image/svg+xml,application/zip" name="Importer"></div><div class="form-group col-xs-12"><label>Exporter</label> <button class="btn btn-success btn-block text-center" ng-click="$ctrl.exportData()" type="button"><span class="fa fa-lg fa-download" aria-hidden="true"></span> Exporter</button></div></form>');
+  $templateCache.put('scripts/routes/edit/aside_parameters.html', '<h3><span class="fa fa-home" aria-hidden="true"></span> Menu principal</h3><form class="row"><div class="form-group col-xs-12"><label>Titre</label> <input type="text" ng-model="$ctrl.model.title" class="form-control input-lg"></div><div class="form-group col-xs-12"><label>Format du dessin</label><select ng-model="$ctrl.model.mapFormat" ng-change="$ctrl.changeDrawingFormat($ctrl.model.mapFormat)" class="form-control" ng-options="format as data.name for (format, data) in $ctrl.formats"></select></div><div class="form-group col-xs-12"><label>Trame de fond</label> <button class="btn btn-primary btn-block" ng-click="$ctrl.displayBackgroundParameters()"><span class="fa fa-lg fa-picture-o" aria-hidden="true"></span> Configurer le fond&nbsp;</button></div><div class="form-group col-xs-12"><label>Etat de la zone de dessin</label><br><div class="btn-group"><button class="btn btn-default" ng-class="{ \'active\' : $ctrl.isDrawingFreezed }" disabled>Figée</button><button class="btn btn-default" ng-class="{ \'active\' : ! $ctrl.isDrawingFreezed }" disabled>Non figée</button></div></div><div class="form-group col-xs-12"><label>Edition</label></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-click="$ctrl.displayDrawingParameters()"><span class="fa fa-lg fa-pencil" aria-hidden="true"></span><br>Dessin</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-click="$ctrl.displayMapParameters()"><span class="fa fa-lg fa-map-o" aria-hidden="true"></span><br>Carte</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-click="$ctrl.displayLegendParameters()"><span class="fa fa-lg fa-braille" aria-hidden="true"></span><br>Légende</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-primary btn-tile" ng-click="$ctrl.displayInteractionParameters()"><span class="fa fa-lg fa-hand-pointer-o" aria-hidden="true"></span><br>Interaction</button></div><div class="form-group col-md-6 text-center"><button class="btn btn-default btn-tile" ng-click="$ctrl.resetView()"><span class="fa fa-arrows-alt" aria-hidden="true"></span><br>Recentrer</button></div><div class="form-group col-xs-12"><label>Commentaires de transcription</label> <textarea class="form-control" ng-model="$ctrl.model.comment" rows="10" style="resize:none" id="comment">\n        </textarea></div><div class="form-group col-xs-12"><label>Importer un DER (svg/zip)</label> <input onchange="angular.element(this).scope().$ctrl.importDER(this)" type="file" accept="image/svg+xml,application/zip" name="Importer"></div><div class="form-group col-xs-12"><label>Exporter</label> <button class="btn btn-success btn-block text-center" ng-click="$ctrl.exportData()" type="button"><span class="fa fa-lg fa-download" aria-hidden="true"></span> Exporter</button></div></form>');
 
   $templateCache.put('scripts/routes/edit/modalchangearrows.html', '<div class="modal fade" id="changeArrowsModal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">Choisissez les extrémités de cette ligne</h4></div><div class="modal-body">Extrémité de départ<ui-select ng-model="$ctrl.markerStart" ng-change="$ctrl.updateMarker($ctrl.markerStart, $ctrl.markerStop)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.markerStartChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select><br>Extrémité de fin<ui-select ng-model="$ctrl.markerStop" ng-change="$ctrl.updateMarker($ctrl.markerStart, $ctrl.markerStop)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.markerStopChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button></div></div></div></div>');
 

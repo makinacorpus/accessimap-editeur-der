@@ -154,7 +154,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service providing drawing functions",
-      "keywords": "_geojson accessimapediteurderapp address api area array checkboxmodel circle collection color colorchosen colors createdrawing d3 data display draw drawaddress drawfeature drawing element erase feature features functions geojsontosvg geometry identifying init item layergeojsonservice layerservice legend map method node nominatim object optionalclass paths poi point project properties provide providing refresh remove removefeature returned rotate rotatefeature rotation rotationangle server service simplify specific string stuff style stylechosen styles update updatefeature"
+      "keywords": "_geojson accessimapediteurderapp address api area array checkboxmodel circle clean collection color colorchosen colors createdrawing d3 data display draw drawaddress drawfeature drawing element erase feature features functions geojson geojsontosvg geometry identifying init inside item layer layergeojsonservice layerservice legend map method node nominatim object optionalclass paths poi point project properties provide providing refresh remove removefeature removing returned rotate rotatefeature rotation rotationangle server service simplify specific string stuff style stylechosen styles update updatefeature"
     },
     {
       "section": "api",
@@ -181,7 +181,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service providing drawing functions",
-      "keywords": "_model accessimapediteurderapp add additem api appended area arguments arial array based border braille create created createframepath data display dom draw drawing drawlegend element explain export features font format frame functions getsize height hide hidefontbraille init initlegend item layer legend legendservice linked map margin method millimeters model params pixel print printing provide providing ratiopixelpoint redraw remove representing return service setformat showfontbraille size specific svg telling todo update user width"
+      "keywords": "_model accessimapediteurderapp add additem api appended area arguments arial array based border braille clone create created createframepath current data display dom draw drawing drawlegend edited edition edittext element enable explain export features font format frame functions getmodel getsize height hide hidefontbraille init item items layer legend legendservice linked map margin method millimeters model params pixel print printing provide providing ratiopixelpoint redraw remove representing return service setformat showfontbraille size specific svg target telling text todo update user width"
     },
     {
       "section": "api",

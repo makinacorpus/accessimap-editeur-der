@@ -5,7 +5,7 @@
 </h1>
 <div><h2 id="description">Description</h2>
 <div class="description"><div class="accessimapediteurderapp-legendservice-page"><p>Service providing drawing functions
-Provide functions to </p>
+Provide functions to</p>
 <ul>
 <li>init a map/draw area</li>
 <li>draw features</li>
@@ -33,6 +33,16 @@ Provide functions to </p>
 <div class="drawlegend"><div class="drawlegend-page"><p>Draw the legend, based on the _model array.</p>
 </div></div>
 </li>
+<li><h3 id="methods_edittext">editText(target)</h3>
+<div class="edittext"><div class="edittext-page"><p>Enable the edition of the legend&#39;s item text</p>
+</div><h5 id="methods_edittext_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>target</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="edittext-page"><p>Item in the legend which text will be edited</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_getmodel">getModel()</h3>
+<div class="getmodel"><div class="getmodel-page"><p>return a clone of the current array of items</p>
+</div><h5 id="methods_getmodel_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="getmodel-page"><p>The model</p>
+</div></td></tr></table></div>
+</li>
 <li><h3 id="methods_getsize">getSize()</h3>
 <div class="getsize"><div class="getsize-page"><p>return the size of the layer, representing the size of the legend</p>
 </div><h5 id="methods_getsize_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="getsize-page"><p>{width, height}</p>
@@ -42,13 +52,13 @@ Provide functions to </p>
 <div class="hidefontbraille"><div class="hidefontbraille-page"><p>Hide the &#39;braille&#39; font on the legend&#39;s svg and display it in Arial</p>
 </div></div>
 </li>
-<li><h3 id="methods_initlegend">initLegend(id, width, height, margin, ratioPixelPoint)</h3>
-<div class="initlegend"><div class="initlegend-page"><p>Create the legend svg in a dom element with specific size</p>
-</div><h5 id="methods_initlegend_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="initlegend-page"><p>id of element in which will be appended svg</p>
-</div></td></tr><tr><td>width</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="initlegend-page"><p>width in millimeters of the svg created</p>
-</div></td></tr><tr><td>height</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="initlegend-page"><p>height in millimeters of the svg created</p>
-</div></td></tr><tr><td>margin</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="initlegend-page"><p>margin of border in millimeters of the svg created</p>
-</div></td></tr><tr><td>ratioPixelPoint</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="initlegend-page"><p>ratioPixelPoint ? TODO please explain it...</p>
+<li><h3 id="methods_init">init(id, width, height, margin, ratioPixelPoint)</h3>
+<div class="init"><div class="init-page"><p>Create the legend svg in a dom element with specific size</p>
+</div><h5 id="methods_init_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="init-page"><p>id of element in which will be appended svg</p>
+</div></td></tr><tr><td>width</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="init-page"><p>width in millimeters of the svg created</p>
+</div></td></tr><tr><td>height</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="init-page"><p>height in millimeters of the svg created</p>
+</div></td></tr><tr><td>margin</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="init-page"><p>margin of border in millimeters of the svg created</p>
+</div></td></tr><tr><td>ratioPixelPoint</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="init-page"><p>ratioPixelPoint ? TODO please explain it...</p>
 </div></td></tr></tbody></table></div>
 </li>
 <li><h3 id="methods_setformat">setFormat(width, height)</h3>
