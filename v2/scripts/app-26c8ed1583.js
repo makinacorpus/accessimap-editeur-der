@@ -4940,7 +4940,7 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.LayerBackgroundService
- * 
+ *
  * @description
  * Service providing the management of background layer
  */
@@ -4952,22 +4952,31 @@
         this.createLayer = createLayer;
         this.append      = append;
         this.appendImage = appendImage;
+        this.refresh     = refresh;
+        this.setFormat   = setFormat;
 
         var _width,
             _height,
-            _target, 
+            _target,
             _projection,
-            _g;
+            _g,
+            _backgroundImage,
+            _backgroundPath,
+            _lastTranslationX,
+            _lastTranslationY;
 
 
         function createLayer(target, format, projection) {
-            _width      = SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint;
-            _height     = SettingsService.FORMATS[format].height / SettingsService.ratioPixelPoint;
             _target     = target;
             _projection = projection;
-            
+
             _g = _target.attr("data-name", "background-layer")
-                    .attr('id', 'background-layer')
+                        .attr('id', 'background-layer')
+                        .append('g')
+
+            _backgroundPath = _g.append('path')
+
+            setFormat(format)
 
         }
 
@@ -4977,51 +4986,132 @@
 
         function appendImage(dataUrl, size, pixelOrigin, pixelBoundMin) {
 
-            var ratioSvg = _height / _width,
-                img = new Image();
+            var img = new Image();
 
             img.src = dataUrl;
             img.onload = function() { // need to load the image to obtain width & height
-                var width = this.width,
-                    height = this.height,
-                    ratio = height / width,
-                    w, 
-                    h;
+                _g.selectAll('image').remove();
 
-                if (ratio > ratioSvg) {
-                    h = _height;
-                    w = h / ratio;
-                } else {
-                    w = _width;
-                    h = w * ratio;
-                }
-
-                // calculate coordinates
-                var x = 
-                    // to get x, we calc the space between left and the overlay
-                    ( ( size.x - w) / 2 ) 
-                    // and we substract the difference between the original point of the map 
-                    // and the actual bounding topleft point
-                    - (pixelOrigin.x - pixelBoundMin.x),
-
-                y = 
-                    // to get y, we calc the space between the middle axe and the top of the overlay
-                    h / -2 
-                    // and we substract the difference between the original point of the map
-                    // and the actual bounding topleft point
-                    - (pixelOrigin.y - pixelBoundMin.y - size.y / 2);
-
-                _g.selectAll('*').remove();
-
-                _g.append('image')
-                    .attr('x', x)
-                    .attr('y', y)
-                    .attr('width', w)
-                    .attr('height', h)
+                _backgroundImage = _g.append('image')
+                    .attr('data-width', this.width)
+                    .attr('data-height', this.height)
                     .attr('xlink:href', dataUrl);
+
+                resizeBackgroundImage();
 
             };
 
+        }
+
+        function resizeBackgroundImage() {
+            if (_backgroundImage) {
+                var svgRatio = _height / _width,
+
+                    imageWidth  = _backgroundImage.attr('data-width'),
+                    imageHeight = _backgroundImage.attr('data-height'),
+                    imageRatio  = imageHeight / imageWidth,
+
+                    finalWidth, finalHeight;
+
+                if (imageRatio > svgRatio) {
+                    finalHeight = _height;
+                    finalWidth = finalHeight / imageRatio;
+                } else {
+                    finalWidth = _width;
+                    finalHeight = finalWidth * imageRatio;
+                }
+
+                // calculate coordinates
+                var x = ( ( _width - finalWidth) / 2 ),
+                    y = ( _height - finalHeight ) / 2 ;
+
+                _backgroundImage
+                    .attr('x', x)
+                    .attr('y', y)
+                    .attr('width', finalWidth)
+                    .attr('height', finalHeight);
+            }
+
+        }
+
+        /**
+         * @ngdoc method
+         * @name setFormat
+         * @methodOf accessimapEditeurDerApp.LayerBackgroundService
+         *
+         * @description
+         * Change the format of the current layer, and update the background Image if needed
+         *
+         * @param  {Object} format
+         * Format of the drawing
+         */
+        function setFormat(format) {
+            _width      = SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint;
+            _height     = SettingsService.FORMATS[format].height / SettingsService.ratioPixelPoint;
+            resizeBackgroundImage();
+            resizePath();
+        }
+
+        /**
+         * @ngdoc method
+         * @name  createPath
+         * @methodOf accessimapEditeurDerApp.LayerBackgroundService
+         *
+         * @description
+         * Create an invisible path
+         *
+         * Could be useful later if user want a background pattern
+         */
+        function resizePath() {
+
+            _backgroundPath.attr('d', function() {
+                    return 'M 0 0 L '
+                                    + _width
+                                    + ' 0 L '
+                                    + _width
+                                    + ' '
+                                    + _height
+                                    + ' L 0 '
+                                    + _height
+                                    + ' L 0 0 z';
+                })
+                .attr('id', 'background-path')
+                .style('pointer-events', 'none')
+                .style('fill', 'none')
+                .classed('notDeletable', true)
+        }
+
+        /**
+         * @ngdoc method
+         * @name  refresh
+         * @methodOf accessimapEditeurDerApp.LayerOverlayService
+         *
+         * @description
+         * Function moving the overlay svg, thanks to map movements...
+         *
+         * This function has to be used only if we want the overlay be 'fixed'
+         *
+         * TODO: clear the dependencies to map... maybe, give the responsability to the map
+         * and so, thanks to a 'class', we could 'freeze' the overlay thanks to this calc
+         */
+        function refresh(size, pixelOrigin, pixelBoundMin) {
+            // x,y are coordinates to position overlay
+            // coordinates 0,0 are not the top left, but the point at the middle left
+            _lastTranslationX =
+                // to get x, we calc the space between left and the overlay
+                ( ( size.x - _width) / 2 )
+                // and we substract the difference between the original point of the map
+                // and the actual bounding topleft point
+                - (pixelOrigin.x - pixelBoundMin.x),
+
+            _lastTranslationY =
+                // to get y, we calc the space between the middle axe and the top of the overlay
+                _height / -2
+                // and we substract the difference between the original point of the map
+                // and the actual bounding topleft point
+                - (pixelOrigin.y - pixelBoundMin.y - size.y / 2);
+
+            _g.attr("transform", "translate(" + (_lastTranslationX ) +"," + (_lastTranslationY) + ")")
         }
 
     }
@@ -5031,6 +5121,7 @@
     LayerBackgroundService.$inject = ['SettingsService'];
 
 })();
+
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.LayerDrawingService
@@ -6286,7 +6377,7 @@
         };
 
         function updateBackgroundStyleAndColor(style, color) {
-            updateStyleAndColor(d3.select('#svgContainer'), style, color)
+            updateStyleAndColor(d3.select('#background-path'), style, color)
         }
 
         function updateFeatureStyleAndColor(style, color) {
@@ -7656,8 +7747,13 @@
             } else {
                 // it's not a draw from the der, but we will append each element in the 'drawing section'
                 // we remove metadata, namedview elements because it crash the export
-                svgElement.querySelector('metadata').remove()
-                svgElement.querySelector('namedview').remove()
+                var metadata = svgElement.querySelector('metadata'),
+                    namedview = svgElement.querySelector('namedview');
+
+                if (metadata) metadata.remove();
+
+                if (namedview) namedview.remove();
+
                 LayerService.drawing.appendSvg(svgElement)
             }
 
@@ -8492,6 +8588,7 @@
                 // if scale is not defined,
                 // we have to re draw the overlay to keep the initial format / position
                 if (scaleDefined!==true) {
+                    DrawingService.layers.background.refresh(size, pixelOrigin, pixelBoundMin);
                     DrawingService.layers.overlay.refresh(size, pixelOrigin, pixelBoundMin);
                 }
             })
@@ -8618,6 +8715,7 @@
             // first, we set the initial state, center & zoom
             MapService.resetView(center, zoom)
             DrawingService.layers.overlay.setFormat(format);
+            DrawingService.layers.background.setFormat(format);
             MapService.setMinimumSize(SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint,
                                         SettingsService.FORMATS[format].height / SettingsService.ratioPixelPoint);
             MapService.resizeFunction();
@@ -9055,33 +9153,33 @@
     'use strict';
 
     function EditController(EditService, ToasterService, $location, $q) {
-        
+
         var $ctrl = this;
 
         /**
          * @ngdoc property
          * @name  queryChoices
          * @propertyOf accessimapEditeurDerApp.controller:EditController
-         * 
+         *
          * @description
          * Options of POI and area to add on the map
          */
         $ctrl.queryChoices = EditService.settings.QUERY_LIST;
-        
+
         /**
          * @ngdoc property
          * @name  queryChosen
          * @propertyOf accessimapEditeurDerApp.controller:EditController
-         * 
+         *
          * @description
-         * POI / area selected 
+         * POI / area selected
          */
         $ctrl.queryChosen  = EditService.settings.QUERY_DEFAULT; // $ctrl.queryChoices[1];
         /**
          * @ngdoc property
          * @name  styleChoices
          * @propertyOf accessimapEditeurDerApp.controller:EditController
-         * 
+         *
          * @description
          * Options of styling for the queryChosen' type
          */
@@ -9091,7 +9189,7 @@
          * @ngdoc property
          * @name  pointChoices
          * @propertyOf accessimapEditeurDerApp.controller:EditController
-         * 
+         *
          * @description
          * Options of styling for POI / points
          */
@@ -9105,7 +9203,7 @@
          * Style selected for the queryChosen' type
          */
         $ctrl.styleChosen  = $ctrl.styleChoices[0];
-        
+
         /**
          * @ngdoc
          * @name  changeStyle
@@ -9121,23 +9219,23 @@
         $ctrl.fontChosen                 = $ctrl.fonts[0];
         $ctrl.fontColors                 = EditService.settings.COLORS;
         $ctrl.fontColorChosen            = $ctrl.fontColors[$ctrl.fontChosen.color][0];
-        
+
         $ctrl.colors                     = (EditService.settings.COLORS.transparent)
                                                 .concat(EditService.settings.COLORS.other);
-        
+
         $ctrl.colorChosen                = $ctrl.colors[0];
         $ctrl.featureIcon                = EditService.featureIcon;
         $ctrl.formats                    = EditService.settings.FORMATS;
         $ctrl.backgroundStyleChoices     = EditService.settings.STYLES.polygon;
-        $ctrl.mapFormat                  = $location.search().mapFormat 
-                                            ? $location.search().mapFormat 
+        $ctrl.mapFormat                  = $location.search().mapFormat
+                                            ? $location.search().mapFormat
                                             : 'landscapeA4';
-        $ctrl.legendFormat               = $location.search().legendFormat 
-                                            ? $location.search().legendFormat 
+        $ctrl.legendFormat               = $location.search().legendFormat
+                                            ? $location.search().legendFormat
                                             : 'landscapeA4';
         $ctrl.checkboxModel              = { contour: true};
         $ctrl.getFeatures                = EditService.getFeatures;
-        
+
         $ctrl.model = {
             title           : 'Titre du dessin',
             isMapVisible    : false,
@@ -9148,37 +9246,37 @@
             backgroundStyle : EditService.settings.STYLES.polygon[EditService.settings.STYLES.polygon.length - 1],
         }
 
-        // general state parameters        
+        // general state parameters
         $ctrl.isParametersVisible            = true; // initial state = parameters
         $ctrl.isMapParametersVisible         = false;
         $ctrl.isDrawingParametersVisible     = false;
         $ctrl.isLegendParametersVisible      = false;
         $ctrl.isInteractionParametersVisible = false;
         $ctrl.isBackgroundParametersVisible  = false;
-        
+
         // map state parameters
         $ctrl.isAddressVisible           = false;
         $ctrl.isPoiCreationVisible       = false;
         $ctrl.isFeatureCreationVisible   = false;
         $ctrl.isFeatureManagementVisible = true;
-        
+
         $ctrl.isDrawingFreezed = false;
 
         // states of right side : drawing (workspace) or legend ?
         $ctrl.isWorkspaceVisible  = true;
         $ctrl.isLegendVisible     = false;
-        
+
         $ctrl.isBrailleDisplayed  = true;
-        
+
         $ctrl.markerStartChoices  = EditService.settings.markerStart;
         $ctrl.markerStopChoices   = EditService.settings.markerStop;
-        
+
         $ctrl.isUndoAvailable     = EditService.isUndoAvailable;
-        
-        $ctrl.exportData          = function() { 
+
+        $ctrl.exportData          = function() {
 
             ToasterService.info('Export du dessin... merci de patienter', {timeout: 0, tapToDismiss: false})
-            EditService.exportData($ctrl.model) 
+            EditService.exportData($ctrl.model)
                 .then(function () {
                     ToasterService.remove()
                     ToasterService.success('Export terminé !')
@@ -9189,21 +9287,21 @@
                 });
         };
         $ctrl.rotateMap           = EditService.rotateMap;
-        
+
         $ctrl.changeDrawingFormat = function(format) {
             EditService.changeDrawingFormat(format);
             EditService.updateBackgroundStyleAndColor($ctrl.model.backgroundStyle, $ctrl.model.backgroundColor);
         }
         $ctrl.changeLegendFormat  = EditService.changeLegendFormat;
-        
+
         $ctrl.interactions        = EditService.interactions;
-        
+
         $ctrl.mapCategories       = EditService.settings.mapCategories;
-        
+
         $ctrl.importBackground    = EditService.importBackground;
         $ctrl.importImage         = EditService.importImage;
         $ctrl.appendSvg           = EditService.appendSvg;
-        
+
         $ctrl.importDER = function(file) {
 
             ToasterService.info('Import du fichier... merci de patienter', {timeout: 0, tapToDismiss: false})
@@ -9219,12 +9317,12 @@
                     ToasterService.error(error, 'Erreur lors de l\'import...')
                 });
         }
-            
+
         /**
          * @ngdoc method
          * @name  showMap
          * @methodOf accessimapEditeurDerApp.controller:EditController
-         * 
+         *
          * @description
          * Show the map layer
          */
@@ -9232,12 +9330,12 @@
             $ctrl.model.isMapVisible = true;
             EditService.showMapLayer();
         }
-        
+
         /**
          * @ngdoc method
          * @name  hideMap
          * @methodOf accessimapEditeurDerApp.controller:EditController
-         * 
+         *
          * @description
          * Hide the map layer
          */
@@ -9250,7 +9348,7 @@
          * @ngdoc method
          * @name  showFontBraille
          * @methodOf accessimapEditeurDerApp.controller:EditController
-         * 
+         *
          * @description
          * Show the map layer
          */
@@ -9258,12 +9356,12 @@
             $ctrl.isBrailleDisplayed = true;
             EditService.showFontBraille();
         }
-        
+
         /**
          * @ngdoc method
          * @name  hideFontBraille
          * @methodOf accessimapEditeurDerApp.controller:EditController
-         * 
+         *
          * @description
          * Hide the map layer
          */
@@ -9287,7 +9385,7 @@
 
             EditService.enableAddPOI(ToasterService.warning, ToasterService.error, getDrawingParameters );
         }
-        
+
         $ctrl.displaySearchAddressForm = function() {
             $ctrl.isAddressVisible           = true;
             $ctrl.isPoiCreationVisible       = false;
@@ -9303,9 +9401,9 @@
         }
 
         $ctrl.insertOSMData = function()  {
-            EditService.insertOSMData($ctrl.queryChosen, 
-                                        ToasterService.warning, 
-                                        ToasterService.error, 
+            EditService.insertOSMData($ctrl.queryChosen,
+                                        ToasterService.warning,
+                                        ToasterService.error,
                                         getDrawingParameters)
         }
 
@@ -9333,7 +9431,7 @@
         $ctrl.displayMapParameters = function() {
             $ctrl.isWorkspaceVisible             = true;
             $ctrl.isLegendVisible                = false;
-            
+
             $ctrl.isParametersVisible            = false;
             $ctrl.isMapParametersVisible         = true;
             $ctrl.isDrawingParametersVisible     = false;
@@ -9346,7 +9444,7 @@
         $ctrl.displayDrawingParameters = function() {
             $ctrl.isWorkspaceVisible             = true;
             $ctrl.isLegendVisible                = false;
-            
+
             $ctrl.isParametersVisible            = false;
             $ctrl.isMapParametersVisible         = false;
             $ctrl.isDrawingParametersVisible     = true;
@@ -9355,7 +9453,7 @@
             $ctrl.isBackgroundParametersVisible  = false;
 
             $ctrl.enableDrawingMode('default');
-            
+
             // Display for the first time the drawing is freezed
             if (! $ctrl.isDrawingFreezed)
                 ToasterService.info('Lorsque vous passez en mode dessin, la zone du dessin est automatiquement figée.',
@@ -9368,7 +9466,7 @@
         $ctrl.displayLegendParameters = function() {
             $ctrl.isWorkspaceVisible             = false;
             $ctrl.isLegendVisible                = true;
-            
+
             $ctrl.isParametersVisible            = false;
             $ctrl.isMapParametersVisible         = false;
             $ctrl.isDrawingParametersVisible     = false;
@@ -9396,7 +9494,7 @@
         $ctrl.removeFeature = EditService.removeFeature;
         $ctrl.updateFeature = EditService.updateFeature;
         $ctrl.rotateFeature = EditService.rotateFeature;
-        
+
         $ctrl.updatePoint   = EditService.updatePoint;
 
         $ctrl.updateMarker  = EditService.updateMarker;
@@ -9410,13 +9508,13 @@
         }
 
         $ctrl.updateBackgroundColor = function(color) {
-            EditService.updateBackgroundStyleAndColor(null, color);
+            EditService.updateBackgroundStyleAndColor($ctrl.model.backgroundStyle, color);
         }
 
         $ctrl.updateBackgroundStyle = function(style) {
-            EditService.updateBackgroundStyleAndColor(style, null);
+            EditService.updateBackgroundStyleAndColor(style, $ctrl.model.backgroundColor);
         }
-        
+
         function getDrawingParameters() {
             return {
                 style: $ctrl.styleChosen,
@@ -9495,7 +9593,7 @@
         $ctrl.resetView = EditService.resetView;
 
         $ctrl.searchAddress      = function() {
-            
+
             var promises = [];
 
             if($ctrl.address.start) {
@@ -9531,17 +9629,18 @@
                 .catch(function(error) {
                     ToasterService.error(error);
                 })
-        };  
+        };
 
         // Initialisation of the view
         EditService.init($ctrl.mapFormat, $ctrl.legendFormat);
-        
+
     }
 
     angular.module(moduleApp).controller('EditController', EditController);
 
     EditController.$inject = ['EditService', 'ToasterService', '$location', '$q']
 })();
+
 /**
  * @ngdoc controller
  * @name accessimapEditeurDerApp.controller:HomeController
@@ -9582,6 +9681,8 @@ angular.module('accessimapEditeurDerApp').run(['$templateCache', function($templ
 
   $templateCache.put('scripts/index.html', '<!doctype html><html class="no-js"><head><meta charset="utf-8"><title></title><meta name="description" content><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css"><link rel="stylesheet" href="bower_components/select2/select2.css"><link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css"><link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css"><link rel="stylesheet" href="bower_components/toastr/toastr.min.css"><link rel="stylesheet" href="assets/styles/main.css"><link rel="stylesheet" href="assets/styles/map.css"><link rel="stylesheet" href="assets/fonts/font-awesome-4.6.1/css/font-awesome.css"></head><body ng-app="accessimapEditeurDerApp" class="container-fluid"><header><h2><a ng-href="#/">Accessimap</a></h2><h1 class="text-muted text-center">Accessimap - éditeur de dessins en relief (DER)</h1></header><div class="row" ng-view></div><footer ng-if="displayFooter"><div><table><thead><tr><td colspan="2">Projet Accessimap - Partenaires</td></tr></thead><tbody><tr><td><a href="http://www.ijatoulouse.org/"><img src="assets/images/logos/ija.jpg"> IJA Toulouse</a></td><td><a href="https://www.irit.fr/"><img src="assets/images/logos/irit.jpg"> IRIT</a></td></tr><tr><td><a href="http://www.telecom-paristech.fr/"><img src="assets/images/logos/telecom.png"> Télécom ParisTech</a></td><td><a href="http://makina-corpus.com/"><img src="assets/images/logos/makinacorpus.png"> Makina Corpus</a></td></tr></tbody></table></div><div><p><span class="fa fa-question fa-lg"></span>&nbsp;Pour toutes questions, n\'hésitez pas à <a href="mailto:contact@makina-corpus.com">nous contacter</a></p><p><span class="fa fa-github fa-lg"></span>&nbsp;Vous souhaitez contribuer au projet, accédez à <a href="https://github.com/makinacorpus/accessimap-editeur-der/issues" target="_blank">notre dépôt Github</a> ou à <a href="docs/" target="_blank">la documentation technique</a>.</p><p>Map tiles and data: © OpenStreetMap contributors</p></div></footer><script src="bower_components/jquery/dist/jquery.js"></script><script src="bower_components/angular/angular.js"></script><script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script><script src="bower_components/angular-animate/angular-animate.js"></script><script src="bower_components/angular-cookies/angular-cookies.js"></script><script src="bower_components/angular-resource/angular-resource.js"></script><script src="bower_components/angular-route/angular-route.js"></script><script src="bower_components/angular-sanitize/angular-sanitize.js"></script><script src="bower_components/angular-touch/angular-touch.js"></script><script src="bower_components/angular-ui-select/dist/select.js"></script><script src="bower_components/select2/select2.js"></script><script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script><script src="bower_components/angular-bootstrap-slider/slider.js"></script><script src="bower_components/angular-ui-utils/ui-utils.js"></script><script src="bower_components/d3/d3.js"></script><script src="bower_components/d3-transform/src/d3-transform.js"></script><script src="bower_components/jszip/dist/jszip.js"></script><script src="bower_components/file-saver.js/FileSaver.js"></script><script src="bower_components/turf/turf.min.js"></script><script src="bower_components/pdfjs-dist/build/pdf.combined.js"></script><script src="bower_components/leaflet/dist/leaflet.js"></script><script src="bower_components/toastr/toastr.min.js"></script><script src="vendor/ui-bootstrap-custom-tpls-1.3.2.min.js"></script><script src="vendor/d3.radialmenu.js"></script><script src="vendor/osmtogeojson.js"></script><script src="vendor/textures-v2.js"></script><script src="vendor/path-data-polyfill.js/path-data-polyfill.js"></script><script src="vendor/blob.js"></script><script src="vendor/canvas-toblob.js"></script><script src="vendor/L.D3SvgOverlay.js"></script><script src="vendor/dom-to-image.js"></script><script src="vendor/jquery.binarytransport.js"></script><script src="app.js"></script><script src="filters/layernotselected.js"></script><script src="services/ui/ui.toaster.js"></script><script src="services/ui/ui.radialmenu.js"></script><script src="services/utils/util.js"></script><script src="services/utils/storage.js"></script><script src="services/utils/svg.js"></script><script src="services/d3/d3.interaction.js"></script><script src="services/d3/d3.feature.js"></script><script src="services/settings/settings.js"></script><script src="services/settings/settings.styles.js"></script><script src="services/settings/settings.colors.js"></script><script src="services/settings/settings.fonts.js"></script><script src="services/settings/settings.formats.js"></script><script src="services/settings/settings.query.js"></script><script src="services/settings/settings.actions.js"></script><script src="services/map/map.search.js"></script><script src="services/map/map.js"></script><script src="services/d3/d3.legend.js"></script><script src="services/d3/d3.defs.js"></script><script src="services/d3/d3.geometryutils.js"></script><script src="services/d3/feature/d3.feature.emptycomfort.js"></script><script src="services/d3/feature/d3.feature.selectpath.js"></script><script src="services/d3/layer/d3.layer.js"></script><script src="services/d3/layer/d3.layer.background.js"></script><script src="services/d3/layer/d3.layer.drawing.js"></script><script src="services/d3/layer/d3.layer.geojson.js"></script><script src="services/d3/layer/d3.layer.overlay.js"></script><script src="services/d3/toolbox/d3.toolbox.js"></script><script src="services/d3/toolbox/d3.toolbox.image.js"></script><script src="services/d3/toolbox/d3.toolbox.triangle.js"></script><script src="services/d3/toolbox/d3.toolbox.rectangle.js"></script><script src="services/d3/toolbox/d3.toolbox.ellipse.js"></script><script src="services/d3/toolbox/d3.toolbox.text.js"></script><script src="services/d3/toolbox/d3.toolbox.polyline.js"></script><script src="services/d3/d3.drawing.js"></script><script src="services/d3/d3.generator.js"></script><script src="services/d3/d3.import.js"></script><script src="services/d3/d3.export.js"></script><script src="services/mode/mode.js"></script><script src="routes/edit/service.js"></script><script src="routes/edit/controller.js"></script><script src="routes/home/controller.js"></script><script src="templates.js"></script></body></html>');
 
+  $templateCache.put('scripts/routes/home/template.html', '<div class="container jumbotron"><h3>Ajoutez de l\'interaction à vos dessins en reliefs (DER)</h3><h3>Configurez et personnalisez facilement vos documents avant de les imprimer !</h3><br><form class="form-inline"><div class="form-group"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="$ctrl.goToEdit()">Créer un nouveau DER</button></div></form></div>');
+
   $templateCache.put('scripts/routes/edit/aside.html', '<div class="col-xs-12"><div ng-if="$ctrl.isParametersVisible" ng-include="\'scripts/routes/edit/aside_parameters.html\'"></div><div ng-if="$ctrl.isMapParametersVisible" class="btn-group pull-left" ng-include="\'scripts/routes/edit/aside_map_parameters.html\'"></div><div ng-if="$ctrl.isDrawingParametersVisible" ng-include="\'scripts/routes/edit/aside_drawing_parameters.html\'"></div><div ng-if="$ctrl.isLegendParametersVisible" ng-include="\'scripts/routes/edit/aside_legend_parameters.html\'"></div><div ng-if="$ctrl.isInteractionParametersVisible" ng-include="\'scripts/routes/edit/aside_interaction_parameters.html\'"></div><div ng-if="$ctrl.isBackgroundParametersVisible" ng-include="\'scripts/routes/edit/aside_background_parameters.html\'"></div></div>');
 
   $templateCache.put('scripts/routes/edit/aside_background_parameters.html', '<h3><button class="btn btn-link" ng-click="$ctrl.displayParameters()"><span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span></button> <span class="fa fa-lg fa-picture-o" aria-hidden="true"></span> Trame de fond</h3><form class="row"><div class="form-group col-xs-12"><label>Trame de fond</label><ui-select ng-model="$ctrl.model.backgroundStyle" ng-change="$ctrl.updateBackgroundStyle($ctrl.model.backgroundStyle)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.backgroundStyleChoices | filter: $select.search"><span ng-bind-html="item.name | highlight: $select.search"></span> <span ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></span></ui-select-choices></ui-select></div><div class="form-group col-xs-12"><label>Couleur de fond</label><ui-select ng-model="$ctrl.model.backgroundColor" ng-change="$ctrl.updateBackgroundColor($ctrl.model.backgroundColor)" theme="bootstrap" class="form-control style-selector"><ui-select-match placeholder="Sélectionnez une couleur de fond">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" "><div ng-bind-html="item.name | highlight: $select.search"></div></ui-select-choices></ui-select></div><div class="form-group col-xs-12"><label>Importer un fond (SVG/JPG/PNG/PDF)</label><input onchange="angular.element(this).scope().$ctrl.importBackground(this)" type="file" accept="image/svg+xml,image/png,image/jpeg,application/pdf"></div><div class="form-group col-xs-12"><label>Choisir un fond de carte prédéfini</label><uib-accordion close-others="false"><uib-accordion-group heading="{{mapCategory.name}}" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled" ng-repeat="mapCategory in $ctrl.mapCategories"><ul class="row"><li ng-repeat="image in mapCategory.images"><img class="img-responsive" ng-src="{{image.path}}" ng-click="$ctrl.appendSvg(image.path)"></li></ul></uib-accordion-group></uib-accordion></div></form>');
@@ -9613,8 +9714,6 @@ angular.module('accessimapEditeurDerApp').run(['$templateCache', function($templ
   $templateCache.put('scripts/routes/edit/modalchangepoint.html', '<div class="modal fade" id="changePointModal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">Choisissez un motif pour cet objet</h4></div><div class="modal-body"><ui-select ng-model="$ctrl.pointChosen" ng-change="$ctrl.updatePoint($ctrl.pointChosen)" ng-disabled="disabled" theme="bootstrap" class="form-control style-selector" style="width: 300px;"><ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="item in $ctrl.pointChoices | filter: $select.search"><div ng-bind-html="item.name | highlight: $select.search"></div><div ng-bind-html="$ctrl.featureIcon(item, \'polygon\')"></div></ui-select-choices></ui-select></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button></div></div></div></div>');
 
   $templateCache.put('scripts/routes/edit/template.html', '<aside class="col-lg-3 col-md-4 col-sm-4 right-side"><div class="aside-content row" ng-include="\'scripts/routes/edit/aside.html\'"></div></aside><main ng-init="$ctrl.init()"><div id="workspace" ng-show="$ctrl.isWorkspaceVisible"></div><div id="legend" ng-show="$ctrl.isLegendVisible"></div><div id="pattern"></div></main><div ng-include="\'scripts/routes/edit/modalchangecolor.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangepattern.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangearrows.html\'"></div><div ng-include="\'scripts/routes/edit/modalchangepoint.html\'"></div>');
-
-  $templateCache.put('scripts/routes/home/template.html', '<div class="container jumbotron"><h3>Ajoutez de l\'interaction à vos dessins en reliefs (DER)</h3><h3>Configurez et personnalisez facilement vos documents avant de les imprimer !</h3><br><form class="form-inline"><div class="form-group"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="$ctrl.goToEdit()">Créer un nouveau DER</button></div></form></div>');
 
 }]);
 

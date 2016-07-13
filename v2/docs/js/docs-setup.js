@@ -136,7 +136,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service providing the management of background layer",
-      "keywords": "accessimapediteurderapp api background layer layerbackgroundservice management providing service"
+      "keywords": "accessimapediteurderapp api background change create createpath current drawing format image invisible layer layerbackgroundservice management method needed path pattern providing service setformat update user"
     },
     {
       "section": "api",
