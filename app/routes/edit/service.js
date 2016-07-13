@@ -286,6 +286,7 @@
             // first, we set the initial state, center & zoom
             MapService.resetView(center, zoom)
             DrawingService.layers.overlay.setFormat(format);
+            DrawingService.layers.background.setFormat(format);
             MapService.setMinimumSize(SettingsService.FORMATS[format].width / SettingsService.ratioPixelPoint,
                                         SettingsService.FORMATS[format].height / SettingsService.ratioPixelPoint);
             MapService.resizeFunction();
