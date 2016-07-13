@@ -2,7 +2,7 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.FeatureService
- * 
+ *
  * @description
  * Service providing actions to manage features
  * TODO: rename this service ? It's not clear about what it's doing
@@ -10,36 +10,36 @@
 (function() {
     'use strict';
 
-    function FeatureService(InteractionService, 
-                            EmptyComfortService, 
-                            UtilService, 
-                            GeometryUtilsService, 
+    function FeatureService(InteractionService,
+                            EmptyComfortService,
+                            UtilService,
+                            GeometryUtilsService,
                             GeneratorService,
                             SelectPathService) {
-        
+
         this.duplicatePath                 = duplicatePath;
         this.movePath                      = movePath;
         this.movePoint                     = movePoint;
         this.rotatePath                    = rotatePath;
         this.skew                          = skew;
-        
+
         this.removeObject                  = removeObject;
 
         this.undo                          = undo;
         this.isUndoAvailable               = isUndoAvailable;
-        
+
         this.toggleStroke                  = toggleStroke;
         this.toggleArrow                   = toggleArrow;
         this.toggleEmptyComfortNearFeature = toggleEmptyComfortNearFeature;
-        
+
         this.changeColor                   = changeColor;
         this.changePattern                 = changePattern;
         this.changePoint                   = changePoint;
 
         this.lineToCardinal                = lineToCardinal;
-        
+
         this.init                          = init;
-        
+
         // this var retain the last feature deleted
         // useful for cancel this deletion
         // TODO: need to be improved to integrate the history pattern (undo/redo)
@@ -57,7 +57,7 @@
             layer         = _layer;
             projection    = _projection;
             handlers      = _handlers;
-            
+
             pointsLayer   = layer.select('g[data-name="points-layer"]');
             polygonsLayer = layer.select('g[data-name="polygons-layer"]');
             linesLayer    = layer.select('g[data-name="lines-layer"]');
@@ -70,7 +70,7 @@
 
         function undo() {
             if (isUndoAvailable()) {
-                
+
                 var deletedElement = d3.select('#deletedElement').node(),
                     t = document.createElement('path');
 
@@ -81,7 +81,7 @@
                 removedFeature = null;
             }
         }
-        
+
         function removeFeature(feature) {
             var featuresToUpdate = feature;
 
@@ -121,7 +121,7 @@
         }
 
         function movePath(feature) {
-            
+
             var el            = feature.node(),
             parentNode        = el.parentNode,
             temporaryPath     = el.cloneNode(true),
@@ -153,8 +153,8 @@
                     transformString = '';
 
                     if (hasRotate) {
-                        transformString += 'rotate(' + [hasRotate[1], 
-                                (parseFloat(hasRotate[2]) + realCoordinates[0]), 
+                        transformString += 'rotate(' + [hasRotate[1],
+                                (parseFloat(hasRotate[2]) + realCoordinates[0]),
                                 (parseFloat(hasRotate[3]) + realCoordinates[1])] + ')';
                     }
                     transformString += 'translate(' + [realCoordinates[0], realCoordinates[1]] + ')';
@@ -178,8 +178,8 @@
                     transformString = '';
 
                 if (hasRotate) {
-                    transformString += 'rotate(' + [hasRotate[1], 
-                        (parseFloat(hasRotate[2]) + realCoordinates[0]), 
+                    transformString += 'rotate(' + [hasRotate[1],
+                        (parseFloat(hasRotate[2]) + realCoordinates[0]),
                         (parseFloat(hasRotate[3]) + realCoordinates[1])] + ')';
                 }
                 transformString += 'translate(' + [realCoordinates[0], realCoordinates[1]] + ')';
@@ -197,7 +197,7 @@
         }
 
         function duplicatePath(feature, addRadialMenuFunction) {
-            
+
             var el            = feature.node(),
             parentNode        = el.parentNode,
             temporaryPath     = el.cloneNode(true),
@@ -242,8 +242,8 @@
                     transformString = '';
 
                     if (hasRotate) {
-                        transformString += 'rotate(' + [hasRotate[1], 
-                                (parseFloat(hasRotate[2]) + realCoordinates[0]), 
+                        transformString += 'rotate(' + [hasRotate[1],
+                                (parseFloat(hasRotate[2]) + realCoordinates[0]),
                                 (parseFloat(hasRotate[3]) + realCoordinates[1])] + ')';
                     }
                     transformString += 'translate(' + [realCoordinates[0], realCoordinates[1]] + ')';
@@ -258,7 +258,7 @@
                         .attr('opacity', '')
                         .attr('transform', transformString);
 
-                    addRadialMenuFunction(d3.select(temporaryPath), _layer);
+                    addRadialMenuFunction(d3.select(temporaryPath), layer);
                     SelectPathService.addTo(d3.select(temporaryPath));
 
                     handlers.removeEventListener(['click', 'mousemove']);
@@ -273,8 +273,8 @@
                     transformString = '';
 
                 if (hasRotate) {
-                    transformString += 'rotate(' + [hasRotate[1], 
-                        (parseFloat(hasRotate[2]) + realCoordinates[0]), 
+                    transformString += 'rotate(' + [hasRotate[1],
+                        (parseFloat(hasRotate[2]) + realCoordinates[0]),
                         (parseFloat(hasRotate[3]) + realCoordinates[1])] + ')';
                 }
                 transformString += 'translate(' + [realCoordinates[0], realCoordinates[1]] + ')';
@@ -353,34 +353,34 @@
          * @name  skew
          * @methodOf accessimapEditeurDerApp.FeatureService
          *
-         * @description 
+         * @description
          * Enter into the skew mode for the feature selected.
          *
-         * When user click and move his mouse, 
+         * When user click and move his mouse,
          * we detect the axis by analyzing first direction of the move,
          * then apply a skew linked by the distance from initial click and actual position of the mouse
          *
          * When user 'mouseup', we act the skew transformation is finished.
-         * 
+         *
          * @param  {Object} feature
          * Feature on which the skew will operate
-         * 
+         *
          */
         function skew(feature) {
 
             var el            = feature.node(),
             parentNode        = el.parentNode,
             temporaryPath     = el.cloneNode(true),
-            
+
             emptyCircle       = d3.select('.c' + feature.attr('data-link')),
             emptyCircleExists = emptyCircle.node(),
             temporaryCircle   = emptyCircleExists ? emptyCircleExists.cloneNode(true) : null,
-            
+
             transform         = d3.transform(layer.attr('transform')),
             // hasRotate         = /rotate\((.*?)(?: |,)(.*?)(?: |,)(.*?)\)/.exec(feature.attr('transform')),
             bbox              = el.getBBox(),
             axis              = null,
-            originalPoint     = { x: null, y: null }, 
+            originalPoint     = { x: null, y: null },
             originalMove      = { x: 0, y: 0 },
             initialTransform  = feature.attr('transform') !== null ? feature.attr('transform') : '';
 
@@ -427,8 +427,8 @@
 
 
                 // if (hasRotate) {
-                //     transformString += 'rotate(' + [hasRotate[1], 
-                //         (parseFloat(hasRotate[2]) + realCoordinates[0]), 
+                //     transformString += 'rotate(' + [hasRotate[1],
+                //         (parseFloat(hasRotate[2]) + realCoordinates[0]),
                 //         (parseFloat(hasRotate[3]) + realCoordinates[1])] + ')';
                 // }
 
@@ -436,7 +436,7 @@
                     transform.skewX(( p.x - originalPoint.x ) / 5)
                              .skewY(( p.y - originalPoint.y ) / 5)
                 } else {
-                    
+
                     if ( originalMove.x > 5 || originalMove.y > 5 ) {
                         axis = ( originalMove.x < originalMove.y ) ? 'Y' : 'X';
                     }
@@ -488,10 +488,10 @@
             rotationMarker = pointsLayer
                 .append('g')
                 .classed('ongoing', true)
-                .attr('transform', 'translate(' 
-                                    + pathCenterTranslate[0] 
-                                    + ',' 
-                                    + (pathCenterTranslate[1] + bbox.height ) 
+                .attr('transform', 'translate('
+                                    + pathCenterTranslate[0]
+                                    + ','
+                                    + (pathCenterTranslate[1] + bbox.height )
                                     + ')')
                 .attr('pathCenter', pathCenter)
                 .attr('pathCenterTranslate', pathCenterTranslate)
@@ -515,17 +515,17 @@
 
             drag.on('dragstart', function() {
                 // silence other listeners
-                d3.event.sourceEvent.stopPropagation(); 
+                d3.event.sourceEvent.stopPropagation();
                 var mouse = d3.mouse(pointsLayer.node());
-                initialAngle = GeometryUtilsService.angle(pathCenterTranslate[0], 
-                                        pathCenterTranslate[1], 
-                                        mouse[0], 
+                initialAngle = GeometryUtilsService.angle(pathCenterTranslate[0],
+                                        pathCenterTranslate[1],
+                                        mouse[0],
                                         mouse[1]);
             }).on('drag', function() {
                 var mouse = d3.mouse(pointsLayer.node()),
-                    currentAngle = GeometryUtilsService.angle(pathCenterTranslate[0], 
-                                        pathCenterTranslate[1], 
-                                        mouse[0], 
+                    currentAngle = GeometryUtilsService.angle(pathCenterTranslate[0],
+                                        pathCenterTranslate[1],
+                                        mouse[0],
                                         mouse[1]),
                     diffAngle = currentAngle - initialAngle,
 
@@ -536,12 +536,12 @@
                     transformString += hasTranslate[0];
                 }
 
-                transformString += 'rotate(' 
-                                + diffAngle 
-                                + ' ' 
-                                + pathCenter[0] 
-                                + ' ' 
-                                + pathCenter[1] 
+                transformString += 'rotate('
+                                + diffAngle
+                                + ' '
+                                + pathCenter[0]
+                                + ' '
+                                + pathCenter[1]
                                 + ')';
 
                 feature.attr('transform', transformString);
@@ -550,10 +550,10 @@
                     emptyCircle.attr('transform', transformString);
                 }
 
-                rotationMarker.attr('transform', 'translate(' 
-                                                    + mouse[0] 
-                                                    + ',' 
-                                                    + mouse[1] 
+                rotationMarker.attr('transform', 'translate('
+                                                    + mouse[0]
+                                                    + ','
+                                                    + mouse[1]
                                                     + ')');
             }).on('dragend', function() {
                 pointsLayer.on('mousedown.drag', null);
@@ -565,10 +565,10 @@
          * @ngdoc method
          * @name  toggleStroke
          * @methodOf accessimapEditeurDerApp.FeatureService
-         * @description 
+         * @description
          * Add or remove (toggle) the stroke (2px border) on a feature.
-         * 
-         * @param  {Object} feature 
+         *
+         * @param  {Object} feature
          * Feature (shape) on which will be added the 'white area'
          */
         function toggleStroke(feature) {
@@ -590,11 +590,11 @@
          * @ngdoc method
          * @name  toggleEmptyComfortNearFeature
          * @methodOf accessimapEditeurDerApp.FeatureService
-         * 
-         * @description 
+         *
+         * @description
          * Add an empty (white) area around the feature shape.
-         * 
-         * @param  {Object} feature 
+         *
+         * @param  {Object} feature
          * Feature (shape) on which will be added the 'white area'
          */
         function toggleEmptyComfortNearFeature(feature) {
@@ -629,7 +629,7 @@
 
         function changePattern(feature) {
             // TODO: init correctly value of modal dialog
-            /* 
+            /*
             scope.styleChoices = scope.styles.polygon;
             var style = $.grep(scope.styleChoices, function(style) {
                 return style.id == feature.attr('e-style');
@@ -654,19 +654,19 @@
          * @name  lineToCardinal
          * @methodOf accessimapEditeurDerApp.FeatureService
          *
-         * @description 
+         * @description
          * Transform a line into a bezier curve ?
-         * 
+         *
          * @param  {Object} feature
          * Path to 'simplify'
-         * 
+         *
          */
         function lineToCardinal(feature) {
             var arr = feature.attr('d').split('L'),
                 featuresToUpdate = feature;
 
             if (feature.attr('data-link')) {
-                featuresToUpdate = 
+                featuresToUpdate =
                     d3.selectAll('.link_' + feature.attr('data-link'));
             }
             var coords = undefined;
@@ -720,7 +720,7 @@
 
     angular.module(moduleApp).service('FeatureService', FeatureService);
 
-    FeatureService.$inject = ['InteractionService', 'EmptyComfortService', 'UtilService', 
+    FeatureService.$inject = ['InteractionService', 'EmptyComfortService', 'UtilService',
                                 'GeometryUtilsService', 'GeneratorService', 'SelectPathService']
 
 })();
