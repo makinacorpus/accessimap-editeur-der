@@ -19,33 +19,33 @@
     'use strict';
 
     function EditController(EditService, ToasterService, $location, $q) {
-        
+
         var $ctrl = this;
 
         /**
          * @ngdoc property
          * @name  queryChoices
          * @propertyOf accessimapEditeurDerApp.controller:EditController
-         * 
+         *
          * @description
          * Options of POI and area to add on the map
          */
         $ctrl.queryChoices = EditService.settings.QUERY_LIST;
-        
+
         /**
          * @ngdoc property
          * @name  queryChosen
          * @propertyOf accessimapEditeurDerApp.controller:EditController
-         * 
+         *
          * @description
-         * POI / area selected 
+         * POI / area selected
          */
         $ctrl.queryChosen  = EditService.settings.QUERY_DEFAULT; // $ctrl.queryChoices[1];
         /**
          * @ngdoc property
          * @name  styleChoices
          * @propertyOf accessimapEditeurDerApp.controller:EditController
-         * 
+         *
          * @description
          * Options of styling for the queryChosen' type
          */
@@ -55,7 +55,7 @@
          * @ngdoc property
          * @name  pointChoices
          * @propertyOf accessimapEditeurDerApp.controller:EditController
-         * 
+         *
          * @description
          * Options of styling for POI / points
          */
@@ -69,7 +69,7 @@
          * Style selected for the queryChosen' type
          */
         $ctrl.styleChosen  = $ctrl.styleChoices[0];
-        
+
         /**
          * @ngdoc
          * @name  changeStyle
@@ -85,23 +85,23 @@
         $ctrl.fontChosen                 = $ctrl.fonts[0];
         $ctrl.fontColors                 = EditService.settings.COLORS;
         $ctrl.fontColorChosen            = $ctrl.fontColors[$ctrl.fontChosen.color][0];
-        
+
         $ctrl.colors                     = (EditService.settings.COLORS.transparent)
                                                 .concat(EditService.settings.COLORS.other);
-        
+
         $ctrl.colorChosen                = $ctrl.colors[0];
         $ctrl.featureIcon                = EditService.featureIcon;
         $ctrl.formats                    = EditService.settings.FORMATS;
         $ctrl.backgroundStyleChoices     = EditService.settings.STYLES.polygon;
-        $ctrl.mapFormat                  = $location.search().mapFormat 
-                                            ? $location.search().mapFormat 
+        $ctrl.mapFormat                  = $location.search().mapFormat
+                                            ? $location.search().mapFormat
                                             : 'landscapeA4';
-        $ctrl.legendFormat               = $location.search().legendFormat 
-                                            ? $location.search().legendFormat 
+        $ctrl.legendFormat               = $location.search().legendFormat
+                                            ? $location.search().legendFormat
                                             : 'landscapeA4';
         $ctrl.checkboxModel              = { contour: true};
         $ctrl.getFeatures                = EditService.getFeatures;
-        
+
         $ctrl.model = {
             title           : 'Titre du dessin',
             isMapVisible    : false,
@@ -112,37 +112,37 @@
             backgroundStyle : EditService.settings.STYLES.polygon[EditService.settings.STYLES.polygon.length - 1],
         }
 
-        // general state parameters        
+        // general state parameters
         $ctrl.isParametersVisible            = true; // initial state = parameters
         $ctrl.isMapParametersVisible         = false;
         $ctrl.isDrawingParametersVisible     = false;
         $ctrl.isLegendParametersVisible      = false;
         $ctrl.isInteractionParametersVisible = false;
         $ctrl.isBackgroundParametersVisible  = false;
-        
+
         // map state parameters
         $ctrl.isAddressVisible           = false;
         $ctrl.isPoiCreationVisible       = false;
         $ctrl.isFeatureCreationVisible   = false;
         $ctrl.isFeatureManagementVisible = true;
-        
+
         $ctrl.isDrawingFreezed = false;
 
         // states of right side : drawing (workspace) or legend ?
         $ctrl.isWorkspaceVisible  = true;
         $ctrl.isLegendVisible     = false;
-        
+
         $ctrl.isBrailleDisplayed  = true;
-        
+
         $ctrl.markerStartChoices  = EditService.settings.markerStart;
         $ctrl.markerStopChoices   = EditService.settings.markerStop;
-        
+
         $ctrl.isUndoAvailable     = EditService.isUndoAvailable;
-        
-        $ctrl.exportData          = function() { 
+
+        $ctrl.exportData          = function() {
 
             ToasterService.info('Export du dessin... merci de patienter', {timeout: 0, tapToDismiss: false})
-            EditService.exportData($ctrl.model) 
+            EditService.exportData($ctrl.model)
                 .then(function () {
                     ToasterService.remove()
                     ToasterService.success('Export terminé !')
@@ -153,21 +153,21 @@
                 });
         };
         $ctrl.rotateMap           = EditService.rotateMap;
-        
+
         $ctrl.changeDrawingFormat = function(format) {
             EditService.changeDrawingFormat(format);
             EditService.updateBackgroundStyleAndColor($ctrl.model.backgroundStyle, $ctrl.model.backgroundColor);
         }
         $ctrl.changeLegendFormat  = EditService.changeLegendFormat;
-        
+
         $ctrl.interactions        = EditService.interactions;
-        
+
         $ctrl.mapCategories       = EditService.settings.mapCategories;
-        
+
         $ctrl.importBackground    = EditService.importBackground;
         $ctrl.importImage         = EditService.importImage;
         $ctrl.appendSvg           = EditService.appendSvg;
-        
+
         $ctrl.importDER = function(file) {
 
             ToasterService.info('Import du fichier... merci de patienter', {timeout: 0, tapToDismiss: false})
@@ -183,12 +183,12 @@
                     ToasterService.error(error, 'Erreur lors de l\'import...')
                 });
         }
-            
+
         /**
          * @ngdoc method
          * @name  showMap
          * @methodOf accessimapEditeurDerApp.controller:EditController
-         * 
+         *
          * @description
          * Show the map layer
          */
@@ -196,12 +196,12 @@
             $ctrl.model.isMapVisible = true;
             EditService.showMapLayer();
         }
-        
+
         /**
          * @ngdoc method
          * @name  hideMap
          * @methodOf accessimapEditeurDerApp.controller:EditController
-         * 
+         *
          * @description
          * Hide the map layer
          */
@@ -214,7 +214,7 @@
          * @ngdoc method
          * @name  showFontBraille
          * @methodOf accessimapEditeurDerApp.controller:EditController
-         * 
+         *
          * @description
          * Show the map layer
          */
@@ -222,12 +222,12 @@
             $ctrl.isBrailleDisplayed = true;
             EditService.showFontBraille();
         }
-        
+
         /**
          * @ngdoc method
          * @name  hideFontBraille
          * @methodOf accessimapEditeurDerApp.controller:EditController
-         * 
+         *
          * @description
          * Hide the map layer
          */
@@ -251,7 +251,7 @@
 
             EditService.enableAddPOI(ToasterService.warning, ToasterService.error, getDrawingParameters );
         }
-        
+
         $ctrl.displaySearchAddressForm = function() {
             $ctrl.isAddressVisible           = true;
             $ctrl.isPoiCreationVisible       = false;
@@ -267,9 +267,9 @@
         }
 
         $ctrl.insertOSMData = function()  {
-            EditService.insertOSMData($ctrl.queryChosen, 
-                                        ToasterService.warning, 
-                                        ToasterService.error, 
+            EditService.insertOSMData($ctrl.queryChosen,
+                                        ToasterService.warning,
+                                        ToasterService.error,
                                         getDrawingParameters)
         }
 
@@ -297,7 +297,7 @@
         $ctrl.displayMapParameters = function() {
             $ctrl.isWorkspaceVisible             = true;
             $ctrl.isLegendVisible                = false;
-            
+
             $ctrl.isParametersVisible            = false;
             $ctrl.isMapParametersVisible         = true;
             $ctrl.isDrawingParametersVisible     = false;
@@ -310,7 +310,7 @@
         $ctrl.displayDrawingParameters = function() {
             $ctrl.isWorkspaceVisible             = true;
             $ctrl.isLegendVisible                = false;
-            
+
             $ctrl.isParametersVisible            = false;
             $ctrl.isMapParametersVisible         = false;
             $ctrl.isDrawingParametersVisible     = true;
@@ -319,7 +319,7 @@
             $ctrl.isBackgroundParametersVisible  = false;
 
             $ctrl.enableDrawingMode('default');
-            
+
             // Display for the first time the drawing is freezed
             if (! $ctrl.isDrawingFreezed)
                 ToasterService.info('Lorsque vous passez en mode dessin, la zone du dessin est automatiquement figée.',
@@ -332,7 +332,7 @@
         $ctrl.displayLegendParameters = function() {
             $ctrl.isWorkspaceVisible             = false;
             $ctrl.isLegendVisible                = true;
-            
+
             $ctrl.isParametersVisible            = false;
             $ctrl.isMapParametersVisible         = false;
             $ctrl.isDrawingParametersVisible     = false;
@@ -360,7 +360,7 @@
         $ctrl.removeFeature = EditService.removeFeature;
         $ctrl.updateFeature = EditService.updateFeature;
         $ctrl.rotateFeature = EditService.rotateFeature;
-        
+
         $ctrl.updatePoint   = EditService.updatePoint;
 
         $ctrl.updateMarker  = EditService.updateMarker;
@@ -374,13 +374,13 @@
         }
 
         $ctrl.updateBackgroundColor = function(color) {
-            EditService.updateBackgroundStyleAndColor(null, color);
+            EditService.updateBackgroundStyleAndColor($ctrl.model.backgroundStyle, color);
         }
 
         $ctrl.updateBackgroundStyle = function(style) {
-            EditService.updateBackgroundStyleAndColor(style, null);
+            EditService.updateBackgroundStyleAndColor(style, $ctrl.model.backgroundColor);
         }
-        
+
         function getDrawingParameters() {
             return {
                 style: $ctrl.styleChosen,
@@ -459,7 +459,7 @@
         $ctrl.resetView = EditService.resetView;
 
         $ctrl.searchAddress      = function() {
-            
+
             var promises = [];
 
             if($ctrl.address.start) {
@@ -495,11 +495,11 @@
                 .catch(function(error) {
                     ToasterService.error(error);
                 })
-        };  
+        };
 
         // Initialisation of the view
         EditService.init($ctrl.mapFormat, $ctrl.legendFormat);
-        
+
     }
 
     angular.module(moduleApp).controller('EditController', EditController);

@@ -159,6 +159,7 @@
                 // if scale is not defined,
                 // we have to re draw the overlay to keep the initial format / position
                 if (scaleDefined!==true) {
+                    DrawingService.layers.background.refresh(size, pixelOrigin, pixelBoundMin);
                     DrawingService.layers.overlay.refresh(size, pixelOrigin, pixelBoundMin);
                 }
             })

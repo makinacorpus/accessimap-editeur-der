@@ -169,7 +169,7 @@
         };
 
         function updateBackgroundStyleAndColor(style, color) {
-            updateStyleAndColor(d3.select('#svgContainer'), style, color)
+            updateStyleAndColor(d3.select('#background-path'), style, color)
         }
 
         function updateFeatureStyleAndColor(style, color) {
