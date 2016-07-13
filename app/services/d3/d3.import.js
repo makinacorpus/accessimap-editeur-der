@@ -184,8 +184,13 @@
             } else {
                 // it's not a draw from the der, but we will append each element in the 'drawing section'
                 // we remove metadata, namedview elements because it crash the export
-                svgElement.querySelector('metadata').remove()
-                svgElement.querySelector('namedview').remove()
+                var metadata = svgElement.querySelector('metadata'),
+                    namedview = svgElement.querySelector('namedview');
+
+                if (metadata) metadata.remove();
+
+                if (namedview) namedview.remove();
+
                 LayerService.drawing.appendSvg(svgElement)
             }
 
