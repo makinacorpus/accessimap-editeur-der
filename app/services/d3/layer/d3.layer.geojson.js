@@ -238,7 +238,8 @@
          * draw a circle for an address
          *
          * @param  {Object} data
-         * data returned by a nominatim server, containing geometry & other stuff
+         * data returned by a nominatim server,
+         * containing geometry & other stuff
          * to display the poi
          *
          * @param  {string} id
@@ -258,8 +259,17 @@
                 point = turf.point([lon, lat]);
 
             // Draw a point
-            if (d3.select(id).node()) {
-                d3.select(id).remove();
+            if (d3.select('#' + id).node()) {
+                d3.select('#' + id).remove();
+            }
+
+            // remove from the _geojson if exist
+            var geojsonItemIndex = _geojson.findIndex(function(element, index) {
+                return element.id === id
+            });
+
+            if (geojsonItemIndex !== -1) {
+                _geojson.splice(geojsonItemIndex, 1);
             }
 
             var obj = {
