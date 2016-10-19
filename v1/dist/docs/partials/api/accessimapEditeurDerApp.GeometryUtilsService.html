@@ -1,0 +1,66 @@
+<h1><code ng:non-bindable="">GeometryUtilsService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">accessimapEditeurDerApp</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="accessimapediteurderapp-geometryutilsservice-page"><p>Useful functions for calc distances, angles, ...</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_angle">angle(cx, cy, ex, ey)</h3>
+<div class="angle"><h5 id="methods_angle_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>cx</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="angle-page"><p>X coordinate of the first point</p>
+</div></td></tr><tr><td>cy</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="angle-page"><p>Y coordinate of the first point</p>
+</div></td></tr><tr><td>ex</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="angle-page"><p>X coordinate of the second point</p>
+</div></td></tr><tr><td>ey</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="angle-page"><p>Y coordinate of the second point</p>
+</div></td></tr></tbody></table><h5 id="methods_angle_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="angle-page"><p>angle, in degrees, between the two points</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_distance">distance(point1, point2)</h3>
+<div class="distance"><div class="distance-page"><p>Return the distance between two points</p>
+</div><h5 id="methods_distance_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>point1</td><td><a href="" class="label type-hint type-hint-point">Point</a></td><td><div class="distance-page"><p>Coordinates [x,y]</p>
+</div></td></tr><tr><td>point2</td><td><a href="" class="label type-hint type-hint-point">Point</a></td><td><div class="distance-page"><p>Coordinates [x,y]</p>
+</div></td></tr></tbody></table><h5 id="methods_distance_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-float">float</a></td><td><div class="distance-page"><p>Distance between the points</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_extendpath">extendPath(point1, point2, extension)</h3>
+<div class="extendpath"><div class="extendpath-page"><p>Extend a path composed by two points</p>
+<p>Use Thales theorem to calculate the new coordinates</p>
+<p>Upon the direction path, we add / substract the extended coordinates</p>
+</div><h5 id="methods_extendpath_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>point1</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="extendpath-page"><p>First point of the path</p>
+</div></td></tr><tr><td>point2</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="extendpath-page"><p>Second point of the path</p>
+</div></td></tr><tr><td>extension</td><td><a href="" class="label type-hint type-hint-float">float</a></td><td><div class="extendpath-page"><p>Length to add to each side of the path</p>
+</div></td></tr></tbody></table><h5 id="methods_extendpath_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="extendpath-page"><p>Array of points extended drawing the new path, 
+in the same order than [ point1, point2 ]</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getpathdirection">getPathDirection(point1, point2)</h3>
+<div class="getpathdirection"><div class="getpathdirection-page"><p>Knowing the y axis is from top to bottom, 
+and x axis is from left to right,</p>
+<p>Calculate the direction of a path : </p>
+<ul>
+<li>top right to bottom left (1)</li>
+<li>bottom right to top left (2)</li>
+<li>bottom left to top right (3)</li>
+<li>top left to bottom right (4)</li>
+</ul>
+</div><h5 id="methods_getpathdirection_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>point1</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="getpathdirection-page"><p>First point of the path</p>
+</div></td></tr><tr><td>point2</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="getpathdirection-page"><p>Second point of the path</p>
+</div></td></tr></tbody></table><h5 id="methods_getpathdirection_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="getpathdirection-page"><p>The integer matching the direction</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_nearest">nearest(targetPoint, points)</h3>
+<div class="nearest"><div class="nearest-page"><p>Return the nearest point of a targetPoint </p>
+</div><h5 id="methods_nearest_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>targetPoint</td><td><a href="" class="label type-hint type-hint-point">Point</a></td><td><div class="nearest-page"><p>Coordinates [x,y]</p>
+</div></td></tr><tr><td>points</td><td><a href="" class="label type-hint type-hint-object">[Point]</a></td><td><div class="nearest-page"><p>Array of coordinates</p>
+</div></td></tr></tbody></table><h5 id="methods_nearest_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-point">Point</a></td><td><div class="nearest-page"><p>Coordinates [x,y] of the nearest point</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_realcoordinates">realCoordinates(transform, coordinates)</h3>
+<div class="realcoordinates"><h5 id="methods_realcoordinates_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>transform</td><td><a href="" class="label type-hint type-hint-object">[type]</a></td><td><div class="realcoordinates-page"><p>[description]</p>
+</div></td></tr><tr><td>coordinates</td><td><a href="" class="label type-hint type-hint-object">[type]</a></td><td><div class="realcoordinates-page"><p>[description]</p>
+</div></td></tr></tbody></table><h5 id="methods_realcoordinates_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">[type]</a></td><td><div class="realcoordinates-page"><p>[description]</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

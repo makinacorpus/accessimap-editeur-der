@@ -1,0 +1,76 @@
+<h1><code ng:non-bindable="">LayerGeoJSONService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">accessimapEditeurDerApp</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="accessimapediteurderapp-layergeojsonservice-page"><p>Service providing drawing functions
+Provide functions to</p>
+<ul>
+<li>init a map/draw area</li>
+<li>draw features</li>
+</ul>
+</div></div>
+<h2 id="dependencies">Dependencies</h2>
+<ul class="dependencies"><li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.LayerService">LayerService</a></code>
+</li>
+</ul>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_createdrawing">createDrawing()</h3>
+<div class="createdrawing"></div>
+</li>
+<li><h3 id="methods_clean">clean()</h3>
+<div class="clean"><div class="clean-page"><p>clean the layer by removing all paths inside the GeoJSON layer</p>
+</div></div>
+</li>
+<li><h3 id="methods_drawaddress">drawAddress(data, id, style, color)</h3>
+<div class="drawaddress"><div class="drawaddress-page"><p>draw a circle for an address</p>
+</div><h5 id="methods_drawaddress_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="drawaddress-page"><p>data returned by a nominatim server, containing geometry &amp; other stuff
+to display the poi</p>
+</div></td></tr><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="drawaddress-page"><p>specific string identifying this address
+useful to erase the d3 node</p>
+</div></td></tr><tr><td>style</td><td><a href="" class="label type-hint type-hint-settingsservice">SettingsService.STYLES</a></td><td><div class="drawaddress-page"><p>style of the point ... ?</p>
+</div></td></tr><tr><td>color</td><td><a href="" class="label type-hint type-hint-settingsservice">SettingsService.COLORS</a></td><td><div class="drawaddress-page"><p>Color of the POI</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_drawfeature">drawFeature(data, feature, optionalClass, styleChosen, colorChosen, checkboxModel, rotationAngle)</h3>
+<div class="drawfeature"><div class="drawfeature-page"><p>Draw the features</p>
+</div><h5 id="methods_drawfeature_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="drawfeature-page"><p>[description]</p>
+</div></td></tr><tr><td>feature</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="drawfeature-page"><p>[description]</p>
+</div></td></tr><tr><td>optionalClass</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="drawfeature-page"><p>[description]</p>
+</div></td></tr><tr><td>styleChosen</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="drawfeature-page"><p>[description]</p>
+</div></td></tr><tr><td>colorChosen</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="drawfeature-page"><p>[description]</p>
+</div></td></tr><tr><td>checkboxModel</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="drawfeature-page"><p>[description]</p>
+</div></td></tr><tr><td>rotationAngle</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="drawfeature-page"><p>[description]</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_geojsontosvg">geojsonToSvg(data, feature, optionalClass)</h3>
+<div class="geojsontosvg"><div class="geojsontosvg-page"><p>simplify... ?</p>
+</div><h5 id="methods_geojsontosvg_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="geojsontosvg-page"><p>[description]</p>
+</div></td></tr><tr><td>feature</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="geojsontosvg-page"><p>[description]</p>
+</div></td></tr><tr><td>optionalClass</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="geojsontosvg-page"><p>[description]</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_refresh">refresh()</h3>
+<div class="refresh"><div class="refresh-page"><p>Project all paths from _geojson</p>
+</div></div>
+</li>
+<li><h3 id="methods_removefeature">removeFeature(id)</h3>
+<div class="removefeature"><div class="removefeature-page"><p>remove a &#39;feature&#39; = item of &#39;_geojson&#39; collection.</p>
+<p>Remove it from the array and from the map / legend</p>
+</div><h5 id="methods_removefeature_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="removefeature-page"><p>id of the feature</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_rotatefeature">rotateFeature(feature)</h3>
+<div class="rotatefeature"><div class="rotatefeature-page"><p>rotate a feature element (feature.id) of a feature.rotation</p>
+</div><h5 id="methods_rotatefeature_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>feature</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="rotatefeature-page"><p>Object with id &amp; rotation properties</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_updatefeature">updateFeature(id)</h3>
+<div class="updatefeature"><div class="updatefeature-page"><p>update the style of a &#39;feature&#39; = item of &#39;_geojson&#39; collection.</p>
+</div><h5 id="methods_updatefeature_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="updatefeature-page"><p>id of the feature</p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
+</div>

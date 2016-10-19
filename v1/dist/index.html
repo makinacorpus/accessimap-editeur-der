@@ -1,0 +1,226 @@
+<!doctype html>
+<html class="no-js">
+
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <!-- build:css({.,app}) assets/styles/vendor.css -->
+        <!-- bower:css -->
+        <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
+        <link rel="stylesheet" href="bower_components/select2/select2.css" />
+        <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
+        <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
+        <link rel="stylesheet" href="bower_components/toastr/toastr.min.css" />
+        <!-- endbower -->
+        <!-- endbuild -->
+        <!-- build:css(.tmp) assets/styles/main.css -->
+        <link rel="stylesheet" href="assets/styles/main.css">
+        <link rel="stylesheet" href="assets/styles/map.css">
+        <!-- endbuild -->
+
+        <link rel="stylesheet" href="assets/fonts/font-awesome-4.6.1/css/font-awesome.css" />
+    </head>
+
+    <body ng-app="accessimapEditeurDerApp" class="container-fluid">
+        <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <header>
+
+            <h2>
+                <a ng-href="#/">
+                    Accessimap
+                </a>
+            </h2>
+
+            <h1 class="text-muted text-center">Accessimap - éditeur de dessins en relief (DER)</h1>
+
+        </header>
+
+
+        <div class="row" ng-view></div>
+
+        <footer ng-if="displayFooter">
+
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <td colspan=2>
+                                Projet Accessimap - Partenaires
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a href="http://www.ijatoulouse.org/">
+                                   <img src="assets/images/logos/ija.jpg">
+                                    IJA Toulouse
+                                </a>
+                            </td>
+                            <td>
+                                <a href="https://www.irit.fr/">
+                                   <img src="assets/images/logos/irit.jpg">
+                                    IRIT
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="http://www.telecom-paristech.fr/">
+                                   <img src="assets/images/logos/telecom.png">
+                                    Télécom ParisTech
+                                </a>
+                            </td>
+                            <td>
+                                <a href="http://makina-corpus.com/">
+                                   <img src="assets/images/logos/makinacorpus.png">
+                                    Makina Corpus
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <p>
+                    <span class="fa fa-question fa-lg"></span>&nbsp;Pour toutes questions, n'hésitez pas à <a href="mailto:contact@makina-corpus.com">nous contacter</a>
+                </p>
+                <p>
+                    <span class="fa fa-github fa-lg"></span>&nbsp;Vous souhaitez contribuer au projet, accédez à <a href="https://github.com/makinacorpus/accessimap-editeur-der/issues" target="_blank">notre dépôt Github</a> ou à <a href="docs/" target="_blank">la documentation technique</a>.
+                </p>
+                <p>
+                    Map tiles and data: © OpenStreetMap contributors
+                </p>
+            </div>
+
+        </footer>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+        <!-- <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-62402664-1');
+            ga('send', 'pageview');
+        </script> -->
+
+        <!-- build:js(.) scripts/oldieshim.js -->
+        <!--[if lt IE 9]>
+        <script src="bower_components/es5-shim/es5-shim.js"></script>
+        <script src="bower_components/json3/lib/json3.js"></script>
+        <![endif]-->
+        <!-- endbuild -->
+
+        <!-- build:js({.,app}) scripts/vendor.js -->
+        <script src="bower_components/jquery/dist/jquery.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.js"></script>
+        <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <script src="bower_components/angular-route/angular-route.js"></script>
+        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="bower_components/angular-touch/angular-touch.js"></script>
+        <script src="bower_components/angular-ui-select/dist/select.js"></script>
+        <script src="bower_components/select2/select2.js"></script>
+        <script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script>
+        <script src="bower_components/angular-bootstrap-slider/slider.js"></script>
+        <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
+
+        <script src="bower_components/d3/d3.js"></script>
+        <script src="bower_components/d3-transform/src/d3-transform.js"></script>
+        <script src="bower_components/jszip/dist/jszip.js"></script>
+        <script src="bower_components/file-saver.js/FileSaver.js"></script>
+        <script src="bower_components/turf/turf.min.js"></script>
+        <script src="bower_components/pdfjs-dist/build/pdf.combined.js"></script>
+        <script src="bower_components/leaflet/dist/leaflet.js"></script>
+        <script src="bower_components/toastr/toastr.min.js"></script>
+
+        <script src="vendor/ui-bootstrap-custom-tpls-1.3.2.min.js"></script>
+        <script src="vendor/d3.radialmenu.js"></script>
+        <script src='vendor/osmtogeojson.js'></script>
+        <script src='vendor/textures-v2.js'></script>
+        <script src='vendor/path-data-polyfill.js/path-data-polyfill.js'></script>
+        <script src='vendor/blob.js'></script>
+        <script src='vendor/canvas-toblob.js'></script>
+        <script src='vendor/L.D3SvgOverlay.js'></script>
+        <script src='vendor/dom-to-image.js'></script>
+        <script src='vendor/jquery.binarytransport.js'></script>
+        <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/app.js -->
+        <script src="app.js"></script>
+
+        <script src="filters/layernotselected.js"></script>
+
+        <script src="services/ui/ui.toaster.js"></script>
+        <script src="services/ui/ui.radialmenu.js"></script>
+
+        <script src="services/utils/util.js"></script>
+        <script src="services/utils/storage.js"></script>
+        <script src="services/utils/svg.js"></script>
+
+        <script src="services/d3/d3.interaction.js"></script>
+        <script src="services/d3/d3.feature.js"></script>
+
+        <script src="services/settings/settings.js"></script>
+        <script src="services/settings/settings.styles.js"></script>
+        <script src="services/settings/settings.colors.js"></script>
+        <script src="services/settings/settings.fonts.js"></script>
+        <script src="services/settings/settings.formats.js"></script>
+        <script src="services/settings/settings.query.js"></script>
+        <script src="services/settings/settings.actions.js"></script>
+
+        <script src="services/map/map.search.js"></script>
+        <script src="services/map/map.js"></script>
+
+        <script src="services/d3/d3.legend.js"></script>
+
+        <script src="services/d3/d3.defs.js"></script>
+        <script src="services/d3/d3.geometryutils.js"></script>
+
+        <script src="services/d3/feature/d3.feature.emptycomfort.js"></script>
+        <script src="services/d3/feature/d3.feature.selectpath.js"></script>
+
+        <script src="services/d3/layer/d3.layer.js"></script>
+        <script src="services/d3/layer/d3.layer.background.js"></script>
+        <script src="services/d3/layer/d3.layer.drawing.js"></script>
+        <script src="services/d3/layer/d3.layer.geojson.js"></script>
+        <script src="services/d3/layer/d3.layer.overlay.js"></script>
+
+        <script src="services/d3/toolbox/d3.toolbox.js"></script>
+        <script src="services/d3/toolbox/d3.toolbox.image.js"></script>
+        <script src="services/d3/toolbox/d3.toolbox.triangle.js"></script>
+        <script src="services/d3/toolbox/d3.toolbox.rectangle.js"></script>
+        <script src="services/d3/toolbox/d3.toolbox.ellipse.js"></script>
+        <script src="services/d3/toolbox/d3.toolbox.text.js"></script>
+        <script src="services/d3/toolbox/d3.toolbox.polyline.js"></script>
+
+
+        <script src="services/d3/d3.drawing.js"></script>
+        <script src="services/d3/d3.generator.js"></script>
+        <script src="services/d3/d3.import.js"></script>
+        <script src="services/d3/d3.export.js"></script>
+
+        <script src="services/mode/mode.js"></script>
+
+        <script src="routes/edit/service.js"></script>
+        <script src="routes/edit/controller.js"></script>
+
+        <script src="routes/home/controller.js"></script>
+
+        <script src="templates.js"></script>
+
+        <!-- endbuild -->
+
+    </body>
+</html>

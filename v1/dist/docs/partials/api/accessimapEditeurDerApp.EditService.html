@@ -1,0 +1,95 @@
+<h1><code ng:non-bindable="">EditService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">accessimapEditeurDerApp</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="accessimapediteurderapp-editservice-page"><p>Service used for the &#39;EditController&#39;, and the &#39;edit&#39; view</p>
+<p>Provide functions to</p>
+<ul>
+<li>init a map/draw area</li>
+<li>draw features</li>
+<li>export data</li>
+</ul>
+</div></div>
+<h2 id="dependencies">Dependencies</h2>
+<ul class="dependencies"><li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.SettingsService">SettingsService</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.MapService">MapService</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.DrawingService">DrawingService</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.LegendService">LegendService</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.DefsService">DefsService</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.InteractionService">InteractionService</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.ExportService">ExportService</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.UtilService">UtilService</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.ImportService">ImportService</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.ModeService">ModeService</a></code>
+</li>
+</ul>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_appendpdf">appendPdf(image)</h3>
+<div class="appendpdf"><div class="appendpdf-page"><p>Append the first page of a pdf in the background layer</p>
+</div><h5 id="methods_appendpdf_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>image</td><td><a href="" class="label type-hint type-hint-dataurl">dataUrl</a></td><td><div class="appendpdf-page"><p>dataUrl (could be png, jpg, ...) to insert in the background</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_importbackground">importBackground(element)</h3>
+<div class="importbackground"><div class="importbackground-page"><p>Import a file (SVG/PNG/JPEG/PDF) as a background of the current drawing</p>
+<p>Add it in the background layer</p>
+</div><h5 id="methods_importbackground_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>element</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="importbackground-page"><p>Input file to be uploaded &amp; imported in the background</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_importimage">importImage(element)</h3>
+<div class="importimage"><div class="importimage-page"><p>Import an image file (SVG/PNG/JPEG) in the drawing layer, image group</p>
+</div><h5 id="methods_importimage_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>element</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="importimage-page"><p>Input file to be uploaded &amp; imported in the drawing layer</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_init">init(drawingFormat, legendFormat)</h3>
+<div class="init"><div class="init-page"><p>Initialize the different services :</p>
+<ul>
+<li>MapLeaflet to init the map container</li>
+<li>Drawing to init the d3 container</li>
+<li>Legend to init the legend container</li>
+</ul>
+<p>Link the map &amp; the d3 container on &#39;move&#39; and &#39;viewreset&#39; events</p>
+</div><h5 id="methods_init_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>drawingFormat</td><td><a href="" class="label type-hint type-hint-object">[type]</a></td><td><div class="init-page"><p>Printing format of the d3 container and the map container</p>
+</div></td></tr><tr><td>legendFormat</td><td><a href="" class="label type-hint type-hint-object">[type]</a></td><td><div class="init-page"><p>Printing format of the legend container</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_insertosmdata">insertOSMData(query, _successCallback, _errorCallback)</h3>
+<div class="insertosmdata"><div class="insertosmdata-page"><p>Retrieve data from nominatim (via MapService) for a specific &#39;query&#39;</p>
+</div><h5 id="methods_insertosmdata_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-function">function</a></td><td><div class="insertosmdata-page"><p>Query SettingsService from SettingsService.QUERY_LIST</p>
+</div></td></tr><tr><td>_successCallback</td><td><a href="" class="label type-hint type-hint-function">function</a></td><td><div class="insertosmdata-page"><p>Callback function called when data has been retrieved, data is passed in first argument</p>
+</div></td></tr><tr><td>_errorCallback</td><td><a href="" class="label type-hint type-hint-function">function</a></td><td><div class="insertosmdata-page"><p>Callback function called when an error occured, error is passed in first argument</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_resetview">resetView(callback)</h3>
+<div class="resetview"><div class="resetview-page"><p>If a center of the drawing is defined, 
+we pan / zoom to the initial state of the drawing.</p>
+</div><h5 id="methods_resetview_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>callback</td><td><a href="" class="label type-hint type-hint-function">function</a></td><td><div class="resetview-page"><p>Optional, function to be called when the setView is finished</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_rotatemap">rotateMap(angle)</h3>
+<div class="rotatemap"><div class="rotatemap-page"><p>Rotate all &#39;.rotable&#39; elements</p>
+</div><h5 id="methods_rotatemap_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>angle</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="rotatemap-page"><p>Angle in degree of the rotation</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_searchanddisplayaddress">searchAndDisplayAddress(address)</h3>
+<div class="searchanddisplayaddress"><div class="searchanddisplayaddress-page"><p>Search via nominatim &amp; display the first result in d3 drawing</p>
+<p>Could be more clever by displaying all the results
+and allow the user to choose the right one...</p>
+<p>In a future version maybe !</p>
+</div><h5 id="methods_searchanddisplayaddress_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>address</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="searchanddisplayaddress-page"><p>Address to search &amp; display</p>
+</div></td></tr></tbody></table><h5 id="methods_searchanddisplayaddress_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">Promise</a></td><td><div class="searchanddisplayaddress-page"><p>The promise of the search... could be successful, or not !</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

@@ -1,0 +1,62 @@
+<h1><code ng:non-bindable="">LayerOverlayService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">accessimapEditeurDerApp</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="accessimapediteurderapp-layeroverlayservice-page"><p>Service providing the management of overlay layer</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_createframepath">createFramePath(target, width, height)</h3>
+<div class="createframepath"><h5 id="methods_createframepath_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>target</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="accessimapediteurderapp-layeroverlayservice-createframepath-page"><p>[description]</p>
+</div></td></tr><tr><td>width</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="accessimapediteurderapp-layeroverlayservice-createframepath-page"><p>[description]</p>
+</div></td></tr><tr><td>height</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="accessimapediteurderapp-layeroverlayservice-createframepath-page"><p>[description]</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_createlayer">createLayer(target, width, height, margin, projection)</h3>
+<div class="createlayer"><div class="accessimapediteurderapp-layeroverlayservice-createlayer-page"><p>create the overlay layer, with margin &amp; frame groups</p>
+</div><h5 id="methods_createlayer_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>target</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="accessimapediteurderapp-layeroverlayservice-createlayer-page"><p>d3 area</p>
+</div></td></tr><tr><td>width</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="accessimapediteurderapp-layeroverlayservice-createlayer-page"><p>Width of the d3 area</p>
+</div></td></tr><tr><td>height</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="accessimapediteurderapp-layeroverlayservice-createlayer-page"><p>Height of the d3 area</p>
+</div></td></tr><tr><td>margin</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="accessimapediteurderapp-layeroverlayservice-createlayer-page"><p>Margin wished</p>
+</div></td></tr><tr><td>projection</td><td><a href="" class="label type-hint type-hint-function">function</a></td><td><div class="accessimapediteurderapp-layeroverlayservice-createlayer-page"><p>Projection function to use for conversion between GPS &amp; layer point</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_createmarginpath">createMarginPath()</h3>
+<div class="createmarginpath"><div class="accessimapediteurderapp-layeroverlayservice-createmarginpath-page"><p>draw the margin path</p>
+</div></div>
+</li>
+<li><h3 id="methods_draw">draw(width, height)</h3>
+<div class="draw"><div class="draw-page"><p>Draw margin &amp; frame groups, id overlay.</p>
+</div><h5 id="methods_draw_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>width</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="draw-page"><p>Overlay&#39;s width</p>
+</div></td></tr><tr><td>height</td><td><a href="" class="label type-hint type-hint-integer">integer</a></td><td><div class="draw-page"><p>Overlay&#39;s height</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_getsize">getSize()</h3>
+<div class="getsize"><div class="getsize-page"><p>return the size of the layer, representing the size of the drawing</p>
+</div><h5 id="methods_getsize_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="getsize-page"><p>{width, height}</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_gettranslation">getTranslation()</h3>
+<div class="gettranslation"><div class="gettranslation-page"><p>calc the translation of the margin-layer group (or frame-layer, it&#39;s the same)</p>
+<p>take in consideration the parent group</p>
+</div><h5 id="methods_gettranslation_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="gettranslation-page"><p>{x, y} representing the translation on x axis &amp; y axis</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_refresh">refresh()</h3>
+<div class="refresh"><div class="refresh-page"><p>Function moving the overlay svg, thanks to map movements...</p>
+<p>This function has to be used only if we want the overlay be &#39;fixed&#39;</p>
+<p>TODO: clear the dependencies to map... maybe, give the responsability to the map
+and so, thanks to a &#39;class&#39;, we could &#39;freeze&#39; the overlay thanks to this calc</p>
+</div></div>
+</li>
+<li><h3 id="methods_refresh">refresh()</h3>
+<div class="refresh"><div class="refresh-page"><p>Function moving the overlay svg, thanks to map movements...</p>
+<p>This function has to be used only if we want the overlay be &#39;fixed&#39;</p>
+<p>TODO: clear the dependencies to map... maybe, give the responsability to the map
+and so, thanks to a &#39;class&#39;, we could &#39;freeze&#39; the overlay thanks to this calc</p>
+</div></div>
+</li>
+</ul>
+</div>
+</div>

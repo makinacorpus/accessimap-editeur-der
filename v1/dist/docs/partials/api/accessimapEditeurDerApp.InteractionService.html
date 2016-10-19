@@ -1,0 +1,51 @@
+<h1><code ng:non-bindable="">InteractionService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">accessimapEditeurDerApp</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="accessimapediteurderapp-interactionservice-page"><p>Service providing methods to CRUD interactions</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_addinteraction">addInteraction(feature)</h3>
+<div class="addinteraction"><div class="addinteraction-page"><p>Add an interaction on a feature</p>
+</div><h5 id="methods_addinteraction_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>feature</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="addinteraction-page"><p>Feature that will be interactive</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_isfeatureinteractive">isFeatureInteractive(feature)</h3>
+<div class="isfeatureinteractive"><div class="isfeatureinteractive-page"><p>Return if the feature is an interactive one</p>
+</div><h5 id="methods_isfeatureinteractive_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>feature</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="isfeatureinteractive-page"><p>Feature to be checked</p>
+</div></td></tr></tbody></table><h5 id="methods_isfeatureinteractive_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="isfeatureinteractive-page"><p>True if interactive, false if not</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setinteraction">setInteraction(id, filter, value)</h3>
+<div class="setinteraction"><div class="setinteraction-page"><p>Set an interaction {filter: value} for a feature (id)</p>
+</div><h5 id="methods_setinteraction_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="setinteraction-page"><p>Id of the feature</p>
+</div></td></tr><tr><td>filter</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="setinteraction-page"><p>Category/filter to  [description]</p>
+</div></td></tr><tr><td>value</td><td><a href="" class="label type-hint type-hint-object">[type]</a></td><td><div class="setinteraction-page"><p>[description]</p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_filters">filters</h3>
+<div class="filters"><div class="filters-page"><p>Array of filters</p>
+<p>A filter define a specific type of interaction.
+It&#39;s composed by :</p>
+<ul>
+<li>a name, useful for display</li>
+<li>a type of interaction : tap, double tap, ...</li>
+<li>a protocol : mp3, text-to-speech (tts), ...</li>
+</ul>
+</div></div>
+</li>
+<li><h3 id="properties_interactions">interactions</h3>
+<div class="interactions"><div class="interactions-page"><p>Array of interactions</p>
+<p>An interaction is a feature (point, circle, polygon, ...) that
+will be attached to a pointer/touch event (click, double click, ...)
+and play a specific media (sound, vibration, ...)</p>
+</div></div>
+</li>
+</ul>
+</div>
+</div>

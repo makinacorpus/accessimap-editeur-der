@@ -1,0 +1,36 @@
+<h1><code ng:non-bindable="">DrawingService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">accessimapEditeurDerApp</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="accessimapediteurderapp-drawingservice-page"><p>Service providing drawing functions
+Provide functions to </p>
+<ul>
+<li>init a map/draw area</li>
+<li>draw features</li>
+</ul>
+</div></div>
+<h2 id="dependencies">Dependencies</h2>
+<ul class="dependencies"><li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.LayerService">LayerService</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/accessimapEditeurDerApp.ToolboxService">ToolboxService</a></code>
+</li>
+</ul>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_initdrawing">initDrawing(elements, format)</h3>
+<div class="initdrawing"><div class="accessimapediteurderapp-drawingservice-initdrawing-page"><p>Create the drawing svg in a dom element with specific size</p>
+</div><h5 id="methods_initdrawing_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>elements</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="accessimapediteurderapp-drawingservice-initdrawing-page"><p>Object containing each layer (overlay, drawing, geojson) with a sel &amp; proj property</p>
+<p>These properties are given by D3SvgOverlay and help us to display at the right place features &amp; drawings</p>
+</div></td></tr><tr><td>format</td><td><a href="" class="label type-hint type-hint-enum">enum</a></td><td><div class="accessimapediteurderapp-drawingservice-initdrawing-page"><p>Format (landscapeA4, landscapeA3, ...) of the drawing</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_updatefeaturestyleandcolor">updateFeatureStyleAndColor(style)</h3>
+<div class="updatefeaturestyleandcolor"><div class="updatefeaturestyleandcolor-page"><p>Update the style (pattern) &amp; color of a feature.
+Could be a geojson feature or a drawing feature.</p>
+</div><h5 id="methods_updatefeaturestyleandcolor_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>style</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="updatefeaturestyleandcolor-page"><p>SettingsService.STYLES object</p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
+</div>
