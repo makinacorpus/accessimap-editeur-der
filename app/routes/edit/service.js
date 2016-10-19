@@ -93,8 +93,8 @@
         this.rotateFeature           = DrawingService.layers.geojson.rotateFeature;
 
         this.searchAndDisplayAddress = searchAndDisplayAddress;
-        this.fitBounds               = MapService.getMap().fitBounds;
-        this.panTo                   = MapService.getMap().panTo;
+        this.fitBounds               = function () { return MapService.getMap().fitBounds };
+        this.panTo                   = function () { return MapService.getMap().panTo };
 
         this.freezeMap               = freezeMap;
 
