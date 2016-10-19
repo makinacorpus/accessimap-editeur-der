@@ -5,6 +5,9 @@
 ### Requirements
 
 - ruby-dev & gem (`sudo apt-get install ruby-dev gem`)
+- on linux mint, 
+    + `sudo apt-get install build-essential patch`
+    + `sudo apt-get install ruby-dev zlib1g-dev liblzma-dev`    
 - sass / compass ? (sudo gem install compass)
 - npm (version > 1.2.10)
 - bower (`npm install -g bower`)
