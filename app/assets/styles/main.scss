@@ -3,8 +3,6 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
-$header-height: 80px;
-
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -22,11 +20,6 @@ body {
   display: flex;
   flex-direction: column;
 
-  header{
-    flex: none;
-    height: $header-height;
-  }
-
   footer {
     flex: none;
     height: 200px;
@@ -35,6 +28,20 @@ body {
   div[ng-view] {
     flex: 4 1 90%;
   }
+}
+
+.container .logo {
+    max-width: 100%;
+    max-height: 50%;
+}
+
+aside .logo {
+    text-align: center;
+    display: block;
+
+    img {
+        height: 75px;
+    }
 }
 
 // need to hide defs svg
@@ -71,7 +78,7 @@ div[ng-view] {
     flex: 1 1 100%;
 
     #legend {
-      height: calc(100vh - #{$header-height});
+      height: 100%;
       background-color: #ddd;
       display: flex;
 
@@ -82,7 +89,7 @@ div[ng-view] {
     }
 
     #workspace {
-      height: calc(100vh - #{$header-height});
+      height: 100%;
       width: auto;
     }
   }
@@ -129,7 +136,7 @@ footer {
       height: auto;
       vertical-align: middle;
     }
-  
+
     ul, ul > li {
       list-style: none;
       margin: 0;
