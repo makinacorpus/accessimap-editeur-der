@@ -466,6 +466,7 @@
                 promises.push(
                     EditService.searchAndDisplayAddress($ctrl.address.start,
                                         'startPoint',
+                                        'Point de départ',
                                         $ctrl.styleChosen,
                                         $ctrl.colorChosen));
             }
@@ -473,7 +474,8 @@
             if($ctrl.address.stop) {
                 promises.push(
                     EditService.searchAndDisplayAddress($ctrl.address.stop,
-                                        'stopPoint',
+                                        'stopPoint', 
+                                        'Point d\'arrivée',
                                         $ctrl.styleChosen,
                                         $ctrl.colorChosen));
             }

@@ -253,7 +253,7 @@
          * Color of the POI
          *
          */
-        function drawAddress(data, id, style, color) {
+        function drawAddress(data, id, label, style, color) {
             var lon = data.lon,
                 lat = data.lat,
                 point = turf.point([lon, lat]);
@@ -274,7 +274,7 @@
 
             var obj = {
                 id: id,
-                name: id,
+                name: label,
                 type: 'point',
                 layer: $.extend(true, {}, point), //deep copy,
                 originallayer: $.extend(true, {}, point), //deep copy
