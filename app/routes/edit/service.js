@@ -400,7 +400,7 @@
          * @return {Promise}
          * The promise of the search... could be successful, or not !
          */
-        function searchAndDisplayAddress(address, id, style, color) {
+        function searchAndDisplayAddress(address, id, label, style, color) {
             var deferred = $q.defer();
             MapService.searchAddress(address)
                 .then(function(results) {
@@ -408,7 +408,7 @@
                     // display something to allow user choose an option ?
                     // } else {
                     if (results.length > 0)
-                        DrawingService.layers.geojson.drawAddress(results[0], id, style, color);
+                        DrawingService.layers.geojson.drawAddress(results[0], id, label, style, color);
                     // }
                     deferred.resolve(results[0]);
                 })
