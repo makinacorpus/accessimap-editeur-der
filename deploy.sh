@@ -14,12 +14,12 @@ git checkout gh-pages
 cp -R ../dist/* .
 
 # Make sure we have the updated .travis.yml file so tests won't run on master.
-git config user.email ${GH_EMAIL}
+git config user.email "$COMMIT_AUTHOR_EMAIL"
 git config user.name "Travis CI"
 
 # Commit and push generated content to `master` branch.
 git status
 git add -A .
 git status
-git commit -a -m "Travis #$TRAVIS_BUILD_NUMBER"
+git commit -a -m "Travis #$TRAVIS_BUILD_NUMBER / $SHA"
 git push --quiet origin gh-pages > /dev/null 2>&1
