@@ -89,7 +89,7 @@ div[ng-view] {
     }
 
     #workspace {
-      height: 100%;
+      height: calc(100vh);
       width: auto;
     }
   }
