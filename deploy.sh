@@ -21,5 +21,5 @@ git config user.name "Travis CI"
 git status
 git add -A .
 git status
-git commit -a -m "Travis #$TRAVIS_BUILD_NUMBER / $SHA"
-git push --quiet origin gh-pages > /dev/null 2>&1
+git commit -a -m "Travis #$TRAVIS_BUILD_NUMBER / ${SHA}"
+git push --quiet origin gh-pages
