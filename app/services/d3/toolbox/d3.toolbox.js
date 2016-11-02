@@ -239,7 +239,6 @@
                     path.style(k, v);
                 }
             })
-            d3.select('.styleEdition').classed('styleEdition', false)
         };
 
         /**

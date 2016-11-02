@@ -624,7 +624,11 @@
             scope.colorChosen = color[0];
             */
             $('#changeColorModal').modal('show');
+
             feature.classed('styleEdition', true);
+            $('#changeColorModal').on('hidden.bs.modal', function () {
+                d3.select('.styleEdition').classed('styleEdition', false)
+            });
         }
 
         function changePattern(feature) {
