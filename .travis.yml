@@ -13,6 +13,13 @@ install:
 script:
   - 'npm install'
   - 'npm test'
+  - 'npm run build'
+
+deploy:
+  provider: script
+  script: deploy.sh
+  on:
+    branch: master
 
 cache:
   directories:
