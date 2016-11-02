@@ -14,10 +14,12 @@ script:
   - 'npm install'
   - 'npm test'
   - 'npm run build'
+  - 'chmod 700 deploy.sh'
 
 deploy:
   provider: script
   script: deploy.sh
+  skip_cleanup: true
   on:
     branch: master
 
