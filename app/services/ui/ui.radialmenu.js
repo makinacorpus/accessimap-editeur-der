@@ -44,7 +44,7 @@
          * The menu drawned
          */
         function drawMenu(target, mousePosition, svg) {
-            
+
             currentTarget = target;
 
             var type = target.attr('data-type') ? target.attr('data-type') : 'default' ;
@@ -73,6 +73,7 @@
                     .show(data);
 
                 svg.on('click', hideRadialMenu);
+                $(document).on('click', hideRadialMenu);
 
                 return m;
             }
@@ -126,7 +127,8 @@
             if (menu) {
                 menu.hide();
                 menu = null;
-                svg.on('click', function() {})
+                svg.on('click', function() {});
+                $(document).on('click', function() {});
             }
             
             // if (currentTarget) {

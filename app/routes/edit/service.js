@@ -164,6 +164,8 @@
                 }
             })
 
+            MapService.addClickHandler();
+                 
             overlay.freezeScaling();
             overlayGeoJSON.freezeScaling();
             overlayDrawing.freezeScaling();

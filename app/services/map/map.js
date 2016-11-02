@@ -44,6 +44,8 @@
 
         this.addMoveHandler         = addMoveHandler;
         this.removeMoveHandler      = removeMoveHandler;
+        this.addClickHandler        = addClickHandler;
+        this.removeClickHandler     = removeClickHandler;
         this.addViewResetHandler    = addViewResetHandler;
         this.removeViewResetHandler = removeViewResetHandler;
         
@@ -385,6 +387,16 @@
 
         function removeMoveHandler() {
             map.off('move');
+        }
+
+        function addClickHandler() {
+            map.on('click', function(event) {
+                $(document).click();
+            })
+        }
+        
+        function removeClickHandler() {
+            map.off('click');
         }
 
         function addViewResetHandler(callback) {
