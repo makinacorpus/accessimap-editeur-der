@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    function RadialMenuService(SettingsActions) {
+    function RadialMenuService(SettingsActions, MapService) {
 
         this.drawMenu       = drawMenu;
         this.addRadialMenu  = addRadialMenu;
@@ -93,14 +93,18 @@
          */
         function addRadialMenu(elements, svg) {
             elements.on('contextmenu', function(event) {
-
+                var elmt = d3.select(this);
+                var pos = [elmt.node().getBBox().x + 10, elmt.node().getBBox().y + 10];
                 // TODO: Block others click...
                 d3.event.preventDefault();
                 d3.event.stopPropagation();
 
                 if (menu) menu.hide();
-                menu = drawMenu(d3.select(this), d3.mouse(svg.node()), svg);
-                
+                menu = drawMenu(elmt, pos, svg);
+                MapService.getMap().on("zoomend", function() {
+                    if (menu) menu.hide();
+                    menu = drawMenu(elmt, pos, svg);
+                })
             });
 
             // useful if we want to add a visual helper to the user
@@ -141,6 +145,6 @@
 
     angular.module(moduleApp).service('RadialMenuService', RadialMenuService);
 
-    RadialMenuService.$inject = ['SettingsActions'];
+    RadialMenuService.$inject = ['SettingsActions', 'MapService'];
 
 })();
