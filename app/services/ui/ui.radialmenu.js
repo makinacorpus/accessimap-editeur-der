@@ -19,7 +19,8 @@
         var menu = null,
             svg, 
             getCurrentZoom,
-            currentTarget;
+            currentTarget,
+            draw;
 
         function init(_svg, _getCurrentZoom) {
             svg = _svg;
@@ -98,13 +99,15 @@
                 // TODO: Block others click...
                 d3.event.preventDefault();
                 d3.event.stopPropagation();
-
-                if (menu) menu.hide();
-                menu = drawMenu(elmt, pos, svg);
-                MapService.getMap().on("zoomend", function() {
+                
+                draw = function redrawMenu() {
                     if (menu) menu.hide();
                     menu = drawMenu(elmt, pos, svg);
-                })
+                } 
+
+                draw();
+
+                MapService.getMap().on("zoomend", draw)
             });
 
             // useful if we want to add a visual helper to the user
@@ -133,6 +136,7 @@
                 menu = null;
                 svg.on('click', function() {});
                 $(document).on('click', function() {});
+                MapService.getMap().off("zoomend", draw);
             }
             
             // if (currentTarget) {
