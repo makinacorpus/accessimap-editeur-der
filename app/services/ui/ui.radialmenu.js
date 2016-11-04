@@ -96,10 +96,18 @@
             elements.on('contextmenu', function(event) {
                 var elmt = d3.select(this);
                 var pos = [elmt.node().getBBox().x + 10, elmt.node().getBBox().y + 10];
+                var translate;
+
                 // TODO: Block others click...
                 d3.event.preventDefault();
                 d3.event.stopPropagation();
-                
+
+                if (elmt.attr('transform')){
+                    translate = elmt.attr('transform').replace("translate(", "").replace(")", "").split(",");
+                    pos[0] += Number(translate[0]);
+                    pos[1] += Number(translate[1]);
+                }
+
                 draw = function redrawMenu() {
                     if (menu) menu.hide();
                     menu = drawMenu(elmt, pos, svg);
