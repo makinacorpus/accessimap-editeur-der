@@ -17,7 +17,7 @@
             <uib-accordion 
                 close-others="false" 
                 class="col-xs-12"
-                ng-if="$ctrl.interactions.getFilters().length > 0">
+                >
                 
                 <uib-accordion-group 
                     heading="{{filter.name}}" 
@@ -121,7 +121,8 @@
                     </table>
 
                     <button class="btn btn-primary btn-block" 
-                        ng-click="$ctrl.interactions.addFilter(name, gesture, protocol)">
+                        ng-click="$ctrl.interactions.addFilter(name, gesture, protocol); 
+                                  name = ''; gesture = undefined; protocol = undefined;">
                         <span class="fa fa-plus"></span>
                         Créer filtre
                     </button>

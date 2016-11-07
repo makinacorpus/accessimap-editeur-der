@@ -153,7 +153,7 @@
 
         function addFilter(name, gesture, protocol) {
             filters.push({
-                id       : 'f' + (filters.length + 1),
+                id       : 'f' + new Date().getUTCMilliseconds(),
                 name     : name,
                 gesture  : gesture,
                 protocol : protocol
