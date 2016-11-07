@@ -74,8 +74,9 @@
                     .show(data);
 
                 svg.on('click', hideRadialMenu);
-                $(document).on('click', hideRadialMenu);
-
+                $(document).on('mousedown', hideRadialMenu);
+                MapService.getMap().on("click", hideRadialMenu)
+                
                 return m;
             }
         }
@@ -102,7 +103,7 @@
                 d3.event.preventDefault();
                 d3.event.stopPropagation();
 
-                if (elmt.attr('transform')){
+                if (elmt.attr('transform')) {
                     translate = elmt.attr('transform').replace("translate(", "").replace(")", "").split(",");
                     pos[0] += Number(translate[0]);
                     pos[1] += Number(translate[1]);
@@ -145,6 +146,7 @@
                 svg.on('click', function() {});
                 $(document).on('click', function() {});
                 MapService.getMap().off("zoomend", draw);
+                MapService.getMap().off("click", hideRadialMenu)
             }
             
             // if (currentTarget) {
