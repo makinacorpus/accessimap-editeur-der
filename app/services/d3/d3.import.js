@@ -219,7 +219,7 @@
             for (var i = 1; i < filters.length; i++) {
                 InteractionService.addFilter(filters[i].getAttribute('name'),
                                             filters[i].getAttribute('gesture'),
-                                            filters[i].getAttribute('protocol') )
+                                            filters[i].getAttribute('protocol'), filters[i].getAttribute('id'))
             }
 
             // insertion of interactions
