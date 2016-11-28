@@ -109,6 +109,7 @@
 
                 if (InteractionService.isFeatureInteractive(feature)) {
                     if (window.confirm('Ce point est interactif. Voules-vous vraiment le supprimer ?')) {
+                        InteractionService.removeInteraction(feature);
                         return removeFeature(feature);
                     } else {
                         return false;

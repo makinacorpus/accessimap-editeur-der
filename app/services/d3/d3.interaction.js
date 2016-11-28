@@ -13,6 +13,7 @@
         this.isFeatureInteractive = isFeatureInteractive;
         this.addInteraction       = addInteraction;
         this.setInteraction       = setInteraction;
+        this.removeInteraction    = removeInteraction;
         this.addFilter            = addFilter;
         this.removeFilter         = removeFilter;
         this.getXMLExport         = getXMLExport;
@@ -87,6 +88,18 @@
 
 
             return interactions.indexOf(featurePosition[0]) >= 0;
+        }
+
+        function removeInteraction(feature) {
+
+            var featureIid = feature.attr('data-link');
+
+            if (isFeatureInteractive(feature)) {
+                interactions = interactions.filter(function deleteFeature(current) {
+                    return current.id !== 'poi-' + featureIid;
+                })
+            }
+
         }
 
         /**
