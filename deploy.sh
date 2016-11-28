@@ -12,8 +12,14 @@ git checkout gh-pages
 
 echo $COMMIT_AUTHOR_EMAIL
 
-git config user.email "$COMMIT_AUTHOR_EMAIL"
-git config --global user.email "$COMMIT_AUTHOR_EMAIL"
+export COMMITTER_EMAIL="$(git log -1 $TRAVIS_COMMIT --pretty="%cE")"
+export AUTHOR_NAME="$(git log -1 $TRAVIS_COMMIT --pretty="%aN")"
+
+echo $COMMITTER_EMAIL
+echo $AUTHOR_NAME
+
+git config user.email "$COMMITTER_EMAIL"
+git config --global user.email "$COMMITTER_EMAIL"
 git config --global user.name "Travis CI"
 git config -l
 # rm -rf *
