@@ -22,7 +22,7 @@
         'while',
         'with',
         'return',
-        'typeof',
+        // 'typeof',
         'function'
     ]
 }
