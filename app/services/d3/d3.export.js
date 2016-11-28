@@ -6,7 +6,7 @@
      * @ngdoc service
      * @name accessimapEditeurDerApp.ExportService
      * @memberOf accessimapEditeurDerApp
-     * @module 
+     * @module
      * @description
      * Service in the accessimapEditeurDerApp.
      */
@@ -51,22 +51,30 @@
 
             // get transform attribute of margin / frame layers
             var translateOverlayArray = DrawingService.layers.overlay.getTranslation(),
-                translateReverseOverlayPx = "translate(" + ( translateOverlayArray.x * -1 ) + 'px,' 
+                translateReverseOverlayPx = "translate(" + ( translateOverlayArray.x * -1 ) + 'px,'
                                                          + ( translateOverlayArray.y * -1 ) + 'px)';
 
-            d3.select(svgDrawing).attr('viewBox', translateOverlayArray.x + ' ' 
-                                                + translateOverlayArray.y + ' ' 
+            d3.select(svgDrawing).attr('viewBox', translateOverlayArray.x + ' '
+                                                + translateOverlayArray.y + ' '
                                                 + sizeDrawing.width + ' ' + sizeDrawing.height)
-            
+
             function filterDOM(node) {
                 return (node.tagName !== 'svg')
             }
-            
+
             // TODO: union promises with a Promise.all to maintain a sequence programmation
-            $(node).css('transform', translateReverseOverlayPx)
-            domtoimage.toPng(node, {width: sizeDrawing.width, height: sizeDrawing.height, filter: filterDOM})
-                .then(function(dataUrl) { 
-                    
+
+            // TODO: inject DEFS ? il manque les fill patterns
+            var defs = DefsService.createDefs(d3.select(node))
+            function initNodeState() {
+                defs.remove()
+                $(node).css('transform', transformStyle)
+            }
+
+            $(node).css('transform', translateReverseOverlayPx);
+            domtoimage.toPng(node, {width: sizeDrawing.width, height: sizeDrawing.height/*, filter: filterDOM */})
+                .then(function(dataUrl) {
+
                     // save the image in a file & add it to the current zip
                     var imgBase64 = dataUrl.split('base64,')
                     zip.file('carte.png', imgBase64[1], {base64: true});
@@ -80,13 +88,13 @@
                         .attr('y', translateOverlayArray.y)
                         .attr('xlink:href', dataUrl)
 
-                    // create some metadata object 
+                    // create some metadata object
                     var metadataGeoJSON = document.createElementNS("http://www.w3.org/2000/svg", "metadata"),
                         // metadataInteractions = document.createElementNS("http://www.w3.org/2000/svg", "metadata"),
                         metadataModel = document.createElementNS("http://www.w3.org/2000/svg", "metadata");
 
                     metadataGeoJSON.setAttribute('data-name', 'data-geojson')
-                    metadataGeoJSON.setAttribute('data-value', 
+                    metadataGeoJSON.setAttribute('data-value',
                             JSON.stringify(DrawingService.layers.geojson.getFeatures()))
 
                     // metadataInteractions.setAttribute('data-name', 'data-interactions')
@@ -99,7 +107,7 @@
                     svgDrawing.appendChild(metadataGeoJSON);
                     // svgDrawing.appendChild(metadataInteractions);
                     svgDrawing.appendChild(metadataModel);
-                    
+
                     svgDrawing.appendChild(image);
 
                     svgDrawing.appendChild(d3.select(exportNode)
@@ -149,15 +157,8 @@
                     // Adding the interactions
                     zip.file('interactions.xml', interactionsContentXML);
 
-                    // TODO: inject DEFS ? il manque les fill patterns
-                    var defs = DefsService.createDefs(d3.select(node))
-                    function initNodeState() {
-                        defs.remove()
-                        $(node).css('transform', transformStyle)
-                    }
-
                     domtoimage.toPng(node, {width: sizeDrawing.width, height: sizeDrawing.height})
-                        .then(function(dataUrl) { 
+                        .then(function(dataUrl) {
 
                             initNodeState();
 
@@ -166,7 +167,7 @@
                             zip.file('der.png', imgBase64[1], {base64: true});
 
                             // get the Braille Font & add it to the current zip
-                            var urlFont = window.location.origin 
+                            var urlFont = window.location.origin
                                     // pathname could be a path like 'xxx/#/route' or 'xxx/file.html'
                                     // we have to obtain 'xxx' string
                                     + ( window.location.pathname !== undefined
@@ -198,7 +199,7 @@
                         })
 
                 }).catch(deferred.reject)
-            
+
             return deferred.promise;
         }
 
@@ -206,6 +207,6 @@
 
     angular.module(moduleApp).service('ExportService', ExportService);
 
-    ExportService.$inject = ['InteractionService', 'LegendService', 'DrawingService', 
+    ExportService.$inject = ['InteractionService', 'LegendService', 'DrawingService',
                             'DefsService', 'MapService', '$q'];
 })();
