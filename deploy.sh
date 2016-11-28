@@ -23,3 +23,9 @@ git add -A .
 git status
 git commit -a -m "Travis #$TRAVIS_BUILD_NUMBER / ${SHA}"
 git push --quiet origin gh-pages
+
+curl https://intake.opbeat.com/api/v1/organizations/43f4c77b74f64097ab04194c87d98086/apps/7bcd582124/releases/ \
+-H "Authorization: Bearer 74226300ea03e7a064bbea3a4d20616fad6f6aef" \
+-d rev=`git log -n 1 --pretty=format:%H` \
+-d branch=`git rev-parse --abbrev-ref HEAD` \
+-d status=completed
