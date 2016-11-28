@@ -155,8 +155,6 @@ describe('Service: LegendService', function () {
             LegendService.addItem('1', 'pouet', 'line', settings.STYLES.point[0], null, true)
             expect(LegendService.getModel()[0].name).toBe('pouet');
 
-            console.log(svg)
-
             // select & enable the edition mode to the text of this item
             LegendService.editText('1');
 
