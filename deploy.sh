@@ -4,13 +4,14 @@
 set -e
 
 # Make sure we have the updated .travis.yml file so tests won't run on master.
-git config user.email "$COMMIT_AUTHOR_EMAIL"
-git config user.name "Travis CI"
 
 # Checkout `master` and remove everything.
 git clone https://${GH_TOKEN}@github.com/makinacorpus/accessimap-editeur-der.git accessimap-editeur-der-gh-pages
 cd accessimap-editeur-der-gh-pages
 git checkout gh-pages
+
+git config user.email "$COMMIT_AUTHOR_EMAIL"
+git config user.name "Travis CI"
 # rm -rf *
 
 # Copy generated HTML site from source branch in original repository.
