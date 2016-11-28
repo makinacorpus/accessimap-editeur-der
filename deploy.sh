@@ -15,6 +15,7 @@ echo $COMMIT_AUTHOR_EMAIL
 git config user.email "$COMMIT_AUTHOR_EMAIL"
 git config --global user.email "$COMMIT_AUTHOR_EMAIL"
 git config --global user.name "Travis CI"
+git config -l
 # rm -rf *
 
 # Copy generated HTML site from source branch in original repository.
