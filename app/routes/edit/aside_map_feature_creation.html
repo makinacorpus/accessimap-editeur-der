@@ -8,14 +8,14 @@
     <!-- rotate slider -->
     <div class="form-group">
         <label>Type de POI</label>
-        <ui-select 
-            ng-model="$ctrl.queryChosen" 
-            ng-disabled="$ctrl.disabled" 
-            theme="bootstrap" 
-            ng-change="$ctrl.changeStyle()" 
+        <ui-select
+            ng-model="$ctrl.queryChosen"
+            ng-disabled="$ctrl.disabled"
+            theme="bootstrap"
+            ng-change="$ctrl.changeStyle()"
             class="form-control style-selector">
 
-            <ui-select-match 
+            <ui-select-match
                 placeholder="Sélectionnez un élément">
                 {{$select.selected.name}}
             </ui-select-match>
@@ -32,13 +32,13 @@
 
     <div class="form-group">
         <label>Style</label>
-        <ui-select 
-            ng-model="$ctrl.styleChosen" 
-            ng-disabled="$ctrl.disabled" 
-            theme="bootstrap" 
+        <ui-select
+            ng-model="$ctrl.styleChosen"
+            ng-disabled="$ctrl.disabled"
+            theme="bootstrap"
             class="form-control style-selector" >
-            
-            <ui-select-match 
+
+            <ui-select-match
                 placeholder="Sélectionnez un style">
                 {{$select.selected.name}}
             </ui-select-match>
@@ -52,13 +52,13 @@
 
     <div class="form-group" ng-if="$ctrl.queryChosen.type === 'polygon'">
         <label>Couleur</label>
-        <ui-select 
-            ng-model="$ctrl.colorChosen" 
-            ng-disabled="$ctrl.disabled" 
-            theme="bootstrap" 
+        <ui-select
+            ng-model="$ctrl.colorChosen"
+            ng-disabled="$ctrl.disabled"
+            theme="bootstrap"
             class="form-control style-selector">
-            
-            <ui-select-match 
+
+            <ui-select-match
                 placeholder="Couleur de fond">
                 {{$select.selected.name}}
             </ui-select-match>
@@ -66,7 +66,7 @@
             <ui-select-choices repeat="item in $ctrl.colors | filter: $select.search" style="max-height: 500px;">
                 <span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span>
             </ui-select-choices>
-        
+
         </ui-select>
     </div>
 
@@ -77,13 +77,13 @@
         </span>
     </div>
 
-    <button 
-        ng-if="$ctrl.queryChosen.id !== 'poi'" 
-        class="btn btn-primary btn-block" 
-        ng-click="$ctrl.insertOSMData()" 
+    <button
+        ng-if="$ctrl.queryChosen.id !== 'poi'"
+        class="btn btn-primary btn-block"
+        ng-click="$ctrl.insertOSMData()"
         type="button">
-        <span class="fa fa-cloud-download" aria-hidden="true"></span> 
-        Insérer les données d'OSM
+        <span class="fa fa-cloud-download" aria-hidden="true"></span>
+        Insérer les données cartographiques
     </button>
 
 </form>

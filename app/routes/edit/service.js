@@ -165,7 +165,7 @@
             })
 
             MapService.addClickHandler();
-                 
+
             overlay.freezeScaling();
             overlayGeoJSON.freezeScaling();
             overlayDrawing.freezeScaling();
@@ -338,7 +338,7 @@
                 .retrieveData(MapService.getBounds(), query)
                 .then(function successCallback(osmGeojson) {
                     if (!osmGeojson) {
-                        _errorCallback('Erreur lors de la recherche de donnée OSM... Merci de recommencer.')
+                        _errorCallback('Erreur lors de la récupération des données cartographiques... Merci de recommencer.')
                     }
 
                     if (osmGeojson.features && osmGeojson.features.length > 0) {
@@ -351,7 +351,7 @@
                                 SettingsService.STYLES[queryChosen.type],
                                 colorChosen, checkboxModel, null)
                     } else {
-                        _warningCallback('Aucune donnée trouvée... Merci de chercher autre chose !?')
+                        _warningCallback('Aucune donnée cartographique trouvée... Merci de chercher autre chose !?')
                     }
 
                 })
