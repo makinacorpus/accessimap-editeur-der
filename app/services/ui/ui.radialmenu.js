@@ -1,7 +1,7 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.RadialMenuService
- * 
+ *
  * @description
  * Service providing functions to draw a radial menu on a specific feature
  */
@@ -17,7 +17,7 @@
         this.init = init;
 
         var menu = null,
-            svg, 
+            svg,
             getCurrentZoom,
             currentTarget,
             draw;
@@ -32,15 +32,15 @@
          * @name  drawMenu
          * @methodOf accessimapEditeurDerApp.RadialMenuService
          *
-         * @description 
+         * @description
          * Draw the menu for the specific target, at a specific point
-         * 
+         *
          * @param  {[type]} target
          * Target on which will be attached the menu
-         * 
+         *
          * @param  {Array} mousePosition
          * Point [x,y] where the menu will be displayed
-         * 
+         *
          * @return {Object}
          * The menu drawned
          */
@@ -64,9 +64,9 @@
 
                         d3.event.preventDefault();
                         d3.event.stopPropagation();
-                        
+
                         hideRadialMenu();
-                
+
                         var action = d.data.action;
                         action(target, addRadialMenu);
                     })
@@ -76,7 +76,7 @@
                 svg.on('click', hideRadialMenu);
                 $(document).on('mousedown', hideRadialMenu);
                 MapService.getMap().on("click", hideRadialMenu)
-                
+
                 return m;
             }
         }
@@ -86,18 +86,18 @@
          * @name  addRadialMenu
          * @methodOf accessimapEditeurDerApp.RadialMenuService
          *
-         * @description 
+         * @description
          * Attach a radial menu to a specific element
-         * 
-         * @param {Object} elements 
+         *
+         * @param {Object} elements
          * DOM Element(s) on which the event 'contextmenu' will be attached
-         * 
+         *
          */
         function addRadialMenu(elements, svg) {
             elements.on('contextmenu', function(event) {
-                var elmt = d3.select(this);
-                var pos = [elmt.node().getBBox().x + 10, elmt.node().getBBox().y + 10];
-                var translate;
+                var elmt = d3.select(this),
+                    pos = [elmt.node().getBBox().x + 10, elmt.node().getBBox().y + 10],
+                    translate;
 
                 // TODO: Block others click...
                 d3.event.preventDefault();
@@ -112,7 +112,7 @@
                 draw = function redrawMenu() {
                     if (menu) menu.hide();
                     menu = drawMenu(elmt, pos, svg);
-                } 
+                }
 
                 draw();
 
@@ -135,7 +135,7 @@
          * @ngdoc method
          * @name  hideRadialMenu
          * @methodOf accessimapEditeurDerApp.RadialMenuService
-         * 
+         *
          * @description
          * Remove the menu if exists (TODO: destroyed the DOM element ?)
          */
@@ -148,11 +148,11 @@
                 MapService.getMap().off("zoomend", draw);
                 MapService.getMap().off("click", hideRadialMenu)
             }
-            
+
             // if (currentTarget) {
             //     currentTarget.classed('blink', false);
             // }
-                
+
         }
 
     }

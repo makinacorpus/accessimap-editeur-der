@@ -1,7 +1,7 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.InteractionService
- * 
+ *
  * @description
  * Service providing methods to CRUD interactions
  */
@@ -16,12 +16,12 @@
         this.addFilter            = addFilter;
         this.removeFilter         = removeFilter;
         this.getXMLExport         = getXMLExport;
-        
-        this.getInteractions = function() { 
-            return interactions 
+
+        this.getInteractions = function() {
+            return interactions
         }
-        this.getFilters = function() { 
-            return filters 
+        this.getFilters = function() {
+            return filters
         }
 
         var
@@ -30,13 +30,13 @@
          * @name  interactions
          * @propertyOf accessimapEditeurDerApp.InteractionService
          *
-         * @description 
+         * @description
          * Array of interactions
          *
          * An interaction is a feature (point, circle, polygon, ...) that
          * will be attached to a pointer/touch event (click, double click, ...)
          * and play a specific media (sound, vibration, ...)
-         * 
+         *
          * @type {Array}
          */
         interactions = [],
@@ -46,15 +46,15 @@
          * @name  filters
          * @propertyOf accessimapEditeurDerApp.InteractionService
          *
-         * @description 
+         * @description
          * Array of filters
          *
          * A filter define a specific type of interaction.
          * It's composed by :
-         * - a name, useful for display 
+         * - a name, useful for display
          * - a type of interaction : tap, double tap, ...
          * - a protocol : mp3, text-to-speech (tts), ...
-         * 
+         *
          * @type {Array}
          */
         filters = [{
@@ -69,18 +69,18 @@
          * @name  isFeatureInteractive
          * @methodOf accessimapEditeurDerApp.InteractionService
          *
-         * @description 
+         * @description
          * Return if the feature is an interactive one
-         * 
+         *
          * @param  {Object}  feature
          * Feature to be checked
-         * 
+         *
          * @return {Boolean}
          * True if interactive, false if not
          */
         function isFeatureInteractive(feature) {
             var featureIid = feature.attr('data-link'),
-                featurePosition = 
+                featurePosition =
                     interactions.filter(function(row) {
                         return row.id === 'poi-' + featureIid;
                     });
@@ -88,7 +88,7 @@
 
             return interactions.indexOf(featurePosition[0]) >= 0;
         }
-        
+
         /**
          * @ngdoc method
          * @name  addInteraction
@@ -96,7 +96,7 @@
          *
          * @description
          * Add an interaction on a feature
-         * 
+         *
          * @param {Object} feature
          * Feature that will be interactive
          */
@@ -122,12 +122,12 @@
          * @name  setInteraction
          * @methodOf accessimapEditeurDerApp.InteractionService
          *
-         * @description 
+         * @description
          * Set an interaction {filter: value} for a feature (id)
-         * 
+         *
          * @param {String} id
          * Id of the feature
-         * 
+         *
          * @param {String} filter
          * Category/filter to  [description]
          * @param {[type]} value    [description]
@@ -149,7 +149,7 @@
             }
 
             interaction.filters[filter] = value;
-        } 
+        }
 
         function addFilter(name, gesture, protocol, id) {
             filters.push({
@@ -165,7 +165,7 @@
             interactions.forEach(function deleteCategory(current) {
                 delete current.filters[id]
             })
-            
+
             // then remove the filter
             filters = filters.filter(function removeFilter(element, index) {
                 return element.id !== id;
@@ -232,8 +232,8 @@
                             poi.attr('width', bbox.width);
                             poi.attr('height', bbox.height);
                         }
-                        
-                        // exporting actions for the current POI                        
+
+                        // exporting actions for the current POI
                         var actions = poi.append('actions');
                         d3.keys(d.filters).forEach(function(key) {
                             var currentCategory = filters.find(function(element) {
@@ -258,14 +258,18 @@
 
         function generateUUID() {
             var d = new Date().getTime();
-            if(window.performance && typeof window.performance.now === "function"){
+
+            if(window.performance && typeof window.performance.now === "function") {
                 d += performance.now(); //use high-precision timer if available
             }
+
             var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
                 var r = (d + Math.random()*16)%16 | 0;
                 d = Math.floor(d/16);
+
                 return (c=='x' ? r : (r&0x3|0x8)).toString(16);
             });
+
             return uuid;
         }
     }
