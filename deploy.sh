@@ -10,8 +10,11 @@ git clone https://${GH_TOKEN}@github.com/makinacorpus/accessimap-editeur-der.git
 cd accessimap-editeur-der-gh-pages
 git checkout gh-pages
 
+echo $COMMIT_AUTHOR_EMAIL
+
 git config user.email "$COMMIT_AUTHOR_EMAIL"
-git config user.name "Travis CI"
+git config --global user.email "$COMMIT_AUTHOR_EMAIL"
+git config --global user.name "Travis CI"
 # rm -rf *
 
 # Copy generated HTML site from source branch in original repository.
