@@ -32,6 +32,7 @@ module.exports = function(config) {
             'bower_components/angular-route/angular-route.js',
             'bower_components/angular-sanitize/angular-sanitize.js',
             'bower_components/angular-touch/angular-touch.js',
+            'bower_components/opbeat-angular/opbeat-angular.js',
             'bower_components/d3/d3.js',
             'bower_components/angular-ui-select/dist/select.js',
             'bower_components/select2/select2.js',
@@ -43,7 +44,6 @@ module.exports = function(config) {
             'bower_components/leaflet/dist/leaflet.js',
 
             'app/**/*.js',
-            // 'test/mock/**/*.js',
             'test/spec/**/*.js'
         ],
 
