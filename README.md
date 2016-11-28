@@ -22,7 +22,9 @@
 - look your favorite browser opening accessimap !
 
 
-If you encounter a 'bug' like 'watching tasks too numerous', or an error like 'Error: watch /home/user/workspaces/accessimap-editeur-der/app/scripts/directives ENOSPC' you'll have to increase your max user watch :
+If you encounter a 'bug' like 'watching tasks too numerous', 
+or an error like `Error: watch /home/user/workspaces/accessimap-editeur-der/app/scripts/directives ENOSPC` 
+you'll have to increase your max user watch :
 
 https://github.com/guard/listen/wiki/Increasing-the-amount-of-inotify-watchers
 
