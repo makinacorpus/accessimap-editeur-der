@@ -309,18 +309,11 @@
          * @description
          * Retrieve data from nominatim (via MapService) for a specific 'query'
          *
-         * @param {function} query
-         * Query SettingsService from SettingsService.QUERY_LIST
-         *
-         * @param {function} _successCallback
-         * Callback function called when data has been retrieved, data is passed in first argument
-         *
-         * @param {function} _errorCallback
-         * Callback function called when an error occured, error is passed in first argument
          */
-        function insertOSMData(query, _warningCallback, _errorCallback, _currentParametersFn) {
+        function insertOSMData(query, _warningCallback, _errorCallback, _infoCallback, _currentParametersFn) {
 
             MapService.changeCursor('progress');
+            _infoCallback('Récupération des données cartographiques en cours...');
 
             var currentParameters = _currentParametersFn(),
             styleChosen = SettingsService.ALL_STYLES.find(function(element, index, array) {

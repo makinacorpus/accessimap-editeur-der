@@ -270,6 +270,7 @@
             EditService.insertOSMData($ctrl.queryChosen,
                                         ToasterService.warning,
                                         ToasterService.error,
+                                        ToasterService.info,
                                         getDrawingParameters)
         }
 
@@ -474,7 +475,7 @@
             if($ctrl.address.stop) {
                 promises.push(
                     EditService.searchAndDisplayAddress($ctrl.address.stop,
-                                        'stopPoint', 
+                                        'stopPoint',
                                         'Point d\'arrivée',
                                         $ctrl.styleChosen,
                                         $ctrl.colorChosen));
