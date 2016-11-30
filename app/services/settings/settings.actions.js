@@ -88,8 +88,12 @@
                 { icon: 'assets/icons/open_with.svg', action: FeatureService.movePath },
                 { icon: 'assets/icons/copy.svg', action: FeatureService.duplicatePath },
                 { icon: 'assets/icons/autorenew.svg', action: FeatureService.rotatePath },
-                { icon: 'assets/icons/crop_din.svg', action: FeatureService.toggleStroke },
+                { icon: 'assets/icons/linear_scale.svg', action: FeatureService.movePoint },
+                { icon: 'assets/icons/texture.svg', action: FeatureService.changePattern },
+                { icon: 'assets/icons/palette.svg', action: FeatureService.changeColor },
+                { icon: 'assets/icons/radio_button_checked.svg', action: FeatureService.toggleEmptyComfortNearFeature },
                 { icon: 'assets/icons/hearing.svg', action: InteractionService.addInteraction },
+                { icon: 'assets/icons/crop_din.svg', action: FeatureService.toggleStroke },
             ],
             'legend': [
                 { icon: 'assets/icons/delete.svg', action: LegendService.removeObject },
