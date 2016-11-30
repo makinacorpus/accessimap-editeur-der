@@ -21,7 +21,8 @@
             'ngTouch',
             'ui.select',
             'ui.bootstrap',
-            'ui.bootstrap-slider'
+            'ui.bootstrap-slider',
+            'bootstrap.fileField'
         ])
         .config(function($routeProvider) {
             $routeProvider
