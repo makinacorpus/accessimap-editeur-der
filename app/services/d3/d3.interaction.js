@@ -187,11 +187,11 @@
 
         function getXMLExport() {
 
-            var xmlToExport = '<?xml version="1.0" encoding="UTF-8"?>';
+            var xmlToExport = '<?xml version="1.0" encoding="UTF-8"?>\n';
 
             if (filters.length > 0) {
 
-                var nodeXML = d3.select(document.createElement('exportXML')).append('xml'),
+                var nodeXML = d3.select(document.createElement('exportXML')),
                     config = nodeXML.append('config');
 
                 config.append('filters')
@@ -260,9 +260,7 @@
                         });
                     });
 
-                xmlToExport += (new XMLSerializer()).serializeToString(nodeXML.node())
-                                    .replace(/<xml.*<config>/, '<config>')
-                                    .replace('</xml>', '');
+                xmlToExport += (new XMLSerializer()).serializeToString(config.node());
 
             }
 
