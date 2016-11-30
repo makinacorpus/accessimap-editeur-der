@@ -10,175 +10,45 @@
 
 <form class="row">
 
-    <uib-tabset active="active">
+    <div ng-if="$ctrl.interactions.getInteractions().length === 0" class="col-xs-12">
+        Pas encore d'interaction définie !
+    </div>
 
-        <uib-tab heading="Filtres">
+    <uib-accordion
+        close-others="false"
+        class="col-xs-12"
+        ng-if="$ctrl.interactions.getInteractions().length > 0">
 
-            <uib-accordion
-                close-others="false"
-                class="col-xs-12"
-                >
+        <uib-accordion-group
+            heading="{{interaction.id}}"
+            ng-repeat="interaction in $ctrl.interactions.getInteractions() track by interaction.id">
 
-                <uib-accordion-group
-                    heading="{{filter.name}}"
-                    ng-repeat="filter in $ctrl.interactions.getFilters() track by filter.id">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Filtres</th>
+                        <th>Valeur</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="filter in $ctrl.interactions.getFilters()">
+                        <td>{{filter.name}}</td>
+                        <td>
+                            <input type="text"
+                                ng-model="interaction.filters[filter.id]"
+                                ng-if="filter.protocol==='tts'"
+                                style="width:100%">
 
-                    <table class="table table-hover">
-                        <tbody>
-                            <tr>
-                                <th>Nom</td>
-                                <td>
-                                    <input type="text" ng-model="filter.name">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Type</td>
-                                <td>
-                                    <select ng-model="filter.gesture">
-                                        <option value="tap">tap</option>
-                                        <option value="double_tap">double_tap</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Protocole</td>
-                                <td>
-                                    <select ng-model="filter.protocol">
-                                        <option>tts</option>
-                                        <option>mp3</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            <input type="file"
+                                ng-model="interaction.filters[filter.id]"
+                                ng-if="filter.protocol==='mp3'"
+                                style="width:100%">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </uib-accordion-group>
 
-                    <button class="btn btn-danger btn-block"
-                        ng-click="$ctrl.interactions.removeFilter(filter.id)"
-                        >Supprimer filtre</button>
-
-                    <table class="table table-hover"
-                         ng-if="$ctrl.interactions.getInteractions().length > 0">
-                        <thead>
-                            <tr>
-                                <th>Point</th>
-                                <th>Valeur</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="interaction in $ctrl.interactions.getInteractions()">
-                                <td>{{interaction.id}}</td>
-                                <td>
-                                    <input type="text"
-                                        ng-model="interaction.filters[filter.id]"
-                                        ng-if="filter.protocol==='tts'"
-                                        style="width:100%">
-
-                                    <input type="file"
-                                        ng-model="interaction.filters[filter.id]"
-                                        ng-if="filter.protocol==='mp3'"
-                                        style="width:100%">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </uib-accordion-group>
-
-                <uib-accordion-group panel-class="panel-primary">
-
-                    <uib-accordion-heading>
-                        Créer un nouveau filtre
-                    </uib-accordion-heading>
-
-                    <table class="table table-hover" >
-                        <tbody>
-                            <tr>
-                                <th>Nom</td>
-                                <td>
-                                    <input type="text"
-                                        ng-model="name">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Type</td>
-                                <td>
-                                    <select ng-model="gesture">
-                                        <option value="tap">tap</option>
-                                        <option value="double_tap">double_tap</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Protocole</td>
-                                <td>
-                                    <select ng-model="protocol">
-                                        <option>tts</option>
-                                        <option>mp3</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <button class="btn btn-primary btn-block"
-                        ng-click="$ctrl.interactions.addFilter(name, gesture, protocol);
-                                  name = ''; gesture = undefined; protocol = undefined;">
-                        <span class="fa fa-plus"></span>
-                        Créer filtre
-                    </button>
-                </uib-accordion-group>
-
-
-
-            </uib-accordion>
-
-        </uib-tab>
-
-        <uib-tab heading="Interactions">
-
-            <div ng-if="$ctrl.interactions.getInteractions().length === 0" class="col-xs-12">
-                Pas encore d'interaction définie !
-            </div>
-
-            <uib-accordion
-                close-others="false"
-                class="col-xs-12"
-                ng-if="$ctrl.interactions.getInteractions().length > 0">
-
-                <uib-accordion-group
-                    heading="{{interaction.id}}"
-                    ng-repeat="interaction in $ctrl.interactions.getInteractions() track by interaction.id">
-
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Filtres</th>
-                                <th>Valeur</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="filter in $ctrl.interactions.getFilters()">
-                                <td>{{filter.name}}</td>
-                                <td>
-                                    <input type="text"
-                                        ng-model="interaction.filters[filter.id]"
-                                        ng-if="filter.protocol==='tts'"
-                                        style="width:100%">
-
-                                    <input type="file"
-                                        ng-model="interaction.filters[filter.id]"
-                                        ng-if="filter.protocol==='mp3'"
-                                        style="width:100%">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </uib-accordion-group>
-
-            </uib-accordion>
-
-        </uib-tab>
-
-    </uib-tabset>
+    </uib-accordion>
 
 </form>
