@@ -25,6 +25,7 @@
                 { icon: 'assets/icons/linear_scale.svg', action: FeatureService.movePoint },
                 { icon: 'assets/icons/trending_flat.svg', action: FeatureService.toggleArrow },
                 { icon: 'assets/icons/radio_button_checked.svg', action: FeatureService.toggleEmptyComfortNearFeature },
+                { icon: 'assets/icons/hearing.svg', action: InteractionService.addInteraction },
                 { icon: 'assets/icons/rounded_corner.svg', action: FeatureService.lineToCardinal },
             ],
             'polygon': [
@@ -36,6 +37,7 @@
                 { icon: 'assets/icons/texture.svg', action: FeatureService.changePattern },
                 { icon: 'assets/icons/palette.svg', action: FeatureService.changeColor },
                 { icon: 'assets/icons/radio_button_checked.svg', action: FeatureService.toggleEmptyComfortNearFeature },
+                { icon: 'assets/icons/hearing.svg', action: InteractionService.addInteraction },
                 { icon: 'assets/icons/crop_din.svg', action: FeatureService.toggleStroke },
             ],
             'circle': [
@@ -46,6 +48,7 @@
                 { icon: 'assets/icons/texture.svg', action: FeatureService.changePattern },
                 { icon: 'assets/icons/palette.svg', action: FeatureService.changeColor },
                 { icon: 'assets/icons/radio_button_checked.svg', action: FeatureService.toggleEmptyComfortNearFeature },
+                { icon: 'assets/icons/hearing.svg', action: InteractionService.addInteraction },
                 { icon: 'assets/icons/crop_din.svg', action: FeatureService.toggleStroke },
             ],
             'rect': [
@@ -57,6 +60,7 @@
                 { icon: 'assets/icons/texture.svg', action: FeatureService.changePattern },
                 { icon: 'assets/icons/palette.svg', action: FeatureService.changeColor },
                 { icon: 'assets/icons/radio_button_checked.svg', action: FeatureService.toggleEmptyComfortNearFeature },
+                { icon: 'assets/icons/hearing.svg', action: InteractionService.addInteraction },
                 { icon: 'assets/icons/crop_din.svg', action: FeatureService.toggleStroke },
             ],
             'triangle': [
@@ -68,6 +72,7 @@
                 { icon: 'assets/icons/texture.svg', action: FeatureService.changePattern },
                 { icon: 'assets/icons/palette.svg', action: FeatureService.changeColor },
                 { icon: 'assets/icons/radio_button_checked.svg', action: FeatureService.toggleEmptyComfortNearFeature },
+                { icon: 'assets/icons/hearing.svg', action: InteractionService.addInteraction },
                 { icon: 'assets/icons/crop_din.svg', action: FeatureService.toggleStroke },
             ],
             'text': [
@@ -76,6 +81,7 @@
                 { icon: 'assets/icons/autorenew.svg', action: FeatureService.rotatePath },
                 { icon: 'assets/icons/copy.svg', action: FeatureService.duplicatePath },
                 { icon: 'assets/icons/radio_button_checked.svg', action: FeatureService.toggleEmptyComfortNearFeature },
+                { icon: 'assets/icons/hearing.svg', action: InteractionService.addInteraction },
             ],
             'default': [
                 { icon: 'assets/icons/delete.svg', action: FeatureService.removeObject },
