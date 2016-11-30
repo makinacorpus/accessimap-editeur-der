@@ -33,5 +33,8 @@
     "toastr": "^2.1.2",
     "d3-transform": "^1.0.4"
   },
-  "appPath": "app"
+  "appPath": "app",
+  "resolutions": {
+    "angular": "1.5.8"
+  }
 }
