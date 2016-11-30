@@ -27,8 +27,9 @@ describe('Controller: EditController', function () {
 
     it('should create the EditController with default states', function () {
         expect(EditController).toBeDefined();
-        
-        expect(EditController.isParametersVisible).toBe(true);
+
+        expect(EditController.isHomeVisible).toBe(true);
+        expect(EditController.isParametersVisible).toBe(false);
         expect(EditController.isMapParametersVisible).toBe(false);
         expect(EditController.isDrawingParametersVisible).toBe(false);
         expect(EditController.isLegendParametersVisible).toBe(false);
