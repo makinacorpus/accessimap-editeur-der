@@ -60,7 +60,7 @@
          */
         filters = [{
             id       : 'f1',
-            name     : 'Valeur OSM',
+            name     : 'Défaut',
             gesture  : 'tap',
             protocol : 'tts'
         }];
