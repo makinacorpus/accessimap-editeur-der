@@ -2,7 +2,31 @@
     <img src="assets/images/logos/accessimap_logo.png">
 </a>
 
+<br/>
+
 <form class="row">
+
+    <div class="form-group col-xs-6">
+        <file-field class="btn btn-primary"
+            aria-label="Ouvrir un fichier" title="Ouvrir un fichier"
+            ng-model="uploadFile"
+            onchange="angular.element(this).scope().$ctrl.importDER(this.childNodes[1])"
+            accept="image/svg+xml,application/zip"
+        >
+            <span class="fa fa-file-o" aria-hidden="true" ></span>
+            Ouvrir
+        </file-field>
+    </div>
+
+    <div class="form-group col-xs-6">
+        <button
+            class="btn btn-primary"
+            ng-click="$ctrl.exportData()"
+            aria-label="Télécharger" title="Télécharger">
+            <span class="fa fa-download" aria-hidden="true" ></span>
+            Télécharger
+        </button>
+    </div>
 
     <div class="form-group col-xs-12">
         <label>Titre</label>
@@ -31,7 +55,7 @@
         </button>
     </div>
 
-    <div class="form-group col-xs-12">
+
 <!--    <div class="form-group col-xs-12">
         <label>Etat de la zone de dessin</label>
         <br>
@@ -60,8 +84,6 @@
 
         </ui-select>
 -->
-    </div>
-
 
     <div class="form-group col-xs-12">
         <label>Edition</label>
@@ -122,25 +144,4 @@
             id="comment">
         </textarea>
     </div>
-
-    <div class="form-group col-xs-12">
-        <label>Importer un DER (svg/zip)</label>
-        <input
-        onchange="angular.element(this).scope().$ctrl.importDER(this)"
-        type="file"
-        accept="image/svg+xml,application/zip"
-        name="Importer"/>
-    </div>
-
-    <div class="form-group col-xs-12 ">
-        <label>Exporter</label>
-        <button
-            class="btn btn-success btn-block text-center"
-            ng-click="$ctrl.exportData()"
-            type="button">
-            <span class="fa fa-lg fa-download" aria-hidden="true"></span>
-            Exporter
-        </button>
-    </div>
-
 </form>

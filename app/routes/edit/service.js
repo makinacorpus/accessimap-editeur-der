@@ -602,6 +602,7 @@
                         case 'application/zip':
                         case 'application/x-zip-compressed':
                         case 'application/binary':
+                        case 'binary/octet-stream':
                             initUpload();
                             JSZip.loadAsync(element.files[0]).then(function loadDrawingFromZip(zip) {
 
