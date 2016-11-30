@@ -1,28 +1,28 @@
 <h3>
-    <button class="btn btn-link" 
-            ng-click="$ctrl.displayParameters()">
+    <button class="btn btn-link"
+            ng-click="$ctrl.displayHome()">
         <span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span>
     </button>
-    
+
     <span class="fa fa-braille" aria-hidden="true"></span>
     Légende
 </h3>
 
 
 <form class="row">
-    
+
     <div class="form-group col-xs-12">
         <label>Afficher en braille</label>
         <br>
         <div class="btn-group">
             <!-- Drawing -->
-            <button class="btn btn-default" 
-                    ng-class="{ 'active' : $ctrl.isBrailleDisplayed }" 
+            <button class="btn btn-default"
+                    ng-class="{ 'active' : $ctrl.isBrailleDisplayed }"
                     ng-click="$ctrl.showFontBraille()">
                 Oui
             </button>
             <!-- Legend -->
-            <button class="btn btn-default" 
+            <button class="btn btn-default"
                     ng-class="{ 'active' : ! $ctrl.isBrailleDisplayed }"
                     ng-click="$ctrl.hideFontBraille()">
                 Non
@@ -32,16 +32,16 @@
 
     <div class="form-group col-xs-12">
         <label>Format de la légende</label>
-        <select 
-            ng-model="$ctrl.model.legendFormat" 
+        <select
+            ng-model="$ctrl.model.legendFormat"
             ng-change="$ctrl.changeLegendFormat($ctrl.model.legendFormat)"
-            class="form-control" 
+            class="form-control"
             ng-options="format as data.name for (format, data) in $ctrl.formats">
         </select>
 <!--
-        <ui-select 
-            ng-model="$ctrl.legendFormat" 
-            theme="bootstrap" 
+        <ui-select
+            ng-model="$ctrl.legendFormat"
+            theme="bootstrap"
             class="form-control style-selector">
 
             <ui-select-match placeholder="Sélectionnez un format">{{$ctrl.legendFormat.name}}</ui-select-match>

@@ -1,9 +1,9 @@
 <h3>
-    <button class="btn btn-link" 
-            ng-click="$ctrl.displayParameters()">
+    <button class="btn btn-link"
+            ng-click="$ctrl.displayHome()">
         <span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span>
     </button>
-    
+
     <span class="fa fa-lg fa-picture-o" aria-hidden="true"></span>
     Trame de fond
 </h3>
@@ -12,14 +12,14 @@
 
     <div class="form-group col-xs-12">
         <label>Trame de fond</label>
-        <ui-select 
-            ng-model="$ctrl.model.backgroundStyle" 
-            ng-change="$ctrl.updateBackgroundStyle($ctrl.model.backgroundStyle)" 
-            ng-disabled="disabled" 
-            theme="bootstrap" 
+        <ui-select
+            ng-model="$ctrl.model.backgroundStyle"
+            ng-change="$ctrl.updateBackgroundStyle($ctrl.model.backgroundStyle)"
+            ng-disabled="disabled"
+            theme="bootstrap"
             class="form-control style-selector">
 
-            <ui-select-match 
+            <ui-select-match
                 placeholder="Sélectionnez un style">
                 {{$select.selected.name}}
             </ui-select-match>
@@ -33,13 +33,13 @@
 
     <div class="form-group col-xs-12">
         <label>Couleur de fond</label>
-        <ui-select 
-            ng-model="$ctrl.model.backgroundColor" 
-            ng-change="$ctrl.updateBackgroundColor($ctrl.model.backgroundColor)" 
-            theme="bootstrap" 
+        <ui-select
+            ng-model="$ctrl.model.backgroundColor"
+            ng-change="$ctrl.updateBackgroundColor($ctrl.model.backgroundColor)"
+            theme="bootstrap"
             class="form-control style-selector">
 
-            <ui-select-match 
+            <ui-select-match
                 placeholder="Sélectionnez une couleur de fond">
                 {{$select.selected.name}}
             </ui-select-match>
@@ -54,25 +54,25 @@
     <div class="form-group col-xs-12">
         <label>Importer un fond (SVG/JPG/PNG/PDF)</label>
         <!-- http://stackoverflow.com/questions/17922557/angularjs-how-to-check-for-changes-in-file-input-fields -->
-        <input onchange="angular.element(this).scope().$ctrl.importBackground(this)" 
-            type="file" 
+        <input onchange="angular.element(this).scope().$ctrl.importBackground(this)"
+            type="file"
             accept="image/svg+xml,image/png,image/jpeg,application/pdf" />
     </div>
 
      <div class="form-group col-xs-12">
         <label>Choisir un fond de carte prédéfini</label>
         <uib-accordion close-others="false" >
-            
-            <uib-accordion-group 
-                heading="{{mapCategory.name}}" 
-                is-open="status.isFirstOpen" 
+
+            <uib-accordion-group
+                heading="{{mapCategory.name}}"
+                is-open="status.isFirstOpen"
                 is-disabled="status.isFirstDisabled"
                 ng-repeat="mapCategory in $ctrl.mapCategories">
-            
+
                 <ul class="row">
                     <li ng-repeat="image in mapCategory.images">
-                        <img class="img-responsive" 
-                            ng-src="{{image.path}}" 
+                        <img class="img-responsive"
+                            ng-src="{{image.path}}"
                             ng-click="$ctrl.appendSvg(image.path)"/>
                     </li>
                 </ul>

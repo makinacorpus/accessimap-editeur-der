@@ -1,9 +1,9 @@
 <h3>
-    <button class="btn btn-link" 
-            ng-click="$ctrl.displayParameters()">
+    <button class="btn btn-link"
+            ng-click="$ctrl.displayHome()">
         <span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span>
     </button>
-    
+
     <span class="fa fa-pencil" aria-hidden="true"></span>
     Dessin
 </h3>
@@ -11,96 +11,96 @@
 <!-- editing modes -->
 <div class="btn-group">
 
-    <button 
-        ng-click="$ctrl.enableDrawingMode('default')" 
-        ng-class="{ 'active' : $ctrl.mode === 'default' }" 
+    <button
+        ng-click="$ctrl.enableDrawingMode('default')"
+        ng-class="{ 'active' : $ctrl.mode === 'default' }"
         class="btn btn-default active"
         aria-label="Naviguer" title="Naviguer">
-        <span class="fa fa-hand-paper-o" aria-hidden="true" ></span> 
+        <span class="fa fa-hand-paper-o" aria-hidden="true" ></span>
     </button>
 
-    <button 
-        ng-click="$ctrl.enableDrawingMode('select')" 
-        ng-class="{ 'active' : $ctrl.mode === 'select' }" 
+    <button
+        ng-click="$ctrl.enableDrawingMode('select')"
+        ng-class="{ 'active' : $ctrl.mode === 'select' }"
         class="btn btn-default"
         aria-label="Editer" title="Editer">
-        <span class="fa fa-mouse-pointer" aria-hidden="true" ></span> 
+        <span class="fa fa-mouse-pointer" aria-hidden="true" ></span>
     </button>
 
-    <!-- <button 
-        ng-click="$ctrl.enableDrawingMode('undo')" 
-        ng-class="{ 'active' : $ctrl.mode == 'undo', 'disabled' : !$ctrl.isUndoAvailable() }" 
+    <!-- <button
+        ng-click="$ctrl.enableDrawingMode('undo')"
+        ng-class="{ 'active' : $ctrl.mode == 'undo', 'disabled' : !$ctrl.isUndoAvailable() }"
         class="btn btn-default">
-        <span class="fa fa-undo" aria-hidden="true"></span> 
+        <span class="fa fa-undo" aria-hidden="true"></span>
         Annuler
     </button>
      -->
     <button ng-click="$ctrl.resetView()" class="btn btn-default"
         aria-label="Centrer le dessin" title="Centrer le dessin">
-        <span class="fa fa-arrows-alt" aria-hidden="true"></span> 
+        <span class="fa fa-arrows-alt" aria-hidden="true"></span>
     </button>
 </div>
 
 <div class="btn-group">
-   <button 
-        ng-click="$ctrl.enableDrawingMode('point')" 
-        ng-class="{ 'active' : $ctrl.mode === 'point' }" 
+   <button
+        ng-click="$ctrl.enableDrawingMode('point')"
+        ng-class="{ 'active' : $ctrl.mode === 'point' }"
         class="btn btn-default"
         aria-label="Point" title="Point">
         <img src="assets/icons/draw_point.png" width="20px" height="20px"/>
     </button>
 
-    <button 
-        ng-click="$ctrl.enableDrawingMode('line')" 
-        ng-class="{ 'active' : $ctrl.mode === 'line' }" 
+    <button
+        ng-click="$ctrl.enableDrawingMode('line')"
+        ng-class="{ 'active' : $ctrl.mode === 'line' }"
         class="btn btn-default"
         aria-label="Ligne (clic droit pour finir)" title="Ligne (clic droit pour finir)">
         <img src="assets/icons/draw_polygon.png" width="20px" height="20px"/>
     </button>
 
-    <button 
-        ng-click="$ctrl.enableDrawingMode('circle')" 
-        ng-class="{ 'active' : $ctrl.mode === 'circle' }" 
+    <button
+        ng-click="$ctrl.enableDrawingMode('circle')"
+        ng-class="{ 'active' : $ctrl.mode === 'circle' }"
         class="btn btn-default"
         aria-label="Ellipse / Cercle" title="Ellipse / Cercle">
         <img src="assets/icons/draw_ellipse.png" width="20px" height="20px"/>
     </button>
 
-    <button 
-        ng-click="$ctrl.enableDrawingMode('triangle')" 
-        ng-class="{ 'active' : $ctrl.mode === 'triangle' }" 
+    <button
+        ng-click="$ctrl.enableDrawingMode('triangle')"
+        ng-class="{ 'active' : $ctrl.mode === 'triangle' }"
         class="btn btn-default"
         aria-label="Triangle" title="Triangle">
         <img src="assets/icons/draw_triangle.png" width="20px" height="20px"/>
     </button>
 
-    <button 
-        ng-click="$ctrl.enableDrawingMode('square')" 
-        ng-class="{ 'active' : $ctrl.mode === 'square' }" 
+    <button
+        ng-click="$ctrl.enableDrawingMode('square')"
+        ng-class="{ 'active' : $ctrl.mode === 'square' }"
         class="btn btn-default"
         aria-label="Rectangle / Carré" title="Rectangle / Carré">
         <img src="assets/icons/draw_rectangle.png" width="20px" height="20px"/>
     </button>
 
-    <button 
-        ng-click="$ctrl.enableDrawingMode('polygon')" 
-        ng-class="{ 'active' : $ctrl.mode === 'polygon' }" 
+    <button
+        ng-click="$ctrl.enableDrawingMode('polygon')"
+        ng-class="{ 'active' : $ctrl.mode === 'polygon' }"
         class="btn btn-default"
         aria-label="Polygone (clic droit pour finir)" title="Polygone (clic droit pour finir)">
         <img src="assets/icons/draw_polygon_45.png" width="20px" height="20px"/>
     </button>
-    
-    <button 
-        ng-click="$ctrl.enableDrawingMode('addtext')" 
-        ng-class="{ 'active' : $ctrl.mode === 'addtext' }" 
+
+    <button
+        ng-click="$ctrl.enableDrawingMode('addtext')"
+        ng-class="{ 'active' : $ctrl.mode === 'addtext' }"
         class="btn btn-default"
         aria-label="Zone de texte" title="Zone de texte">
         <img src="assets/icons/draw_text.png" width="20px" height="20px"/>
     </button>
 
-    <button 
-        ng-click="$ctrl.enableDrawingMode('image')" 
-        ng-class="{ 'active' : $ctrl.mode === 'image' }" 
+    <button
+        ng-click="$ctrl.enableDrawingMode('image')"
+        ng-class="{ 'active' : $ctrl.mode === 'image' }"
         class="btn btn-default"
         aria-label="Importer une image" title="Importer une image">
         <img src="assets/icons/image.png" width="20px" height="20px"/>
@@ -113,17 +113,17 @@
         Choisissez un outil de dessin pour paramétrer le style, la couleur, ...
     </p>
 
-    <div 
+    <div
         class="form-group"
         ng-if="$ctrl.mode !== 'default' && $ctrl.mode !== '' && $ctrl.mode !== 'text' && $ctrl.mode !== 'image'">
         <label>Style</label>
-        <ui-select 
-            ng-model="$ctrl.styleChosen" 
-            ng-change="$ctrl.updatePolygonStyle()" 
-            ng-disabled="disabled" 
-            theme="bootstrap" 
+        <ui-select
+            ng-model="$ctrl.styleChosen"
+            ng-change="$ctrl.updatePolygonStyle()"
+            ng-disabled="disabled"
+            theme="bootstrap"
             class="form-control style-selector">
-            
+
             <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
             <ui-select-choices repeat="item in $ctrl.styleChoices | filter: $select.search">
                 <div ng-bind-html="item.name | highlight: $select.search"></div>
@@ -131,51 +131,57 @@
             </ui-select-choices>
 
         </ui-select>
+
+        <div ng-repeat="item in $ctrl.styleChoices | filter: $select.search">
+            {{$ctrl.featureIcon(item, $ctrl.mode)}}
+            <div ng-bind-html="item.name | highlight: $select.search"></div>
+            <div ng-bind-html="$ctrl.featureIcon(item, $ctrl.mode)"></div>
+        </div>
     </div>
 
-    <div 
-        class="form-group" 
+    <div
+        class="form-group"
         ng-if="$ctrl.mode === 'polygon' || $ctrl.mode === 'circle'" >
         <label>Couleur de fond</label>
-        <ui-select 
-            ng-model="$ctrl.colorChosen" 
-            ng-change="$ctrl.changeColor()" 
-            ng-disabled="disabled" 
-            theme="bootstrap" 
+        <ui-select
+            ng-model="$ctrl.colorChosen"
+            ng-change="$ctrl.changeColor()"
+            ng-disabled="disabled"
+            theme="bootstrap"
             class="form-control style-selector">
-            
+
             <ui-select-match placeholder="Couleur de fond">{{$select.selected.name}}</ui-select-match>
-            <ui-select-choices 
-                repeat="item in $ctrl.colors | filter: $select.search" 
+            <ui-select-choices
+                repeat="item in $ctrl.colors | filter: $select.search"
                 style="max-height: 500px;">
-                <span 
-                    style="display:inline-block;" 
+                <span
+                    style="display:inline-block;"
                     ng-bind-html="item.name | highlight: $select.search"></span>
             </ui-select-choices>
 
         </ui-select>
     </div>
-    
+
     <div class="form-group" ng-if="$ctrl.mode === 'polygon' || $ctrl.mode === 'circle'" >
         <label>Contour de forme</label>
-        <span 
+        <span
             class="input-group-addon">
-            
-            <input 
-                type="checkbox" 
-                ng-model="$ctrl.checkboxModel.contour" 
+
+            <input
+                type="checkbox"
+                ng-model="$ctrl.checkboxModel.contour"
                 ng-change="$ctrl.updatePolygonStyle()">
         </span>
     </div>
 
-    <div 
+    <div
         class="form-group"
         ng-if="$ctrl.mode === 'addtext'" >
         <label>Police</label>
-        <ui-select 
-            ng-model="$ctrl.fontChosen" 
-            ng-change="$ctrl.changeTextColor()" 
-            theme="bootstrap" 
+        <ui-select
+            ng-model="$ctrl.fontChosen"
+            ng-change="$ctrl.changeTextColor()"
+            theme="bootstrap"
             class="form-control style-selector">
 
             <ui-select-match placeholder="Sélectionnez une police">{{$select.selected.name}}</ui-select-match>
@@ -186,13 +192,13 @@
         </ui-select>
     </div>
 
-    <div 
+    <div
         class="form-group"
         ng-if="$ctrl.mode === 'addtext'" >
         <label>Couleur</label>
-        <ui-select 
-            ng-model="$ctrl.fontColorChosen" 
-            theme="bootstrap" 
+        <ui-select
+            ng-model="$ctrl.fontColorChosen"
+            theme="bootstrap"
             class="form-control style-selector" >
 
             <ui-select-match placeholder="Sélectionnez une couleur">{{$select.selected.name}}</ui-select-match>
@@ -203,13 +209,13 @@
         </ui-select>
     </div>
 
-    <div 
+    <div
         class="form-group"
         ng-if="$ctrl.mode === 'image'" >
         <label>Importer une image (SVG/JPG/PNG)</label>
         <!-- http://stackoverflow.com/questions/17922557/angularjs-how-to-check-for-changes-in-file-input-fields -->
-        <input onchange="angular.element(this).scope().$ctrl.importImage(this)" 
-            type="file" 
+        <input onchange="angular.element(this).scope().$ctrl.importImage(this)"
+            type="file"
             accept="image/svg+xml,image/png,image/jpeg" />
     </div>
 

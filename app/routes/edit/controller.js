@@ -113,7 +113,8 @@
         }
 
         // general state parameters
-        $ctrl.isParametersVisible            = true; // initial state = parameters
+        $ctrl.isHomeVisible                  = true; // initial state = home
+        $ctrl.isParametersVisible            = false;
         $ctrl.isMapParametersVisible         = false;
         $ctrl.isDrawingParametersVisible     = false;
         $ctrl.isLegendParametersVisible      = false;
@@ -284,7 +285,20 @@
         /**
          * General parameters
          */
+        $ctrl.displayHome = function() {
+            $ctrl.isHomeVisible                  = true;
+            $ctrl.isParametersVisible            = false;
+            $ctrl.isMapParametersVisible         = false;
+            $ctrl.isDrawingParametersVisible     = false;
+            $ctrl.isLegendParametersVisible      = false;
+            $ctrl.isInteractionParametersVisible = false;
+            $ctrl.isBackgroundParametersVisible  = false;
+
+            EditService.resetState();
+
+        }
         $ctrl.displayParameters = function() {
+            $ctrl.isHomeVisible                  = false;
             $ctrl.isParametersVisible            = true;
             $ctrl.isMapParametersVisible         = false;
             $ctrl.isDrawingParametersVisible     = false;
@@ -299,6 +313,7 @@
             $ctrl.isWorkspaceVisible             = true;
             $ctrl.isLegendVisible                = false;
 
+            $ctrl.isHomeVisible                  = false;
             $ctrl.isParametersVisible            = false;
             $ctrl.isMapParametersVisible         = true;
             $ctrl.isDrawingParametersVisible     = false;
@@ -312,6 +327,7 @@
             $ctrl.isWorkspaceVisible             = true;
             $ctrl.isLegendVisible                = false;
 
+            $ctrl.isHomeVisible                  = false;
             $ctrl.isParametersVisible            = false;
             $ctrl.isMapParametersVisible         = false;
             $ctrl.isDrawingParametersVisible     = true;
@@ -334,6 +350,7 @@
             $ctrl.isWorkspaceVisible             = false;
             $ctrl.isLegendVisible                = true;
 
+            $ctrl.isHomeVisible                  = false;
             $ctrl.isParametersVisible            = false;
             $ctrl.isMapParametersVisible         = false;
             $ctrl.isDrawingParametersVisible     = false;
@@ -342,6 +359,7 @@
             $ctrl.isBackgroundParametersVisible  = false;
         }
         $ctrl.displayInteractionParameters = function() {
+            $ctrl.isHomeVisible                  = false;
             $ctrl.isParametersVisible            = false;
             $ctrl.isMapParametersVisible         = false;
             $ctrl.isDrawingParametersVisible     = false;
@@ -350,6 +368,7 @@
             $ctrl.isBackgroundParametersVisible  = false;
         }
         $ctrl.displayBackgroundParameters = function() {
+            $ctrl.isHomeVisible                  = false;
             $ctrl.isParametersVisible            = false;
             $ctrl.isMapParametersVisible         = false;
             $ctrl.isDrawingParametersVisible     = false;

@@ -1,5 +1,10 @@
 <div class="col-xs-12">
 
+    <!-- home form -->
+    <div ng-if="$ctrl.isHomeVisible"
+        ng-include="'scripts/routes/edit/aside_home.html'">
+    </div>
+
     <!-- parameters form -->
     <div ng-if="$ctrl.isParametersVisible"
         ng-include="'scripts/routes/edit/aside_parameters.html'">
