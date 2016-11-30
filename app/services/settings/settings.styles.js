@@ -1,4 +1,4 @@
-// jscs:disable maximumNumberOfLines 
+// jscs:disable maximumNumberOfLines
 // jscs:disable maximumLineLength
 /**
  * @ngdoc service
@@ -643,14 +643,14 @@
             }]
         },{
             id: 'caps',
-            name: 'caps',
+            name: 'Chevron',
             style: [{
                 'k': 'fill-pattern',
                 'v': 'caps'
             }]
         },{
             id: 'woven',
-            name: 'woven',
+            name: 'Trame',
             style: [{
                 'k': 'fill-pattern',
                 'v': 'woven'
