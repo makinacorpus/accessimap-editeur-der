@@ -710,7 +710,7 @@
             }]
         },{
             id: 'bigcircle',
-            name: 'Grand cercle',
+            name: 'Grand cercle plein',
             path: SVGService.circlePath,
             radius: 18,
             style: [{
@@ -755,7 +755,7 @@
             }]
         },{
             id: 'oval',
-            name: 'Ovale',
+            name: 'Ovale plein',
             path: SVGService.ovalPath,
             radius: 18,
             style: [{
@@ -785,7 +785,7 @@
             }]
         },{
             id: 'triangle',
-            name: 'Triangle',
+            name: 'Triangle plein',
             path: SVGService.trianglePath,
             radius: 22,
             style: [{
@@ -815,7 +815,7 @@
             }]
         },{
             id: 'square',
-            name: 'Carré',
+            name: 'Carré plein',
             path: SVGService.squarePath,
             radius: 20,
             style: [{
@@ -830,7 +830,7 @@
             }]
         },{
             id: 'squareDiag',
-            name: 'Carré Diag',
+            name: 'Carré barré',
             path: SVGService.squareDiagPath,
             radius: 25,
             style: [{
@@ -860,7 +860,7 @@
             }]
         },{
             id: 'cross',
-            name: 'Croix',
+            name: 'Croix fine',
             path: SVGService.crossPath,
             radius: 25,
             style: [{
@@ -875,7 +875,7 @@
             }]
         },{
             id: 'cross2',
-            name: 'Croix2',
+            name: 'Croix moyenne',
             path: SVGService.crossPath,
             radius: 25,
             style: [{
@@ -890,7 +890,7 @@
             }]
         },{
             id: 'cross3',
-            name: 'Croix3',
+            name: 'Croix épaisse',
             path: SVGService.crossPath,
             radius: 30,
             style: [{
@@ -905,7 +905,7 @@
             }]
         },{
             id: 'horizontalRect',
-            name: 'horizontalRect',
+            name: 'Rectangle plein',
             path: SVGService.horizontalRectPath,
             radius: 20,
             style: [{
@@ -920,7 +920,7 @@
             }]
         },{
             id: 'horizontalArrow',
-            name: 'horizontalArrow',
+            name: 'Grande flèche pleine',
             path: SVGService.horizontalArrowPath,
             radius: 100,
             style: [{
@@ -934,35 +934,8 @@
                 'v': 'grey'
             }]
         },{
-            id: 'horizontalArrowHash',
-            name: 'horizontalArrowHash',
-            path: SVGService.horizontalArrowPath,
-            radius: 100,
-            style: [{
-                'k': 'stroke-width',
-                'v': '0'
-            },{
-                'k': 'fill',
-                'v': POLYGON_STYLES.smallhashm45.url()
-            }]
-        },{
-            id: 'horizontalArrowDots',
-            name: 'horizontalArrowDots',
-            path: SVGService.horizontalArrowPath,
-            radius: 100,
-            style: [{
-                'k': 'stroke',
-                'v': '#343434'
-            }, {
-                'k': 'stroke-width',
-                'v': '2'
-            },{
-                'k': 'fill',
-                'v': POLYGON_STYLES.smalldotsthicker2.url()
-            }]
-        },{
             id: 'horizontalArrowMedium',
-            name: 'horizontalArrowMedium',
+            name: 'Moyenne flèche pleine',
             path: SVGService.horizontalArrowPath,
             radius: 60,
             style: [{
@@ -977,7 +950,7 @@
             }]
         },{
             id: 'horizontalArrowSmall',
-            name: 'horizontalArrowSmall',
+            name: 'Petite flèche pleine',
             path: SVGService.horizontalSmallArrowPath,
             radius: 30,
             style: [{
@@ -989,6 +962,33 @@
             },{
                 'k': 'fill',
                 'v': 'grey'
+            }]
+        },{
+            id: 'horizontalArrowHash',
+            name: 'Grande flèche hachurée',
+            path: SVGService.horizontalArrowPath,
+            radius: 100,
+            style: [{
+                'k': 'stroke-width',
+                'v': '0'
+            },{
+                'k': 'fill',
+                'v': POLYGON_STYLES.smallhashm45.url()
+            }]
+        },{
+            id: 'horizontalArrowDots',
+            name: 'Grande flèche points',
+            path: SVGService.horizontalArrowPath,
+            radius: 100,
+            style: [{
+                'k': 'stroke',
+                'v': '#343434'
+            }, {
+                'k': 'stroke-width',
+                'v': '2'
+            },{
+                'k': 'fill',
+                'v': POLYGON_STYLES.smalldotsthicker2.url()
             }]
         },{
             id: 'northOrientation',
