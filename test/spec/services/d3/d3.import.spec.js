@@ -3,10 +3,10 @@
 describe('Service: ImportService', function () {
 
     beforeEach(module('accessimapEditeurDerApp'));
-    
+
     var ImportService,
         InteractionService,
-        filtersData = '<?xml version="1.0" encoding="UTF-8"?><config><filters><filter id="f1" name="Valeur OSM" gesture="tap" protocol="tts" expandable="false"/><filter id="f2" name="un autre filtre" gesture="tap" protocol="mp3" expandable="false"/><filter id="f3" name="un troisième filtre" gesture="tap" protocol="mp3" expandable="false"/></filters><pois/></config>';
+        filtersData = '<?xml version="1.0" encoding="UTF-8"?><config><filters><filter id="f1" name="Défaut" gesture="tap" protocol="tts" expandable="false"/><filter id="f2" name="un autre filtre" gesture="tap" protocol="mp3" expandable="false"/><filter id="f3" name="un troisième filtre" gesture="tap" protocol="mp3" expandable="false"/></filters><pois/></config>';
 
     beforeEach(inject(function ($injector) {
         ImportService = $injector.get('ImportService')
@@ -29,9 +29,9 @@ describe('Service: ImportService', function () {
 
             var filters = InteractionService.getFilters();
             expect(filters.length).toBe(3);
-            
+
             expect(filters[0].id).toBe('f1');
-            expect(filters[0].name).toBe('Valeur OSM');
+            expect(filters[0].name).toBe('Défaut');
             expect(filters[0].gesture).toBe('tap');
             expect(filters[0].protocol).toBe('tts');
 
