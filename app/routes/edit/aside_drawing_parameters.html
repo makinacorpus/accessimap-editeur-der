@@ -10,7 +10,7 @@
 
 <!-- editing modes -->
 <div class="btn-group">
-
+    <label>Edition</label><br/>
     <button
         ng-click="$ctrl.enableDrawingMode('default')"
         ng-class="{ 'active' : $ctrl.mode === 'default' }"
@@ -42,6 +42,7 @@
 </div>
 
 <div class="btn-group">
+   <label>Formes géométriques</label><br/>
    <button
         ng-click="$ctrl.enableDrawingMode('point')"
         ng-class="{ 'active' : $ctrl.mode === 'point' }"
@@ -89,7 +90,10 @@
         aria-label="Polygone (clic droit pour finir)" title="Polygone (clic droit pour finir)">
         <img src="assets/icons/draw_polygon_45.png" width="20px" height="20px"/>
     </button>
+</div>
 
+<div class="btn-group">
+    <label>Autre</label><br/>
     <button
         ng-click="$ctrl.enableDrawingMode('addtext')"
         ng-class="{ 'active' : $ctrl.mode === 'addtext' }"
@@ -108,7 +112,7 @@
 </div>
 
 <form>
-
+    <label>Propriétés de l'objet courant</label><br/>
     <p ng-if="$ctrl.mode === 'default' || $ctrl.mode === ''">
         Choisissez un outil de dessin pour paramétrer le style, la couleur, ...
     </p>
