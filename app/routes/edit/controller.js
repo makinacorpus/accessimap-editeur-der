@@ -103,7 +103,7 @@
         $ctrl.getFeatures                = EditService.getFeatures;
 
         $ctrl.model = {
-            title           : 'Titre du dessin',
+            title           : 'Nouveau dessin',
             isMapVisible    : false,
             comment         : 'Pas de commentaire',
             mapFormat       : 'landscapeA4',

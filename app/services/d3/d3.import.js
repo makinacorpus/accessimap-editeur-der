@@ -40,7 +40,7 @@
 
             if (! model) {
                 model = {
-                    title           : 'Titre du dessin',
+                    title           : 'Nouveau dessin',
                     isMapVisible    : false,
                     comment         : 'Pas de commentaire',
                     mapFormat       : 'landscapeA4',
@@ -108,57 +108,58 @@
          */
         function importDrawing(svgElement) {
 
+            var
+
+            currentGeoJSONLayer    = LayerService.geojson.getLayer().node(),
+            currentDrawingLayer    = LayerService.drawing.getLayer().node(),
+            currentBackgroundLayer = LayerService.background.getLayer().node(),
+
+            geojsonLayer    = svgElement.querySelector('g[data-name="geojson-layer"]'),
+            drawingLayer    = svgElement.querySelector('g[data-name="drawing-layer"]'),
+            backgroundLayer = svgElement.querySelector('g[data-name="background-layer"]'),
+            overlayLayer    = svgElement.querySelector('svg[data-name="overlay"]'),
+
+            metadataGeoJSON      = svgElement.querySelector('metadata[data-name="data-geojson"]'),
+            // metadataInteractions = svgElement.querySelector('metadata[data-name="data-interactions"]'),
+
+            format = svgElement.querySelector('svg').getAttribute('data-format'),
+            center = svgElement.querySelector('svg').getAttribute('data-center'),
+
+            currentOverlayTranslation = LayerService.overlay.getTranslation(),
+
+            translateScaleOverlayGroup = overlayLayer && overlayLayer.getAttribute('transform'),
+
+            translateOverlayGroup = ( translateScaleOverlayGroup === null )
+                                    ? null
+                                    : translateScaleOverlayGroup
+                                            .substring(translateScaleOverlayGroup.indexOf('(') + 1,
+                                                        translateScaleOverlayGroup.indexOf(')')),
+
+            translateOverlayGroupArray = ( translateOverlayGroup === null ) ? [0, 0]
+                : translateOverlayGroup.slice(0, translateOverlayGroup.length).split(','),
+
+            translateMarginGroup = overlayLayer
+                                   && overlayLayer.querySelector('g[id="margin-layer"]').getAttribute('transform'),
+
+            translateMargin = ( translateMarginGroup === null )
+                                ? null
+                                : translateMarginGroup
+                                        .substring(translateMarginGroup.indexOf('(') + 1,
+                                                    translateMarginGroup.indexOf(')')),
+
+            translateMarginArray = ( translateMargin === null ) ? [0, 0]
+                : translateMargin.slice(0, translateMargin.length).split(','),
+
+            translationToApply = { x: currentOverlayTranslation.x
+                                        - translateOverlayGroupArray[0]
+                                        - translateMarginArray[0],
+                                    y: currentOverlayTranslation.y
+                                        - translateOverlayGroupArray[1]
+                                        - translateMarginArray[1]
+                                };
 
             if (isVersionOfSVGAcceptable(svgElement)) {
 
-                var
-
-                currentGeoJSONLayer    = LayerService.geojson.getLayer().node(),
-                currentDrawingLayer    = LayerService.drawing.getLayer().node(),
-                currentBackgroundLayer = LayerService.background.getLayer().node(),
-
-                geojsonLayer    = svgElement.querySelector('g[data-name="geojson-layer"]'),
-                drawingLayer    = svgElement.querySelector('g[data-name="drawing-layer"]'),
-                backgroundLayer = svgElement.querySelector('g[data-name="background-layer"]'),
-                overlayLayer    = svgElement.querySelector('svg[data-name="overlay"]'),
-
-                metadataGeoJSON      = svgElement.querySelector('metadata[data-name="data-geojson"]'),
-                // metadataInteractions = svgElement.querySelector('metadata[data-name="data-interactions"]'),
-
-                format = svgElement.querySelector('svg').getAttribute('data-format'),
-                center = svgElement.querySelector('svg').getAttribute('data-center'),
-
-                currentOverlayTranslation = LayerService.overlay.getTranslation(),
-
-                translateScaleOverlayGroup = overlayLayer.getAttribute('transform'),
-
-                translateOverlayGroup = ( translateScaleOverlayGroup === null )
-                                        ? null
-                                        : translateScaleOverlayGroup
-                                                .substring(translateScaleOverlayGroup.indexOf('(') + 1,
-                                                            translateScaleOverlayGroup.indexOf(')')),
-
-                translateOverlayGroupArray = ( translateOverlayGroup === null ) ? [0, 0]
-                    : translateOverlayGroup.slice(0, translateOverlayGroup.length).split(','),
-
-                translateMarginGroup = overlayLayer.querySelector('g[id="margin-layer"]').getAttribute('transform'),
-
-                translateMargin = ( translateMarginGroup === null )
-                                    ? null
-                                    : translateMarginGroup
-                                            .substring(translateMarginGroup.indexOf('(') + 1,
-                                                        translateMarginGroup.indexOf(')')),
-
-                translateMarginArray = ( translateMargin === null ) ? [0, 0]
-                    : translateMargin.slice(0, translateMargin.length).split(','),
-
-                translationToApply = { x: currentOverlayTranslation.x
-                                            - translateOverlayGroupArray[0]
-                                            - translateMarginArray[0],
-                                       y: currentOverlayTranslation.y
-                                            - translateOverlayGroupArray[1]
-                                            - translateMarginArray[1]
-                                    }
 
                 // if exists, inserts data of the geojson layers
                 if (geojsonLayer) {
@@ -191,7 +192,8 @@
 
                 if (namedview) namedview.remove();
 
-                LayerService.drawing.appendSvg(svgElement)
+                // LayerService.drawing.appendSvg(svgElement)
+                cloneChildrenFromNodeAToB(svgElement, currentDrawingLayer, translationToApply);
             }
 
         }
