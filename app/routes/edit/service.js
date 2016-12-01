@@ -331,7 +331,8 @@
                 .retrieveData(MapService.getBounds(), query)
                 .then(function successCallback(osmGeojson) {
                     if (!osmGeojson) {
-                        _errorCallback('Erreur lors de la récupération des données cartographiques... Merci de recommencer.')
+                        _errorCallback('Erreur lors de la récupération des données cartographiques... ' +
+                                       'Merci de recommencer.')
                     }
 
                     if (osmGeojson.features && osmGeojson.features.length > 0) {
