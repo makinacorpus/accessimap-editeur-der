@@ -26,7 +26,8 @@
             ToolboxTextService,
             ToolboxPolylineService,
             ToolboxImageService,
-            SelectPathService) {
+            SelectPathService,
+            $sce) {
 
         this.init                          = init;
 
@@ -310,8 +311,8 @@
                     symbol.style(k, v);
                 }
             });
+            return $sce.trustAsHtml((new XMLSerializer()).serializeToString(iconSvg));
 
-            return (new XMLSerializer()).serializeToString(iconSvg);
         };
 
     }
@@ -325,6 +326,7 @@
                             'ToolboxTextService',
                             'ToolboxPolylineService',
                             'ToolboxImageService',
-                            'SelectPathService'];
+                            'SelectPathService',
+                            '$sce'];
 
 })();
