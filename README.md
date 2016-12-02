@@ -2,23 +2,20 @@
 [![Build Status](https://travis-ci.org/makinacorpus/accessimap-editeur-der.svg?branch=master)](https://travis-ci.org/makinacorpus/accessimap-editeur-der)
 [![Coverage Status](https://coveralls.io/repos/makinacorpus/accessimap-editeur-der/badge.svg?branch=master&service=github)](https://coveralls.io/github/makinacorpus/accessimap-editeur-der?branch=master)
 
-### Requirements
+## Requirements
 
-- ruby-dev & gem (`sudo apt-get install ruby-dev gem`)
 - on linux mint, 
     + `sudo apt-get install build-essential patch`
     + `sudo apt-get install ruby-dev zlib1g-dev liblzma-dev`    
-- sass / compass ? (sudo gem install compass)
 - npm (version > 1.2.10)
 - bower (`npm install -g bower`)
-- gulp (`npm install -g gulp`)
 - karma (`npm install -g karma`)
 
-### Install
+## Install
 
 - `bower install`
 - `npm install`
-- `gulp`
+- `npm start`
 - look your favorite browser opening accessimap !
 
 
@@ -43,25 +40,17 @@ fs.inotify.max_user_watches=32768
 
 Normally, if you reboot, it will be ok. If not, please tell us in an issue.
 
-### Publish on gh-pages 
+## Publish on gh-pages
+
+Publishing on GitHub Pages is automatically done by Travis.
+
+Each commit on master will trigger a build/test in Travis, and if it succeed, 
+it will deploy and commit the build on GitHub Pages.
+
+By the way, if you want to do it manually, you can do this :
+
 ``` sh
-gulp build
+npm build
 ```
 
 Then copy the dist/v2 into the *gh-pages* branch, commit & push it.
-
-### PDFJS
-In bower_components/pdfjs-dist/bower.json, this part:
-``` json
-  "main": [
-    "build/pdf.js",
-    "build/pdf.worker.js"
-  ],
-```
-should be replaced by this:
-
-``` json
-  "main": [
-    "build/pdf.combined.js"
-  ],
-```

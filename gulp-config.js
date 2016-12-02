@@ -8,13 +8,11 @@ module.exports = {
     app: app,
     dist: dist,
     homepage: dist + 'index.html',
-    compass: {
-        globs: [ app + 'assets/styles/*.scss', app + 'scripts/**/*.scss'],
-        dest: '.tmp',
+    sass: {
+        globs: [ app + 'assets/styles/*.scss'],
+        dest: '.tmp/assets/styles',
         options: {
-            css: '.tmp',
-            sass: app ,
-            import_path: 'bower_components'
+            includePaths: [ 'bower_components' ]
         }
     },
     autoprefixer: {
@@ -42,9 +40,9 @@ module.exports = {
         }
     },
     assets: {
-        globs: [ app + 'favicon.ico', 
-                 app + 'index.html', 
-                 app + 'assets/**/*', 
+        globs: [ app + 'favicon.ico',
+                 app + 'index.html',
+                 app + 'assets/**/*',
                 '!' + app + 'assets/**/*.{zip,scss}'],
         base: './app',
         dest: dist

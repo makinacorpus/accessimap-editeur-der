@@ -5,7 +5,7 @@ var gulp = require('gulp'),
     // gulp modules
     autoprefixer = require('gulp-autoprefixer'),
     clean        = require('gulp-clean'),
-    compass      = require('gulp-compass'),
+    sass         = require('gulp-sass'),
     concat       = require('gulp-concat'),
     connect      = require('gulp-connect'),
     filter       = require('gulp-filter'),
@@ -107,10 +107,10 @@ gulp.task('build:templatejs', function() {
  * Use of autoprefixer to be compatible with prefix vendor
  */
 gulp.task('build:css', ['clean:css'], function() {
-    return gulp.src(config.compass.globs)
-            .pipe(compass(config.compass.options))
+    return gulp.src(config.sass.globs)
+            .pipe(sass(config.sass.options))
             .pipe(autoprefixer(config.autoprefixer))
-            .pipe(gulp.dest(config.compass.dest))
+            .pipe(gulp.dest(config.sass.dest))
             .pipe(connect.reload());
 })
 
@@ -179,7 +179,7 @@ gulp.task('doc', ['clean:doc'], function() {
 gulp.task('serve', ['build:css', 'connect', 'copy:js', 'copy:assets', 'build:templatejs', 'doc'], function() {
 
     // wachers configuration
-    gulp.watch(config.compass.globs, ['build:css']);
+    gulp.watch(config.sass.globs, ['build:css']);
     gulp.watch(config.js.globs, ['copy:js', 'doc']);
     gulp.watch(config.templates.globs, ['build:templatejs']);
     gulp.watch(config.assets.globs, ['copy:assets']);
