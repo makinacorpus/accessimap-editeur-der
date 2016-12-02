@@ -142,15 +142,15 @@
 
         $ctrl.exportData          = function() {
 
-            ToasterService.info('Export du dessin... merci de patienter', {timeout: 0, tapToDismiss: false})
+            ToasterService.info('Téléchargement du dessin en cours... merci de patienter', {timeout: 0, tapToDismiss: false})
             EditService.exportData($ctrl.model)
                 .then(function () {
                     ToasterService.remove()
-                    ToasterService.success('Export terminé !')
+                    ToasterService.success('Téléchargement terminée !')
                 })
                 .catch(function(error) {
                     ToasterService.remove()
-                    ToasterService.error(error, 'Erreur lors de l\'export...')
+                    ToasterService.error(error, 'Erreur lors de la génération...')
                 });
         };
         $ctrl.rotateMap           = EditService.rotateMap;
