@@ -48,7 +48,8 @@
 
             currentTarget = target;
 
-            var type = target.attr('data-type') ? target.attr('data-type') : 'default' ;
+            var type = target.attr('data-type') ? target.attr('data-type') : 'default' ,
+                overlay = document.querySelector('svg[data-name="overlay"]');
 
             if (type) {
                 var data = SettingsActions.ACTIONS[type],
@@ -59,7 +60,6 @@
                     .animationDuration(100)
                     .iconSize(40)
                     .translation(mousePosition[0] + ' ' + mousePosition[1])
-                    .scale(1/getCurrentZoom() + "," + 1/getCurrentZoom())
                     .onClick(function(d) {
 
                         d3.event.preventDefault();
@@ -70,7 +70,7 @@
                         var action = d.data.action;
                         action(target, addRadialMenu);
                     })
-                    .appendTo(svg.node())
+                    .appendTo(overlay)
                     .show(data);
 
                 svg.on('click', hideRadialMenu);
@@ -94,20 +94,12 @@
          *
          */
         function addRadialMenu(elements, svg) {
-            elements.on('contextmenu', function(event) {
+            elements.on('contextmenu', function() {
                 var elmt = d3.select(this),
-                    pos = [elmt.node().getBBox().x + 10, elmt.node().getBBox().y + 10],
-                    translate;
+                    pos = [d3.event.offsetX, d3.event.offsetY];
 
-                // TODO: Block others click...
                 d3.event.preventDefault();
                 d3.event.stopPropagation();
-
-                if (elmt.attr('transform')) {
-                    translate = elmt.attr('transform').replace("translate(", "").replace(")", "").split(",");
-                    pos[0] += Number(translate[0]);
-                    pos[1] += Number(translate[1]);
-                }
 
                 draw = function redrawMenu() {
                     if (menu) menu.hide();
