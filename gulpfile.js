@@ -36,7 +36,7 @@ gulp.task('clean:dist', function() {
     return gulp.src(config.dist).pipe(clean())
 });
 gulp.task('clean:css', function() {
-    return gulp.src('.tmp/styles/*').pipe(clean())
+    return gulp.src(config.sass.dest + '/*').pipe(clean())
 });
 gulp.task('clean:js', function() {
     return gulp.src([ config.js.dest + '**/*.js', '!**/{docs,vendor}/**' ]).pipe(clean())
@@ -98,7 +98,7 @@ gulp.task('build:templatejs', function() {
             filePath: config.templates.filePath,
             prefix: 'scripts/'
         }))
-        .pipe(gulp.dest('.tmp'))
+        .pipe(gulp.dest(config.dist))
         .pipe(connect.reload());
 })
 
@@ -126,7 +126,6 @@ gulp.task('connect', function() {
         livereload: true,
         middleware: function (connect) {
             return [
-                connect.static('.tmp'),
                 connect().use(
                     config.doc.dest,
                     connect.static(config.doc.dest)
