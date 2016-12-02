@@ -311,6 +311,7 @@
                     symbol.style(k, v);
                 }
             });
+
             return $sce.trustAsHtml((new XMLSerializer()).serializeToString(iconSvg));
 
         };

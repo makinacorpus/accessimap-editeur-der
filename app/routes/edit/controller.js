@@ -142,7 +142,8 @@
 
         $ctrl.exportData          = function() {
 
-            ToasterService.info('Téléchargement du dessin en cours... merci de patienter', {timeout: 0, tapToDismiss: false})
+            ToasterService.info('Téléchargement du dessin en cours...\n' +
+                'Merci de patienter', {timeout: 0, tapToDismiss: false})
             EditService.exportData($ctrl.model)
                 .then(function () {
                     ToasterService.remove()
