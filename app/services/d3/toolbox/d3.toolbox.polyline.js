@@ -13,10 +13,10 @@
         this.beginLineOrPolygon    = beginLineOrPolygon;
         this.drawHelpLineOrPolygon = drawHelpLineOrPolygon;
         this.finishLineOrPolygon   = finishLineOrPolygon;
-        
+
         var svgDrawing,
             applyStyle ;
-        
+
         function init(_svgDrawing, _applyStyle) {
             svgDrawing = _svgDrawing;
             applyStyle = _applyStyle;
@@ -57,16 +57,16 @@
                     applyStyle(pathInner, style.styleInner, color);
                 }
             }
-            
+
             if (lastPoint) {
                 var tanAngle = Math.abs((y - lastPoint.y) / (x - lastPoint.x)),
                     tan5     = Math.tan((5 * 2 * Math.PI) / 360),
                     tan85    = Math.tan((85 * 2 * Math.PI) / 360);
 
                 // If the ctrlKey is pressed
-                // draw horizontal or vertical lines 
+                // draw horizontal or vertical lines
                 // with a tolerance of 5°
-                if (d3.event && d3.event.ctrlKey 
+                if (d3.event && d3.event.ctrlKey
                     && (tanAngle < tan5 || tanAngle > tan85)) {
                     if (tanAngle < tan5) {
                         y = lastPoint.y;
@@ -121,9 +121,9 @@
                     tan85    = Math.tan((85 * 2 * Math.PI) / 360);
 
                 // If the ctrlKey is pressed
-                // draw horizontal or vertical lines 
+                // draw horizontal or vertical lines
                 // with a tolerance of 5°
-                if (d3.event && d3.event.ctrlKey 
+                if (d3.event && d3.event.ctrlKey
                     && (tanAngle < tan5 || tanAngle > tan85)) {
                     if (tanAngle < tan5) {
                         y = lastPoint.y;
@@ -141,8 +141,6 @@
 
         function finishLineOrPolygon(x, y, style, color, mode) {
             var iid = UtilService.getiid();
-            
-            // RadialMenuService.addRadialMenu(d3.select('.edition'));
 
             if (mode === 'line') {
                 d3.select('.edition.inner')
@@ -162,11 +160,11 @@
                 .attr('data-link', iid);
 
             d3.select('.ongoing').remove();
-            
+
         }
 
     }
-    
+
     angular.module(moduleApp).service('ToolboxPolylineService', ToolboxPolylineService);
 
     ToolboxPolylineService.$inject = ['RadialMenuService', 'GeneratorService', 'UtilService'];

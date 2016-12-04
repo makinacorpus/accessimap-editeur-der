@@ -160,7 +160,6 @@
 
             applyStyle(feature, style.style, color);
 
-            // RadialMenuService.addRadialMenu(feature);
         }
 
 

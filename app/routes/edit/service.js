@@ -647,7 +647,6 @@
                                         }
 
                                         ImportService.importDrawing(svgElement)
-                                        // DrawingService.toolbox.addRadialMenus();
                                         ModeService.enableDefaultMode();
                                         deferred.resolve(model);
 

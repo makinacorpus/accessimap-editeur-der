@@ -15,7 +15,7 @@
 
         var svgDrawing,
             applyStyle ;
-        
+
         function init(_svgDrawing, _applyStyle) {
             svgDrawing = _svgDrawing;
             applyStyle = _applyStyle;
@@ -27,23 +27,23 @@
          * @methodOf accessimapEditeurDerApp.ToolboxRectangleService
          *
          * @description
-         * Draw a square at specific coordinates 
-         * 
-         * @param  {integer} x     
+         * Draw a square at specific coordinates
+         *
+         * @param  {integer} x
          * X coordinate of the point
-         * 
-         * @param  {integer} y     
+         *
+         * @param  {integer} y
          * Y coordinate of the point
-         * 
-         * @param  {Object} style 
+         *
+         * @param  {Object} style
          * SettingsService.STYLE of the point
-         * 
-         * @param  {Object} color 
+         *
+         * @param  {Object} color
          * SettingsService.COLOR of the point
-         * 
+         *
          * @param  {boolean} contour
          * If true add a shape to the circle
-         * 
+         *
          */
         function drawSquare(x, y, style, color, contour) {
 
@@ -58,8 +58,6 @@
                     height = y - originY;
 
                 if (width !== 0 && height !== 0) {
-                    
-                    // RadialMenuService.addRadialMenu(feature)
 
                     feature
                         .attr('data-origin-x', '')
@@ -73,7 +71,7 @@
 
             } else { // first click
                 var iid = UtilService.getiid();
-                feature = svgDrawing.select('g[data-name="polygons-layer"]') 
+                feature = svgDrawing.select('g[data-name="polygons-layer"]')
                     .append('rect')
                     .attr('x', x)
                     .attr('y', y)
@@ -102,16 +100,16 @@
          *
          * @description
          * Update the radius of a feature circle
-         * 
-         * @param  {integer} x     
+         *
+         * @param  {integer} x
          * X coordinate of the point
-         * 
-         * @param  {integer} y     
+         *
+         * @param  {integer} y
          * Y coordinate of the point
-         * 
-         * @param  {boolean} shiftKeyPressed     
+         *
+         * @param  {boolean} shiftKeyPressed
          * Whether or not the shift key is pressed
-         * 
+         *
          */
         function updateSquare(x, y, shiftKeyPressed) {
             var feature = d3.select('.edition');
@@ -132,7 +130,7 @@
                         width = height;
                         newY = y < originY ? originY - width : originY
                         newX = x < originX ? originX - height : originX
-                        
+
                     } else {
                         height = width;
                         newY = y < originY ? originY - width : originY
@@ -148,7 +146,7 @@
         }
 
     }
-    
+
     angular.module(moduleApp).service('ToolboxRectangleService', ToolboxRectangleService);
 
     ToolboxRectangleService.$inject = ['RadialMenuService', 'GeneratorService', 'UtilService'];

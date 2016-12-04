@@ -15,7 +15,7 @@
 
         var svgDrawing,
             applyStyle ;
-        
+
         function init(_svgDrawing, _applyStyle) {
             svgDrawing = _svgDrawing;
             applyStyle = _applyStyle;
@@ -31,7 +31,7 @@
         }
 
         function writeText(x, y, font, color) {
-            
+
             // the previously edited text should not be edited anymore
             d3.select('.edition').classed('edition', false);
 
@@ -56,11 +56,11 @@
                     .text('');
 
             return setTextEditable(textElement);
-            
+
         }
 
         function setTextEditable(textElement) {
-            
+
             var deferred = $q.defer(),
                 text = textElement.text() || 'Texte';
 
@@ -115,8 +115,6 @@
                         });
                         d3.select(this.parentElement).remove();
 
-                        // .addRadialMenu(d3.select('.edition'));
-
                         d3.select('.edition').classed('edition', false);
                         textElement.style('cursor','text')
                             .on('click', function(event) {
@@ -139,7 +137,7 @@
 
 
     }
-    
+
     angular.module(moduleApp).service('ToolboxTextService', ToolboxTextService);
 
     ToolboxTextService.$inject = ['GeneratorService', 'UtilService', '$q']

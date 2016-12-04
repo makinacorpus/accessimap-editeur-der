@@ -13,7 +13,7 @@
 
         var svgDrawing,
             applyStyle ;
-        
+
         function init(_svgDrawing, _applyStyle) {
             svgDrawing = _svgDrawing;
             applyStyle = _applyStyle;
@@ -25,9 +25,9 @@
          * @methodOf accessimapEditeurDerApp.ToolboxImageService
          *
          * @description
-         * 
+         *
          * Import a local image in the DER
-         * 
+         *
          */
         function importImage(x, y, style, color, contour) {
 
@@ -40,8 +40,6 @@
                     r = Math.sqrt(Math.pow(xOffset, 2) + Math.pow(yOffset, 2))
 
                 if (r > 0) {
-                    
-                    // RadialMenuService.addRadialMenu(feature)
 
                     feature.attr('r', r)
                         .attr('e-style', style.id)
@@ -55,7 +53,7 @@
 
             } else { // first click
                 var iid = UtilService.getiid();
-                feature = svgDrawing.select('g[data-name="polygons-layer"]') 
+                feature = svgDrawing.select('g[data-name="polygons-layer"]')
                     .append('ellipse')
                     .attr('cx', x)
                     .attr('cy', y)
@@ -84,16 +82,16 @@
          *
          * @description
          * Update the radius of a feature circle
-         * 
-         * @param  {integer} x     
+         *
+         * @param  {integer} x
          * X coordinate of the point
-         * 
-         * @param  {integer} y     
+         *
+         * @param  {integer} y
          * Y coordinate of the point
-         * 
-         * @param  {boolean} shiftKeyPressed     
+         *
+         * @param  {boolean} shiftKeyPressed
          * Whether or not the shift key is pressed
-         * 
+         *
          */
         function updateCircleRadius(x, y, shiftKeyPressed) {
             var feature = d3.select('.edition');
@@ -129,7 +127,7 @@
         }
 
     }
-    
+
     angular.module(moduleApp).service('ToolboxImageService', ToolboxImageService);
 
     ToolboxImageService.$inject = ['UtilService'];
