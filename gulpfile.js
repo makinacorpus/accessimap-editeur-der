@@ -179,7 +179,7 @@ gulp.task('serve', ['build:css', 'connect', 'copy:js', 'copy:assets', 'build:tem
 
     // wachers configuration
     gulp.watch(config.sass.globs, ['build:css']);
-    gulp.watch(config.js.globs, ['copy:js', 'doc']);
+    gulp.watch(config.js.globs, ['copy:js', 'build:templatejs', 'doc']);
     gulp.watch(config.templates.globs, ['build:templatejs']);
     gulp.watch(config.assets.globs, ['copy:assets']);
 
