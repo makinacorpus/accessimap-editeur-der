@@ -84,12 +84,14 @@
 
         }
 
-        function appendSvg(svgElement) {
+        function appendSvg(svgElement, transformToApply) {
             var children = svgElement.childNodes;
 
             for (var i = 0; i < children.length; i++) {
-                if (children[i].localName === 'svg')
+                if (children[i].localName === 'svg') {
+                    $(children[i]).attr('transform', transformToApply);
                     _g.select('[data-name="images-layer"]').node().appendChild(children[i])
+                }
             }
         }
 
