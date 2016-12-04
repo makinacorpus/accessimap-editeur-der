@@ -139,7 +139,7 @@
                 : translateOverlayGroup.slice(0, translateOverlayGroup.length).split(','),
 
             translateMarginGroup = overlayLayer
-                                   && overlayLayer.querySelector('g[id="margin-layer"]').getAttribute('transform'),
+                                && overlayLayer.querySelector('g[id="margin-layer"]').getAttribute('transform'),
 
             translateMargin = ( translateMarginGroup === null )
                                 ? null
@@ -159,7 +159,6 @@
                                 };
 
             if (isVersionOfSVGAcceptable(svgElement)) {
-
 
                 // if exists, inserts data of the geojson layers
                 if (geojsonLayer) {
@@ -192,8 +191,7 @@
 
                 if (namedview) namedview.remove();
 
-                // LayerService.drawing.appendSvg(svgElement)
-                cloneChildrenFromNodeAToB(svgElement, currentDrawingLayer, translationToApply);
+                LayerService.drawing.appendSvg(svgElement, 'translate(' + translationToApply.x + ',' + translationToApply.y + ')');
             }
 
         }
