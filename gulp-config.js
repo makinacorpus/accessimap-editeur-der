@@ -10,7 +10,7 @@ module.exports = {
     homepage: dist + 'index.html',
     sass: {
         globs: [ app + 'assets/styles/*.scss'],
-        dest: dist + '/assets/styles',
+        dest: '.tmp/assets/styles',
         options: {
             includePaths: [ 'bower_components' ]
         }

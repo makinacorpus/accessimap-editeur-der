@@ -98,7 +98,7 @@ gulp.task('build:templatejs', function() {
             filePath: config.templates.filePath,
             prefix: 'scripts/'
         }))
-        .pipe(gulp.dest(config.dist))
+        .pipe(gulp.dest('.tmp'))
         .pipe(connect.reload());
 })
 
@@ -126,6 +126,7 @@ gulp.task('connect', function() {
         livereload: true,
         middleware: function (connect) {
             return [
+                connect.static('.tmp'),
                 connect().use(
                     config.doc.dest,
                     connect.static(config.doc.dest)
