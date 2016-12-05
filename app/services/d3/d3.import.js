@@ -186,11 +186,15 @@
                 // we remove metadata, namedview elements because it crash the export
                 var metadata = svgElement.querySelector('metadata'),
                     namedview = svgElement.querySelector('namedview'),
+                    inkscapePerspectiveElement = svgElement.querySelector('perspective'),
                     translationToApply = 'translate(' + translationToApply.x + ',' + translationToApply.y + ')';
 
                 if (metadata) metadata.remove();
 
                 if (namedview) namedview.remove();
+
+                // linked to a bug when exporting a DERi with 'perspective' information from Inkscape...
+                if (inkscapePerspectiveElement) inkscapePerspectiveElement.remove();
 
                 LayerService.drawing.appendSvg(svgElement, translationToApply);
             }

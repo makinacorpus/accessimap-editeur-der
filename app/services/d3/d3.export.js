@@ -194,11 +194,16 @@
                             })
 
                         }).catch(function(error) {
+                            console.error(error);
                             initNodeState();
                             deferred.reject(error);
                         })
 
-                }).catch(deferred.reject)
+                }).catch(function(error) {
+                    console.error(error);
+                    initNodeState();
+                    deferred.reject(error);
+                });
 
             return deferred.promise;
         }

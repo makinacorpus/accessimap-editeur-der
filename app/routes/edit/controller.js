@@ -151,7 +151,7 @@
                 })
                 .catch(function(error) {
                     ToasterService.remove()
-                    ToasterService.error(error, 'Erreur lors de la génération...')
+                    ToasterService.error(error, 'Erreur lors de la génération...');
                 });
         };
         $ctrl.rotateMap           = EditService.rotateMap;

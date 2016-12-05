@@ -89,8 +89,16 @@
 
             for (var i = 0; i < children.length; i++) {
                 if (children[i].localName === 'svg') {
-                    $(children[i]).attr('transform', transformToApply);
-                    _g.select('[data-name="images-layer"]').node().appendChild(children[i])
+                    var nodesToAppend = children[i].childNodes,
+                        groupNode = _g.select('[data-name="images-layer"]')
+                        .append('g')
+                        .attr('importFile', 'external file')
+                        .attr('transform', transformToApply);
+                    for (var j = 0; j < nodesToAppend.length; j++) {
+                        if (nodesToAppend[j].nodeName !== '#text') {
+                            groupNode.node().appendChild(nodesToAppend[j]);
+                        }
+                    }
                 }
             }
         }
