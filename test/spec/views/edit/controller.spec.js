@@ -26,11 +26,13 @@ describe('Controller: EditController', function () {
             $q: _$q_
         });
 
+        EditController.init();
+
     }));
 
     it('should create the EditController with default parameters', function () {
         expect(EditController).toBeDefined();
-        
+
         expect(EditController.queryChoices).toBeDefined();
         expect(EditController.queryChosen).toBeDefined();
         expect(EditController.styleChoices).toBeDefined();
@@ -49,11 +51,11 @@ describe('Controller: EditController', function () {
         expect(EditController.checkboxModel).toBeDefined();
         expect(EditController.getFeatures).toBeDefined();
     });
-    
+
 
     it('should create the EditController with default methods', function () {
         expect(EditController).toBeDefined();
-        
+
         expect(EditController.exportData).toBeDefined();
         expect(EditController.rotateMap).toBeDefined();
         expect(EditController.changeDrawingFormat).toBeDefined();
