@@ -41,6 +41,7 @@
             eventsToStop = eventsToStop || [ 'click', 'contextmenu', 'mousemove', 'mousedown', 'mouseup' ];
             MapService.resetCursor();
             MapService.removeEventListeners();
+
             if (stopImmediatePropagation !== false) {
                 MapService.addEventListener(eventsToStop, function(e) {
                     e.originalEvent.stopImmediatePropagation();
