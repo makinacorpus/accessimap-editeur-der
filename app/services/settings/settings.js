@@ -15,7 +15,7 @@
 (function() {
     'use strict';
 
-    function SettingsService (SettingsColors, SettingsFonts, SettingsFormats, 
+    function SettingsService (SettingsColors, SettingsFonts, SettingsFormats,
                         SettingsQuery, SettingsStyles) {
 
         var leafletConf = {
@@ -79,26 +79,28 @@
         return {
             XAPI_URL               : XAPI_URL,
             NOMINATIM_URL          : NOMINATIM_URL,
-            
+
             FONTS                  : SettingsFonts.FONTS,
-            
+
             COLORS                 : SettingsColors.COLORS,
+            DEFAULT_COLOR          : SettingsColors.DEFAULT_COLOR,
             ALL_COLORS             : SettingsColors.ALL_COLORS,
-            
+
             FORMATS                : SettingsFormats.FORMATS,
             DEFAULT_DRAWING_FORMAT : SettingsFormats.DEFAULT_DRAWING_FORMAT,
             DEFAULT_LEGEND_FORMAT  : SettingsFormats.DEFAULT_LEGEND_FORMAT,
-            
+
             QUERY_LIST             : SettingsQuery.QUERY_LIST,
             QUERY_DEFAULT          : SettingsQuery.QUERY_DEFAULT,
             QUERY_POI              : SettingsQuery.QUERY_POI,
-            
+
             POLYGON_STYLES         : SettingsStyles.POLYGON_STYLES,
+            DEFAULT_STYLE          : SettingsStyles.DEFAULT_STYLE ,
             STYLES                 : SettingsStyles.STYLES,
             ALL_STYLES             : SettingsStyles.ALL_STYLES,
-            
+
             // ACTIONS                : SettingsActions.ACTIONS,
-            
+
             markerStart            : markerStart,
             markerStop             : markerStop,
             leaflet                : leafletConf,
@@ -110,11 +112,11 @@
 
     angular.module(moduleApp).factory('SettingsService', SettingsService);
 
-    SettingsService.$inject = [ 
-                               'SettingsColors', 
-                               'SettingsFonts', 
+    SettingsService.$inject = [
+                               'SettingsColors',
+                               'SettingsFonts',
                                'SettingsFormats',
-                               'SettingsQuery', 
+                               'SettingsQuery',
                                'SettingsStyles'];
 
 })();

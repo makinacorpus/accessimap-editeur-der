@@ -1008,6 +1008,7 @@
         }]}
 
         this.POLYGON_STYLES = POLYGON_STYLES;
+        this.DEFAULT_STYLE  = STYLES['polygon'][STYLES['polygon'].length - 1];
         this.STYLES         = STYLES;
         this.ALL_STYLES     = STYLES.point.concat(STYLES.polygon.concat(STYLES.line));
 

@@ -177,8 +177,8 @@
         }
 
         function updateStyleAndColor(path, style, color) {
-            var currentStyleId = path.attr('e-style'),
-                currentColorName = path.attr('e-color');
+            var currentStyleId = path.attr('e-style') || SettingsService.DEFAULT_STYLE.id,
+                currentColor = path.attr('e-color') || SettingsService.DEFAULT_COLOR.color;
 
             if (style) {
                 path.attr('e-style', style.id);
@@ -196,7 +196,7 @@
             } else {
                 // no color, we just find the current color of the feature
                 SettingsService.ALL_COLORS.forEach(function (item, index, array) {
-                    if (item.color === currentColorName) {
+                    if (item.color === currentColor) {
                         color = item;
                     }
                 })
@@ -229,6 +229,9 @@
             angular.forEach(style, function(attribute) {
                 var k = attribute.k,
                     v = attribute.v;
+
+                path.style('stroke-opacity', 1);
+                path.style('fill-opacity', 1);
 
                 if (k === 'fill-pattern') {
                     if (colorChosen && colorChosen.color !== 'none') {

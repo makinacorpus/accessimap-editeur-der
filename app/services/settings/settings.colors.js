@@ -42,9 +42,10 @@
                 color: 'purple',
             }
         ]}
-        
-        this.COLORS     = COLORS;
-        this.ALL_COLORS = COLORS.black.concat(COLORS.transparent.concat(COLORS.other));
+
+        this.COLORS        = COLORS;
+        this.DEFAULT_COLOR = COLORS.transparent[0];
+        this.ALL_COLORS    = COLORS.black.concat(COLORS.transparent.concat(COLORS.other));
 
     }
 
