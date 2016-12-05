@@ -93,24 +93,8 @@
         $ctrl.featureIcon                = EditService.featureIcon;
         $ctrl.formats                    = EditService.settings.FORMATS;
         $ctrl.backgroundStyleChoices     = EditService.settings.STYLES.polygon;
-        $ctrl.mapFormat                  = $location.search().mapFormat
-                                            ? $location.search().mapFormat
-                                            : 'landscapeA4';
-        $ctrl.legendFormat               = $location.search().legendFormat
-                                            ? $location.search().legendFormat
-                                            : 'landscapeA4';
-        $ctrl.checkboxModel              = { contour: true};
         $ctrl.getFeatures                = EditService.getFeatures;
 
-        $ctrl.model = {
-            title           : 'Nouveau dessin',
-            isMapVisible    : false,
-            comment         : 'Pas de commentaire',
-            mapFormat       : 'landscapeA4',
-            legendFormat    : 'landscapeA4',
-            backgroundColor : $ctrl.colors[0], // transparent
-            backgroundStyle : EditService.settings.STYLES.polygon[EditService.settings.STYLES.polygon.length - 1],
-        }
 
         // general state parameters
         $ctrl.isHomeVisible                  = true; // initial state = home
@@ -140,18 +124,50 @@
 
         $ctrl.isUndoAvailable     = EditService.isUndoAvailable;
 
+        $ctrl.initState = function() {
+            $ctrl.mapFormat = $location.search().mapFormat
+                            ? $location.search().mapFormat
+                            : 'landscapeA4';
+            $ctrl.legendFormat = $location.search().legendFormat
+                            ? $location.search().legendFormat
+                            : 'landscapeA4';
+
+            $ctrl.checkboxModel = { contour: true};
+
+            $ctrl.model = {
+                title           : 'Nouveau dessin',
+                isMapVisible    : false,
+                comment         : 'Pas de commentaire',
+                mapFormat       : 'landscapeA4',
+                legendFormat    : 'landscapeA4',
+                backgroundColor : $ctrl.colors[0], // transparent
+                backgroundStyle : EditService.settings.STYLES.polygon[EditService.settings.STYLES.polygon.length - 1],
+            }
+
+        }
+
+        $ctrl.init = function() {
+            $ctrl.initState();
+            EditService.init($ctrl.mapFormat, $ctrl.legendFormat);
+        }
+
+        $ctrl.reset = function() {
+            if (window.confirm('En validant, vous allez effacer votre dessin en cours et en créer un nouveau.'))
+                window.location.reload();
+        }
+
         $ctrl.exportData          = function() {
 
-            ToasterService.info('Téléchargement du dessin en cours...\n' +
+            ToasterService.info('Export du dessin en cours...\n' +
                 'Merci de patienter', {timeout: 0, tapToDismiss: false})
             EditService.exportData($ctrl.model)
                 .then(function () {
                     ToasterService.remove()
-                    ToasterService.success('Téléchargement terminée !')
+                    ToasterService.success('Export terminé !')
                 })
                 .catch(function(error) {
                     ToasterService.remove()
-                    ToasterService.error(error, 'Erreur lors de la génération...');
+                    ToasterService.error(error, 'Erreur lors de l\'export...');
                 });
         };
         $ctrl.rotateMap           = EditService.rotateMap;
@@ -237,6 +253,8 @@
             $ctrl.isBrailleDisplayed = false;
             EditService.hideFontBraille()
         }
+
+        $ctrl.resetView = EditService.resetView;
 
         /**
          * Map parameters
@@ -477,8 +495,6 @@
 
         }
 
-        $ctrl.resetView = EditService.resetView;
-
         $ctrl.searchAddress      = function() {
 
             var promises = [];
@@ -519,9 +535,6 @@
                     ToasterService.error(error);
                 })
         };
-
-        // Initialisation of the view
-        EditService.init($ctrl.mapFormat, $ctrl.legendFormat);
 
     }
 
