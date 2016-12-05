@@ -1,10 +1,10 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.ModeService
- * 
+ *
  * @description
  * Manage events (map, d3) in the editor
- * 
+ *
  */
 (function() {
     'use strict';
@@ -34,7 +34,7 @@
         function init(_projection) {
             projection    = _projection;
         }
-        
+
         function initMode() {
 
             MapService.resetCursor();
@@ -72,9 +72,9 @@
          * @methodOf accessimapEditeurDerApp.ModeService
          *
          * @description
-         
-         * Enable the select mode : 
-         * 
+
+         * Enable the select mode :
+         *
          * - user can select items and edit them
          *
          * - user can right click on an item and get a context menu
@@ -83,13 +83,15 @@
 
             initMode();
 
+            MapService.changeCursor('default');
+
             DrawingService.toolbox.addContextMenus();
             DrawingService.toolbox.addSelectPaths();
 
             MapService.removeEventListener(['mousemove', 'mousedown', 'mouseup']);
 
 
-        }        
+        }
 
         /**
          * @ngdoc method
@@ -97,12 +99,11 @@
          * @methodOf accessimapEditeurDerApp.ModeService
          *
          * @description
-         * 
-         * Enable the select mode : 
-         * 
-         * - user can select items and edit them
          *
-         * - user can right click on an item and get a context menu
+         * Enable the default mode :
+         *
+         * - user can pan & zoom the drawing
+         *
          */
         function enableDefaultMode() {
             MapService.resetCursor();
@@ -110,7 +111,7 @@
             DrawingService.toolbox.hideContextMenus();
             DrawingService.toolbox.hideSelectPaths();
         }
-        
+
         function enablePointMode(getDrawingParameter) {
 
             initMode();
@@ -133,14 +134,14 @@
             MapService.addEventListener([ 'mousedown', 'mouseup' ] , function(e) {
                 // only left click
                 if (e.originalEvent.button === 0) {
-                    
+
                     e.originalEvent.stopImmediatePropagation()
                     var p = projection.latLngToLayerPoint(e.latlng),
                         drawingParameters = getDrawingParameter();
-                    
-                    DrawingService.toolbox.drawCircle(p.x, p.y, 
-                                            drawingParameters.style, 
-                                            drawingParameters.color, 
+
+                    DrawingService.toolbox.drawCircle(p.x, p.y,
+                                            drawingParameters.style,
+                                            drawingParameters.color,
                                             drawingParameters.contour)
 
                     MapService.addMouseMoveListener(function(e) {
@@ -148,7 +149,7 @@
                             drawingParameters = getDrawingParameter();
                         DrawingService.toolbox.updateCircleRadius(p.x, p.y, e.originalEvent.shiftKey);
                     })
-                    
+
                 }
             })
 
@@ -168,9 +169,9 @@
                     var p = projection.latLngToLayerPoint(e.latlng),
                         drawingParameters = getDrawingParameter();
 
-                    DrawingService.toolbox.drawSquare(p.x, p.y, 
-                                                    drawingParameters.style, 
-                                                    drawingParameters.color, 
+                    DrawingService.toolbox.drawSquare(p.x, p.y,
+                                                    drawingParameters.style,
+                                                    drawingParameters.color,
                                                     drawingParameters.contour)
 
                     MapService.addEventListener([ 'mousemove' ] , function(e) {
@@ -186,9 +187,9 @@
                             if (e.originalEvent.button === 0) {
                                 var p = projection.latLngToLayerPoint(e.latlng),
                                     drawingParameters = getDrawingParameter();
-                                DrawingService.toolbox.drawSquare(p.x, p.y, 
-                                                                drawingParameters.style, 
-                                                                drawingParameters.color, 
+                                DrawingService.toolbox.drawSquare(p.x, p.y,
+                                                                drawingParameters.style,
+                                                                drawingParameters.color,
                                                                 drawingParameters.contour)
                                 enableSquareMode(getDrawingParameter)
                             }
@@ -215,9 +216,9 @@
                     var p = projection.latLngToLayerPoint(e.latlng),
                         drawingParameters = getDrawingParameter();
 
-                    DrawingService.toolbox.drawTriangle(p.x, p.y, 
-                                                    drawingParameters.style, 
-                                                    drawingParameters.color, 
+                    DrawingService.toolbox.drawTriangle(p.x, p.y,
+                                                    drawingParameters.style,
+                                                    drawingParameters.color,
                                                     drawingParameters.contour)
 
                     MapService.addEventListener([ 'mousemove' ] , function(e) {
@@ -233,9 +234,9 @@
                             if (e.originalEvent.button === 0) {
                                 var p = projection.latLngToLayerPoint(e.latlng),
                                     drawingParameters = getDrawingParameter();
-                                DrawingService.toolbox.drawTriangle(p.x, p.y, 
-                                                                drawingParameters.style, 
-                                                                drawingParameters.color, 
+                                DrawingService.toolbox.drawTriangle(p.x, p.y,
+                                                                drawingParameters.style,
+                                                                drawingParameters.color,
                                                                 drawingParameters.contour)
                                 enableTriangleMode(getDrawingParameter)
                             }
@@ -260,13 +261,13 @@
             MapService.addEventListener([ 'click' ], function(e) {
                 var p = projection.latLngToLayerPoint(e.latlng),
                     drawingParameters = getDrawingParameter();
-                DrawingService.toolbox.beginLineOrPolygon(p.x, 
-                                                p.y, 
-                                                drawingParameters.style, 
-                                                drawingParameters.color, 
-                                                drawingParameters.contour, 
-                                                drawingParameters.mode, 
-                                                lastPoint, 
+                DrawingService.toolbox.beginLineOrPolygon(p.x,
+                                                p.y,
+                                                drawingParameters.style,
+                                                drawingParameters.color,
+                                                drawingParameters.contour,
+                                                drawingParameters.mode,
+                                                lastPoint,
                                                 lineEdit);
                 lastPoint = p;
             })
@@ -274,22 +275,22 @@
             MapService.addEventListener([ 'mousemove' ], function(e) {
                 var p = projection.latLngToLayerPoint(e.latlng),
                     drawingParameters = getDrawingParameter();
-                DrawingService.toolbox.drawHelpLineOrPolygon(p.x, 
-                                                    p.y, 
-                                                    drawingParameters.style, 
-                                                    drawingParameters.color, 
-                                                    drawingParameters.contour, 
-                                                    drawingParameters.mode, 
+                DrawingService.toolbox.drawHelpLineOrPolygon(p.x,
+                                                    p.y,
+                                                    drawingParameters.style,
+                                                    drawingParameters.color,
+                                                    drawingParameters.contour,
+                                                    drawingParameters.mode,
                                                     lastPoint);
             })
 
             MapService.addEventListener([ 'contextmenu' ], function(e) {
                 var p = projection.latLngToLayerPoint(e.latlng),
                     drawingParameters = getDrawingParameter();
-                DrawingService.toolbox.finishLineOrPolygon(p.x, 
-                                                    p.y, 
-                                                    drawingParameters.style, 
-                                                    drawingParameters.color, 
+                DrawingService.toolbox.finishLineOrPolygon(p.x,
+                                                    p.y,
+                                                    drawingParameters.style,
+                                                    drawingParameters.color,
                                                     drawingParameters.mode);
                 lastPoint = null;
                 lineEdit = [];
@@ -329,15 +330,15 @@
          * @ngdoc method
          * @name  enableAddPOI
          * @methodOf accessimapEditeurDerApp.ModeService
-         * 
-         * @description 
-         * Enable the 'Add POI' mode, 
+         *
+         * @description
+         * Enable the 'Add POI' mode,
          * allowing user to click on the map and retrieve data from OSM
-         * 
-         * @param {function} _successCallback 
+         *
+         * @param {function} _successCallback
          * Callback function called when data has been retrieved, data is passed in first argument
-         * 
-         * @param {function} _errorCallback 
+         *
+         * @param {function} _errorCallback
          * Callback function called when an error occured, error is passed in first argument
          */
         function enableAddPOI(_warningCallback, _errorCallback, _currentParametersFn) {
@@ -355,25 +356,25 @@
                 colorChosen = SettingsService.ALL_COLORS.find(function(element, index, array) {
                     return element.id === currentParameters.color.id;
                 })
-                // TODO: prevent any future click 
+                // TODO: prevent any future click
                 // user has to wait before click again
                 MapService.changeCursor('progress');
-                
+
                 MapService
                     .retrieveData([e.latlng.lng,  e.latlng.lat], SettingsService.QUERY_LIST[0])
                     .then(function successCallback(osmGeojson) {
                         if (!osmGeojson) {
                             _errorCallback('Erreur lors de la recherche de POI... Merci de recommencer.')
                         }
-                        
+
                         if (osmGeojson.features && osmGeojson.features.length > 0) {
-                            DrawingService.layers.geojson.geojsonToSvg(osmGeojson, 
-                                    null, 
-                                    'node_' + osmGeojson.features[0].properties.id, 
-                                    true, 
-                                    SettingsService.QUERY_POI, 
-                                    styleChosen, 
-                                    SettingsService.STYLES[SettingsService.QUERY_POI.type], 
+                            DrawingService.layers.geojson.geojsonToSvg(osmGeojson,
+                                    null,
+                                    'node_' + osmGeojson.features[0].properties.id,
+                                    true,
+                                    SettingsService.QUERY_POI,
+                                    styleChosen,
+                                    SettingsService.STYLES[SettingsService.QUERY_POI.type],
                                     colorChosen, null, null)
                         } else {
                             _warningCallback('Aucun POI trouvé à cet endroit... Merci de cliquer ailleurs !?')
@@ -390,10 +391,10 @@
          * @ngdoc method
          * @name  disableAddPOI
          * @methodOf accessimapEditeurDerApp.ModeService
-         * 
-         * @description 
+         *
+         * @description
          * Disable the 'Add POI' mode by resetting CSS cursor.
-         * 
+         *
          */
         function disableAddPOI() {
             MapService.resetCursor();
