@@ -341,6 +341,7 @@
             $ctrl.isBackgroundParametersVisible  = false;
 
             $ctrl.displayFeatureManagement();
+            $ctrl.showMap();
         }
         $ctrl.displayDrawingParameters = function() {
             $ctrl.isWorkspaceVisible             = true;
