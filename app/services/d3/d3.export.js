@@ -72,7 +72,7 @@
             }
 
             $(node).css('transform', translateReverseOverlayPx);
-            domtoimage.toPng(node, {width: sizeDrawing.width, height: sizeDrawing.height/*, filter: filterDOM */})
+            domtoimage.toPng(node, {width: sizeDrawing.width, height: sizeDrawing.height, filter: filterDOM })
                 .then(function(dataUrl) {
 
                     // save the image in a file & add it to the current zip
