@@ -18,7 +18,7 @@ describe('Controller: HomeController', function () {
         SettingsService = _SettingsService_;
         $rootScope      = _$rootScope_;
         $scope          = $rootScope.$new();
-        
+
 
         HomeController = _$controller_('HomeController', {
             $scope          : $scope,
@@ -29,17 +29,14 @@ describe('Controller: HomeController', function () {
 
     it('should create the main controller', function() {
         expect(HomeController).toBeDefined();
-        
+
         expect(HomeController.goToEdit).toBeDefined();
-        expect($rootScope.displayFooter).toBeDefined();
-        expect($rootScope.displayFooter).toBe(true);
 
     });
 
     it('should go to /edit when we call goToEdit', function() {
-        
+
         HomeController.goToEdit();
-        expect($rootScope.displayFooter).toBe(false);
         $scope.$apply();
         expect($location.url()).toBe('/edit');
 

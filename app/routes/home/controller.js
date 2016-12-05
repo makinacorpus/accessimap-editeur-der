@@ -3,7 +3,7 @@
  * @name accessimapEditeurDerApp.controller:HomeController
  * @requires $rootScope
  * @requires $location
- * 
+ *
  * @description
  * Controller of the Home View
  */
@@ -14,12 +14,9 @@
 
         var $ctrl = this;
 
-        $rootScope.displayFooter  = true;
-    
         $ctrl.goToEdit         = goToEdit;
 
         function goToEdit() {
-            $rootScope.displayFooter  = false;
             $location.path('/edit');
         }
     }

@@ -41,7 +41,7 @@ body {
 
   footer {
     flex: none;
-    height: 200px;
+    height: 100px;
   }
 
   div[ng-view] {
@@ -50,8 +50,7 @@ body {
 }
 
 .container .logo {
-    max-width: 100%;
-    height: 20rem;
+    max-width: 50rem;
     max-height: 20rem;
 }
 
@@ -224,8 +223,29 @@ header {
   margin: auto;
 
   .btn {
-    font-size: 2em;
-    padding: 14px 24px;
+    font-size: 2rem;
+    padding: 1rem;
+    margin-bottom: 4rem;
+  }
+
+  table {
+      width: 100%;
+  }
+  table.table--five-column {
+    td {
+        width: 20%;
+        text-align: center;
+    }
+  }
+  table.table--four-column {
+    td {
+        width: 25%;
+        text-align: center;
+    }
+  }
+
+  img {
+      max-height: 3rem;
   }
 }
 
