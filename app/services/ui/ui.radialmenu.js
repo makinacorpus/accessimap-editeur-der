@@ -96,7 +96,7 @@
         function addRadialMenu(elements, svg) {
             elements.on('contextmenu', function() {
                 var elmt = d3.select(this),
-                    pos = [d3.event.offsetX, d3.event.offsetY];
+                    pos = [d3.event.layerX, d3.event.layerY]; // ok for Chrome, not for Firefox...
 
                 d3.event.preventDefault();
                 d3.event.stopPropagation();
