@@ -199,7 +199,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Manage events (map, d3) in the editor",
-      "keywords": "_errorcallback _successcallback accessimapediteurderapp add allowing api argument callback called click context css cursor d3 data disable disableaddpoi edit editor enable enableaddpoi enabledefaultmode enableselectmode error events function item items manage map menu method mode modeservice occured osm passed poi resetting retrieve retrieved select service user"
+      "keywords": "_errorcallback _successcallback accessimapediteurderapp add allowing api argument callback called click context css cursor d3 data default disable disableaddpoi drawing edit editor enable enableaddpoi enabledefaultmode enableselectmode error events function item items manage map menu method mode modeservice occured osm pan passed poi resetting retrieve retrieved select service user zoom"
     },
     {
       "section": "api",
