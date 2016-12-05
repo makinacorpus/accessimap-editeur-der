@@ -355,7 +355,9 @@
                 }),
                 colorChosen = SettingsService.ALL_COLORS.find(function(element, index, array) {
                     return element.id === currentParameters.color.id;
-                })
+                }),
+                checkboxModel = { contour: currentParameters.contour };
+
                 // TODO: prevent any future click
                 // user has to wait before click again
                 MapService.changeCursor('progress');
@@ -375,7 +377,7 @@
                                     SettingsService.QUERY_POI,
                                     styleChosen,
                                     SettingsService.STYLES[SettingsService.QUERY_POI.type],
-                                    colorChosen, null, null)
+                                    colorChosen, checkboxModel, null)
                         } else {
                             _warningCallback('Aucun POI trouvé à cet endroit... Merci de cliquer ailleurs !?')
                         }
