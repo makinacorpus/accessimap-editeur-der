@@ -129,9 +129,9 @@
             class="form-control style-selector">
 
             <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
-            <ui-select-choices repeat="item in $ctrl.styleChoices | filter: $select.search">
-                <div ng-bind-html="item.name | highlight: $select.search"></div>
-                <div ng-bind-html="$ctrl.featureIcon(item, $ctrl.mode)"></div>
+            <ui-select-choices repeat="item in $ctrl.styleChoices | filter: $select.search" style="max-height: 500px;">
+                <span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span>
+                <span  style="max-height:30px;display:inline-block;" ng-bind-html="$ctrl.featureIcon(item, $ctrl.mode)"></span>
             </ui-select-choices>
 
         </ui-select>
