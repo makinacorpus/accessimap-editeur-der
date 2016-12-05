@@ -15,6 +15,7 @@
 
         this.resetState              = resetState;
         this.initMode                = initMode;
+        this.initOSMMode             = initOSMMode;
 
         this.enableDefaultMode       = enableDefaultMode;
         this.enableSelectMode        = enableSelectMode;
@@ -35,13 +36,16 @@
             projection    = _projection;
         }
 
-        function initMode() {
+        function initMode(stopImmediatePropagation, eventsToStop) {
 
+            eventsToStop = eventsToStop || [ 'click', 'contextmenu', 'mousemove', 'mousedown', 'mouseup' ];
             MapService.resetCursor();
             MapService.removeEventListeners();
-            MapService.addEventListener([ 'click', 'contextmenu', 'mousemove', 'mousedown', 'mouseup' ], function(e) {
-                e.originalEvent.stopImmediatePropagation();
-            })
+            if (stopImmediatePropagation !== false) {
+                MapService.addEventListener(eventsToStop, function(e) {
+                    e.originalEvent.stopImmediatePropagation();
+                })
+            }
 
             DrawingService.toolbox.hideContextMenus();
             DrawingService.toolbox.hideSelectPaths();
@@ -88,7 +92,7 @@
             DrawingService.toolbox.addContextMenus();
             DrawingService.toolbox.addSelectPaths();
 
-            MapService.removeEventListener(['mousemove', 'mousedown', 'mouseup']);
+            MapService.removeEventsListener(['mousemove', 'mousedown', 'mouseup']);
 
 
         }
@@ -315,7 +319,7 @@
                     })
 
                 // to prevent the draw of a new text feature
-                MapService.removeEventListener(['click']);
+                MapService.removeEventsListener(['click']);
             })
 
         }
@@ -343,13 +347,17 @@
          */
         function enableAddPOI(_warningCallback, _errorCallback, _currentParametersFn) {
 
-            initMode();
+            initMode(false);
 
             MapService.changeCursor('crosshair');
 
             MapService.addEventListener([ 'click' ], function(e) {
+                clickHandlerForPOI(e, _warningCallback, _errorCallback, _currentParametersFn)
+            })
+        }
 
-                var currentParameters = _currentParametersFn(),
+        function clickHandlerForPOI(event, _warningCallback, _errorCallback, _currentParametersFn) {
+            var currentParameters = _currentParametersFn(),
                 styleChosen = SettingsService.ALL_STYLES.find(function(element, index, array) {
                     return element.id === currentParameters.style.id;
                 }),
@@ -358,35 +366,34 @@
                 }),
                 checkboxModel = { contour: currentParameters.contour };
 
-                // TODO: prevent any future click
-                // user has to wait before click again
-                MapService.changeCursor('progress');
+            // TODO: prevent any future click
+            // user has to wait before click again
+            MapService.changeCursor('progress');
 
-                MapService
-                    .retrieveData([e.latlng.lng,  e.latlng.lat], SettingsService.QUERY_LIST[0])
-                    .then(function successCallback(osmGeojson) {
-                        if (!osmGeojson) {
-                            _errorCallback('Erreur lors de la recherche de POI... Merci de recommencer.')
-                        }
+            MapService
+                .retrieveData([event.latlng.lng,  event.latlng.lat], SettingsService.QUERY_LIST[0])
+                .then(function successCallback(osmGeojson) {
+                    if (!osmGeojson) {
+                        _errorCallback('Erreur lors de la recherche de POI... Merci de recommencer.')
+                    }
 
-                        if (osmGeojson.features && osmGeojson.features.length > 0) {
-                            DrawingService.layers.geojson.geojsonToSvg(osmGeojson,
-                                    null,
-                                    'node_' + osmGeojson.features[0].properties.id,
-                                    true,
-                                    SettingsService.QUERY_POI,
-                                    styleChosen,
-                                    SettingsService.STYLES[SettingsService.QUERY_POI.type],
-                                    colorChosen, checkboxModel, null)
-                        } else {
-                            _warningCallback('Aucun POI trouvé à cet endroit... Merci de cliquer ailleurs !?')
-                        }
-                    })
-                    .catch(_errorCallback)
-                    .finally(function finallyCallback() {
-                        MapService.changeCursor('crosshair');
-                    })
-            })
+                    if (osmGeojson.features && osmGeojson.features.length > 0) {
+                        DrawingService.layers.geojson.geojsonToSvg(osmGeojson,
+                                null,
+                                'node_' + osmGeojson.features[0].properties.id,
+                                true,
+                                SettingsService.QUERY_POI,
+                                styleChosen,
+                                SettingsService.STYLES[SettingsService.QUERY_POI.type],
+                                colorChosen, checkboxModel, null)
+                    } else {
+                        _warningCallback('Aucun POI trouvé à cet endroit... Merci de cliquer ailleurs !?')
+                    }
+                })
+                .catch(_errorCallback)
+                .finally(function finallyCallback() {
+                    MapService.changeCursor('crosshair');
+                })
         }
 
         /**
@@ -399,6 +406,12 @@
          *
          */
         function disableAddPOI() {
+            MapService.resetCursor();
+            MapService.removeEventListener('click', clickHandlerForPOI);
+        }
+
+        function initOSMMode() {
+            initMode(false);
             MapService.resetCursor();
         }
 

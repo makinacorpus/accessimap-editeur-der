@@ -260,6 +260,7 @@
          * Map parameters
          */
         $ctrl.displayAddPOIForm = function() {
+            EditService.initOSMMode();
             $ctrl.isAddressVisible           = false;
             $ctrl.isPoiCreationVisible       = true;
             $ctrl.isFeatureCreationVisible   = false;
@@ -280,13 +281,21 @@
         }
 
         $ctrl.displayGetDataFromOSMForm = function() {
+            EditService.initOSMMode();
+
             $ctrl.isAddressVisible           = false;
             $ctrl.isPoiCreationVisible       = false;
             $ctrl.isFeatureCreationVisible   = true;
             $ctrl.isFeatureManagementVisible = false;
+
+            $ctrl.queryChosen  = EditService.settings.QUERY_DEFAULT;
+            $ctrl.styleChoices = EditService.settings.STYLES[$ctrl.queryChosen.type];
+            $ctrl.styleChosen  = $ctrl.styleChoices[0];
+
         }
 
         $ctrl.insertOSMData = function()  {
+            EditService.initOSMMode();
             EditService.insertOSMData($ctrl.queryChosen,
                                         ToasterService.warning,
                                         ToasterService.error,
@@ -295,6 +304,7 @@
         }
 
         $ctrl.displayFeatureManagement = function() {
+            EditService.initOSMMode();
             $ctrl.isAddressVisible           = false;
             $ctrl.isPoiCreationVisible       = false;
             $ctrl.isFeatureCreationVisible   = false;

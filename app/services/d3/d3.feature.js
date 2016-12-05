@@ -146,7 +146,7 @@
             if (temporaryCircle) parentNode.appendChild(temporaryCircle);
             parentNode.appendChild(temporaryPath);
 
-            handlers.removeEventListener(['click', 'mousemove']);
+            handlers.removeEventsListener(['click', 'mousemove']);
 
             handlers.addClickListener(function(e) {
 
@@ -170,7 +170,7 @@
                     d3.select(temporaryPath).remove();
                     d3.select(temporaryCircle).remove();
 
-                    handlers.removeEventListener(['click', 'mousemove']);
+                    handlers.removeEventsListener(['click', 'mousemove']);
 
                 }
             })
@@ -235,7 +235,7 @@
             if (temporaryCircle) parentNode.appendChild(temporaryCircle)
             parentNode.appendChild(temporaryPath)
 
-            handlers.removeEventListener(['click', 'mousemove']);
+            handlers.removeEventsListener(['click', 'mousemove']);
 
             handlers.addClickListener(function(e) {
 
@@ -265,7 +265,7 @@
                     addRadialMenuFunction(d3.select(temporaryPath), layer);
                     SelectPathService.addTo(d3.select(temporaryPath));
 
-                    handlers.removeEventListener(['click', 'mousemove']);
+                    handlers.removeEventsListener(['click', 'mousemove']);
 
                 }
             })
@@ -396,7 +396,7 @@
             if (temporaryCircle) parentNode.appendChild(temporaryCircle);
             parentNode.appendChild(temporaryPath);
 
-            handlers.removeEventListener(['click', 'mousemove']);
+            handlers.removeEventsListener(['click', 'mousemove']);
 
             handlers.addClickListener(function(e) {
 
@@ -410,7 +410,7 @@
                     d3.select(temporaryPath).remove();
                     d3.select(temporaryCircle).remove();
 
-                    handlers.removeEventListener(['click', 'mousemove']);
+                    handlers.removeEventsListener(['click', 'mousemove']);
 
                 }
             })

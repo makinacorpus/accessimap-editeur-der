@@ -36,6 +36,7 @@
 
         this.enableAddPOI  = ModeService.enableAddPOI;
         this.disableAddPOI = ModeService.disableAddPOI;
+        this.initOSMMode   = ModeService.initOSMMode;
 
         // Drawing services
         // TODO : reset action has to work correctly for event...

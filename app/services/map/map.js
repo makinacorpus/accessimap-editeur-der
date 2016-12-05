@@ -1,10 +1,10 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.MapService
- * 
+ *
  * @requires accessimapEditeurDerApp.SettingsService
  * @requires accessimapEditeurDerApp.SearchService
- * 
+ *
  * @description
  * Service used for initializing leaflet maps
  */
@@ -15,7 +15,7 @@
 
         var _selectorDOM = '',
             _isMapVisible,
-            map = {}, 
+            map = {},
             overlay = null,
             layerMapBox,
             layerMapBoxId = 'mapbox.streets',
@@ -34,12 +34,13 @@
         this.getBounds              = getBounds;
         this.init                   = init;
         this.resizeFunction         = resizeFunction;
-        
+
         this.addEventListener       = addEventListener;
         this.addClickListener       = addClickListener;
         this.addMouseMoveListener   = addMouseMoveListener;
         this.addDoubleClickListener = addDoubleClickListener;
         this.removeEventListeners   = removeEventListeners;
+        this.removeEventsListener   = removeEventsListener;
         this.removeEventListener    = removeEventListener;
 
         this.addMoveHandler         = addMoveHandler;
@@ -48,18 +49,18 @@
         this.removeClickHandler     = removeClickHandler;
         this.addViewResetHandler    = addViewResetHandler;
         this.removeViewResetHandler = removeViewResetHandler;
-        
+
         this.changeCursor           = changeCursor;
         this.resetCursor            = resetCursor;
         this.projectPoint           = projectPoint;
         this.latLngToLayerPoint     = latLngToLayerPoint;
-        
+
         this.showMapLayer           = showMapLayer;
         this.hideMapLayer           = hideMapLayer;
-        
+
         this.freezeMap              = freezeMap;
         this.unFreezeMap            = unFreezeMap;
-        
+
         this.searchAddress          = SearchService.searchAddress
         this.resetZoom              = resetZoom;
         this.resetView              = resetView;
@@ -70,7 +71,7 @@
          * @name  retrieveData
          * @methodOf accessimapEditeurDerApp.MapService
          *
-         * @description 
+         * @description
          * alias of accessimapEditeurDerApp.SearchService:retrieveData
          */
         this.retrieveData = SearchService.retrieveData;
@@ -79,11 +80,11 @@
          * @ngdoc method
          * @name  init
          * @methodOf accessimapEditeurDerApp.MapService
-         * 
-         * @description 
+         *
+         * @description
          * Init a map with leaflet library
-         * 
-         * @param  {string} selector 
+         *
+         * @param  {string} selector
          * Id of the leaflet's map container
          */
         function init(selectorDOM, format, _ratioPixelPoint, _resizeFunction) {
@@ -91,15 +92,15 @@
             _selectorDOM = selectorDOM;
             _isMapVisible = false;
 
-            setMinimumSize(SettingsService.FORMATS[format].width / _ratioPixelPoint, 
+            setMinimumSize(SettingsService.FORMATS[format].width / _ratioPixelPoint,
                             SettingsService.FORMATS[format].height / _ratioPixelPoint)
 
-            map = L.map(_selectorDOM).setView(SettingsService.leaflet.GLOBAL_MAP_CENTER, 
+            map = L.map(_selectorDOM).setView(SettingsService.leaflet.GLOBAL_MAP_CENTER,
                                                 SettingsService.leaflet.GLOBAL_MAP_DEFAULT_ZOOM);
-            var access_token = 
+            var access_token =
                 "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw";
-            
-            layerMapBox = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' 
+
+            layerMapBox = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token='
                 + access_token, {
                 maxZoom: 18,
                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
@@ -137,18 +138,18 @@
          * @ngdoc method
          * @name  projectPoint
          * @methodOf accessimapEditeurDerApp.MapService
-         * 
-         * @description 
+         *
+         * @description
          * Project a geographical point to a layer map point
          * Useful for d3 projections
-         * 
-         * @param  {integer} x 
+         *
+         * @param  {integer} x
          * Latitude
-         * 
-         * @param  {integer} y 
+         *
+         * @param  {integer} y
          * Longitude
-         * 
-         * @return {Array}    
+         *
+         * @return {Array}
          * Point with projected coordinates
          */
         function projectPoint(x, y) {
@@ -169,24 +170,24 @@
          * @ngdoc method
          * @name  resizeFunction
          * @methodOf accessimapEditeurDerApp.MapService
-         * 
-         * @description 
+         *
+         * @description
          * Get the current size of the container
-         * 
+         *
          * Calc the available space for the map by substracting siblings height
-         * 
+         *
          * Change the height of the leaflet map and apply for changes
-         * 
-         * @param  {string} selector 
+         *
+         * @param  {string} selector
          * Id of the leaflet's map container
          */
         function resizeFunction() {
-            
+
             var parentHeight = $('#' + _selectorDOM).parent().height(),
                 parentWidth = $('#' + _selectorDOM).parent().width(),
                 siblingHeight = $($('#' + _selectorDOM).siblings()[0]).outerHeight(true),
-                mapHeight = ( ( parentHeight - siblingHeight ) > minHeight ) 
-                            ? ( parentHeight - siblingHeight ) 
+                mapHeight = ( ( parentHeight - siblingHeight ) > minHeight )
+                            ? ( parentHeight - siblingHeight )
                             : minHeight,
                 mapWidth = ( parentWidth > minWidth ) ? 'auto' : minWidth;
 
@@ -209,11 +210,11 @@
          * @ngdoc method
          * @name  addClickListener
          * @methodOf accessimapEditeurDerApp.MapService
-         * 
-         * @description 
+         *
+         * @description
          * Add a listener to the click event
-         * 
-         * @param {function} listener 
+         *
+         * @param {function} listener
          * function executed when click event is fired
          */
         function addClickListener(listener) {
@@ -224,11 +225,11 @@
          * @ngdoc method
          * @name  addMouseMoveListener
          * @methodOf accessimapEditeurDerApp.MapService
-         * 
-         * @description 
+         *
+         * @description
          * Add a listener to the mousemove event
-         * 
-         * @param {function} listener 
+         *
+         * @param {function} listener
          * function executed when mousemove event is fired
          */
         function addMouseMoveListener(listener) {
@@ -239,11 +240,11 @@
          * @ngdoc method
          * @name  addDoubleClickListener
          * @methodOf accessimapEditeurDerApp.MapService
-         * 
-         * @description 
+         *
+         * @description
          * Add a listener to the doubleclick event
-         * 
-         * @param {function} listener 
+         *
+         * @param {function} listener
          * function executed when doubleclick event is fired
          */
         function addDoubleClickListener(listener) {
@@ -254,8 +255,8 @@
          * @ngdoc method
          * @name  removeEventListeners
          * @methodOf accessimapEditeurDerApp.MapService
-         * 
-         * @description 
+         *
+         * @description
          * Remove all the listeners to the map
          */
         function removeEventListeners() {
@@ -268,30 +269,39 @@
          * @ngdoc method
          * @name  removeEventListener
          * @methodOf accessimapEditeurDerApp.MapService
-         * 
-         * @description 
+         *
+         * @description
          * Remove one or several listeners
          *
          * @param {Array} events
          * Array of string representing events : [ 'click', 'mousemove' ] for example
          */
-        function removeEventListener(events) {
+        function removeEventsListener(events) {
             events.forEach(function(event) {
                 map.removeEventListener(event)
             })
+        }
+
+        function removeEventListener(event, listener) {
+            console.log(listeners);
+            console.log(map.hasEventListeners(event));
+            map.removeEventListener(event, listener);
+            console.log(map.hasEventListeners(event));
+            listeners = listeners.filter(function(value) { return value !== listener });
+            console.log(listeners);
         }
 
         /**
          * @ngdoc method
          * @name  changeCursor
          * @methodOf accessimapEditeurDerApp.MapService
-         * 
-         * @description 
+         *
+         * @description
          * Change the CSS appearance of the cursor on the map
-         * 
-         * @param  {string} style 
-         * CSS style for cursor property : 'crosshair', '...' 
-         * 
+         *
+         * @param  {string} style
+         * CSS style for cursor property : 'crosshair', '...'
+         *
          * https://developer.mozilla.org/fr/docs/Web/CSS/cursor
          */
         function changeCursor(style) {
@@ -302,8 +312,8 @@
          * @ngdoc method
          * @name  resetCursor
          * @methodOf accessimapEditeurDerApp.MapService
-         * 
-         * @description 
+         *
+         * @description
          * Reset to 'default' the cursor on the map
          */
         function resetCursor() {
@@ -314,13 +324,13 @@
          * @ngdoc method
          * @name  getBounds
          * @methodOf accessimapEditeurDerApp.MapService
-         * 
-         * @description 
+         *
+         * @description
          * Returns the LatLngBounds of the current map view
-         * 
+         *
          * http://leafletjs.com/reference.html#map-getbounds
          *
-         * @return {LatLngBounds} 
+         * @return {LatLngBounds}
          * LatLngBounds of the current map view
          */
         function getBounds() {
@@ -331,9 +341,9 @@
          * @ngdoc method
          * @name  getMap
          * @methodOf accessimapEditeurDerApp.MapService
-         * 
+         *
          * @description Getter for the map property
-         * 
+         *
          * @return {Object} Leaflet map
          */
         function getMap() {
@@ -345,7 +355,7 @@
         }
 
         function getBaseLayerId() {
-            return currentLayer ? currentLayer.options.id : undefined; 
+            return currentLayer ? currentLayer.options.id : undefined;
         }
 
         function showMapLayer(layerId) {
@@ -394,7 +404,7 @@
                 $(document).click();
             })
         }
-        
+
         function removeClickHandler() {
             map.off('click');
         }
@@ -419,8 +429,8 @@
          * @name  resetView
          * @methodOf accessimapEditeurDerApp.EditService
          *
-         * @description 
-         * If a center of the drawing is defined, 
+         * @description
+         * If a center of the drawing is defined,
          * we pan / zoom to the initial state of the drawing.
          *
          * @param {function} callback
@@ -435,8 +445,8 @@
 
                 if (zoomWillChange) {
                     if (_isMapVisible) {
-                        getBaseLayer().once('load', function() { 
-                            if (callback) callback(); 
+                        getBaseLayer().once('load', function() {
+                            if (callback) callback();
                         })
                     }
                 }
@@ -452,7 +462,6 @@
             }
 
         }
-
 
     }
 
