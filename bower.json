@@ -25,7 +25,8 @@
     "select2": "~3.4.5",
     "toastr": "^2.1.2",
     "turf": "~2.0.2",
-    "opbeat-angular": "^3.6.1"
+    "opbeat-angular": "^3.6.1",
+    "es5-shim": "^4.5.9"
   },
   "appPath": "app"
 }
