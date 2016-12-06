@@ -84,14 +84,14 @@
          *
          * - user can right click on an item and get a context menu
          */
-        function enableSelectMode() {
+        function enableSelectMode(callbackProperties) {
 
             initMode();
 
             MapService.changeCursor('default');
 
             DrawingService.toolbox.addContextMenus();
-            DrawingService.toolbox.addSelectPaths();
+            DrawingService.toolbox.addSelectPaths(callbackProperties);
 
             MapService.removeEventsListener(['mousemove', 'mousedown', 'mouseup']);
 

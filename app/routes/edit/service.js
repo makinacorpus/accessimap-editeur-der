@@ -54,6 +54,11 @@
 
         this.isUndoAvailable               = FeatureService.isUndoAvailable;
         this.undo                          = FeatureService.undo;
+        this.getProperties                 = FeatureService.getProperties;
+        this.setProperties                 = FeatureService.setProperties;
+        this.properties                    = FeatureService.properties;
+
+        this.getInteraction                = InteractionService.getInteraction;
 
         this.enableDefaultMode             = ModeService.enableDefaultMode;
         this.enableSelectMode              = ModeService.enableSelectMode;

@@ -15,6 +15,7 @@
                             UtilService,
                             GeometryUtilsService,
                             GeneratorService,
+                            EditPropertiesService,
                             SelectPathService) {
 
         this.duplicatePath                 = duplicatePath;
@@ -39,6 +40,10 @@
         this.lineToCardinal                = lineToCardinal;
 
         this.init                          = init;
+
+        this.getProperties                 = EditPropertiesService.getProperties;
+        this.setProperties                 = EditPropertiesService.setProperties;
+        this.properties                    = EditPropertiesService.properties;
 
         // this var retain the last feature deleted
         // useful for cancel this deletion
@@ -729,6 +734,6 @@
     angular.module(moduleApp).service('FeatureService', FeatureService);
 
     FeatureService.$inject = ['InteractionService', 'EmptyComfortService', 'UtilService',
-                                'GeometryUtilsService', 'GeneratorService', 'SelectPathService']
+                                'GeometryUtilsService', 'GeneratorService', 'EditPropertiesService', 'SelectPathService']
 
 })();

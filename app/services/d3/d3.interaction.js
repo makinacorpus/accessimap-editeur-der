@@ -12,6 +12,7 @@
 
         this.isFeatureInteractive = isFeatureInteractive;
         this.addInteraction       = addInteraction;
+        this.getInteraction       = getInteraction;
         this.setInteraction       = setInteraction;
         this.removeInteraction    = removeInteraction;
         this.addFilter            = addFilter;
@@ -127,6 +128,16 @@
             // d3.selectAll('.poi-' + featureIid).classed('highlight', true);
 
             setInteraction('poi-' + featureIid, 'f1', feature.attr('name'));
+
+        }
+
+        function getInteraction(feature) {
+            var featureIid = feature.attr('data-link');
+            if(!featureIid) return null;
+
+            return interactions.find(function(element) {
+                return element.id === 'poi-' + featureIid;
+            });
 
         }
 

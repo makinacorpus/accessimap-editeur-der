@@ -18,7 +18,7 @@
 (function() {
     'use strict';
 
-    function EditController(EditService, ToasterService, $location, $q) {
+    function EditController(EditService, ToasterService, $location, $q, $scope) {
 
         var $ctrl = this;
 
@@ -185,6 +185,8 @@
         $ctrl.importBackground    = EditService.importBackground;
         $ctrl.importImage         = EditService.importImage;
         $ctrl.appendSvg           = EditService.appendSvg;
+
+        $ctrl.defaultFeatureProperties = {};
 
         $ctrl.importDER = function(file) {
 
@@ -444,6 +446,16 @@
 
         // switch of editor's mode
         // adapt user's interactions
+        $ctrl.properties = EditService.properties ;
+        $ctrl.filterProperty = function(currentProperty) {
+            return currentProperty.visible === true
+                && ( currentProperty.type === 'all'
+                    || currentProperty.type.indexOf($ctrl.featureProperties['data-type']) >= 0 );
+        }
+        $ctrl.updateProperties = function() {
+            EditService.setProperties($ctrl.currentFeature, $ctrl.featureProperties);
+        }
+
         $ctrl.enableDrawingMode = function(mode) {
 
             EditService.resetState();
@@ -455,6 +467,23 @@
                 $ctrl.styleChosen  = $ctrl.styleChoices[0];
             }
 
+            function setFeatureProperties(feature) {
+                var featureProperties = EditService.getProperties(feature);
+                featureProperties.interactions = EditService.getInteraction(feature);
+                $ctrl.featureProperties = featureProperties;
+                $ctrl.currentFeature = feature;
+                $scope.$apply();
+            }
+
+
+            function resetFeature() {
+                $ctrl.featureProperties = null;
+                $ctrl.currentFeature = null;
+            }
+
+            resetFeature();
+
+
             switch ($ctrl.mode) {
 
                 case 'default':
@@ -462,7 +491,7 @@
                     break;
 
                 case 'select':
-                    EditService.enableSelectMode();
+                    EditService.enableSelectMode(setFeatureProperties);
                     break;
 
                 case 'undo':
@@ -547,9 +576,21 @@
                 })
         };
 
+        $ctrl.addInteraction = function() {
+            EditService.interactions.addInteraction($ctrl.currentFeature);
+            $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
+
+        }
+
+        $ctrl.removeInteraction = function() {
+            EditService.interactions.removeInteraction($ctrl.currentFeature);
+            $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
+
+        }
+
     }
 
     angular.module(moduleApp).controller('EditController', EditController);
 
-    EditController.$inject = ['EditService', 'ToasterService', '$location', '$q']
+    EditController.$inject = ['EditService', 'ToasterService', '$location', '$q', '$scope']
 })();

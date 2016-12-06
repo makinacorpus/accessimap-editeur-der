@@ -110,9 +110,9 @@
             })
         }
 
-        function addSelectPaths() {
+        function addSelectPaths(callbackProperties) {
             selectors.forEach(function(selector, index) {
-                SelectPathService.addTo(d3.selectAll(selector))
+                SelectPathService.addTo(d3.selectAll(selector), callbackProperties)
             })
         }
 

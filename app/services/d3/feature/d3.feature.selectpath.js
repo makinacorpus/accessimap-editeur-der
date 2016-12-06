@@ -1,15 +1,15 @@
 /**
  * @ngdoc service
  * @name accessimapEditeurDerApp.SelectPathService
- * 
+ *
  * @description
  * Provide function to calculate the 'select path' of a feature
- * 
+ *
  */
 (function() {
     'use strict';
 
-    function SelectPathService() {
+    function SelectPathService(EditPropertiesService) {
 
         this.calcSelectPath = calcSelectPath;
         this.addTo          = addTo;
@@ -20,13 +20,13 @@
          * @name  calcSelectPath
          * @methodOf accessimapEditeurDerApp.SelectPathService
          *
-         * @description 
+         * @description
          * Calculate the select path around an element.
          * It's a rect identical of the bbox.
-         * 
+         *
          * @param  {Object} feature
          * d3 object
-         * 
+         *
          * @return {DOMElement}
          * element to add to DOM representing the empty comfort
          */
@@ -56,7 +56,7 @@
 
         }
 
-        function addTo(nodes) {
+        function addTo(nodes, callbackProperties) {
             nodes.style('cursor', 'crosshair')
                 .on('mouseover', function(event) {
                     var feature = d3.select(this),
@@ -69,6 +69,12 @@
                                        .selectAll('[data-type="select-path"]')
                                        .remove();
                 })
+                .on('click', function(event) {
+                    var feature = d3.select(this),
+                        selectPath = calcSelectPath(feature);
+                    feature.node().parentNode.appendChild(selectPath);
+                    callbackProperties(feature);
+                })
         }
 
         function removeTo(nodes) {
@@ -79,7 +85,9 @@
         }
 
     }
-    
+
     angular.module(moduleApp).service('SelectPathService', SelectPathService);
+
+    SelectPathService.$inject = ['EditPropertiesService'];
 
 })();

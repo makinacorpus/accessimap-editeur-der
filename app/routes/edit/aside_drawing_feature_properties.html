@@ -1,0 +1,58 @@
+
+<label>Propriétés de l'objet {{$ctrl.featureProperties['data-type']}}</label>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Propriété</th>
+            <th>Valeur</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="property in $ctrl.properties | filter:$ctrl.filterProperty">
+            <td>{{property.name}}</td>
+            <td >
+                <input type="text"
+                    ng-model="$ctrl.featureProperties[property.name]"
+                    ng-if="! property.isStyle && ! property.isColor"
+                    ng-change="$ctrl.updateProperties()">
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<label>Interactions</label>
+
+<button class="btn btn-primary btn-block"
+    ng-if="!$ctrl.featureProperties.interactions"
+    ng-click="$ctrl.addInteraction()">Activer</button>
+
+<button class="btn btn-warning btn-block"
+    ng-if="$ctrl.featureProperties.interactions"
+    ng-click="$ctrl.removeInteraction()">Désactiver</button>
+
+
+<table class="table table-hover" ng-if="$ctrl.featureProperties.interactions">
+    <thead>
+        <tr>
+            <th>Filtres</th>
+            <th>Valeur</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="filter in $ctrl.interactions.getFilters()">
+            <td>{{filter.name}}</td>
+            <td>
+                <input type="text"
+                    ng-model="$ctrl.featureProperties.interactions.filters[filter.id]"
+                    ng-if="filter.protocol==='tts'"
+                    style="width:100%">
+
+                <input type="file"
+                    ng-model="$ctrl.featureProperties.interactions.filters[filter.id]"
+                    ng-if="filter.protocol==='mp3'"
+                    style="width:100%">
+            </td>
+        </tr>
+    </tbody>
+</table>
