@@ -734,6 +734,7 @@
     angular.module(moduleApp).service('FeatureService', FeatureService);
 
     FeatureService.$inject = ['InteractionService', 'EmptyComfortService', 'UtilService',
-                                'GeometryUtilsService', 'GeneratorService', 'EditPropertiesService', 'SelectPathService']
+                                'GeometryUtilsService', 'GeneratorService',
+                                'EditPropertiesService', 'SelectPathService']
 
 })();

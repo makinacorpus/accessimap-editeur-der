@@ -133,6 +133,7 @@
 
         function getInteraction(feature) {
             var featureIid = feature.attr('data-link');
+
             if(!featureIid) return null;
 
             return interactions.find(function(element) {
