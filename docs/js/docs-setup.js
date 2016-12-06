@@ -50,6 +50,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "accessimapEditeurDerApp.EditPropertiesService",
+      "shortName": "accessimapEditeurDerApp.EditPropertiesService",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "Provide function to edit properties of a feature",
+      "keywords": "accessimapediteurderapp api coordinates drawing edit editpropertiesservice feature function height properties provide rotation scale service transformations width"
+    },
+    {
+      "section": "api",
       "id": "accessimapEditeurDerApp.EditService",
       "shortName": "accessimapEditeurDerApp.EditService",
       "type": "service",
