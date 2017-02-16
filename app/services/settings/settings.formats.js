@@ -19,6 +19,16 @@
          * Formats availables for editing documents.
          */
         FORMATS = {
+            'portraitA5': {
+                name: 'A5 Portrait',
+                width: 148,
+                height: 210
+            },
+            'landscapeA5': {
+                name: 'A5 Paysage',
+                width: 210,
+                height: 148
+            },
             'portraitA4': {
                 name: 'A4 Portrait',
                 width: 210,
