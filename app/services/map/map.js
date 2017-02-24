@@ -114,7 +114,7 @@
                 id: layerOSMId
             });
 
-            currentLayer = layerMapBox;
+            currentLayer = layerOSM;
 
             layerControl = L.control.layers({ 'Open Street Map': layerOSM, 'MapBox Street': layerMapBox})
 
