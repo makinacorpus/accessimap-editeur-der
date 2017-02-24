@@ -98,7 +98,7 @@
             map = L.map(_selectorDOM).setView(SettingsService.leaflet.GLOBAL_MAP_CENTER,
                                                 SettingsService.leaflet.GLOBAL_MAP_DEFAULT_ZOOM);
             var access_token =
-                "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw";
+                "pk.eyJ1IjoibWRhcnRpYyIsImEiOiJjaXpqenNkcHcwMDVlMnF0OWFocTJ6ZWYxIn0.HaUGbDl8wwePzrZ-4pQBmA";
 
             layerMapBox = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token='
                 + access_token, {
