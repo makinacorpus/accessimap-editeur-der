@@ -74,15 +74,15 @@ describe('Service: MapService', function () {
         expect(MapService.isMapVisible()).toBe(false);
     })
 
-    it('should have mapbox.streets in base layer when service init', function() {
-        expect(MapService.getBaseLayerId()).toBe('mapbox.streets')
+    it('should have osm in base layer when service init', function() {
+        expect(MapService.getBaseLayerId()).toBe('osm')
     })
 
     describe('when we call showMapLayer', function() {
 
-        it('should display the mapbox.streets by default', function() {
+        it('should display the osm by default', function() {
             MapService.showMapLayer();
-            expect(MapService.getBaseLayerId()).toBe('mapbox.streets')
+            expect(MapService.getBaseLayerId()).toBe('osm')
             expect(MapService.isMapVisible()).toBe(true)
         })
 
