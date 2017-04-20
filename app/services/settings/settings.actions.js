@@ -54,7 +54,6 @@
             'rect': [
                 { icon: 'assets/icons/delete.svg', action: FeatureService.removeObject },
                 { icon: 'assets/icons/open_with.svg', action: FeatureService.movePath },
-                { icon: 'assets/icons/toolbox_skew.svg', action: FeatureService.skew },
                 { icon: 'assets/icons/copy.svg', action: FeatureService.duplicatePath },
                 { icon: 'assets/icons/autorenew.svg', action: FeatureService.rotatePath },
                 { icon: 'assets/icons/texture.svg', action: FeatureService.changePattern },
@@ -66,7 +65,6 @@
             'triangle': [
                 { icon: 'assets/icons/delete.svg', action: FeatureService.removeObject },
                 { icon: 'assets/icons/open_with.svg', action: FeatureService.movePath },
-                { icon: 'assets/icons/toolbox_skew.svg', action: FeatureService.skew },
                 { icon: 'assets/icons/copy.svg', action: FeatureService.duplicatePath },
                 { icon: 'assets/icons/autorenew.svg', action: FeatureService.rotatePath },
                 { icon: 'assets/icons/texture.svg', action: FeatureService.changePattern },
