@@ -114,6 +114,7 @@ div[ng-view] {
   }
 
   aside.right-side {
+    min-width: 390px;
     border-right: 1px solid #e5e5e5;
     display: flex;
     flex-direction: column;
@@ -328,4 +329,23 @@ header {
 
 .slider-container {
   width: 200px !important;
+}
+
+.opt-style-container {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.opt-style-visu svg g rect, .opt-style-visu svg g path, .opt-style-visu svg g line {
+  width: 80px;
+}
+
+.opt-style-visu {
+  max-width: 30%;
+}
+
+.arrow-trick {
+  margin-left: 120px;
 }
