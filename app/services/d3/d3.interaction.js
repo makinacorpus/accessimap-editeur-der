@@ -198,7 +198,8 @@
         }
 
         function getXMLExport() {
-
+            var translateX;
+            var translateY;
             var xmlToExport = '<?xml version="1.0" encoding="UTF-8"?>\n';
 
             if (filters.length > 0) {
@@ -237,6 +238,8 @@
                         return d.id;
                     })
                     .each(function(d) {
+                        translateX = 0;
+                        translateY = 0;
 
                         // get the bounding box of the current POI,
                         // no matter if it is a drawing or a geojson feature
@@ -245,15 +248,19 @@
                         d3.selectAll('path')[0]
                             .forEach(function(shape) {
                                 if ('poi-' + d3.select(shape).attr('data-link') === d.id) {
-                                    bbox = d3.select(shape).node().getBBox();
+                                  if (d3.select(shape).attr("transform")) {
+                                    translateX=parseFloat(d3.select(shape).attr("transform").replace('translate(', '').replace(')', '').split(",")[0]);
+                                    translateY=parseFloat(d3.select(shape).attr("transform").replace('translate(', '').replace(')', '').split(",")[1]);
+                                  }
+                           
+                                  bbox = d3.select(shape).node().getBBox();
                                 }
                             });
 
                         poi = d3.select(this).attr('id', d.id);
-
                         if (bbox) {
-                            poi.attr('x', bbox.x);
-                            poi.attr('y', bbox.y);
+                            poi.attr('x', bbox.x + translateX);
+                            poi.attr('y', bbox.y + translateY);
                             poi.attr('width', bbox.width);
                             poi.attr('height', bbox.height);
                         }
