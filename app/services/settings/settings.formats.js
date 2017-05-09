@@ -49,6 +49,11 @@
                 width: 420,
                 height: 297
             },
+            'landscapeTablet': {
+                name: 'Format tablette 19x13',
+                width: 190,
+                height: 130
+            },
             'nexus9': {
                 name: 'Nexus 9 Paysage',
                 width: 181, // 7.12"
