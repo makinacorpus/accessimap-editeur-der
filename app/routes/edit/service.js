@@ -27,7 +27,7 @@
 
     function EditService($q, SettingsService, MapService, DrawingService, LegendService,
         DefsService, InteractionService, ExportService, UtilService, ImportService,
-        FeatureService, ModeService, RadialMenuService) {
+        FeatureService, ModeService, RadialMenuService, HistoryService) {
 
         this.init          = init;
         this.settings      = SettingsService;
@@ -686,7 +686,14 @@
         }
 
         function undo() {
-            console.log('undo service')   
+            var lastState = HistoryService.resetState();
+
+            // DrawingService.layers.background.appendImage(
+            //     lastState.toDataURL(), 
+            //     MapService.getMap().getSize(),
+            //     MapService.getMap().getPixelOrigin(), 
+            //     MapService.getMap().getPixelBounds().min
+            // );
         }
     }
 
@@ -705,6 +712,7 @@
                             'FeatureService',
                             'ModeService',
                             'RadialMenuService',
+                            'HistoryService'
                             ];
 
 })();
