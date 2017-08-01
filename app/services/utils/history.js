@@ -11,49 +11,52 @@
     function HistoryService() {
         this.saveState  = saveState;
         this.init       = init;
-        this.getLastState = getLastState;
-        this.resetState = resetState;
+        this.undoState  = undoState;
+        this.redoState  = redoState;
 
         this.historyUndo    = [];
         this.historyRedo    = [];
+
         var svgDrawing,
-            applyStyle ;
-        
+            applyStyle,
+            imageLayer,
+            polygonsLayer,
+            linesLayer,
+            pointsLayer,
+            textsLayer;
+
         function init(_svgDrawing, _applyStyle) {
             svgDrawing = _svgDrawing;
             applyStyle = _applyStyle;
+
+            imageLayer = svgDrawing.select('[data-name="images-layer"]')[0][0];
+            polygonsLayer = svgDrawing.select('[data-name="polygons-layer"]')[0][0];
+            linesLayer = svgDrawing.select('[data-name="lines-layer"]')[0][0];
+            pointsLayer = svgDrawing.select('[data-name="points-layer"]')[0][0];
+            textsLayer = svgDrawing.select('[data-name="texts-layer"]')[0][0];
         }
 
         function saveState() {
-            var imageLayer = svgDrawing.select('g[data-name="images-layer"]')[0][0].innerHTML;
-            var polygonsLayer = svgDrawing.select('g[data-name="polygons-layer"]')[0][0].innerHTML;
-            var linesLayer = svgDrawing.select('g[data-name="lines-layer"]')[0][0].innerHTML;
-            var pointsLayer = svgDrawing.select('g[data-name="points-layer"]')[0][0].innerHTML;
-            var textsLayer = svgDrawing.select('g[data-name="texts-layer"]')[0][0].innerHTML;
-            
             this.historyUndo.push({
-                imageLayer: imageLayer,
-                polygonsLayer: polygonsLayer,
-                linesLayer: linesLayer,
-                pointsLayer: pointsLayer,
-                textsLayer: textsLayer
-            })
+                imageLayer: imageLayer.innerHTML,
+                polygonsLayer: polygonsLayer.innerHTML,
+                linesLayer: linesLayer.innerHTML,
+                pointsLayer: pointsLayer.innerHTML,
+                textsLayer: textsLayer.innerHTML
+            });
         }
 
-        function resetState() {
-            console.log(this.historyUndo);
-
-            var imageLayer = svgDrawing.select('[data-name="images-layer"]')[0][0];
-            var polygonsLayer = svgDrawing.select('[data-name="polygons-layer"]')[0][0];
-            var linesLayer = svgDrawing.select('[data-name="lines-layer"]')[0][0];
-            var pointsLayer = svgDrawing.select('[data-name="points-layer"]')[0][0];
-            var textsLayer = svgDrawing.select('[data-name="texts-layer"]')[0][0];
+        function undoState() {
+            this.historyRedo.push({
+                imageLayer: imageLayer.innerHTML,
+                polygonsLayer: polygonsLayer.innerHTML,
+                linesLayer: linesLayer.innerHTML,
+                pointsLayer: pointsLayer.innerHTML,
+                textsLayer: textsLayer.innerHTML
+            });
 
             var stateToUndo = this.historyUndo[this.historyUndo.length - 2];
             if (stateToUndo) {
-                console.log(polygonsLayer);
-
-                this.historyRedo.push(stateToUndo);
                 imageLayer.innerHTML = stateToUndo.imageLayer;
                 polygonsLayer.innerHTML = stateToUndo.polygonsLayer;
                 linesLayer.innerHTML = stateToUndo.linesLayer;
@@ -62,14 +65,6 @@
 
                 this.historyUndo.splice(this.historyUndo.length - 2, 1);
             } else {
-                this.historyRedo.push({
-                    imageLayer: imageLayer.innerHTML,
-                    polygonsLayer: polygonsLayer.innerHTML,
-                    linesLayer: linesLayer.innerHTML,
-                    pointsLayer: pointsLayer.innerHTML,
-                    textsLayer: textsLayer.innerHTML
-                });
-
                 imageLayer.innerHTML = '';
                 polygonsLayer.innerHTML = '';
                 linesLayer.innerHTML = '';
@@ -78,8 +73,18 @@
             }
         }
 
-        function getLastState() {
-            return this.historyUndo[this.historyUndo.length -1]
+        function redoState() {
+            var stateToRedo = this.historyRedo[this.historyRedo.length - 1];
+            if (stateToRedo) {
+                this.historyUndo.push(stateToRedo);
+                imageLayer.innerHTML = stateToRedo.imageLayer;
+                polygonsLayer.innerHTML = stateToRedo.polygonsLayer;
+                linesLayer.innerHTML = stateToRedo.linesLayer;
+                pointsLayer.innerHTML = stateToRedo.pointsLayer;
+                textsLayer.innerHTML = stateToRedo.textsLayer;
+
+                this.historyRedo.splice(this.historyRedo.length - 1, 1);
+            }
         }
     }
     

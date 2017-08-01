@@ -155,6 +155,10 @@
             EditService.undo()
         }
 
+        $ctrl.redo = function() {
+            EditService.redo()
+        }
+
         $ctrl.reset = function() {
             if (window.confirm('En validant, vous allez effacer votre dessin en cours et en créer un nouveau.'))
                 window.location.reload();
@@ -499,6 +503,10 @@
 
                 case 'undo':
                     EditService.undo();
+                    break;
+
+                case 'redo':
+                    EditService.redo();
                     break;
 
                 case 'point':

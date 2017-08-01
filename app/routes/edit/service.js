@@ -54,6 +54,7 @@
 
         this.isUndoAvailable               = FeatureService.isUndoAvailable;
         this.undo                          = FeatureService.undo;
+        this.redo                          = FeatureService.redo;
         this.getProperties                 = FeatureService.getProperties;
         this.setProperties                 = FeatureService.setProperties;
         this.properties                    = FeatureService.properties;
@@ -122,6 +123,7 @@
         this.appendSvg           = appendSvg;
         this.importDER           = importDER;
         this.undo                = undo;
+        this.redo                = redo;
 
         var d3Element = null,
             overlayDrawing,
@@ -686,14 +688,11 @@
         }
 
         function undo() {
-            var lastState = HistoryService.resetState();
+            var lastState = HistoryService.undoState();
+        }
 
-            // DrawingService.layers.background.appendImage(
-            //     lastState.toDataURL(), 
-            //     MapService.getMap().getSize(),
-            //     MapService.getMap().getPixelOrigin(), 
-            //     MapService.getMap().getPixelBounds().min
-            // );
+        function redo() {
+            var lastState = HistoryService.redoState();
         }
     }
 
