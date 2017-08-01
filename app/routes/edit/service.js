@@ -58,6 +58,8 @@
         this.getProperties                 = FeatureService.getProperties;
         this.setProperties                 = FeatureService.setProperties;
         this.properties                    = FeatureService.properties;
+        
+        this.historySave                   = historySave;
 
         this.getInteraction                = InteractionService.getInteraction;
 
@@ -693,6 +695,10 @@
 
         function redo() {
             var lastState = HistoryService.redoState();
+        }
+
+        function historySave() {
+            HistoryService.saveState()
         }
     }
 

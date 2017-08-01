@@ -18,7 +18,7 @@
 (function() {
     'use strict';
 
-    function EditController(EditService, ToasterService, $location, $q, $scope) {
+    function EditController(EditService, ToasterService, HistoryService, $location, $q, $scope) {
 
         var $ctrl = this;
 
@@ -462,6 +462,7 @@
         }
         $ctrl.updateProperties = function() {
             EditService.setProperties($ctrl.currentFeature, $ctrl.featureProperties);
+            EditService.historySave();
         }
 
         $ctrl.enableDrawingMode = function(mode) {
@@ -603,5 +604,5 @@
 
     angular.module(moduleApp).controller('EditController', EditController);
 
-    EditController.$inject = ['EditService', 'ToasterService', '$location', '$q', '$scope']
+    EditController.$inject = ['EditService', 'ToasterService', 'HistoryService', '$location', '$q', '$scope']
 })();

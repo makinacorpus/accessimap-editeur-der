@@ -127,7 +127,6 @@
                 var p = projection.latLngToLayerPoint(e.latlng),
                     drawingParameters = getDrawingParameter();
                 DrawingService.toolbox.drawPoint(p.x, p.y, drawingParameters.style, drawingParameters.color);
-                HistoryService.saveState();
             })
 
         }
@@ -151,7 +150,6 @@
                                             drawingParameters.color,
                                             drawingParameters.contour)
 
-                    HistoryService.saveState();
 
                     MapService.addMouseMoveListener(function(e) {
                         var p = projection.latLngToLayerPoint(e.latlng),
@@ -201,7 +199,6 @@
                                                                 drawingParameters.color,
                                                                 drawingParameters.contour)
                                 enableSquareMode(getDrawingParameter)
-                                HistoryService.saveState();
                             }
                         })
 
@@ -249,7 +246,6 @@
                                                                 drawingParameters.color,
                                                                 drawingParameters.contour)
                                 enableTriangleMode(getDrawingParameter)
-                                HistoryService.saveState();
                             }
                         })
 

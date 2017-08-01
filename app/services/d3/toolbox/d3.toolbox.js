@@ -65,10 +65,11 @@
         var svgDrawing;
 
         function init(_svgDrawing, svgMenu, getCurrentZoom) {
+            console.log('init')
             RadialMenuService.init(d3.select(_svgDrawing.node().parentNode.parentNode), getCurrentZoom);
             svgDrawing = _svgDrawing;
 
-            HistoryService.init(_svgDrawing, applyStyle)
+            HistoryService.init(_svgDrawing)
             ToolboxTriangleService.init(_svgDrawing, applyStyle)
             ToolboxRectangleService.init(_svgDrawing, applyStyle)
             ToolboxEllipseService.init(_svgDrawing, applyStyle)
@@ -244,6 +245,9 @@
                     path.style(k, v);
                 }
             })
+            setTimeout(function() {
+                HistoryService.saveState();
+            }, 200);
         };
 
         /**

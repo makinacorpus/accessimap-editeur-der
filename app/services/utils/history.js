@@ -25,9 +25,8 @@
             pointsLayer,
             textsLayer;
 
-        function init(_svgDrawing, _applyStyle) {
+        function init(_svgDrawing) {
             svgDrawing = _svgDrawing;
-            applyStyle = _applyStyle;
 
             imageLayer = svgDrawing.select('[data-name="images-layer"]')[0][0];
             polygonsLayer = svgDrawing.select('[data-name="polygons-layer"]')[0][0];
@@ -37,13 +36,16 @@
         }
 
         function saveState() {
-            this.historyUndo.push({
-                imageLayer: imageLayer.innerHTML,
-                polygonsLayer: polygonsLayer.innerHTML,
-                linesLayer: linesLayer.innerHTML,
-                pointsLayer: pointsLayer.innerHTML,
-                textsLayer: textsLayer.innerHTML
-            });
+            console.log(this)
+            if (imageLayer && polygonsLayer && linesLayer && pointsLayer && textsLayer) {
+                this.historyUndo.push({
+                    imageLayer: imageLayer.innerHTML,
+                    polygonsLayer: polygonsLayer.innerHTML,
+                    linesLayer: linesLayer.innerHTML,
+                    pointsLayer: pointsLayer.innerHTML,
+                    textsLayer: textsLayer.innerHTML
+                });
+            }
         }
 
         function undoState() {
