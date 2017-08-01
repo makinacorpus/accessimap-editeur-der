@@ -9,7 +9,7 @@
 (function() {
     'use strict';
 
-    function ModeService(MapService, DrawingService, SettingsService, SelectPathService) {
+    function ModeService(MapService, DrawingService, SettingsService, SelectPathService, HistoryService) {
 
         this.init                    = init;
 
@@ -243,6 +243,7 @@
                                                                 drawingParameters.style,
                                                                 drawingParameters.color,
                                                                 drawingParameters.contour)
+                                HistoryService.saveState();
                                 enableTriangleMode(getDrawingParameter)
                             }
                         })
@@ -420,6 +421,6 @@
 
     angular.module(moduleApp).service('ModeService', ModeService);
 
-    ModeService.$inject = ['MapService', 'DrawingService', 'SettingsService', 'SelectPathService'];
+    ModeService.$inject = ['MapService', 'DrawingService', 'SettingsService', 'SelectPathService', 'HistoryService'];
 
 })();

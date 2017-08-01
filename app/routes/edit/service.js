@@ -121,6 +121,7 @@
         this.importImage         = importImage;
         this.appendSvg           = appendSvg;
         this.importDER           = importDER;
+        this.undo                = undo;
 
         var d3Element = null,
             overlayDrawing,
@@ -684,6 +685,9 @@
 
         }
 
+        function undo() {
+            console.log('undo service')   
+        }
     }
 
     angular.module(moduleApp).service('EditService', EditService);

@@ -61,6 +61,8 @@
          * Projection function to use for conversion between GPS & layer point
          */
         function createLayer(target, format, projection) {
+            console.log(target, format, projection);
+            
             _margin         = SettingsService.margin;
             _target         = target;
             _projection     = projection;

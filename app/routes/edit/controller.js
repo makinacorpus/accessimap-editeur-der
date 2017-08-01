@@ -151,6 +151,10 @@
             EditService.init($ctrl.mapFormat, $ctrl.legendFormat);
         }
 
+        $ctrl.undo = function() {
+            EditService.undo()
+        }
+
         $ctrl.reset = function() {
             if (window.confirm('En validant, vous allez effacer votre dessin en cours et en créer un nouveau.'))
                 window.location.reload();
@@ -457,7 +461,6 @@
         }
 
         $ctrl.enableDrawingMode = function(mode) {
-
             EditService.resetState();
 
             $ctrl.mode = mode;

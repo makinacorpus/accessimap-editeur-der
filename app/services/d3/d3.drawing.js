@@ -38,7 +38,6 @@
          * 
          */
         function initDrawing(elements, format) {
-            
             LayerService.createLayers(elements, format)
 
             ToolboxService.init(LayerService.drawing.getLayer(), 

@@ -40,6 +40,7 @@
          * @param  {Object} target  [description]
          */
         function createDrawing() {
+            console.log('draw')
             _g.append('g').attr('data-name', 'images-layer');
             _g.append('g').attr('data-name', 'polygons-layer');
             _g.append('g').attr('data-name', 'lines-layer');
@@ -85,6 +86,7 @@
         }
 
         function appendSvg(svgElement, transformToApply) {
+            console.log('svg');
             var children = svgElement.childNodes;
 
             for (var i = 0; i < children.length; i++) {
