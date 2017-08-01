@@ -86,6 +86,13 @@
                 this.historyRedo.splice(this.historyRedo.length - 1, 1);
             }
         }
+
+        function getHistory() {
+            return {
+                redo: this.historyRedo,
+                undo: this.historyUndo
+            }
+        }
     }
     
     angular.module(moduleApp)

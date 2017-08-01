@@ -127,6 +127,7 @@
                 var p = projection.latLngToLayerPoint(e.latlng),
                     drawingParameters = getDrawingParameter();
                 DrawingService.toolbox.drawPoint(p.x, p.y, drawingParameters.style, drawingParameters.color);
+                HistoryService.saveState();
             })
 
         }
@@ -137,6 +138,7 @@
 
             MapService.changeCursor('crosshair');
             MapService.addEventListener([ 'mousedown', 'mouseup' ] , function(e) {
+                
                 // only left click
                 if (e.originalEvent.button === 0) {
 
@@ -148,6 +150,8 @@
                                             drawingParameters.style,
                                             drawingParameters.color,
                                             drawingParameters.contour)
+
+                    HistoryService.saveState();
 
                     MapService.addMouseMoveListener(function(e) {
                         var p = projection.latLngToLayerPoint(e.latlng),
