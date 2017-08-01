@@ -27,6 +27,7 @@
             ToolboxPolylineService,
             ToolboxImageService,
             SelectPathService,
+            HistoryService,
             $sce) {
 
         this.init                          = init;
@@ -67,6 +68,7 @@
             RadialMenuService.init(d3.select(_svgDrawing.node().parentNode.parentNode), getCurrentZoom);
             svgDrawing = _svgDrawing;
 
+            HistoryService.init(_svgDrawing, applyStyle)
             ToolboxTriangleService.init(_svgDrawing, applyStyle)
             ToolboxRectangleService.init(_svgDrawing, applyStyle)
             ToolboxEllipseService.init(_svgDrawing, applyStyle)
@@ -330,6 +332,7 @@
                             'ToolboxPolylineService',
                             'ToolboxImageService',
                             'SelectPathService',
+                            'HistoryService',
                             '$sce'];
 
 })();

@@ -137,6 +137,7 @@
 
             MapService.changeCursor('crosshair');
             MapService.addEventListener([ 'mousedown', 'mouseup' ] , function(e) {
+                HistoryService.saveState();
                 // only left click
                 if (e.originalEvent.button === 0) {
 
@@ -167,6 +168,7 @@
 
             MapService.changeCursor('crosshair');
             MapService.addEventListener([ 'mousedown' ] , function(e) {
+                HistoryService.saveState();
                 // only left click
                 // e.originalEvent.stopImmediatePropagation()
                 if (e.originalEvent.button === 0) {
@@ -214,6 +216,7 @@
 
             MapService.changeCursor('crosshair');
             MapService.addEventListener([ 'mousedown' ] , function(e) {
+                HistoryService.saveState();
                 // only left click
                 // e.originalEvent.stopImmediatePropagation()
                 if (e.originalEvent.button === 0) {
@@ -243,7 +246,6 @@
                                                                 drawingParameters.style,
                                                                 drawingParameters.color,
                                                                 drawingParameters.contour)
-                                HistoryService.saveState();
                                 enableTriangleMode(getDrawingParameter)
                             }
                         })
