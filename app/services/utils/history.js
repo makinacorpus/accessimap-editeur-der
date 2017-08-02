@@ -17,6 +17,7 @@
         this.historyUndo    = [];
         this.historyRedo    = [];
 
+        var maxHistorySize = 5;
         var svgDrawing,
             applyStyle,
             imageLayer,
@@ -35,8 +36,13 @@
             textsLayer = svgDrawing.select('[data-name="texts-layer"]')[0][0];
         }
 
+        function cleanHistoryCache(arr) {
+            if (arr.length > maxHistorySize) {
+                arr.shift();
+            }
+        }
+
         function saveState() {
-            console.log(this)
             if (imageLayer && polygonsLayer && linesLayer && pointsLayer && textsLayer) {
                 this.historyUndo.push({
                     imageLayer: imageLayer.innerHTML,
@@ -45,6 +51,7 @@
                     pointsLayer: pointsLayer.innerHTML,
                     textsLayer: textsLayer.innerHTML
                 });
+                cleanHistoryCache(this.historyUndo)
             }
         }
 
@@ -56,8 +63,10 @@
                 pointsLayer: pointsLayer.innerHTML,
                 textsLayer: textsLayer.innerHTML
             });
+            cleanHistoryCache(this.historyRedo)
 
             var stateToUndo = this.historyUndo[this.historyUndo.length - 2];
+            console.log(this.historyUndo, stateToUndo)
             if (stateToUndo) {
                 imageLayer.innerHTML = stateToUndo.imageLayer;
                 polygonsLayer.innerHTML = stateToUndo.polygonsLayer;
@@ -72,6 +81,7 @@
                 linesLayer.innerHTML = '';
                 pointsLayer.innerHTML = '';
                 textsLayer.innerHTML = '';
+                this.historyUndo.pop();
             }
         }
 
@@ -79,6 +89,8 @@
             var stateToRedo = this.historyRedo[this.historyRedo.length - 1];
             if (stateToRedo) {
                 this.historyUndo.push(stateToRedo);
+                cleanHistoryCache(this.historyUndo)
+
                 imageLayer.innerHTML = stateToRedo.imageLayer;
                 polygonsLayer.innerHTML = stateToRedo.polygonsLayer;
                 linesLayer.innerHTML = stateToRedo.linesLayer;
