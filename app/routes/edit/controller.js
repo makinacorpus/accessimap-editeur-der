@@ -18,7 +18,7 @@
 (function() {
     'use strict';
 
-    function EditController(EditService, ToasterService, HistoryService, $location, $q, $scope) {
+    function EditController(EditService, ToasterService, HistoryService, $location, $q, $scope, $rootScope) {
 
         var $ctrl = this;
 
@@ -152,12 +152,18 @@
         }
 
         $ctrl.undo = function() {
-            EditService.undo()
+            EditService.undo();
         }
 
         $ctrl.redo = function() {
             EditService.redo()
         }
+
+        // $ctrl.isRedoable = $rootScope;
+        // $ctrl.isUndoable = HistoryService.historyUndo.length > 0;
+        // $ctrl.historyUndo = function() {
+        //     return HistoryService.historyCount();
+        // }
 
         $ctrl.reset = function() {
             if (window.confirm('En validant, vous allez effacer votre dessin en cours et en créer un nouveau.'))
@@ -604,5 +610,5 @@
 
     angular.module(moduleApp).controller('EditController', EditController);
 
-    EditController.$inject = ['EditService', 'ToasterService', 'HistoryService', '$location', '$q', '$scope']
+    EditController.$inject = ['EditService', 'ToasterService', 'HistoryService', '$location', '$q', '$scope', '$rootScope']
 })();

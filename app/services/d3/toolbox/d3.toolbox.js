@@ -70,6 +70,7 @@
             svgDrawing = _svgDrawing;
 
             HistoryService.init(_svgDrawing)
+            HistoryService.saveState()
             ToolboxTriangleService.init(_svgDrawing, applyStyle)
             ToolboxRectangleService.init(_svgDrawing, applyStyle)
             ToolboxEllipseService.init(_svgDrawing, applyStyle)

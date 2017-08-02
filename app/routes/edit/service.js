@@ -60,7 +60,7 @@
         this.properties                    = FeatureService.properties;
         
         this.historySave                   = historySave;
-
+        
         this.getInteraction                = InteractionService.getInteraction;
 
         this.enableDefaultMode             = ModeService.enableDefaultMode;

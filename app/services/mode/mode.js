@@ -9,7 +9,7 @@
 (function() {
     'use strict';
 
-    function ModeService(MapService, DrawingService, SettingsService, SelectPathService, HistoryService) {
+    function ModeService(MapService, DrawingService, SettingsService, SelectPathService) {
 
         this.init                    = init;
 
@@ -422,6 +422,6 @@
 
     angular.module(moduleApp).service('ModeService', ModeService);
 
-    ModeService.$inject = ['MapService', 'DrawingService', 'SettingsService', 'SelectPathService', 'HistoryService'];
+    ModeService.$inject = ['MapService', 'DrawingService', 'SettingsService', 'SelectPathService'];
 
 })();

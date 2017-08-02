@@ -8,14 +8,14 @@
 (function() {
     'use strict';
 
-    function HistoryService() {
+    function HistoryService($rootScope) {
         this.saveState  = saveState;
         this.init       = init;
         this.undoState  = undoState;
         this.redoState  = redoState;
 
-        this.historyUndo    = [];
-        this.historyRedo    = [];
+        var historyUndo    = [];
+        var historyRedo    = [];
 
         var maxHistorySize = 5;
         var svgDrawing,
@@ -40,56 +40,61 @@
             if (arr.length > maxHistorySize) {
                 arr.shift();
             }
+            $rootScope.isUndoable = historyUndo.length > 1;
+            $rootScope.isRedoable = historyRedo.length > 0;
+            
+            if (! $rootScope.$$phase) $rootScope.$digest()
         }
 
         function saveState() {
             if (imageLayer && polygonsLayer && linesLayer && pointsLayer && textsLayer) {
-                this.historyUndo.push({
+                historyUndo.push({
                     imageLayer: imageLayer.innerHTML,
                     polygonsLayer: polygonsLayer.innerHTML,
                     linesLayer: linesLayer.innerHTML,
                     pointsLayer: pointsLayer.innerHTML,
                     textsLayer: textsLayer.innerHTML
                 });
-                cleanHistoryCache(this.historyUndo)
+                cleanHistoryCache(historyUndo)
             }
         }
 
         function undoState() {
-            this.historyRedo.push({
+            historyRedo.push({
                 imageLayer: imageLayer.innerHTML,
                 polygonsLayer: polygonsLayer.innerHTML,
                 linesLayer: linesLayer.innerHTML,
                 pointsLayer: pointsLayer.innerHTML,
                 textsLayer: textsLayer.innerHTML
             });
-            cleanHistoryCache(this.historyRedo)
+            cleanHistoryCache(historyRedo);
 
-            var stateToUndo = this.historyUndo[this.historyUndo.length - 2];
-            console.log(this.historyUndo, stateToUndo)
-            if (stateToUndo) {
-                imageLayer.innerHTML = stateToUndo.imageLayer;
-                polygonsLayer.innerHTML = stateToUndo.polygonsLayer;
-                linesLayer.innerHTML = stateToUndo.linesLayer;
-                pointsLayer.innerHTML = stateToUndo.pointsLayer;
-                textsLayer.innerHTML = stateToUndo.textsLayer;
-
-                this.historyUndo.splice(this.historyUndo.length - 2, 1);
-            } else {
-                imageLayer.innerHTML = '';
-                polygonsLayer.innerHTML = '';
-                linesLayer.innerHTML = '';
-                pointsLayer.innerHTML = '';
-                textsLayer.innerHTML = '';
-                this.historyUndo.pop();
+            var indexToUndo = historyUndo.length - 2;
+            if (!historyUndo[indexToUndo]) {
+                indexToUndo = 0
             }
+
+            imageLayer.innerHTML = historyUndo[indexToUndo].imageLayer;
+            polygonsLayer.innerHTML = historyUndo[indexToUndo].polygonsLayer;
+            linesLayer.innerHTML = historyUndo[indexToUndo].linesLayer;
+            pointsLayer.innerHTML = historyUndo[indexToUndo].pointsLayer;
+            textsLayer.innerHTML = historyUndo[indexToUndo].textsLayer;
+
+            historyUndo.splice(indexToUndo, 1);
+            cleanHistoryCache(historyUndo);
         }
 
         function redoState() {
-            var stateToRedo = this.historyRedo[this.historyRedo.length - 1];
+            var stateToRedo = historyRedo[historyRedo.length - 1];
             if (stateToRedo) {
-                this.historyUndo.push(stateToRedo);
-                cleanHistoryCache(this.historyUndo)
+                var insertAtIndex = historyUndo.length - 2;
+                if (historyUndo.length > 0) {
+                    historyUndo.splice(insertAtIndex, 0, stateToRedo);
+                    cleanHistoryCache(historyUndo);
+                } else {
+                    historyUndo.push(stateToRedo);
+                }
+
 
                 imageLayer.innerHTML = stateToRedo.imageLayer;
                 polygonsLayer.innerHTML = stateToRedo.polygonsLayer;
@@ -97,14 +102,7 @@
                 pointsLayer.innerHTML = stateToRedo.pointsLayer;
                 textsLayer.innerHTML = stateToRedo.textsLayer;
 
-                this.historyRedo.splice(this.historyRedo.length - 1, 1);
-            }
-        }
-
-        function getHistory() {
-            return {
-                redo: this.historyRedo,
-                undo: this.historyUndo
+                historyRedo.splice(historyRedo.length - 1, 1);
             }
         }
     }
@@ -112,4 +110,5 @@
     angular.module(moduleApp)
         .service('HistoryService', HistoryService);
 
+    HistoryService.$inject = ['$rootScope']
 })();
