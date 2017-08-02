@@ -55,11 +55,13 @@
                     pointsLayer: pointsLayer.innerHTML,
                     textsLayer: textsLayer.innerHTML
                 });
+                historyRedo = [];
                 cleanHistoryCache(historyUndo)
             }
         }
 
         function undoState() {
+            // On sauvegarde l'état actuel
             historyRedo.push({
                 imageLayer: imageLayer.innerHTML,
                 polygonsLayer: polygonsLayer.innerHTML,
@@ -69,40 +71,42 @@
             });
             cleanHistoryCache(historyRedo);
 
-            var indexToUndo = historyUndo.length - 2;
-            if (!historyUndo[indexToUndo]) {
-                indexToUndo = 0
-            }
+            // On enlève le dernier élément car c'est l'état courant
+            historyUndo.pop();            
+            var indexToUndo = historyUndo.length - 1;
 
+            // On remplace le svg dans le DOM par l'état précédent
             imageLayer.innerHTML = historyUndo[indexToUndo].imageLayer;
             polygonsLayer.innerHTML = historyUndo[indexToUndo].polygonsLayer;
             linesLayer.innerHTML = historyUndo[indexToUndo].linesLayer;
             pointsLayer.innerHTML = historyUndo[indexToUndo].pointsLayer;
             textsLayer.innerHTML = historyUndo[indexToUndo].textsLayer;
 
-            historyUndo.splice(indexToUndo, 1);
             cleanHistoryCache(historyUndo);
         }
 
         function redoState() {
             var stateToRedo = historyRedo[historyRedo.length - 1];
             if (stateToRedo) {
-                var insertAtIndex = historyUndo.length - 2;
-                if (historyUndo.length > 0) {
-                    historyUndo.splice(insertAtIndex, 0, stateToRedo);
-                    cleanHistoryCache(historyUndo);
-                } else {
-                    historyUndo.push(stateToRedo);
-                }
-
-
+                // On remplace le svg dans le DOM par l'état précédent
                 imageLayer.innerHTML = stateToRedo.imageLayer;
                 polygonsLayer.innerHTML = stateToRedo.polygonsLayer;
                 linesLayer.innerHTML = stateToRedo.linesLayer;
                 pointsLayer.innerHTML = stateToRedo.pointsLayer;
                 textsLayer.innerHTML = stateToRedo.textsLayer;
 
-                historyRedo.splice(historyRedo.length - 1, 1);
+                // On remet l'état qu'on vient de restaurer dans undo pour pouvoir revenir à nouveau en arrière
+                historyUndo.push({
+                    imageLayer: imageLayer.innerHTML,
+                    polygonsLayer: polygonsLayer.innerHTML,
+                    linesLayer: linesLayer.innerHTML,
+                    pointsLayer: pointsLayer.innerHTML,
+                    textsLayer: textsLayer.innerHTML
+                });
+
+                // On enlève le dernier élément car il se trouve maintenant dans undo
+                historyRedo.pop();
+                cleanHistoryCache(historyUndo);
             }
         }
     }
