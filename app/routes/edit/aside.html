@@ -1,38 +1,34 @@
-<div class="col-xs-12">
+<!-- home form -->
+<div ng-if="$ctrl.isHomeVisible"
+    ng-include="'scripts/routes/edit/aside_home.html'">
+</div>
 
-    <!-- home form -->
-    <div ng-if="$ctrl.isHomeVisible"
-        ng-include="'scripts/routes/edit/aside_home.html'">
-    </div>
+<!-- parameters form -->
+<div ng-if="$ctrl.isParametersVisible"
+    ng-include="'scripts/routes/edit/aside_parameters.html'">
+</div>
 
-    <!-- parameters form -->
-    <div ng-if="$ctrl.isParametersVisible"
-        ng-include="'scripts/routes/edit/aside_parameters.html'">
-    </div>
+<!-- Map parameters -->
+<div ng-if="$ctrl.isMapParametersVisible" class="btn-group pull-left"
+    ng-include="'scripts/routes/edit/aside_map_parameters.html'">
+</div>
 
-    <!-- Map parameters -->
-    <div ng-if="$ctrl.isMapParametersVisible" class="btn-group pull-left"
-        ng-include="'scripts/routes/edit/aside_map_parameters.html'">
-    </div>
+<!-- Drawing features -->
+<div ng-if="$ctrl.isDrawingParametersVisible"
+    ng-include="'scripts/routes/edit/aside_drawing_parameters.html'">
+</div>
 
-    <!-- Drawing features -->
-    <div ng-if="$ctrl.isDrawingParametersVisible"
-        ng-include="'scripts/routes/edit/aside_drawing_parameters.html'">
-    </div>
+<!-- Legend features -->
+<div ng-if="$ctrl.isLegendParametersVisible"
+    ng-include="'scripts/routes/edit/aside_legend_parameters.html'">
+</div>
 
-    <!-- Legend features -->
-    <div ng-if="$ctrl.isLegendParametersVisible"
-        ng-include="'scripts/routes/edit/aside_legend_parameters.html'">
-    </div>
+<!-- Interaction features -->
+<div ng-if="$ctrl.isInteractionParametersVisible"
+    ng-include="'scripts/routes/edit/aside_interaction_parameters.html'">
+</div>
 
-    <!-- Interaction features -->
-    <div ng-if="$ctrl.isInteractionParametersVisible"
-        ng-include="'scripts/routes/edit/aside_interaction_parameters.html'">
-    </div>
-
-    <!-- Background features -->
-    <div ng-if="$ctrl.isBackgroundParametersVisible"
-        ng-include="'scripts/routes/edit/aside_background_parameters.html'">
-    </div>
-
+<!-- Background features -->
+<div ng-if="$ctrl.isBackgroundParametersVisible"
+    ng-include="'scripts/routes/edit/aside_background_parameters.html'">
 </div>

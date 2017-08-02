@@ -1,4 +1,11 @@
+$red: #ef2456;
+$green: #b0db18;
+$blue: #076ea9;
+
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+$brand-primary: $blue;
+$border-radius-base: 1px;
+
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
@@ -59,8 +66,35 @@ aside .logo {
     display: block;
 
     img {
-        height: 75px;
+        height: 90px;
+        margin-top: 16px;
     }
+}
+
+.title {
+  border: none;
+  box-shadow: none;
+  margin: 16px 4%;
+  width: 92%;
+  display: block;
+  text-align: center;
+}
+
+.main-menu {
+  width: 100%;
+  &.btn-group-vertical > .btn:first-child:not(:last-child),
+  &.btn-group-vertical > .btn:last-child:not(:first-child) {
+    border-radius: 0;
+  }
+  .btn {
+    text-align: left;
+    height: 46px;
+
+    span {
+      width: 30px;
+      text-align: center;
+    }
+  }
 }
 
 // need to hide defs svg
@@ -68,11 +102,6 @@ aside .logo {
 #pattern svg {
   width: 0px;
   height: 0px;
-}
-
-.btn,
-.form-control {
-  border-radius: 2px;
 }
 
 .btn.btn-tile {
@@ -118,6 +147,17 @@ div[ng-view] {
     border-right: 1px solid #e5e5e5;
     display: flex;
     flex-direction: column;
+
+    h3 {
+      background: $blue;
+      padding: 16px 0;
+      margin-top: 0;
+      color: white;
+      .btn {
+        color: white;
+      }
+    }
+
 
     div.aside-content {
       flex: 1 1 100%;
