@@ -20,9 +20,11 @@ $headings-font-family: $font-family-sans-serif;
 
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
+
 @import "_header";
 @import "_menu";
-// endbower
+
 
 .tooltip-inner {
   overflow: hidden; 
@@ -346,6 +348,9 @@ header {
   content:"\e114";
   float: right;
   color: grey;
+}
+.panel-primary .panel-heading a:after {
+  color: white;
 }
 .panel-heading a.collapsed:after {
   content:"\e080";
