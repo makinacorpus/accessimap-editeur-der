@@ -155,7 +155,7 @@ div[ng-view] {
     h3 {
       background: $blue;
       font-size: 18px;
-      padding: 16px;
+      padding: 13px 16px;
       margin-top: 0;
       color: white;
       span {
@@ -172,8 +172,11 @@ div[ng-view] {
     overflow: auto;
     margin-top: 50px;
     width: 315px;
+    // background: $grey;
+    // color: white;
 
     h4:not(.panel-title) {
+      font-weight: normal;
       margin-top: 1em;
       padding-bottom: 6px;
       border-bottom: 1px solid #e5e5e5;
