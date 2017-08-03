@@ -1,8 +1,7 @@
 .aside-menu {
   position: fixed;
-  // overflow: hidden;
   left: 0;
-  top: 0;
+  top: 50px;
   bottom: 0;
   z-index: 9999999999;
   background: $grey;
@@ -26,7 +25,7 @@
     }
   }
 
-  .btn-info.active {
+  .btn-info.active:not(:focus) {
     color: $blue-light;
     background: #222;
   }

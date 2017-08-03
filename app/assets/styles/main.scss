@@ -14,9 +14,14 @@ $btn-info-bg: $grey;
 
 $tooltip-bg: $grey;
 
+$font-family-base: 'Roboto', sans-serif;
+$font-family-sans-serif: 'Roboto Slab', 'Roboto', serif;
+$headings-font-family: $font-family-sans-serif;
+
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
-@import "./_menu";
+@import "_header";
+@import "_menu";
 // endbower
 
 .tooltip-inner {
@@ -77,29 +82,10 @@ body {
     max-height: 20rem;
 }
 
-aside .logo {
-    text-align: center;
-    display: block;
-
-    img {
-        height: 90px;
-        margin-top: 16px;
-    }
-}
-
 .nav.nav-tabs > li > a {
   padding: 10px;
 }
 
-.title {
-  color: black;
-  border: none;
-  box-shadow: none;
-  margin: 32px 4% 16px 4%;
-  width: 92%;
-  display: block;
-  text-align: center;
-}
 
 
 // need to hide defs svg
@@ -129,6 +115,7 @@ div[ng-view] {
 
   main {
     flex: 1 1 100%;
+    margin-top: 50px;
 
     #legend {
       height: 100%;
@@ -181,6 +168,7 @@ div[ng-view] {
   .aside-content {
     flex: 1 1 100%;
     overflow: auto;
+    margin-top: 50px;
     width: 315px;
 
     h4:not(.panel-title) {
