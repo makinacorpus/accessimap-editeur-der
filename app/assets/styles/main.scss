@@ -22,6 +22,7 @@ $headings-font-family: $font-family-sans-serif;
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
+@import "_toastr";
 @import "_header";
 @import "_menu";
 
@@ -64,6 +65,10 @@ h3 {
   font-size: 1.5rem;
 }
 
+.toast-top-right {
+  top: 60px;
+}
+
 /* Space out content a bit */
 body {
   display: flex;
@@ -85,7 +90,9 @@ body {
 }
 
 .nav.nav-tabs > li > a {
-  padding: 10px;
+  padding: 6px 0;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 

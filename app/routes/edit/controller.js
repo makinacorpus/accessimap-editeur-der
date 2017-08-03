@@ -157,6 +157,14 @@
             EditService.redo()
         }
 
+        function KeyPress(e) {
+            var evtobj = window.event? event : e
+            if (evtobj.keyCode == 90 && evtobj.ctrlKey) $ctrl.undo();
+            if (evtobj.keyCode == 89 && evtobj.ctrlKey) $ctrl.redo();
+        }
+
+        document.onkeydown = KeyPress;
+
         $ctrl.reset = function() {
             if (window.confirm('En validant, vous allez effacer votre dessin en cours et en créer un nouveau.'))
                 window.location.reload();

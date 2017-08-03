@@ -1,11 +1,33 @@
 <header class="editor-header">
     <a ng-href="#/" class="logo">
         <img src="assets/images/logos/logo.svg">
+        <span class="title">Éditeur</span>
     </a>
-    <span class="title">Éditeur</span>
     <input type="text"
         ng-model="$ctrl.model.title"
         class="form-control input-lg">
+
+    <div class="state-buttons">
+        <div class="form-group">
+            <button
+                class="btn btn-default"
+                ng-click="$ctrl.undo()"
+                ng-disabled="!$root.isUndoable"
+                aria-label="Annuler la dernière action" title="Annuler la dernière action (Ctrl+Z)">
+                <span class="fa fa-lg fa-undo" aria-hidden="true" ></span>
+                Annuler
+            </button>
+
+            <button
+                class="btn btn-default"
+                ng-click="$ctrl.redo()"
+                ng-disabled="!$root.isRedoable"
+                aria-label="Annuler la dernière action" title="Annuler la dernière action (Ctrl+Y)">
+                <span class="fa fa-lg fa-repeat" aria-hidden="true" ></span>
+                Restaurer
+            </button>
+        </div>
+    </div>
 </header>
 <div class="aside-menu" ng-class="{'expand': $ctrl.expandedMenu}">
 

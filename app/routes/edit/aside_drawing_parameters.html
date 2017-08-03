@@ -4,27 +4,7 @@
 </h3>
 
 <div class="col-xs-12">
-    <div class="form-group col-md-12 text-center">
-        <button
-            class="btn btn-primary"
-            ng-click="$ctrl.undo()"
-            ng-disabled="!$root.isUndoable"
-            aria-label="Annuler la dernière action" title="Annuler la dernière action">
-            <span class="fa fa-lg fa-undo" aria-hidden="true" ></span>
-            Annuler
-        </button>
-
-        <button
-            class="btn btn-primary"
-            ng-click="$ctrl.redo()"
-            ng-disabled="!$root.isRedoable"
-            aria-label="Annuler la dernière action" title="Annuler la dernière action">
-            <span class="fa fa-lg fa-repeat" aria-hidden="true" ></span>
-            Restaurer
-        </button>
-    </div>
     <!-- editing modes -->
-
     <div class="form-group btn-group">
         <label>Edition</label><br/>
         <button
