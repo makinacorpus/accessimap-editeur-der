@@ -1,0 +1,72 @@
+.aside-menu {
+  position: fixed;
+  // overflow: hidden;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 9999999999;
+  background: $grey;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 50px;
+  box-shadow: 0 0 5px rgba(0,0,0, .2);
+  transition: width .3s;
+  .text {
+    display: inline-block;
+    overflow: hidden;
+    // line-height: 1.7;
+    width: 0;
+  }
+  &.expand {
+    width: 180px;
+    .text {
+      width: 140px;
+    }
+  }
+
+  .btn-info.active {
+    color: $blue-light;
+  }
+}
+
+.main-menu {
+  flex: 1;
+}
+
+.main-menu, .export-menu {
+  width: 100%;
+  &.btn-group-vertical > .btn:first-child:not(:last-child),
+  &.btn-group-vertical > .btn:last-child:not(:first-child) {
+    border-radius: 0;
+  }
+  .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    text-align: left;
+    height: 46px;
+    border-left: none;
+    border-right: none;
+    margin: 0 !important;
+
+    .fa {
+      width: 36px;
+      margin-left: 4px;
+      margin-right: 8px;
+      text-align: center;
+    }
+
+    .fa-upload {
+      // margin-top: 10px;
+    }
+  }
+
+}
+
+
+.fa-arrow-right.left {
+  transition: transform .5s;
+  transform: rotate(180deg);
+}

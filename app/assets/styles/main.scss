@@ -1,14 +1,30 @@
 $red: #ef2456;
 $green: #b0db18;
 $blue: #076ea9;
+$blue-light: #048bd8;
+$grey: #333;
 
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 $brand-primary: $blue;
+$brand-success: $green;
 $border-radius-base: 1px;
+$btn-success-color: $grey;
+
+$btn-info-bg: $grey;
+
+$tooltip-bg: $grey;
 
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+@import "./_menu";
 // endbower
+
+.tooltip-inner {
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+}
 
 .browsehappy {
   margin: 0.2em 0;
@@ -26,7 +42,7 @@ html, body {
 
 html, *, body {
   box-sizing: border-box;
-  font-size: 16px;
+  // font-size: 16px;
 }
 
 h1 {
@@ -71,6 +87,10 @@ aside .logo {
     }
 }
 
+.nav.nav-tabs > li > a {
+  padding: 10px;
+}
+
 .title {
   color: black;
   border: none;
@@ -81,36 +101,6 @@ aside .logo {
   text-align: center;
 }
 
-.aside-home {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.main-menu {
-  flex: 1;
-}
-
-.main-menu, .export-menu {
-  width: 100%;
-  &.btn-group-vertical > .btn:first-child:not(:last-child),
-  &.btn-group-vertical > .btn:last-child:not(:first-child) {
-    border-radius: 0;
-  }
-  .btn {
-    font-size: 16px;
-    text-align: left;
-    height: 46px;
-    border-left: none;
-    border-right: none;
-
-    span {
-      width: 40px;
-      text-align: center;
-    }
-  }
-}
 
 // need to hide defs svg
 #pattern,
@@ -158,36 +148,51 @@ div[ng-view] {
   }
 
   aside.right-side {
-    min-width: 340px;
-    border-right: 1px solid #e5e5e5;
+    position: relative;
+    z-index: 2;
+    width: 0;
+    margin-left: 50px;
+    margin-bottom: 0;
+    border: none;
     display: flex;
     flex-direction: column;
+    transition: width .3s;
+    box-shadow: 0 0 5px rgba(0,0,0, .2);
+
+    &.panel {
+      width: 420px;
+    }
 
     h3 {
       background: $blue;
-      padding: 16px 0;
+      font-size: 18px;
+      padding: 16px;
       margin-top: 0;
       color: white;
+      span {
+        margin-right: 6px;
+      }
       .btn {
         color: white;
       }
     }
+  }
 
+  .aside-content {
+    flex: 1 1 100%;
+    overflow: auto;
+    width: 315px;
 
-    div.aside-content {
-      flex: 1 1 100%;
-      overflow: auto;
-
-      h4:not(.panel-title) {
-        margin-top: 1em;
-        border-bottom: 1px solid #e5e5e5;
-      }
+    h4:not(.panel-title) {
+      margin-top: 1em;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #e5e5e5;
     }
-    div.aside-footer {
-      border-top: 1px solid #e5e5e5;
-      text-align: right;
-      padding: .5em 0 .5em 0;
-    }
+  }
+  div.aside-footer {
+    border-top: 1px solid #e5e5e5;
+    text-align: right;
+    padding: .5em 0 .5em 0;
   }
 }
 

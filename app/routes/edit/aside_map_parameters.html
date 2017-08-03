@@ -1,33 +1,58 @@
 <h3>
-    <button class="btn btn-link"
-            ng-click="$ctrl.displayHome()">
-        <span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span>
-    </button>
-
     <span class="fa fa-map" aria-hidden="true"></span>
     Carte
 </h3>
 
 <div class="col-xs-12">
-    <form class="row">
-        <div class="form-group col-md-12">
-            <label>Afficher la carte</label>
-            <br>
-            <div class="btn-group">
-                <!-- Drawing -->
-                <button class="btn btn-default"
-                        ng-class="{ 'active' : $ctrl.model.isMapVisible }"
-                        ng-click="$ctrl.showMap()">
-                    Oui
-                </button>
-                <!-- Legend -->
-                <button class="btn btn-default"
-                        ng-class="{ 'active' : ! $ctrl.model.isMapVisible }"
-                        ng-click="$ctrl.hideMap()">
-                    Non
-                </button>
-            </div>
+    <div class="form-group">
+        <label>Afficher la carte</label>
+        <br>
+        <div class="btn-group">
+            <!-- Drawing -->
+            <button class="btn btn-default"
+                    ng-class="{ 'active' : $ctrl.model.isMapVisible }"
+                    ng-click="$ctrl.showMap()">
+                Oui
+            </button>
+            <!-- Legend -->
+            <button class="btn btn-default"
+                    ng-class="{ 'active' : ! $ctrl.model.isMapVisible }"
+                    ng-click="$ctrl.hideMap()">
+                Non
+            </button>
         </div>
+    </div>
+    <uib-tabset active="activeJustified" justified="true">
+        <uib-tab index="0">
+            <uib-tab-heading>
+                <span class="fa fa-circle" aria-hidden="true"></span>
+                POI
+            </uib-tab-heading>
+            <div ng-include="'scripts/routes/edit/aside_map_poi_creation.html'"></div>
+        </uib-tab>
+        <uib-tab index="1">
+            <uib-tab-heading>
+                <span class="fa fa-search" aria-hidden="true"></span>
+                Adresses
+            </uib-tab-heading>
+            <div ng-include="'scripts/routes/edit/aside_map_address.html'"></div>
+        </uib-tab>
+        <uib-tab index="2">
+            <uib-tab-heading>
+                <span class="fa fa-cloud-download" aria-hidden="true"></span>
+                Data&nbsp;OSM
+            </uib-tab-heading>
+            <div ng-include="'scripts/routes/edit/aside_map_feature_creation.html'"></div>
+        </uib-tab>
+        <uib-tab index="3">
+            <uib-tab-heading>
+                <span class="fa fa-list" aria-hidden="true"></span>
+                Listing
+            </uib-tab-heading>
+            <div ng-include="'scripts/routes/edit/aside_map_feature_management.html'"></div>
+        </uib-tab>
+    </uib-tabset>
+</div>
 
         <!-- rotate slider, not ready to use -->
         <!--<div class="form-group col-xs-12">
@@ -46,61 +71,38 @@
             </div>
         </div>-->
 
-        <div class="form-group col-md-6 text-center">
-            <button class="btn btn-primary btn-tile"
-                    ng-class="{ 'active' : $ctrl.isPoiCreationVisible }"
-                    ng-click="$ctrl.displayAddPOIForm()">
-                <span class="fa fa-plus-circle" aria-hidden="true"></span><br/>
-                POI
-            </button>
-        </div>
-
-        <div class="form-group col-md-6 text-center">
-            <button class="btn btn-primary btn-tile"
-                    ng-class="{ 'active' : $ctrl.isAddressVisible }"
-                    ng-click="$ctrl.displaySearchAddressForm()">
-                <span class="fa fa-search" aria-hidden="true"></span><br/>
-                Adresses
-            </button>
-        </div>
-
-        <div class="form-group col-md-6 text-center">
-            <button class="btn btn-primary btn-tile"
-                    ng-class="{ 'active' : $ctrl.isFeatureCreationVisible }"
-                    ng-click="$ctrl.displayGetDataFromOSMForm()">
-                <span class="fa fa-cloud-download" aria-hidden="true"></span> <br/>
-                Data OSM
-            </button>
-        </div>
-
-        <div class="form-group col-md-6 text-center">
-            <button class="btn btn-default btn-tile"
-                    ng-class="{ 'active' : $ctrl.isFeatureManagementVisible }"
-                    ng-click="$ctrl.displayFeatureManagement()">
-                <span class="fa fa-list" aria-hidden="true"></span> <br/>
-                Listing
-            </button>
-        </div>
-
-    </form>
-
-    <!-- address form -->
-    <div ng-if="$ctrl.isAddressVisible"
-        ng-include="'scripts/routes/edit/aside_map_address.html'">
+    <!-- <div class="form-group col-md-6 text-center">
+        <button class="btn btn-primary btn-tile"
+                ng-class="{ 'active' : $ctrl.isPoiCreationVisible }"
+                ng-click="$ctrl.displayAddPOIForm()">
+            <span class="fa fa-plus-circle" aria-hidden="true"></span><br/>
+            POI
+        </button>
     </div>
 
-    <!-- POI form -->
-    <div ng-if="$ctrl.isPoiCreationVisible"
-        ng-include="'scripts/routes/edit/aside_map_poi_creation.html'">
+    <div class="form-group col-md-6 text-center">
+        <button class="btn btn-primary btn-tile"
+                ng-class="{ 'active' : $ctrl.isAddressVisible }"
+                ng-click="$ctrl.displaySearchAddressForm()">
+            <span class="fa fa-search" aria-hidden="true"></span><br/>
+            Adresses
+        </button>
     </div>
 
-    <!-- Feature form -->
-    <div ng-if="$ctrl.isFeatureCreationVisible"
-        ng-include="'scripts/routes/edit/aside_map_feature_creation.html'">
+    <div class="form-group col-md-6 text-center">
+        <button class="btn btn-primary btn-tile"
+                ng-class="{ 'active' : $ctrl.isFeatureCreationVisible }"
+                ng-click="$ctrl.displayGetDataFromOSMForm()">
+            <span class="fa fa-cloud-download" aria-hidden="true"></span> <br/>
+            Data OSM
+        </button>
     </div>
 
-    <!-- Feature management -->
-    <div ng-if="$ctrl.isFeatureManagementVisible"
-        ng-include="'scripts/routes/edit/aside_map_feature_management.html'">
-    </div>
-</div>
+    <div class="form-group col-md-6 text-center">
+        <button class="btn btn-default btn-tile"
+                ng-class="{ 'active' : $ctrl.isFeatureManagementVisible }"
+                ng-click="$ctrl.displayFeatureManagement()">
+            <span class="fa fa-list" aria-hidden="true"></span> <br/>
+            Listing
+        </button>
+    </div> -->

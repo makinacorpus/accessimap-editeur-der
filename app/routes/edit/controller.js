@@ -19,7 +19,6 @@
     'use strict';
 
     function EditController(EditService, ToasterService, HistoryService, $location, $q, $scope, $rootScope) {
-
         var $ctrl = this;
 
         /**
@@ -97,13 +96,8 @@
 
 
         // general state parameters
-        $ctrl.isHomeVisible                  = true; // initial state = home
-        $ctrl.isParametersVisible            = false;
-        $ctrl.isMapParametersVisible         = false;
-        $ctrl.isDrawingParametersVisible     = false;
-        $ctrl.isLegendParametersVisible      = false;
-        $ctrl.isInteractionParametersVisible = false;
-        $ctrl.isBackgroundParametersVisible  = false;
+        $ctrl.expandedMenu                   = false;
+        $ctrl.panel                 = null;
 
         // map state parameters
         $ctrl.isAddressVisible           = false;
@@ -151,6 +145,10 @@
             EditService.init($ctrl.mapFormat, $ctrl.legendFormat);
         }
 
+        $ctrl.expandMenu = function() {
+            $ctrl.expandedMenu = $ctrl.expandedMenu ? false : true;
+        }
+
         $ctrl.undo = function() {
             EditService.undo();
         }
@@ -158,12 +156,6 @@
         $ctrl.redo = function() {
             EditService.redo()
         }
-
-        // $ctrl.isRedoable = $rootScope;
-        // $ctrl.isUndoable = HistoryService.historyUndo.length > 0;
-        // $ctrl.historyUndo = function() {
-        //     return HistoryService.historyCount();
-        // }
 
         $ctrl.reset = function() {
             if (window.confirm('En validant, vous allez effacer votre dessin en cours et en créer un nouveau.'))
@@ -330,57 +322,39 @@
         /**
          * General parameters
          */
-        $ctrl.displayHome = function() {
-            $ctrl.isHomeVisible                  = true;
-            $ctrl.isParametersVisible            = false;
-            $ctrl.isMapParametersVisible         = false;
-            $ctrl.isDrawingParametersVisible     = false;
-            $ctrl.isLegendParametersVisible      = false;
-            $ctrl.isInteractionParametersVisible = false;
-            $ctrl.isBackgroundParametersVisible  = false;
-
-            EditService.resetState();
-
-        }
         $ctrl.displayParameters = function() {
-            $ctrl.isHomeVisible                  = false;
-            $ctrl.isParametersVisible            = true;
-            $ctrl.isMapParametersVisible         = false;
-            $ctrl.isDrawingParametersVisible     = false;
-            $ctrl.isLegendParametersVisible      = false;
-            $ctrl.isInteractionParametersVisible = false;
-            $ctrl.isBackgroundParametersVisible  = false;
+            if ($ctrl.panel === 'parameters') {
+                $ctrl.panel = null;
+                EditService.resetState();
+                return false;
+            }
 
+            $ctrl.panel = 'parameters';
             EditService.resetState();
 
         }
         $ctrl.displayMapParameters = function() {
+            if ($ctrl.panel === 'map') {
+                $ctrl.panel = null;
+                EditService.resetState();
+                return false;
+            }
+
+            $ctrl.panel = 'map';
+
             $ctrl.isWorkspaceVisible             = true;
             $ctrl.isLegendVisible                = false;
-
-            $ctrl.isHomeVisible                  = false;
-            $ctrl.isParametersVisible            = false;
-            $ctrl.isMapParametersVisible         = true;
-            $ctrl.isDrawingParametersVisible     = false;
-            $ctrl.isLegendParametersVisible      = false;
-            $ctrl.isInteractionParametersVisible = false;
-            $ctrl.isBackgroundParametersVisible  = false;
 
             $ctrl.displayFeatureManagement();
             $ctrl.showMap();
         }
         $ctrl.displayDrawingParameters = function() {
-            $ctrl.isWorkspaceVisible             = true;
-            $ctrl.isLegendVisible                = false;
-
-            $ctrl.isHomeVisible                  = false;
-            $ctrl.isParametersVisible            = false;
-            $ctrl.isMapParametersVisible         = false;
-            $ctrl.isDrawingParametersVisible     = true;
-            $ctrl.isLegendParametersVisible      = false;
-            $ctrl.isInteractionParametersVisible = false;
-            $ctrl.isBackgroundParametersVisible  = false;
-
+            if ($ctrl.panel === 'draw') {
+                $ctrl.panel = null;
+                EditService.resetState();
+                return false;
+            }
+            $ctrl.panel = 'draw';
             $ctrl.enableDrawingMode('default');
 
             // Display for the first time the drawing is freezed
@@ -393,34 +367,22 @@
             EditService.freezeMap();
         }
         $ctrl.displayLegendParameters = function() {
-            $ctrl.isWorkspaceVisible             = false;
-            $ctrl.isLegendVisible                = true;
-
-            $ctrl.isHomeVisible                  = false;
-            $ctrl.isParametersVisible            = false;
-            $ctrl.isMapParametersVisible         = false;
-            $ctrl.isDrawingParametersVisible     = false;
-            $ctrl.isLegendParametersVisible      = true;
-            $ctrl.isInteractionParametersVisible = false;
-            $ctrl.isBackgroundParametersVisible  = false;
+            if ($ctrl.panel === 'legend') {
+                $ctrl.panel = null;
+                EditService.resetState();
+                return false;
+            }
+            $ctrl.panel = 'legend';
         }
         $ctrl.displayInteractionParameters = function() {
-            $ctrl.isHomeVisible                  = false;
-            $ctrl.isParametersVisible            = false;
-            $ctrl.isMapParametersVisible         = false;
-            $ctrl.isDrawingParametersVisible     = false;
-            $ctrl.isLegendParametersVisible      = false;
-            $ctrl.isInteractionParametersVisible = true;
-            $ctrl.isBackgroundParametersVisible  = false;
+            if ($ctrl.panel === 'interaction') {
+                $ctrl.panel = null;
+                EditService.resetState();
+                return false;
+            }
+            $ctrl.panel = 'interaction';
         }
         $ctrl.displayBackgroundParameters = function() {
-            $ctrl.isHomeVisible                  = false;
-            $ctrl.isParametersVisible            = false;
-            $ctrl.isMapParametersVisible         = false;
-            $ctrl.isDrawingParametersVisible     = false;
-            $ctrl.isLegendParametersVisible      = false;
-            $ctrl.isInteractionParametersVisible = false;
-            $ctrl.isBackgroundParametersVisible  = true;
         }
 
         $ctrl.removeFeature = EditService.removeFeature;

@@ -22,6 +22,8 @@
             'ui.select',
             'ui.bootstrap',
             'ui.bootstrap-slider',
+            'ui.bootstrap.tabs',
+            'ui.bootstrap.tooltip',
             'bootstrap.fileField'
         ])
         .config(function($routeProvider) {
