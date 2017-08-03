@@ -28,6 +28,7 @@
 
   .btn-info.active {
     color: $blue-light;
+    background: #222;
   }
 }
 
@@ -42,6 +43,9 @@
     border-radius: 0;
   }
   .btn {
+    border-color: transparent;
+    box-shadow: none;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -53,18 +57,19 @@
     padding-left: 0;
     padding-right: 0;
     margin: 0 !important;
-
     .fa {
       width: 36px;
-      // margin-left: 4px;
-      // margin-right: 8px;
-      margin: 0 6px;
+      margin: 0 7px;
       text-align: center;
     }
 
-    .fa-upload {
-      // margin-top: 10px;
+    &:focus {
+      outline: none;
+      box-shadow: none;
     }
+  }
+  .btn-info {
+    background: transparent;
   }
 
 }
