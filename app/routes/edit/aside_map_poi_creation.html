@@ -1,24 +1,30 @@
-<h4>
-    <span class="fa fa-plus-circle" aria-hidden="true"></span>
-    Ajouter POI
-</h4>
-
 <form>
     <div class="form-group">
         <label>Style</label>
-        <ui-select 
-            ng-model="$ctrl.styleChosen" 
-            ng-disabled="$ctrl.disabled" 
-            theme="bootstrap" 
-            class="form-control style-selector">
-            
-            <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
-            <ui-select-choices repeat="item in $ctrl.styleChoices | filter: $select.search" style="max-height: 500px;">
-                <div class="opt-style-container">
-                  <span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span>
-                  <span ng-class="{'opt-style-visu arrow-trick': item.id.indexOf('Arrow') > -1, 'opt-style-visu ': item.id.indexOf('Arrow') === -1}" style="max-height:30px" style="display:inline-block;" ng-bind-html="$ctrl.featureIcon(item, $ctrl.queryChosen.type)"></span>
-                </div>
-            </ui-select-choices>
-        </ui-select>
+
+
+        <div class="poi-group">
+            <ui-select 
+                ng-model="$ctrl.styleChosenPoi" 
+                ng-disabled="$ctrl.disabled" 
+                theme="bootstrap" 
+                class="form-control style-selector">
+                
+                <ui-select-match placeholder="Sélectionnez un style">{{$select.selected.name}}</ui-select-match>
+                <ui-select-choices repeat="item in $ctrl.styleChoicesPoi | filter: $select.search" style="max-height: 500px;">
+                    <div class="opt-style-container">
+                    <span style="display:inline-block;" ng-bind-html="item.name | highlight: $select.search"></span>
+                    <span ng-class="{'opt-style-visu arrow-trick': item.id.indexOf('Arrow') > -1, 'opt-style-visu ': item.id.indexOf('Arrow') === -1}" style="max-height:30px" style="display:inline-block;" ng-bind-html="$ctrl.featureIcon(item, $ctrl.queryChosenPoi.type)"></span>
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+            <button
+                ng-click="$ctrl.toggleAddPOI()"
+                ng-class="{ 'active' : $ctrl.poiMode }"
+                class="btn btn-default"
+                aria-label="Sélectionner un élément" title="Sélectionner un élément">
+                <span class="fa fa-crosshairs" aria-hidden="true" ></span>
+            </button>
+        </div>
     </div>
 </form>

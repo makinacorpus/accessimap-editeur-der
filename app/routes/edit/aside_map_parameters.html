@@ -10,36 +10,40 @@
         <label class="tgl-btn" for="show-map"></label>
     </div>
     <hr>
-    <uib-tabset active="activeJustified" justified="true">
-        <uib-tab index="0">
-            <uib-tab-heading ng-click="$ctrl.displayAddPOIForm()">
-                <span class="fa fa-circle" aria-hidden="true"></span>
-                POI
-            </uib-tab-heading>
-            <div ng-include="'scripts/routes/edit/aside_map_poi_creation.html'"></div>
-        </uib-tab>
-        <uib-tab index="1">
-            <uib-tab-heading ng-click="$ctrl.displaySearchAddressForm()">
-                <span class="fa fa-search" aria-hidden="true"></span>
-                Adresses
-            </uib-tab-heading>
-            <div ng-include="'scripts/routes/edit/aside_map_address.html'"></div>
-        </uib-tab>
-        <uib-tab index="2">
-            <uib-tab-heading ng-click="$ctrl.displayGetDataFromOSMForm()">
-                <span class="fa fa-cloud-download" aria-hidden="true"></span>
-                Data&nbsp;OSM
-            </uib-tab-heading>
-            <div ng-include="'scripts/routes/edit/aside_map_feature_creation.html'"></div>
-        </uib-tab>
-        <uib-tab index="3">
-            <uib-tab-heading ng-click="$ctrl.displayFeatureManagement()">
+
+    <uib-accordion close-others="false">
+        <uib-accordion-group>
+            <uib-accordion-heading>
                 <span class="fa fa-list" aria-hidden="true"></span>
-                Listing
-            </uib-tab-heading>
+                Liste des éléments
+            </uib-accordion-heading>
             <div ng-include="'scripts/routes/edit/aside_map_feature_management.html'"></div>
-        </uib-tab>
-    </uib-tabset>
+        </uib-accordion-group>
+
+        <uib-accordion-group ng-click="$ctrl.initOSMMode()">
+            <uib-accordion-heading>
+                <span class="fa fa-dot-circle-o" aria-hidden="true"></span>
+                Ajouter un POI
+            </uib-accordion-heading>
+            <div ng-include="'scripts/routes/edit/aside_map_poi_creation.html'"></div>
+        </uib-accordion-group>
+
+        <uib-accordion-group>
+            <uib-accordion-heading>
+                <span class="fa fa-search" aria-hidden="true"></span>
+                Chercher une adresse
+            </uib-accordion-heading>
+            <div ng-include="'scripts/routes/edit/aside_map_address.html'"></div>
+        </uib-accordion-group>
+
+        <uib-accordion-group ng-click="$ctrl.initOSMMode()">
+            <uib-accordion-heading>
+                <span class="fa fa-cloud-download" aria-hidden="true"></span>
+                Obtenir des données d'OSM
+            </uib-accordion-heading>
+            <div ng-include="'scripts/routes/edit/aside_map_feature_creation.html'"></div>
+        </uib-accordion-group>
+    </uib-accordion>    
 </div>
 
         <!-- rotate slider, not ready to use -->

@@ -40,6 +40,8 @@
          * POI / area selected
          */
         $ctrl.queryChosen  = EditService.settings.QUERY_DEFAULT; // $ctrl.queryChoices[1];
+        $ctrl.queryChosenPoi  = EditService.settings.QUERY_POI;
+
         /**
          * @ngdoc property
          * @name  styleChoices
@@ -49,6 +51,8 @@
          * Options of styling for the queryChosen' type
          */
         $ctrl.styleChoices = EditService.settings.STYLES[$ctrl.queryChosen.type];
+        $ctrl.styleChoicesPoi = EditService.settings.STYLES[$ctrl.queryChosenPoi.type];
+
 
         /**
          * @ngdoc property
@@ -68,6 +72,7 @@
          * Style selected for the queryChosen' type
          */
         $ctrl.styleChosen  = $ctrl.styleChoices[0];
+        $ctrl.styleChosenPoi  = $ctrl.styleChoicesPoi[0];
 
         /**
          * @ngdoc
@@ -99,12 +104,7 @@
         $ctrl.expandedMenu                   = false;
         $ctrl.panel                 = null;
 
-        // map state parameters
-        $ctrl.isAddressVisible           = false;
-        $ctrl.isPoiCreationVisible       = false;
-        $ctrl.isFeatureCreationVisible   = false;
-        $ctrl.isFeatureManagementVisible = true;
-
+        $ctrl.poiMode = false;
 
         $ctrl.isDrawingFreezed = false;
         $ctrl.isBrailleDisplayed  = true;
@@ -281,40 +281,19 @@
         /**
          * Map parameters
          */
-        $ctrl.displayAddPOIForm = function() {
-            console.log("displayAddPOIForm")
-            EditService.initOSMMode();
-            $ctrl.isAddressVisible           = false;
-            $ctrl.isPoiCreationVisible       = true;
-            $ctrl.isFeatureCreationVisible   = false;
-            $ctrl.isFeatureManagementVisible = false;
-
-            $ctrl.queryChosen  = EditService.settings.QUERY_POI;
-            $ctrl.styleChoices = EditService.settings.STYLES[$ctrl.queryChosen.type];
-            $ctrl.styleChosen  = $ctrl.styleChoices[0];
-
+        $ctrl.toggleAddPOI = function() {
+            // console.log('$ctrl.poiMode', $ctrl.poiMode)
+            // if ($ctrl.poiMode) {
+            //     $ctrl.poiMode = false;
+            //     EditService.disableAddPOI();
+            // } else {
+            // }
+            $ctrl.poiMode = true;
             EditService.enableAddPOI(ToasterService.warning, ToasterService.error, getDrawingParameters );
         }
 
-        $ctrl.displaySearchAddressForm = function() {
-            $ctrl.isAddressVisible           = true;
-            $ctrl.isPoiCreationVisible       = false;
-            $ctrl.isFeatureCreationVisible   = false;
-            $ctrl.isFeatureManagementVisible = false;
-        }
-
-        $ctrl.displayGetDataFromOSMForm = function() {
+        $ctrl.initOSMMode = function() {
             EditService.initOSMMode();
-
-            $ctrl.isAddressVisible           = false;
-            $ctrl.isPoiCreationVisible       = false;
-            $ctrl.isFeatureCreationVisible   = true;
-            $ctrl.isFeatureManagementVisible = false;
-
-            $ctrl.queryChosen  = EditService.settings.QUERY_DEFAULT;
-            $ctrl.styleChoices = EditService.settings.STYLES[$ctrl.queryChosen.type];
-            $ctrl.styleChosen  = $ctrl.styleChoices[0];
-
         }
 
         $ctrl.insertOSMData = function()  {
@@ -328,10 +307,6 @@
 
         $ctrl.displayFeatureManagement = function() {
             EditService.initOSMMode();
-            $ctrl.isAddressVisible           = false;
-            $ctrl.isPoiCreationVisible       = false;
-            $ctrl.isFeatureCreationVisible   = false;
-            $ctrl.isFeatureManagementVisible = true;
         }
 
         /**

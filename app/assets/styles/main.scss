@@ -111,11 +111,23 @@ body {
 }
 
 .nav.nav-tabs > li > a {
-  padding: 6px 0;
-  font-size: 12px;
+  padding: 12px 0;
 }
 
+#stopAddress {
+  margin-top: -1px;
+}
 
+.btn-input-group {
+  margin-top: 10px;
+}
+
+.poi-group {
+  display: flex;
+  button {
+    margin-left: 10px;
+  }
+}
 
 // need to hide defs svg
 #pattern,
