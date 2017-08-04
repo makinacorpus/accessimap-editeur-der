@@ -281,13 +281,7 @@
         /**
          * Map parameters
          */
-        $ctrl.toggleAddPOI = function() {
-            // console.log('$ctrl.poiMode', $ctrl.poiMode)
-            // if ($ctrl.poiMode) {
-            //     $ctrl.poiMode = false;
-            //     EditService.disableAddPOI();
-            // } else {
-            // }
+        $ctrl.displayAddPOIForm = function() {
             $ctrl.poiMode = true;
             EditService.enableAddPOI(ToasterService.warning, ToasterService.error, getDrawingParameters );
         }

@@ -11,7 +11,7 @@
     </div>
     <hr>
 
-    <uib-accordion close-others="false">
+    <uib-accordion close-others="true">
         <uib-accordion-group>
             <uib-accordion-heading>
                 <span class="fa fa-list" aria-hidden="true"></span>
@@ -20,7 +20,7 @@
             <div ng-include="'scripts/routes/edit/aside_map_feature_management.html'"></div>
         </uib-accordion-group>
 
-        <uib-accordion-group ng-click="$ctrl.initOSMMode()">
+        <uib-accordion-group ng-click="$ctrl.displayAddPOIForm()">
             <uib-accordion-heading>
                 <span class="fa fa-dot-circle-o" aria-hidden="true"></span>
                 Ajouter un POI
