@@ -242,28 +242,38 @@
 
         /**
          * @ngdoc method
-         * @name  showFontBraille
+         * @name  toggleMap
          * @methodOf accessimapEditeurDerApp.controller:EditController
          *
          * @description
-         * Show the map layer
+         * Toggle the map layer
          */
-        $ctrl.showFontBraille = function() {
-            $ctrl.isBrailleDisplayed = true;
-            EditService.showFontBraille();
+        $ctrl.toggleMap = function() {
+            if ($ctrl.model.isMapVisible) {
+                $ctrl.model.isMapVisible = false;
+                EditService.hideMapLayer()
+            } else {
+                $ctrl.model.isMapVisible = true;
+                EditService.showMapLayer();
+            }
         }
 
         /**
          * @ngdoc method
-         * @name  hideFontBraille
+         * @name  toggleFontBraille
          * @methodOf accessimapEditeurDerApp.controller:EditController
          *
          * @description
-         * Hide the map layer
+         * Toggle legend in braille / plain text
          */
-        $ctrl.hideFontBraille = function() {
-            $ctrl.isBrailleDisplayed = false;
-            EditService.hideFontBraille()
+        $ctrl.toggleFontBraille = function() {
+            if ($ctrl.isBrailleDisplayed) {
+                $ctrl.isBrailleDisplayed = false;
+                EditService.hideFontBraille();
+            } else {
+                $ctrl.isBrailleDisplayed = true;
+                EditService.showFontBraille();
+            }
         }
 
         $ctrl.resetView = EditService.resetView;

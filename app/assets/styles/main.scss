@@ -27,6 +27,9 @@ $headings-font-family: $font-family-sans-serif;
 @import "_toggle";
 @import "_toastr";
 
+label {
+  font-weight: normal;
+}
 
 .tooltip-inner {
   overflow: hidden; 
