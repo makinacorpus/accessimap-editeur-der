@@ -299,10 +299,6 @@
                                         getDrawingParameters)
         }
 
-        $ctrl.displayFeatureManagement = function() {
-            EditService.initOSMMode();
-        }
-
         /**
          * General parameters
          */
@@ -324,7 +320,7 @@
             }
 
             $ctrl.panel = 'map';
-            $ctrl.displayFeatureManagement();
+            $ctrl.initOSMMode();
             $ctrl.showMap();
         }
         $ctrl.displayDrawingParameters = function() {
