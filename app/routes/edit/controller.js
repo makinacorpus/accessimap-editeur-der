@@ -105,12 +105,8 @@
         $ctrl.isFeatureCreationVisible   = false;
         $ctrl.isFeatureManagementVisible = true;
 
+
         $ctrl.isDrawingFreezed = false;
-
-        // states of right side : drawing (workspace) or legend ?
-        $ctrl.isWorkspaceVisible  = true;
-        $ctrl.isLegendVisible     = false;
-
         $ctrl.isBrailleDisplayed  = true;
 
         $ctrl.markerStartChoices  = EditService.settings.markerStart;
@@ -339,7 +335,6 @@
 
             $ctrl.panel = 'parameters';
             EditService.resetState();
-
         }
         $ctrl.displayMapParameters = function() {
             if ($ctrl.panel === 'map') {
@@ -349,10 +344,6 @@
             }
 
             $ctrl.panel = 'map';
-
-            $ctrl.isWorkspaceVisible             = true;
-            $ctrl.isLegendVisible                = false;
-
             $ctrl.displayFeatureManagement();
             $ctrl.showMap();
         }
@@ -371,7 +362,6 @@
                                      'La zone du dessin est figée')
 
             $ctrl.isDrawingFreezed               = true;
-
             EditService.freezeMap();
         }
         $ctrl.displayLegendParameters = function() {

@@ -22,9 +22,10 @@ $headings-font-family: $font-family-sans-serif;
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
-@import "_toastr";
 @import "_header";
 @import "_menu";
+@import "_toggle";
+@import "_toastr";
 
 
 .tooltip-inner {

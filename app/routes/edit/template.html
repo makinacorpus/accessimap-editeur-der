@@ -8,8 +8,8 @@
 
 <!-- workspace & legend divs -->
 <main ng-init="$ctrl.init()">
-    <div id="workspace" ng-show="$ctrl.isWorkspaceVisible"></div>
-    <div id="legend" ng-show="$ctrl.isLegendVisible"></div>
+    <div id="workspace" ng-show="$ctrl.panel !== 'legend'"></div>
+    <div id="legend" ng-show="$ctrl.panel === 'legend'"></div>
     <div id="pattern"></div>
 </main>
 
