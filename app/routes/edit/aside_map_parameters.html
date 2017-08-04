@@ -12,28 +12,28 @@
     <hr>
     <uib-tabset active="activeJustified" justified="true">
         <uib-tab index="0">
-            <uib-tab-heading>
+            <uib-tab-heading ng-click="$ctrl.displayAddPOIForm()">
                 <span class="fa fa-circle" aria-hidden="true"></span>
                 POI
             </uib-tab-heading>
             <div ng-include="'scripts/routes/edit/aside_map_poi_creation.html'"></div>
         </uib-tab>
         <uib-tab index="1">
-            <uib-tab-heading>
+            <uib-tab-heading ng-click="$ctrl.displaySearchAddressForm()">
                 <span class="fa fa-search" aria-hidden="true"></span>
                 Adresses
             </uib-tab-heading>
             <div ng-include="'scripts/routes/edit/aside_map_address.html'"></div>
         </uib-tab>
         <uib-tab index="2">
-            <uib-tab-heading>
+            <uib-tab-heading ng-click="$ctrl.displayGetDataFromOSMForm()">
                 <span class="fa fa-cloud-download" aria-hidden="true"></span>
                 Data&nbsp;OSM
             </uib-tab-heading>
             <div ng-include="'scripts/routes/edit/aside_map_feature_creation.html'"></div>
         </uib-tab>
         <uib-tab index="3">
-            <uib-tab-heading>
+            <uib-tab-heading ng-click="$ctrl.displayFeatureManagement()">
                 <span class="fa fa-list" aria-hidden="true"></span>
                 Listing
             </uib-tab-heading>

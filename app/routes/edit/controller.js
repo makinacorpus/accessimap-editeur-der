@@ -282,6 +282,7 @@
          * Map parameters
          */
         $ctrl.displayAddPOIForm = function() {
+            console.log("displayAddPOIForm")
             EditService.initOSMMode();
             $ctrl.isAddressVisible           = false;
             $ctrl.isPoiCreationVisible       = true;
