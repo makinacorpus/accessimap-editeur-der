@@ -19,6 +19,8 @@ $font-family-base: 'Roboto', sans-serif;
 $font-family-sans-serif: 'Roboto Slab', 'Roboto', serif;
 $headings-font-family: $font-family-sans-serif;
 
+$panel-heading-padding: 0;
+
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
@@ -27,6 +29,20 @@ $headings-font-family: $font-family-sans-serif;
 @import "_menu";
 @import "_toggle";
 @import "_toastr";
+
+.panel-title > a {
+  padding: 10px 15px;
+  display: block;
+  text-decoration: none;
+}
+
+.panel-title > a::after {
+  transition: transform .3s;
+}
+
+.panel-open .panel-title > a::after {
+  transform: rotate(-180deg)
+}
 
 label {
   font-weight: normal;
