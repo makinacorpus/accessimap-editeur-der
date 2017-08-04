@@ -8,6 +8,7 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 $brand-primary: $blue;
 $brand-success: $green;
 $border-radius-base: 1px;
+$border-radius-large: 2px;
 $btn-success-color: $grey;
 
 $btn-info-bg: $grey;
@@ -96,7 +97,6 @@ body {
 .nav.nav-tabs > li > a {
   padding: 6px 0;
   font-size: 12px;
-  font-weight: bold;
 }
 
 

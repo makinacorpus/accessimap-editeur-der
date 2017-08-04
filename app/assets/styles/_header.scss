@@ -15,10 +15,16 @@
     background: white;
     height: 70px;
     margin-left: -12px;
+    text-decoration: none;
     img {
       margin-top: 8px;
       width: auto;
       height: 100%;
+    }
+    &:hover {
+      &, span {
+        text-decoration: none;
+      }
     }
   }
   .title {
