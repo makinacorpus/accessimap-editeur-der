@@ -4,11 +4,12 @@
 </h3>
 
 <div class="col-xs-12">
-    <div class="toggle-group form-group">
-        <label for="cb1" class="toggle-label">Afficher la carte</label>
-        <input class="tgl tgl-light" id="cb1" type="checkbox" ng-click="$ctrl.toggleMap()" checked>
-        <label class="tgl-btn" for="cb1"></label>
+    <div class="toggle-group">
+        <label for="show-map" class="toggle-label">Afficher la carte</label>
+        <input class="tgl tgl-light" id="show-map" type="checkbox" ng-click="$ctrl.toggleMap()" checked>
+        <label class="tgl-btn" for="show-map"></label>
     </div>
+    <hr>
     <uib-tabset active="activeJustified" justified="true">
         <uib-tab index="0">
             <uib-tab-heading>

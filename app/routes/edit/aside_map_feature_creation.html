@@ -71,10 +71,11 @@
     </div>
 
     <div class="form-group" ng-if="$ctrl.queryChosen.type === 'polygon'">
-        <span class="input-group-addon">
-            Contour de forme
-            <input type="checkbox" ng-model="$ctrl.checkboxModel.contour">
-        </span>
+        <div class="toggle-group form-group">
+            <label for="border" class="toggle-label">Contour de forme</label>
+            <input class="tgl tgl-light" id="border" type="checkbox" ng-model="$ctrl.checkboxModel.contour">
+            <label class="tgl-btn" for="border"></label>
+        </div>
     </div>
 
     <button
