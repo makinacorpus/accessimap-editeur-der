@@ -25,7 +25,6 @@
             ToolboxEllipseService,
             ToolboxTextService,
             ToolboxPolylineService,
-            ToolboxImageService,
             SelectPathService,
             HistoryService,
             $sce) {
@@ -65,13 +64,11 @@
         var svgDrawing;
 
         function init(_svgDrawing, svgMenu, getCurrentZoom) {
-            console.log('init')
             RadialMenuService.init(d3.select(_svgDrawing.node().parentNode.parentNode), getCurrentZoom);
             svgDrawing = _svgDrawing;
 
             HistoryService.init(_svgDrawing)
             HistoryService.saveState()
-            console.log('init history service here !!!!!')
             ToolboxTriangleService.init(_svgDrawing, applyStyle)
             ToolboxRectangleService.init(_svgDrawing, applyStyle)
             ToolboxEllipseService.init(_svgDrawing, applyStyle)
@@ -231,6 +228,7 @@
         };
 
         function applyStyle(path, style, colorChosen) {
+            console.log('applyStyle')
             angular.forEach(style, function(attribute) {
                 var k = attribute.k,
                     v = attribute.v;
@@ -336,7 +334,6 @@
                             'ToolboxEllipseService',
                             'ToolboxTextService',
                             'ToolboxPolylineService',
-                            'ToolboxImageService',
                             'SelectPathService',
                             'HistoryService',
                             '$sce'];

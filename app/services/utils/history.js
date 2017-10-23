@@ -74,8 +74,16 @@
         }
 
         function getLayersInnerHtml(group) {
+            if (group.imageLayer) {
+                return {
+                    imageLayer: group.imageLayer.innerHTML,
+                    polygonsLayer: group.polygonsLayer.innerHTML,
+                    linesLayer: group.linesLayer.innerHTML,
+                    pointsLayer: group.pointsLayer.innerHTML,
+                    textsLayer: group.textsLayer.innerHTML,
+                }
+            }
             return {
-                // imageLayer: group.imageLayer.innerHTML,
                 polygonsLayer: group.polygonsLayer.innerHTML,
                 linesLayer: group.linesLayer.innerHTML,
                 pointsLayer: group.pointsLayer.innerHTML,
@@ -85,7 +93,9 @@
 
         function updateDOMelement(group, newState) {
             if (newState) {
-                // group.imageLayer.innerHTML = newState.imageLayer;
+                if (group.imageLayer) {
+                    group.imageLayer.innerHTML = newState.imageLayer;
+                }
                 group.polygonsLayer.innerHTML = newState.polygonsLayer;
                 group.linesLayer.innerHTML = newState.linesLayer;
                 group.pointsLayer.innerHTML = newState.pointsLayer;

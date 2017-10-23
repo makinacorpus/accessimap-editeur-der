@@ -355,7 +355,7 @@
                                 styleChosen,
                                 SettingsService.STYLES[queryChosen.type],
                                 colorChosen, checkboxModel, null)
-                        console.log('history save');
+
                         HistoryService.saveState();
                     } else {
                         _warningCallback('Aucune donnée cartographique trouvée... Merci de chercher autre chose !?')
@@ -483,6 +483,8 @@
                                                                         MapService.getMap().getSize(),
                                                                         MapService.getMap().getPixelOrigin(),
                                                                         MapService.getMap().getPixelBounds().min);
+
+                            HistoryService.saveState();
                             break;
 
                         default:

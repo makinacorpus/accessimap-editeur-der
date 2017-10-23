@@ -60,7 +60,6 @@
          * 
          */
         function updatePoint(style) {
-
             var currentSelection = d3.select('.styleEdition'),
                 featureId = currentSelection.attr('id'),
                 featureFrom = currentSelection.attr('data-from');
