@@ -46,10 +46,10 @@
             d.textsLayer = svgDrawing.select('#drawing-layer [data-name="texts-layer"]')[0][0];
 
             // Geojson elements
-            g.polygonsLayer = svgDrawing.select('#geojson-layer [data-name="polygons-layer"]')[0][0];
-            g.linesLayer = svgDrawing.select('#geojson-layer [data-name="lines-layer"]')[0][0];
-            g.pointsLayer = svgDrawing.select('#geojson-layer [data-name="points-layer"]')[0][0];
-            g.textsLayer = svgDrawing.select('#geojson-layer [data-name="texts-layer"]')[0][0];
+            g.polygonsLayer = document.querySelector('#geojson-layer [data-name="polygons-layer"]');
+            g.linesLayer = document.querySelector('#geojson-layer [data-name="lines-layer"]');
+            g.pointsLayer = document.querySelector('#geojson-layer [data-name="points-layer"]');
+            g.textsLayer = document.querySelector('#geojson-layer [data-name="texts-layer"]');
         }
 
         function drawLayer() {
@@ -84,12 +84,13 @@
         }
 
         function updateDOMelement(group, newState) {
-            console.log(group, newState)
-            // group.imageLayer.innerHTML = newState.imageLayer;
-            group.polygonsLayer.innerHTML = newState.polygonsLayer;
-            group.linesLayer.innerHTML = newState.linesLayer;
-            group.pointsLayer.innerHTML = newState.pointsLayer;
-            group.textsLayer.innerHTML = newState.textsLayer;
+            if (newState) {
+                // group.imageLayer.innerHTML = newState.imageLayer;
+                group.polygonsLayer.innerHTML = newState.polygonsLayer;
+                group.linesLayer.innerHTML = newState.linesLayer;
+                group.pointsLayer.innerHTML = newState.pointsLayer;
+                group.textsLayer.innerHTML = newState.textsLayer;
+            }
         }
 
         function saveState() {
@@ -124,7 +125,7 @@
             // Replace SVG on DOM
             var indexToUndo = historyUndo.d.length - 1;
             updateDOMelement(d, historyUndo.d[indexToUndo]);
-            // updateDOMelement(g, historyUndo.g[indexToUndo]);
+            updateDOMelement(g, historyUndo.g[indexToUndo]);
 
             cleanHistoryCache(historyUndo);
         }
@@ -136,9 +137,11 @@
                 // Replace SVG on DOM
                 var indexToUndo = historyRedo.d.length - 1
                 updateDOMelement(d, historyRedo.d[indexToUndo]);
+                updateDOMelement(g, historyRedo.g[indexToUndo]);
 
                 // Restaure state in undo
                 historyUndo.d.push(getLayersInnerHtml(d));
+                historyUndo.g.push(getLayersInnerHtml(g));
 
                 // Remove last item in redo because it's now in undo
                 historyRedo.d.pop();
