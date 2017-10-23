@@ -4,27 +4,15 @@
 </h3>
 
 <div class="col-xs-12">
-    <form class="row">
-        <div class="form-group col-xs-12">
-            <label>Afficher en braille</label>
-            <br>
-            <div class="btn-group">
-                <!-- Drawing -->
-                <button class="btn btn-default"
-                        ng-class="{ 'active' : $ctrl.isBrailleDisplayed }"
-                        ng-click="$ctrl.showFontBraille()">
-                    Oui
-                </button>
-                <!-- Legend -->
-                <button class="btn btn-default"
-                        ng-class="{ 'active' : ! $ctrl.isBrailleDisplayed }"
-                        ng-click="$ctrl.hideFontBraille()">
-                    Non
-                </button>
-            </div>
+    <form>
+        <div class="toggle-group">
+            <label for="cb1" class="toggle-label">Afficher en braille</label>
+            <input class="tgl tgl-light" id="cb1" type="checkbox" ng-click="$ctrl.toggleFontBraille()" checked>
+            <label class="tgl-btn" for="cb1"></label>
         </div>
+        <hr>
 
-        <div class="form-group col-xs-12">
+        <div class="form-group">
             <label>Format de la légende</label>
             <select
                 ng-model="$ctrl.model.legendFormat"

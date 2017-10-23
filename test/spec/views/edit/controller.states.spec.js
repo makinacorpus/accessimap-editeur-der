@@ -32,7 +32,6 @@ describe('Controller: EditController', function () {
         expect(EditController.isParametersVisible).toBe(false);
         expect(EditController.isMapParametersVisible).toBe(false);
         expect(EditController.isDrawingParametersVisible).toBe(false);
-        expect(EditController.isLegendParametersVisible).toBe(false);
         expect(EditController.isInteractionParametersVisible).toBe(false);
         expect(EditController.isBackgroundParametersVisible).toBe(false);
 
@@ -42,7 +41,6 @@ describe('Controller: EditController', function () {
         expect(EditController.isFeatureManagementVisible).toBe(true);
 
         expect(EditController.isDrawingFreezed).toBe(false);
-        expect(EditController.isWorkspaceVisible).toBe(true);
         expect(EditController.isLegendVisible).toBe(false);
         expect(EditController.isBrailleDisplayed).toBe(true);
 

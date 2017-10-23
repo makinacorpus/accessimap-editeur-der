@@ -124,6 +124,8 @@
             map.on('baselayerchange', function(layerEvent) {
                 currentLayer = layerEvent.layer;
             })
+
+            console.log('map initialize')
         }
 
         function setMinimumSize(width, height) {

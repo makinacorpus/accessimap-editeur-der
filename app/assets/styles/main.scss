@@ -8,6 +8,7 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 $brand-primary: $blue;
 $brand-success: $green;
 $border-radius-base: 1px;
+$border-radius-large: 2px;
 $btn-success-color: $grey;
 
 $btn-info-bg: $grey;
@@ -18,14 +19,34 @@ $font-family-base: 'Roboto', sans-serif;
 $font-family-sans-serif: 'Roboto Slab', 'Roboto', serif;
 $headings-font-family: $font-family-sans-serif;
 
+$panel-heading-padding: 0;
+
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
-@import "_toastr";
 @import "_header";
 @import "_menu";
+@import "_toggle";
+@import "_toastr";
 
+.panel-title > a {
+  padding: 10px 15px;
+  display: block;
+  text-decoration: none;
+}
+
+.panel-title > a::after {
+  transition: transform .3s;
+}
+
+.panel-open .panel-title > a::after {
+  transform: rotate(-180deg)
+}
+
+label {
+  font-weight: normal;
+}
 
 .tooltip-inner {
   overflow: hidden; 
@@ -90,12 +111,23 @@ body {
 }
 
 .nav.nav-tabs > li > a {
-  padding: 6px 0;
-  font-size: 12px;
-  font-weight: bold;
+  padding: 12px 0;
 }
 
+#stopAddress {
+  margin-top: -1px;
+}
 
+.btn-input-group {
+  margin-top: 10px;
+}
+
+.poi-group {
+  display: flex;
+  button {
+    margin-left: 10px;
+  }
+}
 
 // need to hide defs svg
 #pattern,

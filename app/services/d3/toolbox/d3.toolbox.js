@@ -71,6 +71,7 @@
 
             HistoryService.init(_svgDrawing)
             HistoryService.saveState()
+            console.log('init history service here !!!!!')
             ToolboxTriangleService.init(_svgDrawing, applyStyle)
             ToolboxRectangleService.init(_svgDrawing, applyStyle)
             ToolboxEllipseService.init(_svgDrawing, applyStyle)

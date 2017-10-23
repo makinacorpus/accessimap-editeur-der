@@ -1,8 +1,3 @@
-<h4>
-    <span class="fa fa-list"></span>
-    Listing des éléments
-</h4>
-
 <p ng-if="!$ctrl.getFeatures() || $ctrl.getFeatures().length === 0">
     Pas encore d'éléments !<br/>
     Vous verrez ici les éléments que vous allez créer via les boutons d'ajouts de POI, d'adresse ou de données OSM !
@@ -42,7 +37,7 @@
                 ng-disabled="$ctrl.disabled" 
                 ng-change="$ctrl.updateFeature(feature.id, feature.style)" 
                 theme="bootstrap" 
-                class="form-control style-selector">
+                cb1lass="form-control style-selector">
                 
                 <ui-select-match 
                     placeholder="Sélectionnez un style">
@@ -107,14 +102,11 @@
 
         <!-- shape -->
         <div class="form-group" ng-if="feature.type === 'polygon'">
-            <span 
-                class="input-group-addon">
-                Contour de forme
-                <input 
-                    type="checkbox" 
-                    ng-model="feature.contour" 
-                    ng-change="$ctrl.updateFeature(feature.id, feature.style)">
-            </span>
+            <div class="toggle-group form-group">
+                <label for="border" class="toggle-label">Contour de forme</label>
+                <input class="tgl tgl-light" id="border" type="checkbox" ng-model="feature.contour" ng-change="$ctrl.updateFeature(feature.id, feature.style)">
+                <label class="tgl-btn" for="border"></label>
+            </div>
         </div>
 
         <!-- delete -->

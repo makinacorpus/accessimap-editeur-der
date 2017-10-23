@@ -40,6 +40,8 @@
          * POI / area selected
          */
         $ctrl.queryChosen  = EditService.settings.QUERY_DEFAULT; // $ctrl.queryChoices[1];
+        $ctrl.queryChosenPoi  = EditService.settings.QUERY_POI;
+
         /**
          * @ngdoc property
          * @name  styleChoices
@@ -49,6 +51,8 @@
          * Options of styling for the queryChosen' type
          */
         $ctrl.styleChoices = EditService.settings.STYLES[$ctrl.queryChosen.type];
+        $ctrl.styleChoicesPoi = EditService.settings.STYLES[$ctrl.queryChosenPoi.type];
+
 
         /**
          * @ngdoc property
@@ -68,6 +72,7 @@
          * Style selected for the queryChosen' type
          */
         $ctrl.styleChosen  = $ctrl.styleChoices[0];
+        $ctrl.styleChosenPoi  = $ctrl.styleChoicesPoi[0];
 
         /**
          * @ngdoc
@@ -99,18 +104,9 @@
         $ctrl.expandedMenu                   = false;
         $ctrl.panel                 = null;
 
-        // map state parameters
-        $ctrl.isAddressVisible           = false;
-        $ctrl.isPoiCreationVisible       = false;
-        $ctrl.isFeatureCreationVisible   = false;
-        $ctrl.isFeatureManagementVisible = true;
+        $ctrl.poiMode = false;
 
         $ctrl.isDrawingFreezed = false;
-
-        // states of right side : drawing (workspace) or legend ?
-        $ctrl.isWorkspaceVisible  = true;
-        $ctrl.isLegendVisible     = false;
-
         $ctrl.isBrailleDisplayed  = true;
 
         $ctrl.markerStartChoices  = EditService.settings.markerStart;
@@ -246,28 +242,38 @@
 
         /**
          * @ngdoc method
-         * @name  showFontBraille
+         * @name  toggleMap
          * @methodOf accessimapEditeurDerApp.controller:EditController
          *
          * @description
-         * Show the map layer
+         * Toggle the map layer
          */
-        $ctrl.showFontBraille = function() {
-            $ctrl.isBrailleDisplayed = true;
-            EditService.showFontBraille();
+        $ctrl.toggleMap = function() {
+            if ($ctrl.model.isMapVisible) {
+                $ctrl.model.isMapVisible = false;
+                EditService.hideMapLayer()
+            } else {
+                $ctrl.model.isMapVisible = true;
+                EditService.showMapLayer();
+            }
         }
 
         /**
          * @ngdoc method
-         * @name  hideFontBraille
+         * @name  toggleFontBraille
          * @methodOf accessimapEditeurDerApp.controller:EditController
          *
          * @description
-         * Hide the map layer
+         * Toggle legend in braille / plain text
          */
-        $ctrl.hideFontBraille = function() {
-            $ctrl.isBrailleDisplayed = false;
-            EditService.hideFontBraille()
+        $ctrl.toggleFontBraille = function() {
+            if ($ctrl.isBrailleDisplayed) {
+                $ctrl.isBrailleDisplayed = false;
+                EditService.hideFontBraille();
+            } else {
+                $ctrl.isBrailleDisplayed = true;
+                EditService.showFontBraille();
+            }
         }
 
         $ctrl.resetView = EditService.resetView;
@@ -276,38 +282,12 @@
          * Map parameters
          */
         $ctrl.displayAddPOIForm = function() {
-            EditService.initOSMMode();
-            $ctrl.isAddressVisible           = false;
-            $ctrl.isPoiCreationVisible       = true;
-            $ctrl.isFeatureCreationVisible   = false;
-            $ctrl.isFeatureManagementVisible = false;
-
-            $ctrl.queryChosen  = EditService.settings.QUERY_POI;
-            $ctrl.styleChoices = EditService.settings.STYLES[$ctrl.queryChosen.type];
-            $ctrl.styleChosen  = $ctrl.styleChoices[0];
-
+            $ctrl.poiMode = true;
             EditService.enableAddPOI(ToasterService.warning, ToasterService.error, getDrawingParameters );
         }
 
-        $ctrl.displaySearchAddressForm = function() {
-            $ctrl.isAddressVisible           = true;
-            $ctrl.isPoiCreationVisible       = false;
-            $ctrl.isFeatureCreationVisible   = false;
-            $ctrl.isFeatureManagementVisible = false;
-        }
-
-        $ctrl.displayGetDataFromOSMForm = function() {
+        $ctrl.initOSMMode = function() {
             EditService.initOSMMode();
-
-            $ctrl.isAddressVisible           = false;
-            $ctrl.isPoiCreationVisible       = false;
-            $ctrl.isFeatureCreationVisible   = true;
-            $ctrl.isFeatureManagementVisible = false;
-
-            $ctrl.queryChosen  = EditService.settings.QUERY_DEFAULT;
-            $ctrl.styleChoices = EditService.settings.STYLES[$ctrl.queryChosen.type];
-            $ctrl.styleChosen  = $ctrl.styleChoices[0];
-
         }
 
         $ctrl.insertOSMData = function()  {
@@ -317,14 +297,6 @@
                                         ToasterService.error,
                                         ToasterService.info,
                                         getDrawingParameters)
-        }
-
-        $ctrl.displayFeatureManagement = function() {
-            EditService.initOSMMode();
-            $ctrl.isAddressVisible           = false;
-            $ctrl.isPoiCreationVisible       = false;
-            $ctrl.isFeatureCreationVisible   = false;
-            $ctrl.isFeatureManagementVisible = true;
         }
 
         /**
@@ -339,7 +311,6 @@
 
             $ctrl.panel = 'parameters';
             EditService.resetState();
-
         }
         $ctrl.displayMapParameters = function() {
             if ($ctrl.panel === 'map') {
@@ -349,11 +320,7 @@
             }
 
             $ctrl.panel = 'map';
-
-            $ctrl.isWorkspaceVisible             = true;
-            $ctrl.isLegendVisible                = false;
-
-            $ctrl.displayFeatureManagement();
+            $ctrl.initOSMMode();
             $ctrl.showMap();
         }
         $ctrl.displayDrawingParameters = function() {
@@ -371,7 +338,6 @@
                                      'La zone du dessin est figée')
 
             $ctrl.isDrawingFreezed               = true;
-
             EditService.freezeMap();
         }
         $ctrl.displayLegendParameters = function() {

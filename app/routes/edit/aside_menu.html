@@ -3,9 +3,11 @@
         <img src="assets/images/logos/logo.svg">
         <span class="title">Éditeur</span>
     </a>
-    <input type="text"
+    <div class="der-title">
+        <input type="text"
         ng-model="$ctrl.model.title"
         class="form-control input-lg">
+    </div>
 
     <div class="state-buttons">
         <div class="form-group">
@@ -42,7 +44,7 @@
 
         <button class="btn btn-info"
                 ng-class="{'active': $ctrl.panel === 'map'}"
-                ng-click="$ctrl.displayMapParameters()"
+                ng-click="$ctrl.displayMapParameters();"
                 tooltip-placement="right" uib-tooltip="Carte">
             <span class="fa fa-lg fa-map-o" aria-hidden="true"></span>
             <span class="text">Carte</span>
@@ -94,12 +96,12 @@
         </button>
 
         <file-field class="btn btn-default"
-            aria-label="Importer un DERi (SVG, ZIP)" title="Importer un DERi (SVG, ZIP)"
+            aria-label="Importer un DERi (SVG, ZIP)"
             ng-model="uploadFile"
             onchange="angular.element(this).scope().$ctrl.importDER(this.childNodes[1])"
             accept="image/svg+xml,application/zip"
             tooltip-placement="right" uib-tooltip="Importer un DERi (SVG, ZIP)">
-            <span class="fa fa-lg fa-upload" aria-hidden="true" ></span>
+            <span class="fa fa-lg fa-download" aria-hidden="true" ></span>
             <span class="text">Importer</span>
         </file-field>
         
@@ -108,7 +110,7 @@
             ng-click="$ctrl.exportData()"
             aria-label="Exporter le DERi"
             tooltip-placement="right" uib-tooltip="Exporter le DERi">
-            <span class="fa fa-lg fa-download" aria-hidden="true" ></span>
+            <span class="fa fa-lg fa-upload" aria-hidden="true" ></span>
             <span class="text">Exporter</span>
         </button>
 

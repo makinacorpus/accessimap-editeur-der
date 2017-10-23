@@ -26,6 +26,16 @@
 
     </div>
 
+
+    <div class="form-group" ng-if="$ctrl.mode === 'polygon' || $ctrl.mode === 'circle'" >
+        <div class="toggle-group form-group">
+            <label for="border" class="toggle-label">Contour de forme</label>
+            <input class="tgl tgl-light" id="border" type="checkbox" ng-model="$ctrl.checkboxModel.contour"
+                    ng-change="$ctrl.updatePolygonStyle()">
+            <label class="tgl-btn" for="border"></label>
+        </div>
+    </div>
+
     <div
         class="form-group"
         ng-if="$ctrl.mode === 'polygon' || $ctrl.mode === 'circle'" >
@@ -47,18 +57,6 @@
             </ui-select-choices>
 
         </ui-select>
-    </div>
-
-    <div class="form-group" ng-if="$ctrl.mode === 'polygon' || $ctrl.mode === 'circle'" >
-        <label>Contour de forme</label>
-        <span
-            class="input-group-addon">
-
-            <input
-                type="checkbox"
-                ng-model="$ctrl.checkboxModel.contour"
-                ng-change="$ctrl.updatePolygonStyle()">
-        </span>
     </div>
 
     <div
