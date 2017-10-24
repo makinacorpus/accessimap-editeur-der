@@ -19,7 +19,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Controller of the &#39;/edit&#39; view",
-      "keywords": "accessimapediteurderapp add allow api area areas changestyle controller data display drawing editcontroller editservice features hide hidefontbraille hidemap layer leaflet map method options poc poi pointchoices points print properties property querychoices querychosen roads search selected set showfontbraille showmap specific style stylechoices stylechosen styling type update user view visualize"
+      "keywords": "accessimapediteurderapp add allow api area areas braille changestyle controller data display drawing editcontroller editservice features hide hidemap layer leaflet legend map method options plain poc poi pointchoices points print properties property querychoices querychosen roads search selected set showmap specific style stylechoices stylechosen styling text toggle togglefontbraille togglemap type update user view visualize"
     },
     {
       "section": "api",
@@ -119,6 +119,15 @@ NG_DOCS={
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Useful functions for calc distances, angles, ...",
       "keywords": "accessimapediteurderapp add angle angles api array axis bottom calc calculate composed coordinate coordinates cx cy degrees direction distance distances drawing extend extended extendpath extension ey functions geometryutilsservice getpathdirection integer knowing left length matching method nearest order path point point1 point2 points realcoordinates return second service side substract targetpoint thales theorem top transform"
+    },
+    {
+      "section": "api",
+      "id": "accessimapEditeurDerApp.HistoryService",
+      "shortName": "accessimapEditeurDerApp.HistoryService",
+      "type": "service",
+      "moduleName": "accessimapEditeurDerApp",
+      "shortDescription": "Service exposing history functions to allow user to roll back",
+      "keywords": "accessimapediteurderapp allow api exposing functions history historyservice roll service user"
     },
     {
       "section": "api",
