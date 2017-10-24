@@ -137,6 +137,7 @@
 
             MapService.changeCursor('crosshair');
             MapService.addEventListener([ 'mousedown', 'mouseup' ] , function(e) {
+                
                 // only left click
                 if (e.originalEvent.button === 0) {
 
@@ -148,6 +149,7 @@
                                             drawingParameters.style,
                                             drawingParameters.color,
                                             drawingParameters.contour)
+
 
                     MapService.addMouseMoveListener(function(e) {
                         var p = projection.latLngToLayerPoint(e.latlng),

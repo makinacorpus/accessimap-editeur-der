@@ -47,7 +47,6 @@
          * 
          */
         function drawTriangle(x, y, style, color, contour) {
-
             var drawingLayer = svgDrawing.select('g[data-name="polygons-layer"]'),
                 feature;
 

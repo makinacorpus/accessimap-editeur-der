@@ -1,0 +1,80 @@
+.aside-menu {
+  position: fixed;
+  left: 0;
+  top: 50px;
+  bottom: 0;
+  z-index: 9999999999;
+  background: $grey;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  // width: 50px;
+  box-shadow: 0 0 5px rgba(0,0,0, .2);
+  .text {
+    transition: width .3s;
+    display: inline-block;
+    overflow: hidden;
+    // line-height: 1.7;
+    width: 0px;
+  }
+  &.expand {
+    // width: 180px;
+    .text {
+      width: 140px;
+      padding-right: 15px;
+    }
+  }
+
+  .btn-info.active:not(:focus) {
+    color: $blue-light;
+    background: #222;
+  }
+}
+
+.main-menu {
+  flex: 1;
+}
+
+.main-menu, .export-menu {
+  width: 100%;
+  &.btn-group-vertical > .btn:first-child:not(:last-child),
+  &.btn-group-vertical > .btn:last-child:not(:first-child) {
+    border-radius: 0;
+  }
+  .btn {
+    border-color: transparent;
+    box-shadow: none;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    text-align: left;
+    height: 46px;
+    border-left: none;
+    border-right: none;
+    padding-left: 0;
+    padding-right: 0;
+    margin: 0 !important;
+    .fa {
+      width: 36px;
+      margin: 0 7px;
+      text-align: center;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+  .btn-info {
+    background: transparent;
+  }
+
+}
+
+
+.fa-arrow-right.left {
+  transition: transform .5s;
+  transform: rotate(180deg);
+}

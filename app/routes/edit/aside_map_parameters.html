@@ -1,52 +1,69 @@
 <h3>
-    <button class="btn btn-link"
-            ng-click="$ctrl.displayHome()">
-        <span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span>
-    </button>
-
     <span class="fa fa-map" aria-hidden="true"></span>
     Carte
 </h3>
 
-<form class="row">
-
-    <div class="form-group col-md-12">
-        <label>Afficher la carte</label>
-        <br>
-        <div class="btn-group">
-            <!-- Drawing -->
-            <button class="btn btn-default"
-                    ng-class="{ 'active' : $ctrl.model.isMapVisible }"
-                    ng-click="$ctrl.showMap()">
-                Oui
-            </button>
-            <!-- Legend -->
-            <button class="btn btn-default"
-                    ng-class="{ 'active' : ! $ctrl.model.isMapVisible }"
-                    ng-click="$ctrl.hideMap()">
-                Non
-            </button>
-        </div>
+<div class="col-xs-12">
+    <div class="toggle-group">
+        <label for="show-map" class="toggle-label">Afficher la carte</label>
+        <input class="tgl tgl-light" id="show-map" type="checkbox" ng-click="$ctrl.toggleMap()" checked>
+        <label class="tgl-btn" for="show-map"></label>
     </div>
+    <hr>
 
-    <!-- rotate slider, not ready to use -->
-    <!--<div class="form-group col-xs-12">
-        <label>Rotation</label>
-        <div class="input-group">
-            <span class="input-group-addon">
-            <span class="fa fa-repeat" aria-hidden="true"></span>
-            </span>
-            <slider class="form-control slider-container"
-                    ng-model="$ctrl.rotationAngle"
-                    ng-change="$ctrl.rotateMap($ctrl.rotationAngle)"
-                    ng-disabled="! $ctrl.isMapVisible"
-                    min="0"
-                    max="360"
-                    ></slider>
-        </div>
-    </div>-->
+    <uib-accordion close-others="true">
+        <uib-accordion-group>
+            <uib-accordion-heading>
+                <span class="fa fa-list" aria-hidden="true"></span>
+                Liste des éléments
+            </uib-accordion-heading>
+            <div ng-include="'scripts/routes/edit/aside_map_feature_management.html'"></div>
+        </uib-accordion-group>
 
-    <div class="form-group col-md-6 text-center">
+        <uib-accordion-group ng-click="$ctrl.displayAddPOIForm()">
+            <uib-accordion-heading>
+                <span class="fa fa-dot-circle-o" aria-hidden="true"></span>
+                Ajouter un POI
+            </uib-accordion-heading>
+            <div ng-include="'scripts/routes/edit/aside_map_poi_creation.html'"></div>
+        </uib-accordion-group>
+
+        <uib-accordion-group>
+            <uib-accordion-heading>
+                <span class="fa fa-search" aria-hidden="true"></span>
+                Chercher une adresse
+            </uib-accordion-heading>
+            <div ng-include="'scripts/routes/edit/aside_map_address.html'"></div>
+        </uib-accordion-group>
+
+        <uib-accordion-group ng-click="$ctrl.initOSMMode()">
+            <uib-accordion-heading>
+                <span class="fa fa-cloud-download" aria-hidden="true"></span>
+                Obtenir des données d'OSM
+            </uib-accordion-heading>
+            <div ng-include="'scripts/routes/edit/aside_map_feature_creation.html'"></div>
+        </uib-accordion-group>
+    </uib-accordion>    
+</div>
+
+        <!-- rotate slider, not ready to use -->
+        <!--<div class="form-group col-xs-12">
+            <label>Rotation</label>
+            <div class="input-group">
+                <span class="input-group-addon">
+                <span class="fa fa-repeat" aria-hidden="true"></span>
+                </span>
+                <slider class="form-control slider-container"
+                        ng-model="$ctrl.rotationAngle"
+                        ng-change="$ctrl.rotateMap($ctrl.rotationAngle)"
+                        ng-disabled="! $ctrl.isMapVisible"
+                        min="0"
+                        max="360"
+                        ></slider>
+            </div>
+        </div>-->
+
+    <!-- <div class="form-group col-md-6 text-center">
         <button class="btn btn-primary btn-tile"
                 ng-class="{ 'active' : $ctrl.isPoiCreationVisible }"
                 ng-click="$ctrl.displayAddPOIForm()">
@@ -80,27 +97,4 @@
             <span class="fa fa-list" aria-hidden="true"></span> <br/>
             Listing
         </button>
-    </div>
-
-</form>
-
-<!-- address form -->
-<div ng-if="$ctrl.isAddressVisible"
-    ng-include="'scripts/routes/edit/aside_map_address.html'">
-</div>
-
-<!-- POI form -->
-<div ng-if="$ctrl.isPoiCreationVisible"
-    ng-include="'scripts/routes/edit/aside_map_poi_creation.html'">
-</div>
-
-<!-- Feature form -->
-<div ng-if="$ctrl.isFeatureCreationVisible"
-    ng-include="'scripts/routes/edit/aside_map_feature_creation.html'">
-</div>
-
-<!-- Feature management -->
-<div ng-if="$ctrl.isFeatureManagementVisible"
-    ng-include="'scripts/routes/edit/aside_map_feature_management.html'">
-</div>
-
+    </div> -->

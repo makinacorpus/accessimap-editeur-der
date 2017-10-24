@@ -1,7 +1,59 @@
+$red: #ef2456;
+$green: #b0db18;
+$blue: #076ea9;
+$blue-light: #048bd8;
+$grey: #333;
+
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+$brand-primary: $blue;
+$brand-success: $green;
+$border-radius-base: 1px;
+$border-radius-large: 2px;
+$btn-success-color: $grey;
+
+$btn-info-bg: $grey;
+
+$tooltip-bg: $grey;
+
+$font-family-base: 'Roboto', sans-serif;
+$font-family-sans-serif: 'Roboto Slab', 'Roboto', serif;
+$headings-font-family: $font-family-sans-serif;
+
+$panel-heading-padding: 0;
+
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
+
+@import "_header";
+@import "_menu";
+@import "_toggle";
+@import "_toastr";
+
+.panel-title > a {
+  padding: 10px 15px;
+  display: block;
+  text-decoration: none;
+}
+
+.panel-title > a::after {
+  transition: transform .3s;
+}
+
+.panel-open .panel-title > a::after {
+  transform: rotate(-180deg)
+}
+
+label {
+  font-weight: normal;
+}
+
+.tooltip-inner {
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+}
 
 .browsehappy {
   margin: 0.2em 0;
@@ -19,7 +71,7 @@ html, body {
 
 html, *, body {
   box-sizing: border-box;
-  font-size: 16px;
+  // font-size: 16px;
 }
 
 h1 {
@@ -32,6 +84,10 @@ h2 {
 
 h3 {
   font-size: 1.5rem;
+}
+
+.toast-top-right {
+  top: 60px;
 }
 
 /* Space out content a bit */
@@ -54,13 +110,23 @@ body {
     max-height: 20rem;
 }
 
-aside .logo {
-    text-align: center;
-    display: block;
+.nav.nav-tabs > li > a {
+  padding: 12px 0;
+}
 
-    img {
-        height: 75px;
-    }
+#stopAddress {
+  margin-top: -1px;
+}
+
+.btn-input-group {
+  margin-top: 10px;
+}
+
+.poi-group {
+  display: flex;
+  button {
+    margin-left: 10px;
+  }
 }
 
 // need to hide defs svg
@@ -68,11 +134,6 @@ aside .logo {
 #pattern svg {
   width: 0px;
   height: 0px;
-}
-
-.btn,
-.form-control {
-  border-radius: 2px;
 }
 
 .btn.btn-tile {
@@ -95,6 +156,7 @@ div[ng-view] {
 
   main {
     flex: 1 1 100%;
+    margin-top: 50px;
 
     #legend {
       height: 100%;
@@ -114,25 +176,55 @@ div[ng-view] {
   }
 
   aside.right-side {
-    min-width: 390px;
-    border-right: 1px solid #e5e5e5;
+    position: relative;
+    z-index: 2;
+    width: 0;
+    margin-left: 54px;
+    margin-bottom: 0;
+    border: none;
     display: flex;
     flex-direction: column;
+    transition: width .3s;
+    box-shadow: 0 0 5px rgba(0,0,0, .2);
 
-    div.aside-content {
-      flex: 1 1 100%;
-      overflow: auto;
+    &.panel {
+      width: 420px;
+    }
 
-      h4:not(.panel-title) {
-        margin-top: 1em;
-        border-bottom: 1px solid #e5e5e5;
+    h3 {
+      background: $blue;
+      font-size: 18px;
+      padding: 13px 16px;
+      margin-top: 0;
+      color: white;
+      span {
+        margin-right: 6px;
+      }
+      .btn {
+        color: white;
       }
     }
-    div.aside-footer {
-      border-top: 1px solid #e5e5e5;
-      text-align: right;
-      padding: .5em 0 .5em 0;
+  }
+
+  .aside-content {
+    flex: 1 1 100%;
+    overflow: auto;
+    margin-top: 50px;
+    width: 100%;
+    // background: $grey;
+    // color: white;
+
+    h4:not(.panel-title) {
+      font-weight: normal;
+      margin-top: 1em;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #e5e5e5;
     }
+  }
+  div.aside-footer {
+    border-top: 1px solid #e5e5e5;
+    text-align: right;
+    padding: .5em 0 .5em 0;
   }
 }
 
@@ -298,6 +390,9 @@ header {
   content:"\e114";
   float: right;
   color: grey;
+}
+.panel-primary .panel-heading a:after {
+  color: white;
 }
 .panel-heading a.collapsed:after {
   content:"\e080";

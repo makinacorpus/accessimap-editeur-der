@@ -1,199 +1,76 @@
 <h3>
-    <button class="btn btn-link"
-            ng-click="$ctrl.displayHome()">
-        <span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span>
-    </button>
-
     <span class="fa fa-wrench" aria-hidden="true"></span>
     Paramètres
 </h3>
-<form class="row">
 
-    <div class="form-group col-xs-12">
-        <label>Titre</label>
-        <input type="text"
-            ng-model="$ctrl.model.title"
-            class="form-control input-lg">
-    </div>
+<div class="col-xs-12">
+    <form class="row">
+        <div class="form-group col-xs-12">
+            <label>Titre</label>
+            <input type="text"
+                ng-model="$ctrl.model.title"
+                class="form-control">
+        </div>
 
-    <div class="form-group col-xs-12">
-        <label>Format du dessin</label>
-        <select
-            ng-model="$ctrl.model.mapFormat"
-            ng-change="$ctrl.changeDrawingFormat($ctrl.model.mapFormat)"
-            class="form-control"
-            ng-options="format as data.name for (format, data) in $ctrl.formats">
-        </select>
-    </div>
+        <div class="form-group col-xs-12">
+            <label>Format du dessin</label>
+            <select
+                ng-model="$ctrl.model.mapFormat"
+                ng-change="$ctrl.changeDrawingFormat($ctrl.model.mapFormat)"
+                class="form-control"
+                ng-options="format as data.name for (format, data) in $ctrl.formats">
+            </select>
+        </div>
 
-    <div class="form-group col-xs-12">
-        <label>Trame de fond</label>
+        <div class="form-group col-xs-12">
+            <label>Trame de fond</label>
 
-        <button class="btn btn-primary btn-block"
-            ng-click="$ctrl.displayBackgroundParameters()">
-            <span class="fa fa-lg fa-picture-o" aria-hidden="true"></span>
-            Configurer le fond&nbsp;
-        </button>
-    </div>
-
-
-<!--    <div class="form-group col-xs-12">
-        <label>Etat de la zone de dessin</label>
-        <br>
-        <div class="btn-group">
-            <button class="btn btn-default"
-                    ng-class="{ 'active' : $ctrl.isDrawingFreezed }"
-                    disabled>
-                Figée
+            <button class="btn btn-primary btn-block"
+                ng-click="$ctrl.displayBackgroundParameters()">
+                <span class="fa fa-lg fa-picture-o" aria-hidden="true"></span>
+                Configurer le fond&nbsp;
             </button>
-            <button class="btn btn-default"
-                    ng-class="{ 'active' : ! $ctrl.isDrawingFreezed }"
-                    disabled>
-                Non figée
-            </button>
-        </div>-->
-<!--
-        <ui-select
-            ng-model="$ctrl.mapFormat"
-            theme="bootstrap"
-            class="form-control style-selector">
+        </div>
 
-            <ui-select-match placeholder="Sélectionnez un format">{{$ctrl.mapFormat.name}}</ui-select-match>
-            <ui-select-choices repeat="item in $ctrl.formats">
-                <div ng-bind-html="item.name | highlight: $select.search"></div>
-            </ui-select-choices>
 
-        </ui-select>
--->
-
-    <div class="form-group col-xs-12">
-        <label>Commentaires de transcription</label>
-        <textarea
-            class="form-control"
-            ng-model="$ctrl.model.comment"
-            rows="10"
-            style="resize:none"
-            id="comment">
-        </textarea>
-    </div>
-
-    <div class="form-group col-xs-12">
-        <label>Filtres d'interactions</label>
-        <uib-accordion
-            close-others="false"
-            >
-
-            <uib-accordion-group
-                heading="{{filter.name}}"
-                ng-repeat="filter in $ctrl.interactions.getFilters() track by filter.id">
-
-                <table class="table table-hover">
-                    <tbody>
-                        <tr>
-                            <th>Nom</td>
-                            <td>
-                                <input type="text" ng-model="filter.name">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Type</td>
-                            <td>
-                                <select ng-model="filter.gesture">
-                                    <option value="tap">tap</option>
-                                    <option value="double_tap">double_tap</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Protocole</td>
-                            <td>
-                                <select ng-model="filter.protocol">
-                                    <option>tts</option>
-                                    <option>mp3</option>
-                                </select>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <button class="btn btn-danger btn-block"
-                    ng-click="$ctrl.interactions.removeFilter(filter.id)"
-                    >Supprimer filtre</button>
-
-                <table class="table table-hover"
-                        ng-if="$ctrl.interactions.getInteractions().length > 0">
-                    <thead>
-                        <tr>
-                            <th>Point</th>
-                            <th>Valeur</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="interaction in $ctrl.interactions.getInteractions()">
-                            <td>{{interaction.id}}</td>
-                            <td>
-                                <input type="text"
-                                    ng-model="interaction.filters[filter.id]"
-                                    ng-if="filter.protocol==='tts'"
-                                    style="width:100%">
-
-                                <input type="file"
-                                    ng-model="interaction.filters[filter.id]"
-                                    ng-if="filter.protocol==='mp3'"
-                                    style="width:100%">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-            </uib-accordion-group>
-
-            <uib-accordion-group panel-class="panel-primary">
-
-                <uib-accordion-heading>
-                    Créer un nouveau filtre
-                </uib-accordion-heading>
-
-                <table class="table table-hover" >
-                    <tbody>
-                        <tr>
-                            <th>Nom</td>
-                            <td>
-                                <input type="text"
-                                    ng-model="name">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Type</td>
-                            <td>
-                                <select ng-model="gesture">
-                                    <option value="tap">tap</option>
-                                    <option value="double_tap">double_tap</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Protocole</td>
-                            <td>
-                                <select ng-model="protocol">
-                                    <option>tts</option>
-                                    <option>mp3</option>
-                                </select>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <button class="btn btn-primary btn-block"
-                    ng-click="$ctrl.interactions.addFilter(name, gesture, protocol);
-                                name = ''; gesture = undefined; protocol = undefined;">
-                    <span class="fa fa-plus"></span>
-                    Créer filtre
+    <!--    <div class="form-group col-xs-12">
+            <label>Etat de la zone de dessin</label>
+            <br>
+            <div class="btn-group">
+                <button class="btn btn-default"
+                        ng-class="{ 'active' : $ctrl.isDrawingFreezed }"
+                        disabled>
+                    Figée
                 </button>
-            </uib-accordion-group>
+                <button class="btn btn-default"
+                        ng-class="{ 'active' : ! $ctrl.isDrawingFreezed }"
+                        disabled>
+                    Non figée
+                </button>
+            </div>-->
+    <!--
+            <ui-select
+                ng-model="$ctrl.mapFormat"
+                theme="bootstrap"
+                class="form-control style-selector">
 
+                <ui-select-match placeholder="Sélectionnez un format">{{$ctrl.mapFormat.name}}</ui-select-match>
+                <ui-select-choices repeat="item in $ctrl.formats">
+                    <div ng-bind-html="item.name | highlight: $select.search"></div>
+                </ui-select-choices>
 
+            </ui-select>
+    -->
 
-        </uib-accordion>
-    </div>
-</form>
+        <div class="form-group col-xs-12">
+            <label>Commentaires de transcription</label>
+            <textarea
+                class="form-control"
+                ng-model="$ctrl.model.comment"
+                rows="10"
+                style="resize:none"
+                id="comment">
+            </textarea>
+        </div>
+    </form>
+</div>

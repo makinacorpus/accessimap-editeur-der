@@ -27,7 +27,7 @@
 
     function EditService($q, SettingsService, MapService, DrawingService, LegendService,
         DefsService, InteractionService, ExportService, UtilService, ImportService,
-        FeatureService, ModeService, RadialMenuService) {
+        FeatureService, ModeService, RadialMenuService, HistoryService) {
 
         this.init          = init;
         this.settings      = SettingsService;
@@ -54,10 +54,13 @@
 
         this.isUndoAvailable               = FeatureService.isUndoAvailable;
         this.undo                          = FeatureService.undo;
+        this.redo                          = FeatureService.redo;
         this.getProperties                 = FeatureService.getProperties;
         this.setProperties                 = FeatureService.setProperties;
         this.properties                    = FeatureService.properties;
-
+        
+        this.historySave                   = historySave;
+        
         this.getInteraction                = InteractionService.getInteraction;
 
         this.enableDefaultMode             = ModeService.enableDefaultMode;
@@ -121,6 +124,8 @@
         this.importImage         = importImage;
         this.appendSvg           = appendSvg;
         this.importDER           = importDER;
+        this.undo                = undo;
+        this.redo                = redo;
 
         var d3Element = null,
             overlayDrawing,
@@ -350,6 +355,8 @@
                                 styleChosen,
                                 SettingsService.STYLES[queryChosen.type],
                                 colorChosen, checkboxModel, null)
+
+                        HistoryService.saveState();
                     } else {
                         _warningCallback('Aucune donnée cartographique trouvée... Merci de chercher autre chose !?')
                     }
@@ -476,6 +483,8 @@
                                                                         MapService.getMap().getSize(),
                                                                         MapService.getMap().getPixelOrigin(),
                                                                         MapService.getMap().getPixelBounds().min);
+
+                            HistoryService.saveState();
                             break;
 
                         default:
@@ -684,6 +693,17 @@
 
         }
 
+        function undo() {
+            var lastState = HistoryService.undoState();
+        }
+
+        function redo() {
+            var lastState = HistoryService.redoState();
+        }
+
+        function historySave() {
+            HistoryService.saveState()
+        }
     }
 
     angular.module(moduleApp).service('EditService', EditService);
@@ -701,6 +721,7 @@
                             'FeatureService',
                             'ModeService',
                             'RadialMenuService',
+                            'HistoryService'
                             ];
 
 })();

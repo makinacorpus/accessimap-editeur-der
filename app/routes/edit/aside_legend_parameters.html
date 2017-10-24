@@ -1,56 +1,39 @@
 <h3>
-    <button class="btn btn-link"
-            ng-click="$ctrl.displayHome()">
-        <span class="fa fa-lg fa-arrow-left" aria-hidden="true"></span>
-    </button>
-
     <span class="fa fa-braille" aria-hidden="true"></span>
     Légende
 </h3>
 
-
-<form class="row">
-
-    <div class="form-group col-xs-12">
-        <label>Afficher en braille</label>
-        <br>
-        <div class="btn-group">
-            <!-- Drawing -->
-            <button class="btn btn-default"
-                    ng-class="{ 'active' : $ctrl.isBrailleDisplayed }"
-                    ng-click="$ctrl.showFontBraille()">
-                Oui
-            </button>
-            <!-- Legend -->
-            <button class="btn btn-default"
-                    ng-class="{ 'active' : ! $ctrl.isBrailleDisplayed }"
-                    ng-click="$ctrl.hideFontBraille()">
-                Non
-            </button>
+<div class="col-xs-12">
+    <form>
+        <div class="toggle-group">
+            <label for="cb1" class="toggle-label">Afficher en braille</label>
+            <input class="tgl tgl-light" id="cb1" type="checkbox" ng-click="$ctrl.toggleFontBraille()" checked>
+            <label class="tgl-btn" for="cb1"></label>
         </div>
-    </div>
+        <hr>
 
-    <div class="form-group col-xs-12">
-        <label>Format de la légende</label>
-        <select
-            ng-model="$ctrl.model.legendFormat"
-            ng-change="$ctrl.changeLegendFormat($ctrl.model.legendFormat)"
-            class="form-control"
-            ng-options="format as data.name for (format, data) in $ctrl.formats">
-        </select>
-<!--
-        <ui-select
-            ng-model="$ctrl.legendFormat"
-            theme="bootstrap"
-            class="form-control style-selector">
+        <div class="form-group">
+            <label>Format de la légende</label>
+            <select
+                ng-model="$ctrl.model.legendFormat"
+                ng-change="$ctrl.changeLegendFormat($ctrl.model.legendFormat)"
+                class="form-control"
+                ng-options="format as data.name for (format, data) in $ctrl.formats">
+            </select>
+    <!--
+            <ui-select
+                ng-model="$ctrl.legendFormat"
+                theme="bootstrap"
+                class="form-control style-selector">
 
-            <ui-select-match placeholder="Sélectionnez un format">{{$ctrl.legendFormat.name}}</ui-select-match>
-            <ui-select-choices repeat="item in $ctrl.formats">
-                <div ng-bind-html="item.name | highlight: $select.search"></div>
-            </ui-select-choices>
+                <ui-select-match placeholder="Sélectionnez un format">{{$ctrl.legendFormat.name}}</ui-select-match>
+                <ui-select-choices repeat="item in $ctrl.formats">
+                    <div ng-bind-html="item.name | highlight: $select.search"></div>
+                </ui-select-choices>
 
-        </ui-select>
--->
-    </div>
+            </ui-select>
+    -->
+        </div>
 
-</form>
+    </form>
+</div>

@@ -1,0 +1,78 @@
+.editor-header {
+  position: fixed;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  border: none;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  // font-family: $headings-font-family;
+  background: #eee;
+  .logo {
+    background: white;
+    height: 70px;
+    margin-left: -12px;
+    text-decoration: none;
+    img {
+      margin-top: 8px;
+      width: auto;
+      height: 100%;
+    }
+    &:hover {
+      &, span {
+        text-decoration: none;
+      }
+    }
+  }
+  .title {
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 30px;
+    color: $gray;
+  }
+  .der-title {
+    position: relative;
+    display: inline-block;
+    font-size: 12px;
+    color: black;
+    font-weight: 500;
+    box-shadow: none;
+    flex: 1;
+    text-align: left;
+    display: block;
+    background: transparent;
+    color: $grey;
+    padding: 6px 24px;
+    input {
+      font-size: 20px;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      border-bottom: solid 1px transparent;
+      transition: border-color .3s;
+      &:focus, &:active {
+        box-shadow: none;
+        border-color: #ccc;
+      }
+    }
+  }
+
+  .state-buttons {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+    height: 50px;
+    padding-right: 16px;
+
+    .form-group {
+      margin: 0;
+    }
+  }
+}

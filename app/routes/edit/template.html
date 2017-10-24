@@ -1,12 +1,15 @@
+<div ng-include="'scripts/routes/edit/aside_menu.html'">
+</div>
+
 <!-- aside -->
-<aside class="col-lg-3 col-md-4 col-sm-4 right-side">
-    <div class="aside-content row" ng-include="'scripts/routes/edit/aside.html'"/>
+<aside class="right-side" ng-class="{'panel': $ctrl.panel !== null}">
+    <div class="aside-content" ng-include="'scripts/routes/edit/aside.html'"/>
 </aside>
 
 <!-- workspace & legend divs -->
 <main ng-init="$ctrl.init()">
-    <div id="workspace" ng-show="$ctrl.isWorkspaceVisible"></div>
-    <div id="legend" ng-show="$ctrl.isLegendVisible"></div>
+    <div id="workspace" ng-show="$ctrl.panel !== 'legend'"></div>
+    <div id="legend" ng-show="$ctrl.panel === 'legend'"></div>
     <div id="pattern"></div>
 </main>
 

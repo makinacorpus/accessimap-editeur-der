@@ -38,7 +38,6 @@
          * 
          */
         function initDrawing(elements, format) {
-            
             LayerService.createLayers(elements, format)
 
             ToolboxService.init(LayerService.drawing.getLayer(), 
@@ -61,7 +60,6 @@
          * 
          */
         function updatePoint(style) {
-
             var currentSelection = d3.select('.styleEdition'),
                 featureId = currentSelection.attr('id'),
                 featureFrom = currentSelection.attr('data-from');

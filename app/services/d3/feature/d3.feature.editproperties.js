@@ -132,7 +132,6 @@
         }
 
         function setProperties(feature, featureProperties) {
-
             properties.map(function(currentProperty) {
                 feature.attr(currentProperty.name, featureProperties[currentProperty.name]);
             })
