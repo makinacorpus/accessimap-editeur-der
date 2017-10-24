@@ -10,12 +10,6 @@
     function SettingsQuery () {
 
         var QUERY_LIST = [{
-            id: 'poi',
-            name: 'Point d\'intérêt',
-            type: 'point',
-            query: ['node["amenity"]', 'node["shop"]'],
-            icon: 'road'
-        },{
             id: 'trottoirs',
             name: 'Trottoirs',
             type: 'line',
