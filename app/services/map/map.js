@@ -11,7 +11,7 @@
 (function() {
     'use strict';
 
-    function MapService($q, SettingsService, SearchService) {
+    function MapService($q, SettingsService, SearchService, LayerOverlayService) {
 
         var _selectorDOM = '',
             _isMapVisible,
@@ -92,8 +92,8 @@
             _selectorDOM = selectorDOM;
             _isMapVisible = false;
 
-            setMinimumSize(SettingsService.FORMATS[format].width / _ratioPixelPoint,
-                            SettingsService.FORMATS[format].height / _ratioPixelPoint)
+            // setMinimumSize(SettingsService.FORMATS[format].width / _ratioPixelPoint,
+            //                 SettingsService.FORMATS[format].height / _ratioPixelPoint)
 
             map = L.map(_selectorDOM).setView(SettingsService.leaflet.GLOBAL_MAP_CENTER,
                                                 SettingsService.leaflet.GLOBAL_MAP_DEFAULT_ZOOM);
@@ -125,7 +125,47 @@
                 currentLayer = layerEvent.layer;
             })
 
+            createResetViewButton(currentLayer);
             console.log('map initialize')
+        }
+
+        function createResetViewButton (layer) {
+            /**
+             * Create and attach the map control button allowing to reset pan/zoom to the main loaded content
+             * @return {Oject} Map object
+             */
+            L.Control.Resetview = L.Control.extend({
+                options: {
+                    position: 'topright'
+                },
+    
+                onAdd: function (map) {
+                    this.map = map;
+    
+                    var container = L.DomUtil.create('div', 'leaflet-control-resetview leaflet-bar');
+                    var button    = L.DomUtil.create('a',   'leaflet-control-resetview-button', container);
+                    var span    = L.DomUtil.create('span',   'fa fa-arrows-alt', button);
+                    button.title  = 'Reset view';
+    
+                    L.DomEvent.disableClickPropagation(button);
+                    L.DomEvent.on(button, 'click', this._resetViewButtonClick, this);
+    
+                    return container;
+                },
+    
+                _resetViewButtonClick: function () {
+                    var center       = LayerOverlayService.getCenter();
+                    var zoom         = zoom   ? zoom   : getMap().getZoom();
+
+                    resetView(center, zoom);
+                },
+            });
+    
+            L.control.resetview = function resetview () {
+                return new L.Control.Resetview();
+            };
+    
+            L.control.resetview().addTo(map);
         }
 
         function setMinimumSize(width, height) {
@@ -469,6 +509,6 @@
 
     angular.module(moduleApp).service('MapService', MapService);
 
-    MapService.$inject = ['$q', 'SettingsService', 'SearchService'];
+    MapService.$inject = ['$q', 'SettingsService', 'SearchService', 'LayerOverlayService'];
 
 })();
