@@ -72,7 +72,7 @@
                             .attr('y', bbox.y - 1)
                             .attr('width', bbox.width + 2)
                             .attr('height', bbox.height + 2)
-                            .attr('data-type', 'click-path')
+                            .attr('data-type', 'clicked-path')
                             .attr('fill', 'none')
                             .attr('stroke', '#333')
                             .attr('stroke-width', '1')
@@ -97,9 +97,7 @@
                                        .remove();
                 })
                 .on('click', function(event) {
-                    d3
-                        .selectAll('[data-type="click-path"]')
-                        .remove();
+                    d3.selectAll('[data-type="clicked-path"]').remove();
                     var feature = d3.select(this),
                         selectPath = calcClickPath(feature);
                     feature.node().parentNode.appendChild(selectPath);
