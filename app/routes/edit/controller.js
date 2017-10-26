@@ -152,14 +152,25 @@
         $ctrl.redo = function() {
             EditService.redo()
         }
+        
+        $ctrl.moveFrame = function() {
+            EditService.enableDefaultMode();
+            $ctrl.isDrawingFreezed = true;
+            EditService.freezeMap();
+        }
+        function stopMoveFrame() {
+            $ctrl.enableDrawingMode($ctrl.mode)
+        }
 
         function KeyPress(e) {
             var evtobj = window.event? event : e
             if (evtobj.keyCode == 90 && evtobj.ctrlKey) $ctrl.undo();
             if (evtobj.keyCode == 89 && evtobj.ctrlKey) $ctrl.redo();
+            if (evtobj.keyCode == 32) $ctrl.moveFrame();
         }
 
         document.onkeydown = KeyPress;
+        document.onkeyup = stopMoveFrame;
 
         $ctrl.reset = function() {
             if (window.confirm('En validant, vous allez effacer votre dessin en cours et en créer un nouveau.'))
