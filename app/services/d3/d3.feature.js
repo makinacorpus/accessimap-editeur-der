@@ -102,6 +102,8 @@
             el.parentNode.insertBefore(t, el);
             featuresToUpdate.remove();
 
+            // Remove clicked stroke
+            d3.selectAll('[data-type="clicked-path"]').remove();
         }
 
         function removeObject(feature) {
