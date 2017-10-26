@@ -542,9 +542,12 @@
         };
 
         $ctrl.addInteraction = function() {
-            EditService.interactions.addInteraction($ctrl.currentFeature);
-            $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
+            console.log(EditService)
 
+            if ($ctrl.currentFeature) {
+                EditService.interactions.addInteraction($ctrl.currentFeature);
+                $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
+            }
         }
 
         $ctrl.removeInteraction = function() {

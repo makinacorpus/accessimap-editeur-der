@@ -130,8 +130,19 @@
             Liste des interactions
         </h4>
 
-        <div ng-if="$ctrl.interactions.getInteractions().length === 0" class="col-xs-12">
-            Pas encore d'interaction définie !
+        <div ng-if="$ctrl.interactions.getInteractions().length === 0">
+            <p>
+                Pas encore d'interaction définie !
+            </p>
+
+            <button class="btn btn-primary btn-block" ng-click="$ctrl.addInteraction()">
+                <span class="fa fa-plus ng-scope" aria-hidden="true"></span>
+                Ajouter une interaction
+            </button>
+
+            <!-- <p ng-if="$ctrl.getFeaturesElements().length === 0">
+                Vous devez d'abord créer un élément pour ajouter une interaction.
+            </p> -->
         </div>
         
 

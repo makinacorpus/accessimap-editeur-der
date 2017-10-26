@@ -233,7 +233,7 @@
                             : minHeight,
                 mapWidth = ( parentWidth > minWidth ) ? 'auto' : minWidth;
 
-            // $("#" + _selectorDOM).height('calc(100vh - 80px)');
+            $("#" + _selectorDOM).height('calc(100vh - 50px)');
             // $("#" + _selectorDOM).width(mapWidth);
             map.invalidateSize();
 
