@@ -56,6 +56,33 @@
 
         }
 
+        function calcClickPath(feature) {
+            
+                        var el = feature.node(),
+                            bbox = el.getBBox(),
+                            type = feature.attr('data-type'),
+                            selectPath,
+                            path = feature.attr('d'),
+                            transformString = null || feature.attr('transform');
+            
+                        selectPath = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+
+                        d3.select(selectPath)
+                            .attr('x', bbox.x - 1)
+                            .attr('y', bbox.y - 1)
+                            .attr('width', bbox.width + 2)
+                            .attr('height', bbox.height + 2)
+                            .attr('data-type', 'click-path')
+                            .attr('fill', 'none')
+                            .attr('stroke', '#333')
+                            .attr('stroke-width', '1')
+                            .style('stroke-dasharray', ('2,4')) // make the stroke dashed
+                            .attr('transform', transformString);
+            
+                        return selectPath;
+            
+                    }
+
         function addTo(nodes, callbackProperties) {
             nodes.style('cursor', 'crosshair')
                 .on('mouseover', function(event) {
@@ -70,8 +97,11 @@
                                        .remove();
                 })
                 .on('click', function(event) {
+                    d3
+                        .selectAll('[data-type="click-path"]')
+                        .remove();
                     var feature = d3.select(this),
-                        selectPath = calcSelectPath(feature);
+                        selectPath = calcClickPath(feature);
                     feature.node().parentNode.appendChild(selectPath);
                     callbackProperties(feature);
                 })
