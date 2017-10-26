@@ -330,7 +330,7 @@
                 return false;
             }
             $ctrl.panel = 'draw';
-            $ctrl.enableDrawingMode('default');
+            $ctrl.enableDrawingMode('select');
 
             // Display for the first time the drawing is freezed
             if (! $ctrl.isDrawingFreezed)
@@ -436,9 +436,9 @@
 
             switch ($ctrl.mode) {
 
-                case 'default':
-                    EditService.enableDefaultMode();
-                    break;
+                // case 'default':
+                //     EditService.enableDefaultMode();
+                //     break;
 
                 case 'select':
                     EditService.enableSelectMode(setFeatureProperties);

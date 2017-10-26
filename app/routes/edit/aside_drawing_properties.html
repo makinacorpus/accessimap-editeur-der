@@ -1,11 +1,11 @@
 <form>
-    <p ng-if="$ctrl.mode === 'default' || $ctrl.mode === ''">
+    <p ng-if="$ctrl.mode === 'select' || $ctrl.mode === ''">
         Choisissez un outil de dessin pour paramétrer le style, la couleur, ...
     </p>
 
     <div
         class="form-group"
-        ng-if="$ctrl.mode !== 'default' && $ctrl.mode !== '' && $ctrl.mode !== 'text' && $ctrl.mode !== 'image'">
+        ng-if="$ctrl.mode !== 'select' && $ctrl.mode !== '' && $ctrl.mode !== 'text' && $ctrl.mode !== 'image'">
         <label>Style</label>
         <ui-select
             ng-model="$ctrl.styleChosen"
