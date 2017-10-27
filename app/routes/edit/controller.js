@@ -544,11 +544,10 @@
         };
 
         $ctrl.addInteraction = function() {
-            console.log(EditService)
-
             if ($ctrl.currentFeature) {
                 EditService.interactions.addInteraction($ctrl.currentFeature);
                 $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
+                console.log($ctrl.featureProperties)
             }
         }
 

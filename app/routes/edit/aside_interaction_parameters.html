@@ -147,15 +147,6 @@
             <p>
                 Pas encore d'interaction définie !
             </p>
-
-            <button ng-if="$ctrl.currentFeature" class="btn btn-primary btn-block" ng-click="$ctrl.addInteraction()">
-                <span class="fa fa-plus ng-scope" aria-hidden="true"></span>
-                Ajouter une interaction
-            </button>
-
-            <p ng-if="!$ctrl.currentFeature">
-                Vous devez d'abord sélectionner un élément pour ajouter une interaction.
-            </p>
         </div>
         
 
@@ -196,8 +187,16 @@
                     ng-click="$ctrl.removeInteraction()">Désactiver</button>
             
             </uib-accordion-group>
-
         </uib-accordion>
+
+        <button ng-if="$ctrl.currentFeature" class="btn btn-primary btn-block" ng-click="$ctrl.addInteraction()">
+            <span class="fa fa-plus ng-scope" aria-hidden="true"></span>
+            Ajouter une interaction
+        </button>
+
+        <p ng-if="!$ctrl.currentFeature">
+            Vous devez d'abord sélectionner un élément pour ajouter une interaction.
+        </p>
 
     </form>
 </div>
