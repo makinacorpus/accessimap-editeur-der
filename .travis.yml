@@ -13,6 +13,8 @@ install:
 script:
   - 'npm install'
   - 'npm test'
+  - 'ls -la'
+  - 'mkdir .tmp'
   - 'npm run build'
   - 'ls .tmp -la'
   - 'chmod 700 deploy.sh'
