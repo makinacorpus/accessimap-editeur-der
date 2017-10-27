@@ -91,26 +91,14 @@ gulp.task('check:jscs', function() {
 
 gulp.task('build:templatejs', function() {
     return gulp.src(config.templates.globs)
-        .pipe(print(function(filepath) {
-            return "found: " + filepath;
-          }))
         .pipe(minifyHTML({empty: true, quotes: true}))
-        .pipe(print(function(filepath) {
-            return "minify: " + filepath;
-          }))
         .pipe(ngTemplate({
             moduleName: config.templates.moduleName,
             standalone: false,
             filePath: config.templates.filePath,
             prefix: 'scripts/'
         }))
-        .pipe(print(function(filepath) {
-            return "templated: " + filepath;
-          }))
         .pipe(gulp.dest('.tmp'))
-        .pipe(print(function(filepath) {
-            return "written to disk: " + filepath;
-          }))
         .pipe(connect.reload());
 })
 
