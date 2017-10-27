@@ -91,6 +91,7 @@ gulp.task('check:jscs', function() {
 
 gulp.task('build:templatejs', function() {
     gulp.src(config.templates.globs)
+        .pipe(print())
         .pipe(minifyHTML({empty: true, quotes: true}))
         .pipe(ngTemplate({
             moduleName: config.templates.moduleName,
@@ -99,6 +100,7 @@ gulp.task('build:templatejs', function() {
             prefix: 'scripts/'
         }))
         .pipe(gulp.dest('.tmp'))
+        .pipe(print())
         .pipe(connect.reload());
 })
 
