@@ -167,7 +167,11 @@
             if (evtobj.keyCode == 90 && evtobj.ctrlKey) $ctrl.undo();
             if (evtobj.keyCode == 89 && evtobj.ctrlKey) $ctrl.redo();
             if (evtobj.keyCode == 32) $ctrl.moveFrame();
-            if (evtobj.keyCode == 27) SelectPathService.deselectPath();
+            if (evtobj.keyCode == 27) {
+                $ctrl.resetFeature();
+                $ctrl.enableDrawingMode('select');
+                $scope.$apply();
+            }
         }
 
         document.onkeydown = KeyPress;
@@ -407,6 +411,12 @@
             }
         }
 
+        $ctrl.resetFeature = function() {
+            SelectPathService.deselectPath()
+            $ctrl.featureProperties = null;
+            $ctrl.currentFeature = null;
+        }
+
         // switch of editor's mode
         // adapt user's interactions
         $ctrl.properties = EditService.properties ;
@@ -440,12 +450,7 @@
             }
 
 
-            function resetFeature() {
-                $ctrl.featureProperties = null;
-                $ctrl.currentFeature = null;
-            }
-
-            resetFeature();
+            $ctrl.resetFeature();
 
 
             switch ($ctrl.mode) {
@@ -456,14 +461,6 @@
 
                 case 'select':
                     EditService.enableSelectMode(setFeatureProperties);
-                    break;
-
-                case 'undo':
-                    EditService.undo();
-                    break;
-
-                case 'redo':
-                    EditService.redo();
                     break;
 
                 case 'point':
@@ -548,7 +545,6 @@
             if ($ctrl.currentFeature) {
                 EditService.interactions.addInteraction($ctrl.currentFeature);
                 $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
-                console.log($ctrl.featureProperties)
             }
         }
 
