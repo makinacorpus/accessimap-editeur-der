@@ -365,6 +365,7 @@
                 EditService.resetState();
                 return false;
             }
+            $ctrl.enableDrawingMode('select');
             $ctrl.panel = 'interaction';
         }
         $ctrl.displayBackgroundParameters = function() {
