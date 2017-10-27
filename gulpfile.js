@@ -90,7 +90,7 @@ gulp.task('check:jscs', function() {
 })
 
 gulp.task('build:templatejs', function() {
-    gulp.src(config.templates.globs)
+    return gulp.src(config.templates.globs)
         .pipe(print(function(filepath) {
             return "found: " + filepath;
           }))
