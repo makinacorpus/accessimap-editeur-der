@@ -228,7 +228,7 @@ d3.radialMenu = function() {
         $(".menu-segment-container").tooltip({
             'container': 'body',
             'placement': 'top'
-        }); // this works!
+        });
 
         // Add the segments                         
         menuSegments.append("path")

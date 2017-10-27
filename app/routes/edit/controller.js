@@ -435,6 +435,7 @@
                 featureProperties.interactions = EditService.getInteraction(feature);
                 $ctrl.featureProperties = featureProperties;
                 $ctrl.currentFeature = feature;
+
                 $scope.$apply();
             }
 
