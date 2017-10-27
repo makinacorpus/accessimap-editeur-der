@@ -153,13 +153,20 @@
             EditService.redo()
         }
         
+        
+        // Key events
+        var onMoveFrame = false;
         $ctrl.moveFrame = function() {
+            onMoveFrame = true
             EditService.enableDefaultMode();
             $ctrl.isDrawingFreezed = true;
             EditService.freezeMap();
         }
         function stopMoveFrame() {
-            $ctrl.enableDrawingMode($ctrl.mode)
+            if (onMoveFrame) {
+                $ctrl.enableDrawingMode($ctrl.mode);
+                onMoveFrame = false;
+            }
         }
 
         function KeyPress(e) {
@@ -449,9 +456,7 @@
                 $scope.$apply();
             }
 
-
             $ctrl.resetFeature();
-
 
             switch ($ctrl.mode) {
 
