@@ -18,7 +18,7 @@
 (function() {
     'use strict';
 
-    function EditController(EditService, ToasterService, HistoryService, $location, $q, $scope, $rootScope) {
+    function EditController(EditService, ToasterService, SelectPathService, HistoryService, $location, $q, $scope, $rootScope) {
         var $ctrl = this;
 
         /**
@@ -152,14 +152,30 @@
         $ctrl.redo = function() {
             EditService.redo()
         }
+        
+        $ctrl.moveFrame = function() {
+            EditService.enableDefaultMode();
+            $ctrl.isDrawingFreezed = true;
+            EditService.freezeMap();
+        }
+        function stopMoveFrame() {
+            $ctrl.enableDrawingMode($ctrl.mode)
+        }
 
         function KeyPress(e) {
             var evtobj = window.event? event : e
             if (evtobj.keyCode == 90 && evtobj.ctrlKey) $ctrl.undo();
             if (evtobj.keyCode == 89 && evtobj.ctrlKey) $ctrl.redo();
+            if (evtobj.keyCode == 32) $ctrl.moveFrame();
+            if (evtobj.keyCode == 27) {
+                $ctrl.resetFeature();
+                $ctrl.enableDrawingMode('select');
+                $scope.$apply();
+            }
         }
 
         document.onkeydown = KeyPress;
+        document.onkeyup = stopMoveFrame;
 
         $ctrl.reset = function() {
             if (window.confirm('En validant, vous allez effacer votre dessin en cours et en créer un nouveau.'))
@@ -330,7 +346,7 @@
                 return false;
             }
             $ctrl.panel = 'draw';
-            $ctrl.enableDrawingMode('default');
+            $ctrl.enableDrawingMode('select');
 
             // Display for the first time the drawing is freezed
             if (! $ctrl.isDrawingFreezed)
@@ -354,6 +370,7 @@
                 EditService.resetState();
                 return false;
             }
+            $ctrl.enableDrawingMode('select');
             $ctrl.panel = 'interaction';
         }
         $ctrl.displayBackgroundParameters = function() {
@@ -394,6 +411,12 @@
             }
         }
 
+        $ctrl.resetFeature = function() {
+            SelectPathService.deselectPath()
+            $ctrl.featureProperties = null;
+            $ctrl.currentFeature = null;
+        }
+
         // switch of editor's mode
         // adapt user's interactions
         $ctrl.properties = EditService.properties ;
@@ -422,34 +445,22 @@
                 featureProperties.interactions = EditService.getInteraction(feature);
                 $ctrl.featureProperties = featureProperties;
                 $ctrl.currentFeature = feature;
+
                 $scope.$apply();
             }
 
 
-            function resetFeature() {
-                $ctrl.featureProperties = null;
-                $ctrl.currentFeature = null;
-            }
-
-            resetFeature();
+            $ctrl.resetFeature();
 
 
             switch ($ctrl.mode) {
 
-                case 'default':
-                    EditService.enableDefaultMode();
-                    break;
+                // case 'default':
+                //     EditService.enableDefaultMode();
+                //     break;
 
                 case 'select':
                     EditService.enableSelectMode(setFeatureProperties);
-                    break;
-
-                case 'undo':
-                    EditService.undo();
-                    break;
-
-                case 'redo':
-                    EditService.redo();
                     break;
 
                 case 'point':
@@ -531,9 +542,10 @@
         };
 
         $ctrl.addInteraction = function() {
-            EditService.interactions.addInteraction($ctrl.currentFeature);
-            $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
-
+            if ($ctrl.currentFeature) {
+                EditService.interactions.addInteraction($ctrl.currentFeature);
+                $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
+            }
         }
 
         $ctrl.removeInteraction = function() {
@@ -546,5 +558,5 @@
 
     angular.module(moduleApp).controller('EditController', EditController);
 
-    EditController.$inject = ['EditService', 'ToasterService', 'HistoryService', '$location', '$q', '$scope', '$rootScope']
+    EditController.$inject = ['EditService', 'ToasterService', 'SelectPathService', 'HistoryService', '$location', '$q', '$scope', '$rootScope']
 })();

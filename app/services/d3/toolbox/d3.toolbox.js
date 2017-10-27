@@ -228,7 +228,6 @@
         };
 
         function applyStyle(path, style, colorChosen) {
-            console.log('applyStyle')
             angular.forEach(style, function(attribute) {
                 var k = attribute.k,
                     v = attribute.v;

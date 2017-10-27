@@ -40,7 +40,7 @@ describe('Controller: EditController', function () {
         // expect(EditController.isFeatureCreationVisible).toBe(false);
         // expect(EditController.isFeatureManagementVisible).toBe(true);
 
-        // expect(EditController.isDrawingFreezed).toBe(false);
+        expect(EditController.isDrawingFreezed).toBe(false);
         // expect(EditController.isLegendVisible).toBe(false);
         expect(EditController.isBrailleDisplayed).toBe(true);
 

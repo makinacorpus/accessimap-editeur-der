@@ -13,7 +13,6 @@
     "angular-ui-select": "https://github.com/angular-ui/ui-select.git",
     "angular-ui-utils": "#0.2.3",
     "angular-bootstrap-slider": "~0.1.7",
-    "bootstrap-sass-official": "^3.2.0",
     "d3": "~3.5.3",
     "d3-transform": "^1.0.4",
     "file-saver.js": "~1.20150304.1",
@@ -26,7 +25,8 @@
     "toastr": "^2.1.2",
     "turf": "~2.0.2",
     "opbeat-angular": "^3.6.1",
-    "es5-shim": "^4.5.9"
+    "es5-shim": "^4.5.9",
+    "bootstrap-sass": "bootstrap-sass-official#^3.3.7"
   },
   "appPath": "app"
 }

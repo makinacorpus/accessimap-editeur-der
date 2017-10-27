@@ -4,7 +4,7 @@ $blue: #076ea9;
 $blue-light: #048bd8;
 $grey: #333;
 
-$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+$icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
 $brand-primary: $blue;
 $brand-success: $green;
 $border-radius-base: 1px;
@@ -22,7 +22,7 @@ $headings-font-family: $font-family-sans-serif;
 $panel-heading-padding: 0;
 
 // bower:scss
-@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+@import "bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 // endbower
 
 @import "_header";
@@ -44,6 +44,23 @@ $panel-heading-padding: 0;
   transform: rotate(-180deg)
 }
 
+
+.panel-body {
+  padding: 10px;
+}
+
+.panel-body .table > tbody > tr > th {
+  padding: 8px 0;
+}
+
+.table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
+  border-top: none;
+}
+
+.fa-question-circle {
+  cursor: pointer;
+}
+
 label {
   font-weight: normal;
 }
@@ -51,7 +68,7 @@ label {
 .tooltip-inner {
   overflow: hidden; 
   text-overflow: ellipsis;
-  white-space: nowrap;
+  // white-space: nowrap;
   font-size: 14px;
 }
 

@@ -90,7 +90,7 @@ gulp.task('check:jscs', function() {
 })
 
 gulp.task('build:templatejs', function() {
-    gulp.src(config.templates.globs)
+    return gulp.src(config.templates.globs)
         .pipe(minifyHTML({empty: true, quotes: true}))
         .pipe(ngTemplate({
             moduleName: config.templates.moduleName,

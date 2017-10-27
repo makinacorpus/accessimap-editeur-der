@@ -220,7 +220,15 @@ d3.radialMenu = function() {
         // Enter the groups
         var menuSegments = dataJoin .enter()
                                     .append("g")
-                                    .attr("class", "menu-segment-container");
+                                    .attr("class", "menu-segment-container")
+                                    .attr("title", function(d) { return d.data.name })
+                                    .attr("uib-tooltip", "test")
+                                    .attr("tooltip-placement", "top");
+
+        $(".menu-segment-container").tooltip({
+            'container': 'body',
+            'placement': 'top'
+        });
 
         // Add the segments                         
         menuSegments.append("path")
