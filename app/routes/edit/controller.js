@@ -18,7 +18,7 @@
 (function() {
     'use strict';
 
-    function EditController(EditService, ToasterService, HistoryService, $location, $q, $scope, $rootScope) {
+    function EditController(EditService, ToasterService, SelectPathService, HistoryService, $location, $q, $scope, $rootScope) {
         var $ctrl = this;
 
         /**
@@ -167,6 +167,7 @@
             if (evtobj.keyCode == 90 && evtobj.ctrlKey) $ctrl.undo();
             if (evtobj.keyCode == 89 && evtobj.ctrlKey) $ctrl.redo();
             if (evtobj.keyCode == 32) $ctrl.moveFrame();
+            if (evtobj.keyCode == 27) SelectPathService.deselectPath();
         }
 
         document.onkeydown = KeyPress;
@@ -561,5 +562,5 @@
 
     angular.module(moduleApp).controller('EditController', EditController);
 
-    EditController.$inject = ['EditService', 'ToasterService', 'HistoryService', '$location', '$q', '$scope', '$rootScope']
+    EditController.$inject = ['EditService', 'ToasterService', 'SelectPathService', 'HistoryService', '$location', '$q', '$scope', '$rootScope']
 })();

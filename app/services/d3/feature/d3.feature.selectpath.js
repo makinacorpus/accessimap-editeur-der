@@ -14,6 +14,7 @@
         this.calcSelectPath = calcSelectPath;
         this.addTo          = addTo;
         this.removeTo       = removeTo;
+        this.deselectPath   = deselectPath;
 
         /**
          * @ngdoc method
@@ -112,6 +113,9 @@
                  .on('click', function() {})
         }
 
+        function deselectPath() {
+            d3.selectAll('[data-type="clicked-path"]').remove();
+        }
     }
 
     angular.module(moduleApp).service('SelectPathService', SelectPathService);
