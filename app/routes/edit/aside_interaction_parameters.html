@@ -23,24 +23,30 @@
                         <tr>
                             <th>Nom</td>
                             <td>
-                                <input type="text" ng-model="filter.name">
+                                <input type="text" ng-model="filter.name" class="form-control">
                             </td>
                         </tr>
                         <tr>
                             <th>Type</td>
                             <td>
-                                <select ng-model="filter.gesture">
+                                <select ng-model="filter.gesture" class="form-control">
                                     <option value="tap">tap</option>
                                     <option value="double_tap">double_tap</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <th>Protocole</td>
+                            <th>Son
+                                <span 
+                                    class="fa fa-question-circle"
+                                    tooltip-placement="right"
+                                    uib-tooltip="Protocole TTS (Talk to Speech) : texte lu par la voix du système ou MP3 : choix d'un fichier sonore">
+                                </span>
+                            </td>
                             <td>
-                                <select ng-model="filter.protocol">
-                                    <option>tts</option>
-                                    <option>mp3</option>
+                                <select ng-model="filter.protocol" class="form-control">
+                                    <option>TTS</option>
+                                    <option>MP3</option>
                                 </select>
                             </td>
                         </tr>
@@ -90,25 +96,32 @@
                         <tr>
                             <th>Nom</td>
                             <td>
-                                <input type="text"
+                                <input type="text" class="form-control"
                                     ng-model="name">
                             </td>
                         </tr>
                         <tr>
                             <th>Type</td>
                             <td>
-                                <select ng-model="gesture">
+                                <select ng-model="gesture" class="form-control">
                                     <option value="tap">tap</option>
                                     <option value="double_tap">double_tap</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <th>Protocole</td>
+                            <th>
+                                Son 
+                                <span 
+                                    class="fa fa-question-circle"
+                                    tooltip-placement="right"
+                                    uib-tooltip="Protocole TTS (Talk to Speech) : texte lu par la voix du système ou MP3 : choix d'un fichier sonore">
+                                </span>
+                            </td>
                             <td>
-                                <select ng-model="protocol">
-                                    <option>tts</option>
-                                    <option>mp3</option>
+                                <select ng-model="protocol" class="form-control">
+                                    <option>TTS</option>
+                                    <option>MP3</option>
                                 </select>
                             </td>
                         </tr>
@@ -165,12 +178,12 @@
                         <tr ng-repeat="filter in $ctrl.interactions.getFilters()">
                             <td>{{filter.name}}</td>
                             <td>
-                                <input type="text"
+                                <input type="text" class="form-control"
                                     ng-model="interaction.filters[filter.id]"
                                     ng-if="filter.protocol==='tts'"
                                     style="width:100%">
 
-                                <input type="file"
+                                <input type="file" class="form-control"
                                     ng-model="interaction.filters[filter.id]"
                                     ng-if="filter.protocol==='mp3'"
                                     style="width:100%">
