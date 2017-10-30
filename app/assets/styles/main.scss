@@ -4,7 +4,7 @@ $blue: #076ea9;
 $blue-light: #048bd8;
 $grey: #333;
 
-$icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
+$icon-font-path: "../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
 $brand-primary: $blue;
 $brand-success: $green;
 $border-radius-base: 1px;
@@ -66,7 +66,7 @@ label {
 }
 
 .tooltip-inner {
-  overflow: hidden; 
+  overflow: hidden;
   text-overflow: ellipsis;
   // white-space: nowrap;
   font-size: 14px;
