@@ -48,7 +48,7 @@ module.exports = {
         dest: dist
     },
     bower_components: {
-        globs: 'bower_components/{fontawesome,bootstrap-sass-official}/**',
+        globs: 'bower_components/{fontawesome,bootstrap-sass}/**',
         base: './',
         dest: dist + 'assets/'
     },
