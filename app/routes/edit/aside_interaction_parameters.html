@@ -148,14 +148,12 @@
                 Pas encore d'interaction définie !
             </p>
         </div>
-        
 
         <uib-accordion
             close-others="false"
             ng-if="$ctrl.interactions.getInteractions().length > 0">
 
             <uib-accordion-group
-                is-open="$ctrl.featureProperties.interactions.id === interaction.id"
                 heading="{{interaction.id}}"
                 ng-repeat="interaction in $ctrl.interactions.getInteractions() track by interaction.id">
 
