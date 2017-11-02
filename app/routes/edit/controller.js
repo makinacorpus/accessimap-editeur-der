@@ -171,9 +171,9 @@
 
         function KeyPress(e) {
             var evtobj = window.event? event : e
-            if (evtobj.keyCode == 90 && evtobj.ctrlKey) $ctrl.undo();
-            if (evtobj.keyCode == 89 && evtobj.ctrlKey) $ctrl.redo();
-            if (evtobj.keyCode == 32) $ctrl.moveFrame();
+            if (evtobj.keyCode == 90 && evtobj.ctrlKey) $ctrl.undo(); // ctrl + Z
+            if (evtobj.keyCode == 89 && evtobj.ctrlKey) $ctrl.redo(); // ctrl + Y
+            if (evtobj.keyCode == 32 && $ctrl.mode !== 'select') $ctrl.moveFrame(); // Espace
             if (evtobj.keyCode == 27) {
                 $ctrl.resetFeature();
                 $ctrl.enableDrawingMode('select');
