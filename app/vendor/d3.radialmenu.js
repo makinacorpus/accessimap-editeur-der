@@ -277,6 +277,7 @@ d3.radialMenu = function() {
     * @returns {object} The control
     */
     control.hide = function() {
+        $(".menu-segment-container").tooltip('hide');
        
         // Join the data with an empty array so that we'll exit all actors
         var dataJoin = segmentLayer .selectAll(".menu-segment-container")
