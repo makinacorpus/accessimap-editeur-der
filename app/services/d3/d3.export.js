@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    /*global JSZip, saveAs */
+    /*global JSZip, saveAs, jsPDF */
     /**
      * @ngdoc service
      * @name accessimapEditeurDerApp.ExportService
@@ -157,47 +157,58 @@
                     // Adding the interactions
                     zip.file('interactions.xml', interactionsContentXML);
 
+                    
+                    
                     domtoimage.toPng(node, {width: sizeDrawing.width, height: sizeDrawing.height})
-                        .then(function(dataUrl) {
+                    .then(function(dataUrl) {
+                        
+                        initNodeState();
+                        
+                        // save the image in a file & add it to the current zip
+                        var imgBase64 = dataUrl.split('base64,')
+                        zip.file('der.png', imgBase64[1], {base64: true});
+                        
+                        // Generate PDF
+                        var doc = new jsPDF({
+                            orientation: 'landscape'
+                        });
 
-                            initNodeState();
+                        doc.addImage(dataUrl, 'png', 0, 0, 297, 210);
+                        var pdf = doc.output();
+                        zip.file('der.pdf', pdf, {binary: true});
+                        
+                        // get the Braille Font & add it to the current zip
+                        var urlFont = window.location.origin
+                                // pathname could be a path like 'xxx/#/route' or 'xxx/file.html'
+                                // we have to obtain 'xxx' string
+                                + ( window.location.pathname !== undefined
+                                ? window.location.pathname.substring(0,window.location.pathname.lastIndexOf('/'))
+                                : '' )
+                                + '/assets/fonts/Braille_2007.ttf';
 
-                            // save the image in a file & add it to the current zip
-                            var imgBase64 = dataUrl.split('base64,')
-                            zip.file('der.png', imgBase64[1], {base64: true});
-
-                            // get the Braille Font & add it to the current zip
-                            var urlFont = window.location.origin
-                                    // pathname could be a path like 'xxx/#/route' or 'xxx/file.html'
-                                    // we have to obtain 'xxx' string
-                                    + ( window.location.pathname !== undefined
-                                    ? window.location.pathname.substring(0,window.location.pathname.lastIndexOf('/'))
-                                    : '' )
-                                    + '/assets/fonts/Braille_2007.ttf';
-
-                            $.ajax({
-                                url: urlFont,
-                                type: "GET",
-                                dataType: 'binary',
-                                processData: false,
-                                success: function(result) {
-                                    zip.file('Braille_2007.ttf', result, {binary: true})
-                                    zip.generateAsync({type: 'blob'})
-                                        .then(function(content) {
-                                            saveAs(content, model.title + '.zip');
-                                            deferred.resolve(model.title + '.zip');
-                                        }).catch(deferred.reject)
-                                },
-                                error: function(error) {
-                                    deferred.reject('Braille font ' + error.statusText)
-                                }
-                            })
-
-                        }).catch(function(error) {
-                            console.error(error);
-                            initNodeState();
-                            deferred.reject(error);
+                        $.ajax({
+                            url: urlFont,
+                            type: "GET",
+                            dataType: 'binary',
+                            processData: false,
+                            success: function(result) {
+                                zip.file('Braille_2007.ttf', result, {binary: true})
+                                zip.generateAsync({type: 'blob'})
+                                    .then(function(content) {
+                                        saveAs(content, model.title + '.zip');
+                                        deferred.resolve(model.title + '.zip');
+                                    }).catch(deferred.reject)
+                            },
+                            error: function(error) {
+                                deferred.reject('Braille font ' + error.statusText)
+                            }
                         })
+
+                    }).catch(function(error) {
+                        console.error(error);
+                        initNodeState();
+                        deferred.reject(error);
+                    })
 
                 }).catch(function(error) {
                     console.error(error);
