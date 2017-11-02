@@ -38,6 +38,7 @@
             zip         = new JSZip(),
             exportNode  = drawingNode ? drawingNode.cloneNode(true) : null,
             sizeDrawing = DrawingService.layers.overlay.getSize() ,
+            formatDrawing = DrawingService.layers.overlay.getFormat() ,
             svgDrawing  = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 
             d3.select(svgDrawing)
@@ -170,10 +171,12 @@
                         
                         // Generate PDF
                         var doc = new jsPDF({
-                            orientation: 'landscape'
+                            orientation: formatDrawing,
+                            unit: 'mm',
+                            format: [formatDrawing.width, formatDrawing.height]
                         });
 
-                        doc.addImage(dataUrl, 'png', 0, 0, 297, 210);
+                        doc.addImage(dataUrl, 'png', 0, 0, formatDrawing.width, formatDrawing.height);
                         var pdf = doc.output();
                         zip.file('der.pdf', pdf, {binary: true});
                         

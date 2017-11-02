@@ -18,7 +18,7 @@
         this.getSize         = getSize;
         this.setFormat       = setFormat;
 
-        this.getFormat       = function() { return _format }
+        this.getFormat       = function() { return SettingsService.FORMATS[_format] }
         this.getTranslationX = function() { return _lastTranslationX }
         this.getTranslationY = function() { return _lastTranslationY }
 
