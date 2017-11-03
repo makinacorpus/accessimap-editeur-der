@@ -3,7 +3,7 @@
 describe('Service: ExportService', function () {
 
     module.sharedInjector();
-    
+
     // instantiate service
     var ExportService,
         EditService,
@@ -37,10 +37,14 @@ describe('Service: ExportService', function () {
             if (options.success) options.success('fake');
         }
 
-        spyOn(JSZip.prototype, 'generateAsync').and.callFake(function(options) {
+        spyOn(JSZip.prototype, 'generateAsync').and.callFake(function (options) {
             var deferred = $q.defer();
             deferred.resolve('fakeBlob');
             return deferred.promise;
+        })
+
+        spyOn(jsPDF.API, 'addImage').and.callFake(function (imageData, format, x, y, w, h, alias, compression, rotation) {
+            return;
         })
 
         spyOn(window, 'saveAs').and.callFake(function(_content, _filename) {
@@ -70,12 +74,12 @@ describe('Service: ExportService', function () {
     }))
 
     describe('exportData function', function() {
-    
+
         it('should be defined', function () {
             expect(ExportService).toBeDefined();
             expect(ExportService.exportData).toBeDefined();
         });
-    
+
         it('should name the export file \'der\' by default ', function(done) {
 
             ExportService.exportData({})
@@ -85,7 +89,7 @@ describe('Service: ExportService', function () {
                 });
             if (! $rootScope.$$phase) $rootScope.$digest()
         });
-    
+
         it('should export a file test.zip', function(done) {
             ExportService.exportData({title: 'test'})
                 .then(function(filename) {
@@ -94,7 +98,7 @@ describe('Service: ExportService', function () {
                 })
             if (! $rootScope.$$phase) $rootScope.$digest()
         });
-    
+
         it('should download font file', function(done) {
             ExportService.exportData({title: 'test'})
                 .then(function(filename) {
@@ -104,7 +108,7 @@ describe('Service: ExportService', function () {
                 })
             if (! $rootScope.$$phase) $rootScope.$digest()
         });
-        
+
     })
 
 });
