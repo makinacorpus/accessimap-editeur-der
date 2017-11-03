@@ -126,7 +126,7 @@
             })
 
             createResetViewButton(currentLayer);
-            console.log('map initialize')
+            // console.log('map initialize')
         }
 
         function createResetViewButton (layer) {
@@ -138,21 +138,21 @@
                 options: {
                     position: 'topright'
                 },
-    
+
                 onAdd: function (map) {
                     this.map = map;
-    
+
                     var container = L.DomUtil.create('div', 'leaflet-control-resetview leaflet-bar');
                     var button    = L.DomUtil.create('a',   'leaflet-control-resetview-button', container);
                     var span    = L.DomUtil.create('span',   'fa fa-arrows-alt', button);
                     button.title  = 'Reset view';
-    
+
                     L.DomEvent.disableClickPropagation(button);
                     L.DomEvent.on(button, 'click', this._resetViewButtonClick, this);
-    
+
                     return container;
                 },
-    
+
                 _resetViewButtonClick: function () {
                     var center       = LayerOverlayService.getCenter();
                     var zoom         = zoom   ? zoom   : getMap().getZoom();
@@ -160,11 +160,11 @@
                     resetView(center, zoom);
                 },
             });
-    
+
             L.control.resetview = function resetview () {
                 return new L.Control.Resetview();
             };
-    
+
             L.control.resetview().addTo(map);
         }
 
@@ -325,12 +325,12 @@
         }
 
         function removeEventListener(event, listener) {
-            console.log(listeners);
-            console.log(map.hasEventListeners(event));
+            // console.log(listeners);
+            // console.log(map.hasEventListeners(event));
             map.removeEventListener(event, listener);
-            console.log(map.hasEventListeners(event));
+            // console.log(map.hasEventListeners(event));
             listeners = listeners.filter(function(value) { return value !== listener });
-            console.log(listeners);
+            // console.log(listeners);
         }
 
         /**
