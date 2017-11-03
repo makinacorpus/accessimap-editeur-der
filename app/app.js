@@ -12,7 +12,6 @@
 
     angular
         .module(moduleApp, [
-            'ngOpbeat',
             'ngAnimate',
             'ngCookies',
             'ngResource',
@@ -45,11 +44,11 @@
         .config(function(uiSelectConfig) {
             uiSelectConfig.dropdownPosition = 'down';
         })
-        .config(function ($opbeatProvider) {
-            $opbeatProvider.config({
-                orgId: '43f4c77b74f64097ab04194c87d98086',
-                appId: '7bcd582124'
-            })
-        });
+        // .config(function ($opbeatProvider) {
+        //     $opbeatProvider.config({
+        //         orgId: '43f4c77b74f64097ab04194c87d98086',
+        //         appId: '7bcd582124'
+        //     })
+        // });
 
 })();

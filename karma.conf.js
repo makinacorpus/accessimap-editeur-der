@@ -42,6 +42,7 @@ module.exports = function(config) {
             'bower_components/turf/turf.min.js',
             'bower_components/pdfjs-dist/build/pdf.combined.js',
             'bower_components/leaflet/dist/leaflet.js',
+            'bower_components/jspdf/dist/jspdf.min.js',
 
             'app/**/*.js',
             'test/spec/**/*.js'

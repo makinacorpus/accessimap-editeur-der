@@ -18,7 +18,7 @@
         this.getSize         = getSize;
         this.setFormat       = setFormat;
 
-        this.getFormat       = function() { return _format }
+        this.getFormat       = function() { return SettingsService.FORMATS[_format] }
         this.getTranslationX = function() { return _lastTranslationX }
         this.getTranslationY = function() { return _lastTranslationY }
 
@@ -61,8 +61,8 @@
          * Projection function to use for conversion between GPS & layer point
          */
         function createLayer(target, format, projection) {
-            console.log(target, format, projection);
-            
+            // console.log(target, format, projection);
+
             _margin         = SettingsService.margin;
             _target         = target;
             _projection     = projection;
