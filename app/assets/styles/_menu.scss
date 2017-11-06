@@ -117,3 +117,22 @@
   top: 0;
   padding: 2px 5px;
 }
+
+.list-interactions {
+  border: none;
+}
+
+.list-interactions .panel-heading h4 {
+  background: white;
+  font-size: 14px;
+  border: none;
+}
+
+.list-interactions .panel-heading a:after {
+  font-family: $font-family-base;
+  content: "+";
+}
+
+.list-interactions.panel-open .panel-heading a:after {
+  content: "-";
+}

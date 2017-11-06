@@ -551,8 +551,8 @@
                 })
         };
 
-        $ctrl.addInteraction = function(poiIndex) {
-            EditService.interactions.addInteraction(poiIndex);
+        $ctrl.addInteraction = function(poiIndex, filterId) {
+            EditService.interactions.addInteraction(poiIndex, filterId);
             // $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
         }
 
@@ -574,7 +574,6 @@
         //         $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
         //     }
         // }
-
     }
 
     angular.module(moduleApp).controller('EditController', EditController);

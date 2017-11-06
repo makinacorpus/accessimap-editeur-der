@@ -101,13 +101,6 @@
 
         function removeInteraction(poiId, interactionIndex) {
             interactions[poiId].interactions.splice(interactionIndex, 1);
-
-            // if (isFeatureInteractive(feature)) {
-            //     interactions = interactions.filter(function deleteFeature(current) {
-            //         return current.id !== 'poi-' + featureIid;
-            //     })
-            // }
-
         }
 
         /**
@@ -121,24 +114,17 @@
          * @param {Object} feature
          * Feature that will be interactive
          */
-        function addInteraction(poiId) {
-            // var featureIid = feature.attr('data-link');
-
-            // if (!featureIid) {
-            //     featureIid = UtilService.getiid();
-            //     feature.attr('data-link', featureIid);
-            // }
-
+        function addInteraction(poiId, filterId) {
             // Add the highlight class to the relevant cells of the grid
             // TODO: this method DO NOT change CSS properties...
             // d3.selectAll('.poi-' + featureIid).classed('highlight', true);
 
-            setInteraction(poiId, 'f1');
+            setInteraction(poiId, filterId);
         }
 
         function openInteraction(poiId) {
             if (!interactions['poi-' + poiId]) {
-                addInteraction('poi-' + poiId);
+                addInteraction('poi-' + poiId, 'f1');
             }
         }
 
@@ -180,8 +166,6 @@
                 gesture  : 'tap',
                 protocol : 'tts'
             });
-            
-            console.log(interactions)
         }
 
         function addFilter(name, gesture, protocol, id) {
