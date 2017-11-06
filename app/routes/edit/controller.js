@@ -453,11 +453,11 @@
                 $ctrl.featureProperties = featureProperties;
                 $ctrl.currentFeature = feature;
 
-                var featureIndex = parseInt(feature.attr('data-link'), 10) - 1;
-                console.log('select item', featureIndex)
-                // $ctrl.addInteraction(featureIndex)
-                EditService.interactions.openInteraction(poiIndex);
+                var featureIndex = feature.attr('data-link');
 
+                EditService.interactions.openInteraction(featureIndex);
+
+                console.log('scope apply')
                 $scope.$apply();
             }
 
@@ -560,6 +560,8 @@
             EditService.interactions.removeInteraction(poiIndex, interactionIndex);
             $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
         }
+
+        $ctrl.showInteractions = Object.keys($ctrl.interactions.getInteractions());
 
         // $ctrl.removeInteraction = function() {
         //     EditService.interactions.removeInteraction($ctrl.currentFeature);

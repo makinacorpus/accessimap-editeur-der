@@ -42,16 +42,16 @@
         </p>
     </div>
     &nbsp;
-    <uib-accordion close-others="false" ng-show="$ctrl.interactions.getInteractions().length > 0">
+    <uib-accordion close-others="false" ng-show="$ctrl.showInteractions">
         <uib-accordion-group
             heading="{{poi.id}}"
-            ng-repeat="(poiIndex, poi) in $ctrl.interactions.getInteractions() track by poi.id">
+            ng-repeat="poi in $ctrl.interactions.getInteractions() track by poi.id">
             <div ng-repeat="filter in $ctrl.interactions.getFilters()" class="list-interactions">
                 <div class="list-interactions-header">
                     <strong>Filtre : {{filter.name}}</strong>
                 </div>
                 <div class="list-interactions-item" ng-repeat="interaction in poi.interactions track by $index">
-                    <button class="btn btn-sm btn-danger remove-interaction" ng-click="$ctrl.removeInteraction(poiIndex, $index)"><span class="fa fa-lg fa-times" aria-hidden="true"></span></button> 
+                    <button class="btn btn-sm btn-danger remove-interaction" ng-click="$ctrl.removeInteraction(poi.id, $index)"><span class="fa fa-lg fa-times" aria-hidden="true"></span></button> 
                     <div class="col-sm-6 form-group">
                         <label class="control-label" for="gesture">Déclencheur</label>
                         <select id="gesture" ng-model="interaction.gesture" class="form-control input-sm">
@@ -81,20 +81,13 @@
                     </div>
                 </div>
                 <div class="list-interactions-footer">
-                    <button ng-if="$ctrl.currentFeature" class="btn btn-primary btn-block" ng-click="$ctrl.addInteraction(poiIndex)">
+                    <button class="btn btn-primary btn-block" ng-click="$ctrl.addInteraction(poi.id)">
                         Nouvelle interaction
                     </button>
-                    <!-- <button class="btn btn-warning btn-block"
-                        ng-click="$ctrl.removeInteraction()">Désactiver</button> -->
                 </div>
             </div>
         </uib-accordion-group>
     </uib-accordion>
-
-    <!-- <button ng-if="$ctrl.currentFeature" class="btn btn-primary btn-block" ng-click="$ctrl.addInteraction()">
-        <span class="fa fa-plus ng-scope" aria-hidden="true"></span>
-        Ajouter une interaction
-    </button> -->
 
     <p class="col-xs-12" ng-if="!$ctrl.currentFeature">
         Vous devez d'abord sélectionner un élément pour ajouter une interaction.

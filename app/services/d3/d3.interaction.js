@@ -12,6 +12,7 @@
 
         this.isFeatureInteractive = isFeatureInteractive;
         this.addInteraction       = addInteraction;
+        this.openInteraction      = openInteraction;
         this.getInteraction       = getInteraction;
         this.setInteraction       = setInteraction;
         this.removeInteraction    = removeInteraction;
@@ -41,7 +42,7 @@
          *
          * @type {Array}
          */
-        interactions = [],
+        interactions = {},
 
         /**
          * @ngdoc property
@@ -80,29 +81,26 @@
          */
         function isFeatureInteractive(feature) {
             var featureIid = feature.attr('data-link'),
-                featurePosition =
-                    interactions.filter(function(row) {
-                        return row.id === 'poi-' + featureIid;
-                    });
+                featurePosition = interactions['poi-' + featureIid];
 
 
             return interactions.indexOf(featurePosition[0]) >= 0;
         }
 
-        function disableInteraction(feature) {
+        // function disableInteraction(feature) {
 
-            var featureIid = feature.attr('data-link');
+        //     var featureIid = feature.attr('data-link');
 
-            if (isFeatureInteractive(feature)) {
-                interactions = interactions.filter(function deleteFeature(current) {
-                    return current.id !== 'poi-' + featureIid;
-                })
-            }
+        //     if (isFeatureInteractive(feature)) {
+        //         interactions = interactions.filter(function deleteFeature(current) {
+        //             return current.id !== 'poi-' + featureIid;
+        //         })
+        //     }
 
-        }
+        // }
 
-        function removeInteraction(poiIndex, interactionIndex) {
-            interactions[poiIndex].interactions.splice(interactionIndex, 1);
+        function removeInteraction(poiId, interactionIndex) {
+            interactions[poiId].interactions.splice(interactionIndex, 1);
 
             // if (isFeatureInteractive(feature)) {
             //     interactions = interactions.filter(function deleteFeature(current) {
@@ -123,8 +121,7 @@
          * @param {Object} feature
          * Feature that will be interactive
          */
-        function addInteraction(poiIndex) {
-            console.log(poiIndex)
+        function addInteraction(poiId) {
             // var featureIid = feature.attr('data-link');
 
             // if (!featureIid) {
@@ -136,7 +133,13 @@
             // TODO: this method DO NOT change CSS properties...
             // d3.selectAll('.poi-' + featureIid).classed('highlight', true);
 
-            setInteraction('poi-' + poiIndex, 'f1');
+            setInteraction(poiId, 'f1');
+        }
+
+        function openInteraction(poiId) {
+            if (!interactions['poi-' + poiId]) {
+                addInteraction('poi-' + poiId);
+            }
         }
 
         function getInteraction(feature) {
@@ -144,9 +147,7 @@
 
             if(!featureIid) return null;
 
-            return interactions.find(function(element) {
-                return element.id === 'poi-' + featureIid;
-            });
+            return interactions['poi-' + featureIid];
 
         }
 
@@ -166,34 +167,27 @@
          * @param {[type]} value    [description]
          */
         function setInteraction(id, filter) {
-
-            var interaction = interactions.find(function(element) {
-                return element.id === id;
-            });
-
-            if (! interaction) {
-                interactions.push(
-                    {
-                        'id': id,
-                        'interactions': []
-                    });
-                interaction = interactions[interactions.length - 1]
+            if (!interactions[id]) {
+                interactions[id] = {
+                    'id': id,
+                    'interactions': []
+                };
             }
 
-            interaction.interactions.push({
+            interactions[id].interactions.push({
                 filter: filter,
                 value: '',
                 gesture  : 'tap',
                 protocol : 'tts'
             });
+            
+            console.log(interactions)
         }
 
         function addFilter(name, gesture, protocol, id) {
             filters.push({
                 id       : id ? id : 'f' + generateUUID(),
-                name     : name,
-                gesture  : gesture,
-                protocol : protocol
+                name     : name
             });
         }
 
