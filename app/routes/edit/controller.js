@@ -453,6 +453,11 @@
                 $ctrl.featureProperties = featureProperties;
                 $ctrl.currentFeature = feature;
 
+                var featureIndex = parseInt(feature.attr('data-link'), 10) - 1;
+                console.log('select item', featureIndex)
+                // $ctrl.addInteraction(featureIndex)
+                EditService.interactions.openInteraction(poiIndex);
+
                 $scope.$apply();
             }
 
@@ -546,18 +551,27 @@
                 })
         };
 
-        $ctrl.addInteraction = function() {
-            if ($ctrl.currentFeature) {
-                EditService.interactions.addInteraction($ctrl.currentFeature);
-                $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
-            }
+        $ctrl.addInteraction = function(poiIndex) {
+            EditService.interactions.addInteraction(poiIndex);
+            // $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
         }
 
-        $ctrl.removeInteraction = function() {
-            EditService.interactions.removeInteraction($ctrl.currentFeature);
+        $ctrl.removeInteraction = function(poiIndex, interactionIndex) {
+            EditService.interactions.removeInteraction(poiIndex, interactionIndex);
             $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
-
         }
+
+        // $ctrl.removeInteraction = function() {
+        //     EditService.interactions.removeInteraction($ctrl.currentFeature);
+        //     $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
+        // }
+
+        // $ctrl.addInteraction = function() {
+        //     if ($ctrl.currentFeature) {
+        //         EditService.interactions.addInteraction($ctrl.currentFeature);
+        //         $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
+        //     }
+        // }
 
     }
 

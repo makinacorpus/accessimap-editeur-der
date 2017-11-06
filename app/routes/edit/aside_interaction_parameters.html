@@ -3,199 +3,101 @@
     Interaction
 </h3>
 
-<div class="col-xs-12">
-    <form>
+<form>
 
-        <h4>
-            <span class="fa fa-filter" aria-hidden="true"></span>
-            Types d'interactions (filtres)
-        </h4>
-        <uib-accordion
-            close-others="false"
-            >
+    <h4 class="col-xs-12">
+        Filtres
+    </h4>
 
-            <uib-accordion-group
-                heading="{{filter.name}}"
-                ng-repeat="filter in $ctrl.interactions.getFilters() track by filter.id">
-
-                <table class="table table-hover">
-                    <tbody>
-                        <tr>
-                            <th>Nom</td>
-                            <td>
-                                <input type="text" ng-model="filter.name" class="form-control">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Type</td>
-                            <td>
-                                <select ng-model="filter.gesture" class="form-control">
-                                    <option value="tap">tap</option>
-                                    <option value="double_tap">double_tap</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Son
-                                <span 
-                                    class="fa fa-question-circle"
-                                    tooltip-placement="right"
-                                    uib-tooltip="Protocole tts (Talk to Speech) : texte lu par la voix du système ou mp3 : choix d'un fichier sonore">
-                                </span>
-                            </td>
-                            <td>
-                                <select ng-model="filter.protocol" class="form-control">
-                                    <option>tts</option>
-                                    <option>mp3</option>
-                                </select>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <button class="btn btn-danger btn-block"
-                    ng-click="$ctrl.interactions.removeFilter(filter.id)"
-                    >Supprimer filtre</button>
-
-                <table class="table table-hover"
-                        ng-if="$ctrl.interactions.getInteractions().length > 0">
-                    <thead>
-                        <tr>
-                            <th>Point</th>
-                            <th>Valeur</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="interaction in $ctrl.interactions.getInteractions()">
-                            <td>{{interaction.id}}</td>
-                            <td>
-                                <input type="text"
-                                    ng-model="interaction.filters[filter.id]"
-                                    ng-if="filter.protocol==='tts'"
-                                    style="width:100%">
-
-                                <input type="file"
-                                    ng-model="interaction.filters[filter.id]"
-                                    ng-if="filter.protocol==='mp3'"
-                                    style="width:100%">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-            </uib-accordion-group>
-
-            <uib-accordion-group panel-class="panel-primary">
-
-                <uib-accordion-heading>
-                    Créer un nouveau filtre
-                </uib-accordion-heading>
-
-                <table class="table table-hover" >
-                    <tbody>
-                        <tr>
-                            <th>Nom</td>
-                            <td>
-                                <input type="text" class="form-control"
-                                    ng-model="name">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Type</td>
-                            <td>
-                                <select ng-model="gesture" class="form-control">
-                                    <option value="tap">tap</option>
-                                    <option value="double_tap">double_tap</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                Son 
-                                <span 
-                                    class="fa fa-question-circle"
-                                    tooltip-placement="right"
-                                    uib-tooltip="Protocole tts (Talk to Speech) : texte lu par la voix du système ou mp3 : choix d'un fichier sonore">
-                                </span>
-                            </td>
-                            <td>
-                                <select ng-model="protocol" class="form-control">
-                                    <option>tts</option>
-                                    <option>mp3</option>
-                                </select>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <button class="btn btn-primary btn-block"
-                    ng-click="$ctrl.interactions.addFilter(name, gesture, protocol);
-                                name = ''; gesture = undefined; protocol = undefined;">
-                    <span class="fa fa-plus"></span>
-                    Créer filtre
+    <table class="table">
+        <tr ng-repeat="filter in $ctrl.interactions.getFilters() track by filter.id">
+            <td>
+                <input type="text" ng-model="filter.name" class="form-control">
+            </td>
+            <td class="remove-button">
+                <button class="btn" ng-click="$ctrl.interactions.removeFilter(filter.id)">
+                    <span class="fa fa-lg fa-times" aria-hidden="true"></span>
                 </button>
-            </uib-accordion-group>
-        </uib-accordion>
-
-        
-        <h4>
-            <span class="fa fa-dot-circle-o" aria-hidden="true"></span>
-            Liste des interactions
-        </h4>
-
-        <div ng-if="$ctrl.interactions.getInteractions().length === 0">
-            <p>
-                Pas encore d'interaction définie !
-            </p>
-        </div>
-
-        <uib-accordion
-            close-others="false"
-            ng-if="$ctrl.interactions.getInteractions().length > 0">
-
-            <uib-accordion-group
-                heading="{{interaction.id}}"
-                ng-repeat="interaction in $ctrl.interactions.getInteractions() track by interaction.id">
-
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Filtres</th>
-                            <th>Valeur</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="filter in $ctrl.interactions.getFilters()">
-                            <td>{{filter.name}}</td>
-                            <td>
-                                <input type="text" class="form-control"
-                                    ng-model="interaction.filters[filter.id]"
-                                    ng-if="filter.protocol==='tts'"
-                                    style="width:100%">
-
-                                <input type="file" class="form-control"
-                                    ng-model="interaction.filters[filter.id]"
-                                    ng-if="filter.protocol==='mp3'"
-                                    style="width:100%">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <button class="btn btn-warning btn-block"
-                    ng-click="$ctrl.removeInteraction()">Désactiver</button>
-            
-            </uib-accordion-group>
-        </uib-accordion>
-
-        <button ng-if="$ctrl.currentFeature" class="btn btn-primary btn-block" ng-click="$ctrl.addInteraction()">
-            <span class="fa fa-plus ng-scope" aria-hidden="true"></span>
-            Ajouter une interaction
-        </button>
-
-        <p ng-if="!$ctrl.currentFeature">
-            Vous devez d'abord sélectionner un élément pour ajouter une interaction.
+            </td>
+        </tr>
+        <tr>
+            <!-- <td>
+                <input type="text" ng-model="filter.name" class="form-control">
+            </td> -->
+            <td class="plus-button">
+                <button class="btn" ng-click="$ctrl.interactions.addFilter(name);
+                name = '';">
+                    <span class="fa fa-lg fa-plus" aria-hidden="true"></span>
+                </button>
+            </td>
+        </tr>
+    </table>
+    
+    <h4 class="col-xs-12">
+        Liste des éléments
+    </h4>
+    <div class="col-xs-12" ng-show="$ctrl.interactions.getInteractions().length === 0">
+        <p>
+            Pas encore d'interaction définie !
         </p>
+    </div>
+    &nbsp;
+    <uib-accordion close-others="false" ng-show="$ctrl.interactions.getInteractions().length > 0">
+        <uib-accordion-group
+            heading="{{poi.id}}"
+            ng-repeat="(poiIndex, poi) in $ctrl.interactions.getInteractions() track by poi.id">
+            <div ng-repeat="filter in $ctrl.interactions.getFilters()" class="list-interactions">
+                <div class="list-interactions-header">
+                    <strong>Filtre : {{filter.name}}</strong>
+                </div>
+                <div class="list-interactions-item" ng-repeat="interaction in poi.interactions track by $index">
+                    <button class="btn btn-sm btn-danger remove-interaction" ng-click="$ctrl.removeInteraction(poiIndex, $index)"><span class="fa fa-lg fa-times" aria-hidden="true"></span></button> 
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label" for="gesture">Déclencheur</label>
+                        <select id="gesture" ng-model="interaction.gesture" class="form-control input-sm">
+                            <option value="tap">tap</option>
+                            <option value="double_tap">double_tap</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label" for="protocol">Nature du son</label>
+                        <select id="protocol" ng-model="interaction.protocol" class="form-control input-sm">
+                            <option>tts</option>
+                            <option>mp3</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 form-group">
+                        <input id="valuetts" type="text" class="form-control input-sm"
+                            placeholder="Valeur (ce qui sera lu)"
+                            ng-model="interaction.value"
+                            ng-if="interaction.protocol==='tts'"
+                            style="width:100%">
+                        
+                        <input id="valuemp3" type="file" class="form-control input-sm"
+                            placeholder="Valeur (le son qui sera joué)"
+                            ng-model="interaction.value"
+                            ng-if="interaction.protocol==='mp3'"
+                            style="width:100%">
+                    </div>
+                </div>
+                <div class="list-interactions-footer">
+                    <button ng-if="$ctrl.currentFeature" class="btn btn-primary btn-block" ng-click="$ctrl.addInteraction(poiIndex)">
+                        Nouvelle interaction
+                    </button>
+                    <!-- <button class="btn btn-warning btn-block"
+                        ng-click="$ctrl.removeInteraction()">Désactiver</button> -->
+                </div>
+            </div>
+        </uib-accordion-group>
+    </uib-accordion>
 
-    </form>
-</div>
+    <!-- <button ng-if="$ctrl.currentFeature" class="btn btn-primary btn-block" ng-click="$ctrl.addInteraction()">
+        <span class="fa fa-plus ng-scope" aria-hidden="true"></span>
+        Ajouter une interaction
+    </button> -->
+
+    <p class="col-xs-12" ng-if="!$ctrl.currentFeature">
+        Vous devez d'abord sélectionner un élément pour ajouter une interaction.
+    </p>
+
+</form>

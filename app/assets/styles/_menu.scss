@@ -78,3 +78,42 @@
   transition: transform .5s;
   transform: rotate(180deg);
 }
+
+
+// Filter table
+.table > tbody > tr > td.remove-button {
+  padding-left: 0;
+  padding-right: 0;
+
+  .btn {
+    color: $red;
+  }
+}
+
+.list-interactions-item {
+  position: relative;
+  padding-top: 18px;
+  font-size: 12px;
+  overflow: hidden;
+  border-bottom: solid 1px $gray-lighter;
+}
+
+.list-interactions-item > *,
+.list-interactions-header,
+.list-interactions-footer {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.list-interactions-header,
+.list-interactions-footer {
+  padding: 8px;
+}
+
+.remove-interaction {
+  position: absolute;
+  z-index: 10;
+  right: 0;
+  top: 0;
+  padding: 2px 5px;
+}

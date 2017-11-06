@@ -61,9 +61,7 @@
          */
         filters = [{
             id       : 'f1',
-            name     : 'Défaut',
-            gesture  : 'tap',
-            protocol : 'tts'
+            name     : 'Défaut'
         }];
 
         /**
@@ -91,7 +89,7 @@
             return interactions.indexOf(featurePosition[0]) >= 0;
         }
 
-        function removeInteraction(feature) {
+        function disableInteraction(feature) {
 
             var featureIid = feature.attr('data-link');
 
@@ -100,6 +98,17 @@
                     return current.id !== 'poi-' + featureIid;
                 })
             }
+
+        }
+
+        function removeInteraction(poiIndex, interactionIndex) {
+            interactions[poiIndex].interactions.splice(interactionIndex, 1);
+
+            // if (isFeatureInteractive(feature)) {
+            //     interactions = interactions.filter(function deleteFeature(current) {
+            //         return current.id !== 'poi-' + featureIid;
+            //     })
+            // }
 
         }
 
@@ -114,21 +123,20 @@
          * @param {Object} feature
          * Feature that will be interactive
          */
-        function addInteraction(feature) {
+        function addInteraction(poiIndex) {
+            console.log(poiIndex)
+            // var featureIid = feature.attr('data-link');
 
-            var featureIid = feature.attr('data-link');
-
-            if (!featureIid) {
-                featureIid = UtilService.getiid();
-                feature.attr('data-link', featureIid);
-            }
+            // if (!featureIid) {
+            //     featureIid = UtilService.getiid();
+            //     feature.attr('data-link', featureIid);
+            // }
 
             // Add the highlight class to the relevant cells of the grid
             // TODO: this method DO NOT change CSS properties...
             // d3.selectAll('.poi-' + featureIid).classed('highlight', true);
 
-            setInteraction('poi-' + featureIid, 'f1', feature.attr('name'));
-
+            setInteraction('poi-' + poiIndex, 'f1');
         }
 
         function getInteraction(feature) {
@@ -157,23 +165,27 @@
          * Category/filter to  [description]
          * @param {[type]} value    [description]
          */
-        function setInteraction(id, filter, value) {
+        function setInteraction(id, filter) {
 
             var interaction = interactions.find(function(element) {
-                    return element.id === id;
-                });
+                return element.id === id;
+            });
 
             if (! interaction) {
                 interactions.push(
                     {
                         'id': id,
-                        'filters': {
-                        }
+                        'interactions': []
                     });
                 interaction = interactions[interactions.length - 1]
             }
 
-            interaction.filters[filter] = value;
+            interaction.interactions.push({
+                filter: filter,
+                value: '',
+                gesture  : 'tap',
+                protocol : 'tts'
+            });
         }
 
         function addFilter(name, gesture, protocol, id) {
