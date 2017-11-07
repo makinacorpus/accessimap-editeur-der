@@ -177,10 +177,11 @@
 
         function removeFilter(id) {
             // first, delete for each interaction the corresponding filter
-            interactions.forEach(function deleteCategory(current) {
-                delete current.filters[id]
-            })
+            // interactions.forEach(function deleteCategory(current) {
+            //     delete current.filters[id]
+            // })
 
+            console.log(filters)
             // then remove the filter
             filters = filters.filter(function removeFilter(element, index) {
                 return element.id !== id;
