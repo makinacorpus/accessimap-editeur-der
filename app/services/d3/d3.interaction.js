@@ -152,7 +152,7 @@
          * Category/filter to  [description]
          * @param {[type]} value    [description]
          */
-        function setInteraction(id, filter) {
+        function setInteraction(id, filter, value, gesture, protocol) {
             if (!interactions[id]) {
                 interactions[id] = {
                     'id': id,
@@ -162,17 +162,31 @@
 
             interactions[id].interactions.push({
                 filter: filter,
-                value: '',
-                gesture  : 'tap',
-                protocol : 'tts'
+                value: value || '',
+                gesture  : gesture || 'tap',
+                protocol : protocol || 'tts'
             });
         }
 
-        function addFilter(name, gesture, protocol, id) {
-            filters.push({
+        function addFilter(name, id) {
+            var filterIndex = null;
+            var newFilter = {
                 id       : id ? id : 'f' + generateUUID(),
                 name     : name
-            });
+            };
+            
+            filters.map(function(element, index) {
+                if (element.id === id) {
+                    filterIndex = index
+                }
+            })
+            
+            // Check if filter id is already present
+            if (filterIndex !== null) {
+                filters[filterIndex] = newFilter;
+            } else {
+                filters.push(newFilter);
+            }
         }
 
         function removeFilter(id) {
@@ -219,7 +233,6 @@
                         return false; // TODO: qu'est ce qu'expandable ?
                     });
 
-                console.log(filters, interactions)
                 config.append('pois')
                     .selectAll('poi')
                     .data(Object.keys(interactions))
