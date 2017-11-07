@@ -181,7 +181,6 @@
             //     delete current.filters[id]
             // })
 
-            console.log(filters)
             // then remove the filter
             filters = filters.filter(function removeFilter(element, index) {
                 return element.id !== id;
@@ -220,15 +219,18 @@
                         return false; // TODO: qu'est ce qu'expandable ?
                     });
 
+                console.log(filters, interactions)
                 config.append('pois')
                     .selectAll('poi')
-                    .data(interactions)
+                    .data(Object.keys(interactions))
                     .enter()
                     .append('poi')
                     .attr('id', function(d) {
-                        return d.id;
+                        return d;
                     })
                     .each(function(d) {
+                        var poiInteractions = interactions[d].interactions;
+
                         translateX = 0;
                         translateY = 0;
 
@@ -238,7 +240,7 @@
                         var bbox, poi;
                         d3.selectAll('path')[0]
                             .forEach(function(shape) {
-                                if ('poi-' + d3.select(shape).attr('data-link') === d.id) {
+                                if ('poi-' + d3.select(shape).attr('data-link') === d) {
                                   if (d3.select(shape).attr("transform")) {
                                     translateX=parseFloat(d3.select(shape).attr("transform").replace('translate(', '').replace(')', '').split(",")[0]);
                                     translateY=parseFloat(d3.select(shape).attr("transform").replace('translate(', '').replace(')', '').split(",")[1]);
@@ -248,7 +250,7 @@
                                 }
                             });
 
-                        poi = d3.select(this).attr('id', d.id);
+                        poi = d3.select(this).attr('id', d);
                         if (bbox) {
                             poi.attr('x', bbox.x + translateX);
                             poi.attr('y', bbox.y + translateY);
@@ -258,15 +260,12 @@
 
                         // exporting actions for the current POI
                         var actions = poi.append('actions');
-                        d3.keys(d.filters).forEach(function(key) {
-                            var currentCategory = filters.find(function(element) {
-                                return element.id === key;
-                            })
+                        d3.keys(poiInteractions).forEach(function(key) {
                             actions.append('action')
-                                .attr('gesture', currentCategory.gesture)
-                                .attr('filter', key)
-                                .attr('value', d.filters[key])
-                                .attr('protocol', currentCategory.protocol);
+                                .attr('gesture', poiInteractions[key].gesture)
+                                .attr('filter', poiInteractions[key].filter)
+                                .attr('value', poiInteractions[key].value)
+                                .attr('protocol', poiInteractions[key].protocol);
                         });
                     });
 
