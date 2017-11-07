@@ -373,17 +373,24 @@ header {
 }
 
 .panel-heading a:after {
-  font-family:'Glyphicons Halflings';
-  content:"\e114";
+  // font-family:'Glyphicons Halflings';
+  // content:"\e114";
+  font-family: 'Material Icons';
+  content: 'keyboard_arrow_down';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 0.75em;
+  vertical-align: -15%;
   float: right;
   color: grey;
 }
 .panel-primary .panel-heading a:after {
   color: white;
 }
-.panel-heading a.collapsed:after {
-  content:"\e080";
-}
+// .panel-heading a.collapsed:after {
+//   content:"\e080";
+// }
 .panel-body {
   ul {
     padding:0 0 0 0;

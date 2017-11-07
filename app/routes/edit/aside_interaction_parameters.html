@@ -1,49 +1,38 @@
 <h3>
-    <span class="fa fa-hand-pointer-o" aria-hidden="true"></span>
     Interaction
 </h3>
 
-<form>
+<h4 class="col-xs-12">
+    Filtres
+</h4>
 
-    <h4 class="col-xs-12">
-        Filtres
-    </h4>
+<div class="list-filters">
+    <form action="" class="form-inline">
+        <div class="form-group" ng-repeat="filter in $ctrl.interactions.getFilters() track by filter.id">
+            <input type="text" ng-model="filter.name" class="form-control">
+            <button class="btn remove-button" ng-click="$ctrl.interactions.removeFilter(filter.id)">
+                <i class="material-icons">close</i>
+            </button>
+        </div>
+        <button class="btn" ng-click="$ctrl.interactions.addFilter(name); name = '';">
+            <i class="material-icons mat-btn">add</i> Nouveau filtre
+        </button>
+    </form>
 
-    <table class="table">
-        <tr ng-repeat="filter in $ctrl.interactions.getFilters() track by filter.id">
-            <td>
-                <input type="text" ng-model="filter.name" class="form-control">
-            </td>
-            <td class="remove-button">
-                <button class="btn" ng-click="$ctrl.interactions.removeFilter(filter.id)">
-                    <span class="fa fa-lg fa-times" aria-hidden="true"></span>
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <!-- <td>
-                <input type="text" ng-model="filter.name" class="form-control">
-            </td> -->
-            <td class="plus-button">
-                <button class="btn" ng-click="$ctrl.interactions.addFilter(name);
-                name = '';">
-                    <span class="fa fa-lg fa-plus" aria-hidden="true"></span>
-                </button>
-            </td>
-        </tr>
-    </table>
+</div>
 
-    <h4 class="col-xs-12">
-        Liste des éléments
-    </h4>
-    <div class="col-xs-12" ng-show="$ctrl.interactions.getInteractions().length === 0">
-        <p>
-            Pas encore d'interaction définie !
-        </p>
-    </div>
-    
-    &nbsp;
-    <div class="list-interaction-container">
+<h4 class="col-xs-12">
+    Liste des éléments
+</h4>
+<div class="col-xs-12" ng-show="$ctrl.interactions.getInteractions().length === 0">
+    <p>
+        Pas encore d'interaction définie !
+    </p>
+</div>
+
+&nbsp;
+<div class="list-interaction-container">
+    <form>
         <uib-accordion close-others="true" ng-show="$ctrl.showInteractions">
             <uib-accordion-group
                 heading="{{poi.id}}"
@@ -55,7 +44,7 @@
                         Filtre : {{filter.name}} <small>({{$ctrl.getInteractionsByFilterLength(poi.interactions, filter.id)}} interactions)</small>
                     </uib-accordion-heading>
                         <div class="list-interactions-item" ng-repeat="interaction in poi.interactions | filter: filter.id track by $index">
-                            <button class="btn btn-sm btn-danger remove-interaction" ng-click="$ctrl.removeInteraction(poi.id, $index)"><span class="fa fa-lg fa-times" aria-hidden="true"></span></button> 
+                            <button class="btn btn-sm btn-danger remove-interaction" ng-click="$ctrl.removeInteraction(poi.id, $index)"><i class="material-icons">close</i></button> 
                             <div class="col-sm-6 form-group">
                                 <label class="control-label" for="gesture">Déclencheur</label>
                                 <select id="gesture" ng-model="interaction.gesture" class="form-control input-sm">
@@ -93,9 +82,9 @@
                 </uib-accordion>
             </uib-accordion-group>
         </uib-accordion>
-    </div>
+    </form>
+</div>
 
-    <p class="col-xs-12" ng-if="!$ctrl.currentFeature">
-        Veuillez sélectionner un élément pour y ajouter une interaction.
-    </p>
-</form>
+<p class="col-xs-12" ng-if="!$ctrl.currentFeature">
+    Veuillez sélectionner un élément pour y ajouter une interaction.
+</p>

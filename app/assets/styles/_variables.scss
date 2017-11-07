@@ -8,9 +8,17 @@ $icon-font-path: "../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
 $brand-primary: $blue;
 $brand-success: $green;
 $border-radius-base: 1px;
-$border-radius-large: 2px;
-$btn-success-color: $grey;
+$border-radius-small: 1px;
+$border-radius-large: 1px;
 
+$input-border-radius: 1px;
+//** Large `.form-control` border radius
+$input-border-radius-large: 1px;
+//** Small `.form-control` border radius
+$input-border-radius-small: 1px;
+
+
+$btn-success-color: $grey;
 $btn-info-bg: $grey;
 
 $tooltip-bg: $grey;
@@ -27,7 +35,6 @@ $panel-heading-padding: 0;
 // $padding-base-horizontal:   6px;
 $table-cell-padding: 4px;
 // $panel-body-padding: 0;
-$border-radius-small: 0;
 
 // Form
 
