@@ -56,16 +56,16 @@ describe('Service: ImportService', function () {
             expect(interactions['poi-1'].interactions[1].value).toBe('Ce cercle est rouge');
             expect(interactions['poi-1'].interactions[1].protocol).toBe('tts');
 
-            // expect(interactions['poi-2'].interactions[0].gesture).toBe('tap');
-            // expect(interactions['poi-2'].interactions[1].gesture).toBe('tap');
-            // expect(interactions['poi-2'].interactions[2].gesture).toBe('double_tap');
+            expect(interactions['poi-2'].interactions[0].gesture).toBe('tap');
+            expect(interactions['poi-2'].interactions[1].gesture).toBe('tap');
+            expect(interactions['poi-2'].interactions[2].gesture).toBe('double_tap');
 
-            // expect(interactions['poi-1'].interactions[0].value).toBe('Triangle');
-            // expect(interactions['poi-1'].interactions[1].value).toBe('Ce triangle est bleu');
+            expect(interactions['poi-2'].interactions[0].value).toBe('Triangle');
+            expect(interactions['poi-2'].interactions[1].value).toBe('Ce triangle est bleu');
 
-            // expect(interactions['poi-3'].interactions[0].gesture).toBe('tap');
-            // expect(interactions['poi-3'].interactions[1].gesture).toBe('tap');
-            // expect(interactions['poi-3'].interactions[2].gesture).toBe('double_tap');
+            expect(interactions['poi-3'].interactions[0].gesture).toBe('tap');
+            expect(interactions['poi-3'].interactions[1].gesture).toBe('tap');
+            expect(interactions['poi-3'].interactions[2].gesture).toBe('double_tap');
         });
 
     })
