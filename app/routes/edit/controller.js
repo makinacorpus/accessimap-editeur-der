@@ -561,6 +561,13 @@
             $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
         }
 
+        $ctrl.getInteractionsByFilterLength = function(interactions, filterId) {
+            var interactionFiltered = interactions.filter(function(interaction) {
+                return interaction.filter === filterId;
+            });
+            return interactionFiltered.length;
+        }
+
         $ctrl.showInteractions = Object.keys($ctrl.interactions.getInteractions());
 
         // $ctrl.removeInteraction = function() {

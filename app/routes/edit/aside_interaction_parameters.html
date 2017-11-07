@@ -49,8 +49,10 @@
 
             <uib-accordion close-others="false">
                 <uib-accordion-group
-                    heading="Filtre : {{filter.name}}"
                     ng-repeat="filter in $ctrl.interactions.getFilters()" class="list-interactions">
+                <uib-accordion-heading>
+                    Filtre : {{filter.name}} <small>({{$ctrl.getInteractionsByFilterLength(poi.interactions, filter.id)}} interactions)</small>
+                </uib-accordion-heading>
                     <div class="list-interactions-item" ng-repeat="interaction in poi.interactions | filter: filter.id track by $index">
                         <button class="btn btn-sm btn-danger remove-interaction" ng-click="$ctrl.removeInteraction(poi.id, $index)"><span class="fa fa-lg fa-times" aria-hidden="true"></span></button> 
                         <div class="col-sm-6 form-group">
