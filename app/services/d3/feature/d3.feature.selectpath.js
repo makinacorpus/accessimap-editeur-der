@@ -58,31 +58,29 @@
         }
 
         function calcClickPath(feature) {
-            
-                        var el = feature.node(),
-                            bbox = el.getBBox(),
-                            type = feature.attr('data-type'),
-                            selectPath,
-                            path = feature.attr('d'),
-                            transformString = null || feature.attr('transform');
-            
-                        selectPath = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            var el = feature.node(),
+                bbox = el.getBBox(),
+                type = feature.attr('data-type'),
+                selectPath,
+                path = feature.attr('d'),
+                transformString = null || feature.attr('transform');
 
-                        d3.select(selectPath)
-                            .attr('x', bbox.x - 1)
-                            .attr('y', bbox.y - 1)
-                            .attr('width', bbox.width + 2)
-                            .attr('height', bbox.height + 2)
-                            .attr('data-type', 'clicked-path')
-                            .attr('fill', 'none')
-                            .attr('stroke', '#333')
-                            .attr('stroke-width', '1')
-                            .style('stroke-dasharray', ('2,4')) // make the stroke dashed
-                            .attr('transform', transformString);
-            
-                        return selectPath;
-            
-                    }
+            selectPath = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+
+            d3.select(selectPath)
+                .attr('x', bbox.x - 1)
+                .attr('y', bbox.y - 1)
+                .attr('width', bbox.width + 2)
+                .attr('height', bbox.height + 2)
+                .attr('data-type', 'clicked-path')
+                .attr('fill', 'none')
+                .attr('stroke', '#333')
+                .attr('stroke-width', '1')
+                .style('stroke-dasharray', ('2,4')) // make the stroke dashed
+                .attr('transform', transformString);
+
+            return selectPath;
+        }
 
         function addTo(nodes, callbackProperties) {
             nodes.style('cursor', 'crosshair')

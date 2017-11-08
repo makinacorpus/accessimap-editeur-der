@@ -453,6 +453,10 @@
                 $ctrl.featureProperties = featureProperties;
                 $ctrl.currentFeature = feature;
 
+                var featureIndex = feature.attr('data-link');
+
+                EditService.interactions.openInteraction(featureIndex);
+
                 $scope.$apply();
             }
 
@@ -546,19 +550,28 @@
                 })
         };
 
-        $ctrl.addInteraction = function() {
-            if ($ctrl.currentFeature) {
-                EditService.interactions.addInteraction($ctrl.currentFeature);
-                $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
-            }
+        $ctrl.addInteraction = function(poiIndex, filterId) {
+            EditService.interactions.addInteraction(poiIndex, filterId);
+            // $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
         }
 
-        $ctrl.removeInteraction = function() {
-            EditService.interactions.removeInteraction($ctrl.currentFeature);
+        $ctrl.removeInteraction = function(poiIndex, interactionIndex) {
+            EditService.interactions.removeInteraction(poiIndex, interactionIndex);
             $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
-
         }
 
+        $ctrl.getInteractionsByFilterLength = function(interactions, filterId) {
+            var interactionFiltered = interactions.filter(function(interaction) {
+                return interaction.filter === filterId;
+            });
+            return interactionFiltered.length;
+        }
+
+        $ctrl.showInteractions = Object.keys($ctrl.interactions.getInteractions());
+
+        $ctrl.isInteractionHasError = function(poi) {
+            EditService.interactions.isInteractionHasError(poi);
+        }
     }
 
     angular.module(moduleApp).controller('EditController', EditController);

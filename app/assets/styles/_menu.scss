@@ -33,6 +33,13 @@
 
 .main-menu {
   flex: 1;
+  min-width: 54px;
+}
+
+.main-menu .material-icons,
+.export-menu .material-icons {
+  text-align: center;
+  min-width: 50px;
 }
 
 .main-menu, .export-menu {

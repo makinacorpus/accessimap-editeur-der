@@ -12,12 +12,14 @@
 
         this.isFeatureInteractive = isFeatureInteractive;
         this.addInteraction       = addInteraction;
+        this.openInteraction      = openInteraction;
         this.getInteraction       = getInteraction;
         this.setInteraction       = setInteraction;
         this.removeInteraction    = removeInteraction;
         this.addFilter            = addFilter;
         this.removeFilter         = removeFilter;
         this.getXMLExport         = getXMLExport;
+        this.isInteractionHasError= isInteractionHasError;
 
         this.getInteractions = function() {
             return interactions
@@ -41,7 +43,7 @@
          *
          * @type {Array}
          */
-        interactions = [],
+        interactions = {},
 
         /**
          * @ngdoc property
@@ -61,9 +63,7 @@
          */
         filters = [{
             id       : 'f1',
-            name     : 'Défaut',
-            gesture  : 'tap',
-            protocol : 'tts'
+            name     : 'Défaut'
         }];
 
         /**
@@ -82,25 +82,50 @@
          */
         function isFeatureInteractive(feature) {
             var featureIid = feature.attr('data-link'),
-                featurePosition =
-                    interactions.filter(function(row) {
-                        return row.id === 'poi-' + featureIid;
-                    });
+                featurePosition = interactions['poi-' + featureIid];
 
 
             return interactions.indexOf(featurePosition[0]) >= 0;
         }
 
-        function removeInteraction(feature) {
+        // function disableInteraction(feature) {
 
-            var featureIid = feature.attr('data-link');
+        //     var featureIid = feature.attr('data-link');
 
-            if (isFeatureInteractive(feature)) {
-                interactions = interactions.filter(function deleteFeature(current) {
-                    return current.id !== 'poi-' + featureIid;
-                })
-            }
+        //     if (isFeatureInteractive(feature)) {
+        //         interactions = interactions.filter(function deleteFeature(current) {
+        //             return current.id !== 'poi-' + featureIid;
+        //         })
+        //     }
 
+        // }
+
+        function removeInteraction(poiId, interactionIndex) {
+            interactions[poiId].interactions.splice(interactionIndex, 1);
+            isInteractionHasError(interactions[poiId]);
+        }
+
+        /**
+         * @ngdoc method
+         * @name  isInteractionHasError
+         * @methodOf accessimapEditeurDerApp.InteractionService
+         *
+         * @description
+         * Check the validity of an interaction.
+         *
+         */
+        function isInteractionHasError(poi) {
+            var filterError = false;
+            var valueArr = poi.interactions.map(function(item){ return item.filter + '||' + item.gesture });
+            var isDuplicate = valueArr.some(function(item, idx){ 
+                if (valueArr.indexOf(item) != idx) {
+                    filterError = item.split('||')[0];
+                }
+                return valueArr.indexOf(item) != idx 
+            });
+
+            poi.hasError = isDuplicate;
+            poi.filterError = filterError;
         }
 
         /**
@@ -111,24 +136,24 @@
          * @description
          * Add an interaction on a feature
          *
-         * @param {Object} feature
-         * Feature that will be interactive
+         * @param {string} poiId
+         * id of added poi
+         * @param {string} filterId
+         * id of added filter
          */
-        function addInteraction(feature) {
-
-            var featureIid = feature.attr('data-link');
-
-            if (!featureIid) {
-                featureIid = UtilService.getiid();
-                feature.attr('data-link', featureIid);
-            }
-
+        function addInteraction(poiId, filterId) {
             // Add the highlight class to the relevant cells of the grid
             // TODO: this method DO NOT change CSS properties...
             // d3.selectAll('.poi-' + featureIid).classed('highlight', true);
 
-            setInteraction('poi-' + featureIid, 'f1', feature.attr('name'));
+            setInteraction(poiId, filterId);
+            isInteractionHasError(interactions[poiId]);
+        }
 
+        function openInteraction(poiId) {
+            if (!interactions['poi-' + poiId]) {
+                addInteraction('poi-' + poiId, 'f1');
+            }
         }
 
         function getInteraction(feature) {
@@ -136,9 +161,7 @@
 
             if(!featureIid) return null;
 
-            return interactions.find(function(element) {
-                return element.id === 'poi-' + featureIid;
-            });
+            return interactions['poi-' + featureIid];
 
         }
 
@@ -157,44 +180,53 @@
          * Category/filter to  [description]
          * @param {[type]} value    [description]
          */
-        function setInteraction(id, filter, value) {
-
-            var interaction = interactions.find(function(element) {
-                    return element.id === id;
-                });
-
-            if (! interaction) {
-                interactions.push(
-                    {
-                        'id': id,
-                        'filters': {
-                        }
-                    });
-                interaction = interactions[interactions.length - 1]
+        function setInteraction(poiId, filter, value, gesture, protocol) {
+            if (!interactions[poiId]) {
+                interactions[poiId] = {
+                    'id': poiId,
+                    'interactions': []
+                };
             }
 
-            interaction.filters[filter] = value;
+            interactions[poiId].interactions.push({
+                filter: filter,
+                value: value || '',
+                gesture  : gesture || 'tap',
+                protocol : protocol || 'tts'
+            });
         }
 
-        function addFilter(name, gesture, protocol, id) {
-            filters.push({
+        function addFilter(name, id) {
+            var filterIndex = null;
+            var newFilter = {
                 id       : id ? id : 'f' + generateUUID(),
-                name     : name,
-                gesture  : gesture,
-                protocol : protocol
-            });
+                name     : name
+            };
+            
+            filters.map(function(element, index) {
+                if (element.id === id) {
+                    filterIndex = index
+                }
+            })
+            
+            // Check if filter id is already present
+            if (filterIndex !== null) {
+                filters[filterIndex] = newFilter;
+            } else {
+                filters.push(newFilter);
+            }
         }
 
         function removeFilter(id) {
             // first, delete for each interaction the corresponding filter
-            interactions.forEach(function deleteCategory(current) {
-                delete current.filters[id]
-            })
+            // interactions.forEach(function deleteCategory(current) {
+            //     delete current.filters[id]
+            // })
 
             // then remove the filter
             filters = filters.filter(function removeFilter(element, index) {
                 return element.id !== id;
-            })
+            });
         }
 
         function getXMLExport() {
@@ -231,13 +263,15 @@
 
                 config.append('pois')
                     .selectAll('poi')
-                    .data(interactions)
+                    .data(Object.keys(interactions))
                     .enter()
                     .append('poi')
                     .attr('id', function(d) {
-                        return d.id;
+                        return d;
                     })
                     .each(function(d) {
+                        var poiInteractions = interactions[d].interactions;
+
                         translateX = 0;
                         translateY = 0;
 
@@ -247,7 +281,7 @@
                         var bbox, poi;
                         d3.selectAll('path')[0]
                             .forEach(function(shape) {
-                                if ('poi-' + d3.select(shape).attr('data-link') === d.id) {
+                                if ('poi-' + d3.select(shape).attr('data-link') === d) {
                                   if (d3.select(shape).attr("transform")) {
                                     translateX=parseFloat(d3.select(shape).attr("transform").replace('translate(', '').replace(')', '').split(",")[0]);
                                     translateY=parseFloat(d3.select(shape).attr("transform").replace('translate(', '').replace(')', '').split(",")[1]);
@@ -257,7 +291,7 @@
                                 }
                             });
 
-                        poi = d3.select(this).attr('id', d.id);
+                        poi = d3.select(this).attr('id', d);
                         if (bbox) {
                             poi.attr('x', bbox.x + translateX);
                             poi.attr('y', bbox.y + translateY);
@@ -267,15 +301,12 @@
 
                         // exporting actions for the current POI
                         var actions = poi.append('actions');
-                        d3.keys(d.filters).forEach(function(key) {
-                            var currentCategory = filters.find(function(element) {
-                                return element.id === key;
-                            })
+                        d3.keys(poiInteractions).forEach(function(key) {
                             actions.append('action')
-                                .attr('gesture', currentCategory.gesture)
-                                .attr('filter', key)
-                                .attr('value', d.filters[key])
-                                .attr('protocol', currentCategory.protocol);
+                                .attr('gesture', poiInteractions[key].gesture)
+                                .attr('filter', poiInteractions[key].filter)
+                                .attr('value', poiInteractions[key].value)
+                                .attr('protocol', poiInteractions[key].protocol);
                         });
                     });
 

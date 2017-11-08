@@ -62,7 +62,7 @@ module.exports = {
         // in this case css will be only concatenated (like css: ['concat'])
     },
     connect: {
-        port: 8080,
+        port: 8000,
         host: 'localhost'
     }
 };

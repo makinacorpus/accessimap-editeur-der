@@ -1,9 +1,5 @@
 <form>
     <div class="input-group">
-        <span class="input-group-addon">
-            <span class="fa fa-lg fa-map-marker" aria-hidden="true"></span>
-        </span>
-
         <input 
             ng-model="$ctrl.address.start" 
             type="text" 
@@ -20,7 +16,7 @@
 
     </div>
     <button class="btn-input-group btn btn-primary btn-block" ng-click="$ctrl.searchAddress()">
-        <span class="fa fa-map-marker" aria-hidden="true"></span>
+        <i class="material-icons mat-btn">place</i>
         Positionner
     </button>
 </form>

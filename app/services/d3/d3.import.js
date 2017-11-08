@@ -216,27 +216,26 @@
         }
 
         function importInteraction(interactionData) {
-
             // insertion of filters
             var filters = interactionData.querySelectorAll('filter');
-
+            
+            // Warning: reset to 0 to fix DER without OSM: (TODO: test if no regression)
             // we don't take the first filter, because it's the OSM Value by default in a DER
-            for (var i = 1; i < filters.length; i++) {
-                InteractionService.addFilter(filters[i].getAttribute('name'),
-                                            filters[i].getAttribute('gesture'),
-                                            filters[i].getAttribute('protocol'), filters[i].getAttribute('id'))
+            for (var i = 0; i < filters.length; i++) {
+                InteractionService.addFilter(filters[i].getAttribute('name'), filters[i].getAttribute('id'))
             }
 
             // insertion of interactions
             var pois = interactionData.querySelectorAll('poi');
-
             for (var i = 0; i < pois.length; i++) {
                 var actions = pois[i].querySelectorAll('action');
-
+                
                 for (var j = 0; j < actions.length; j++) {
                     InteractionService.setInteraction(pois[i].getAttribute('id'),
                                                         actions[j].getAttribute('filter'),
-                                                        actions[j].getAttribute('value'));
+                                                        actions[j].getAttribute('value'),
+                                                        actions[j].getAttribute('gesture'),
+                                                        actions[j].getAttribute('protocol'));
                 }
             }
 

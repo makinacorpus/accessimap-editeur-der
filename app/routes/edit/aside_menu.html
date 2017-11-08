@@ -16,7 +16,7 @@
                 ng-click="$ctrl.undo()"
                 ng-disabled="!$root.isUndoable"
                 aria-label="Annuler la dernière action" title="Annuler la dernière action (Ctrl+Z)">
-                <span class="fa fa-lg fa-undo" aria-hidden="true" ></span>
+                <i class="material-icons mat-btn">undo</i>
                 Annuler
             </button>
 
@@ -25,7 +25,7 @@
                 ng-click="$ctrl.redo()"
                 ng-disabled="!$root.isRedoable"
                 aria-label="Annuler la dernière action" title="Annuler la dernière action (Ctrl+Y)">
-                <span class="fa fa-lg fa-repeat" aria-hidden="true" ></span>
+                <i class="material-icons mat-btn">redo</i>
                 Restaurer
             </button>
         </div>
@@ -38,7 +38,7 @@
                 ng-class="{'active': $ctrl.panel === 'draw'}"
                 ng-click="$ctrl.displayDrawingParameters()"
                 tooltip-placement="right" uib-tooltip="Dessin">
-            <span class="fa fa-lg fa-pencil" aria-hidden="true"></span>
+            <i class="material-icons">edit</i>
             <span class="text">Dessin</span>
         </button>
 
@@ -46,7 +46,7 @@
                 ng-class="{'active': $ctrl.panel === 'map'}"
                 ng-click="$ctrl.displayMapParameters();"
                 tooltip-placement="right" uib-tooltip="Carte">
-            <span class="fa fa-lg fa-map-o" aria-hidden="true"></span>
+            <i class="material-icons">map</i>
             <span class="text">Carte</span>
         </button>
 
@@ -54,7 +54,7 @@
                 ng-class="{'active': $ctrl.panel === 'interaction'}"
                 ng-click="$ctrl.displayInteractionParameters()"
                 tooltip-placement="right" uib-tooltip="Interaction">
-            <span class="fa fa-lg fa-hand-pointer-o" aria-hidden="true"></span>
+                <i class="material-icons">touch_app</i>
             <span class="text">Interaction</span>
         </button>
 
@@ -62,7 +62,7 @@
                 ng-class="{'active': $ctrl.panel === 'legend'}"
                 ng-click="$ctrl.displayLegendParameters()"
                 tooltip-placement="right" uib-tooltip="Légende">
-            <span class="fa fa-lg fa-braille" aria-hidden="true"></span>
+                <span class="fa fa-lg fa-braille" aria-hidden="true"></span>
             <span class="text">Légende</span>
         </button>
 
@@ -72,7 +72,7 @@
             ng-click="$ctrl.displayParameters()"
             aria-label="Paramètres"
             tooltip-placement="right" uib-tooltip="Paramètres">
-            <span class="fa fa-lg fa-wrench" aria-hidden="true" ></span>
+            <i class="material-icons">settings</i>
             <span class="text">Paramètres</span>
         </button>
 
@@ -84,7 +84,7 @@
             ng-click="$ctrl.reset()"
             aria-label="Créer un nouveau DER"
             tooltip-placement="right" uib-tooltip="Créer un nouveau DER">
-            <span class="fa fa-lg fa-file-o" aria-hidden="true"></span>
+            <span class="material-icons">insert_drive_file</span>
             <span class="text">Nouveau</span>
         </button>
 
@@ -94,7 +94,7 @@
             onchange="angular.element(this).scope().$ctrl.importDER(this.childNodes[1])"
             accept="image/svg+xml,application/zip"
             tooltip-placement="right" uib-tooltip="Importer un DERi (SVG, ZIP)">
-            <span class="fa fa-lg fa-download" aria-hidden="true" ></span>
+            <span class="material-icons">cloud_upload</span>
             <span class="text">Importer</span>
         </file-field>
         
@@ -103,7 +103,7 @@
             ng-click="$ctrl.exportData()"
             aria-label="Exporter le DERi"
             tooltip-placement="right" uib-tooltip="Exporter le DERi">
-            <span class="fa fa-lg fa-upload" aria-hidden="true" ></span>
+            <span class="material-icons">cloud_download</span>
             <span class="text">Exporter</span>
         </button>
 
@@ -112,7 +112,7 @@
             ng-click="$ctrl.expandMenu()"
             aria-label="Détails du menu"
             tooltip-placement="right" uib-tooltip="Détails du menu">
-            <span class="fa fa-lg fa-arrow-right" ng-class="{'left': $ctrl.expandedMenu}" aria-hidden="true" ></span>
+            <span class="material-icons">arrow_forward</span>
             <span class="text">Expand</span>
         </button>
     </div>

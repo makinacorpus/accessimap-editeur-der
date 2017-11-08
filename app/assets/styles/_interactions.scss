@@ -1,0 +1,85 @@
+// Liste interactions
+
+.list-interaction-container {
+  margin-top: -30px;
+  margin-bottom: 20px;
+}
+
+.list-interaction-container .panel-body,
+.list-interaction-container .panel-group {
+  padding: 0;
+  margin: 0;
+}
+
+.list-interactions-item {
+  position: relative;
+  padding-top: 18px;
+  font-size: 12px;
+  overflow: hidden;
+  border-bottom: solid 1px $gray-lighter;
+}
+
+.list-interactions-item > *,
+.list-interactions-header,
+.list-interactions-footer {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.list-interaction-container .panel-default > .panel-heading:focus,
+.list-interaction-container .panel-default > .panel-heading a:focus {
+  outline: none;
+}
+
+.list-interactions-header,
+.list-interactions-footer {
+  padding: 8px;
+  overflow: hidden;
+}
+
+.remove-interaction {
+  position: absolute;
+  z-index: 10;
+  right: 0;
+  top: 0;
+  width: 32px;
+  height: 32px;
+  line-height: 36px;
+  vertical-align: middle;
+  text-align: center;
+  padding: 0;
+  color: $state-danger-text;
+  border-radius: none;
+  border: none;
+
+  .material-icons {
+    font-size: 1.2em;
+    line-height: 1.6;
+  }
+}
+
+.panel-group .list-interactions.panel,
+.panel-group .list-interactions.panel + .panel {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.panel-group .list-interactions.panel + .panel {
+  border-top: solid 1px rgb(221, 221, 221);
+}
+
+.list-interactions .panel-heading h4 {
+  background: $gray-lighter;
+  font-size: 14px;
+  border: none;
+}
+
+.list-interactions .panel-heading a:after {
+  font-family: $font-family-base;
+  content: "+";
+}
+
+.list-interactions.panel-open .panel-heading a:after {
+  content: "-";
+}
