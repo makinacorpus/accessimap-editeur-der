@@ -7,9 +7,10 @@
 <div class="description"><div class="accessimapediteurderapp-interactionservice-page"><p>Service providing methods to CRUD interactions</p>
 </div></div>
 <div class="member method"><h2 id="methods">Methods</h2>
-<ul class="methods"><li><h3 id="methods_addinteraction">addInteraction(feature)</h3>
+<ul class="methods"><li><h3 id="methods_addinteraction">addInteraction(poiId, filterId)</h3>
 <div class="addinteraction"><div class="addinteraction-page"><p>Add an interaction on a feature</p>
-</div><h5 id="methods_addinteraction_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>feature</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="addinteraction-page"><p>Feature that will be interactive</p>
+</div><h5 id="methods_addinteraction_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>poiId</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="addinteraction-page"><p>id of added poi</p>
+</div></td></tr><tr><td>filterId</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="addinteraction-page"><p>id of added filter</p>
 </div></td></tr></tbody></table></div>
 </li>
 <li><h3 id="methods_isfeatureinteractive">isFeatureInteractive(feature)</h3>
@@ -17,6 +18,10 @@
 </div><h5 id="methods_isfeatureinteractive_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>feature</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="isfeatureinteractive-page"><p>Feature to be checked</p>
 </div></td></tr></tbody></table><h5 id="methods_isfeatureinteractive_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="isfeatureinteractive-page"><p>True if interactive, false if not</p>
 </div></td></tr></table></div>
+</li>
+<li><h3 id="methods_isinteractionhaserror">isInteractionHasError()</h3>
+<div class="isinteractionhaserror"><div class="isinteractionhaserror-page"><p>Check the validity of an interaction.</p>
+</div></div>
 </li>
 <li><h3 id="methods_setinteraction">setInteraction(id, filter, value)</h3>
 <div class="setinteraction"><div class="setinteraction-page"><p>Set an interaction {filter: value} for a feature (id)</p>

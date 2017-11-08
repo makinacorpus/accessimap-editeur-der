@@ -145,7 +145,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "accessimapEditeurDerApp",
       "shortDescription": "Service providing methods to CRUD interactions",
-      "keywords": "accessimapediteurderapp add addinteraction api array attached category checked circle click composed crud define display double event false feature filter filters interaction interactions interactionservice interactive isfeatureinteractive media method methods mp3 play pointer polygon property protocol providing return service set setinteraction specific tap text-to-speech true type vibration"
+      "keywords": "accessimapediteurderapp add addinteraction api array attached category check checked circle click composed crud define display double event false feature filter filterid filters interaction interactions interactionservice interactive isfeatureinteractive isinteractionhaserror media method methods mp3 play poi poiid pointer polygon property protocol providing return service set setinteraction specific tap text-to-speech true type validity vibration"
     },
     {
       "section": "api",
