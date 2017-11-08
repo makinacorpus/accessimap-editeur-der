@@ -20,38 +20,3 @@
         </tr>
     </tbody>
 </table>
-
-<label>Interactions</label>
-
-<table class="table table-hover" ng-if="$ctrl.featureProperties.interactions">
-    <thead>
-        <tr>
-            <th>Filtres</th>
-            <th>Valeur</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="filter in $ctrl.interactions.getFilters()">
-            <td>{{filter.name}}</td>
-            <td>
-                <input type="text" class="form-control"
-                ng-model="$ctrl.featureProperties.interactions.filters[filter.id]"
-                ng-if="filter.protocol==='tts'"
-                style="width:100%">
-                
-                <input type="file" class="form-control"
-                ng-model="$ctrl.featureProperties.interactions.filters[filter.id]"
-                ng-if="filter.protocol==='mp3'"
-                style="width:100%">
-            </td>
-        </tr>
-    </tbody>
-</table>
-
-<button class="btn btn-primary btn-block"
-    ng-if="!$ctrl.featureProperties.interactions"
-    ng-click="$ctrl.addInteraction()">Activer</button>
-
-<button class="btn btn-warning btn-block"
-    ng-if="$ctrl.featureProperties.interactions"
-    ng-click="$ctrl.removeInteraction()">Désactiver</button>
