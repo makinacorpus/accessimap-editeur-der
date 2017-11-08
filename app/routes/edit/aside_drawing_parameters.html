@@ -2,10 +2,12 @@
     Dessin
 </h3>
 
+<h4 class="col-xs-12">
+    Edition
+</h4>
 <div class="col-xs-12">
     <!-- editing modes -->
     <div class="form-group btn-group">
-        <label>Edition</label><br/>
         <button
             ng-click="$ctrl.enableDrawingMode('select')"
             ng-class="{ 'active' : $ctrl.mode === 'select' }"
@@ -14,9 +16,13 @@
             <span class="fa fa-mouse-pointer" aria-hidden="true" ></span>
         </button>
     </div>
+</div>
 
+<h4 class="col-xs-12">
+    Formes géométriques
+</h4>
+<div class="col-xs-12">
     <div class="form-group btn-group">
-        <label>Formes géométriques</label><br/>
         <button
             ng-click="$ctrl.enableDrawingMode('point')"
             ng-class="{ 'active' : $ctrl.mode === 'point' }"
@@ -65,9 +71,12 @@
             <img src="assets/icons/draw_polygon_45.png" width="20px" height="20px"/>
         </button>
     </div>
-
+</div>
+<h4 class="col-xs-12">
+    Autres
+</h4>
+<div class="col-xs-12">
     <div class="form-group btn-group">
-        <label>Autre</label><br/>
         <button
             ng-click="$ctrl.enableDrawingMode('addtext')"
             ng-class="{ 'active' : $ctrl.mode === 'addtext' }"
