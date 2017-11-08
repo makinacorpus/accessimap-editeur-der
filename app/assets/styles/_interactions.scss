@@ -55,12 +55,19 @@
   }
 }
 
-.list-interactions {
+.panel-group .list-interactions.panel,
+.panel-group .list-interactions.panel + .panel {
   border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.panel-group .list-interactions.panel + .panel {
+  border-top: solid 1px rgb(221, 221, 221);
 }
 
 .list-interactions .panel-heading h4 {
-  background: white;
+  background: $gray-lighter;
   font-size: 14px;
   border: none;
 }

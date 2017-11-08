@@ -43,11 +43,11 @@
                     <uib-accordion-heading>
                         Filtre : {{filter.name}} <small>({{$ctrl.getInteractionsByFilterLength(poi.interactions, filter.id)}} interactions)</small>
                     </uib-accordion-heading>
-                        <div class="list-interactions-item" ng-repeat="interaction in poi.interactions | filter: filter.id track by $index">
+                        <div class="list-interactions-item" ng-repeat="interaction in poi.interactions | filter: filter.id">
                             <button class="btn btn-sm btn-danger remove-interaction" ng-click="$ctrl.removeInteraction(poi.id, $index)"><i class="material-icons">close</i></button> 
-                            <div class="col-sm-6 form-group">
+                            <div class="col-sm-6 form-group" ng-class="{'has-error': poi.hasError && poi.filterError === interaction.filter}">
                                 <label class="control-label" for="gesture">Déclencheur</label>
-                                <select id="gesture" ng-model="interaction.gesture" class="form-control input-sm">
+                                <select id="gesture" ng-model="interaction.gesture" class="form-control input-sm" ng-change="$ctrl.isInteractionHasError(poi)">
                                     <option value="tap">tap</option>
                                     <option value="double_tap">double_tap</option>
                                 </select>
@@ -74,6 +74,9 @@
                             </div>
                         </div>
                         <div class="list-interactions-footer">
+                            <div class="has-error" ng-if="poi.hasError && poi.filterError === filter.id">
+                                <span class="help-block">Attention : il ne peut y avoir qu'une seule intéraction pour un même filtre et un même élément déclencheur.</span>
+                            </div>
                             <button class="btn btn-sm btn-default pull-right" ng-click="$ctrl.addInteraction(poi.id, filter.id)">
                                 <i class="material-icons mat-btn">add</i> Nouvelle interaction
                             </button>

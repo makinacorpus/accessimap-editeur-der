@@ -457,7 +457,6 @@
 
                 EditService.interactions.openInteraction(featureIndex);
 
-                console.log('scope apply')
                 $scope.$apply();
             }
 
@@ -570,17 +569,9 @@
 
         $ctrl.showInteractions = Object.keys($ctrl.interactions.getInteractions());
 
-        // $ctrl.removeInteraction = function() {
-        //     EditService.interactions.removeInteraction($ctrl.currentFeature);
-        //     $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
-        // }
-
-        // $ctrl.addInteraction = function() {
-        //     if ($ctrl.currentFeature) {
-        //         EditService.interactions.addInteraction($ctrl.currentFeature);
-        //         $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
-        //     }
-        // }
+        $ctrl.isInteractionHasError = function(poi) {
+            EditService.interactions.isInteractionHasError(poi);
+        }
     }
 
     angular.module(moduleApp).controller('EditController', EditController);

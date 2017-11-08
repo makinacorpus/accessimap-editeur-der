@@ -19,6 +19,7 @@
         this.addFilter            = addFilter;
         this.removeFilter         = removeFilter;
         this.getXMLExport         = getXMLExport;
+        this.isInteractionHasError= isInteractionHasError;
 
         this.getInteractions = function() {
             return interactions
@@ -101,6 +102,30 @@
 
         function removeInteraction(poiId, interactionIndex) {
             interactions[poiId].interactions.splice(interactionIndex, 1);
+            isInteractionHasError(interactions[poiId]);
+        }
+
+        /**
+         * @ngdoc method
+         * @name  isInteractionHasError
+         * @methodOf accessimapEditeurDerApp.InteractionService
+         *
+         * @description
+         * Check the validity of an interaction.
+         *
+         */
+        function isInteractionHasError(poi) {
+            var filterError = false;
+            var valueArr = poi.interactions.map(function(item){ return item.filter + '||' + item.gesture });
+            var isDuplicate = valueArr.some(function(item, idx){ 
+                if (valueArr.indexOf(item) != idx) {
+                    filterError = item.split('||')[0];
+                }
+                return valueArr.indexOf(item) != idx 
+            });
+
+            poi.hasError = isDuplicate;
+            poi.filterError = filterError;
         }
 
         /**
@@ -111,8 +136,10 @@
          * @description
          * Add an interaction on a feature
          *
-         * @param {Object} feature
-         * Feature that will be interactive
+         * @param {string} poiId
+         * id of added poi
+         * @param {string} filterId
+         * id of added filter
          */
         function addInteraction(poiId, filterId) {
             // Add the highlight class to the relevant cells of the grid
@@ -120,6 +147,7 @@
             // d3.selectAll('.poi-' + featureIid).classed('highlight', true);
 
             setInteraction(poiId, filterId);
+            isInteractionHasError(interactions[poiId]);
         }
 
         function openInteraction(poiId) {
@@ -152,15 +180,15 @@
          * Category/filter to  [description]
          * @param {[type]} value    [description]
          */
-        function setInteraction(id, filter, value, gesture, protocol) {
-            if (!interactions[id]) {
-                interactions[id] = {
-                    'id': id,
+        function setInteraction(poiId, filter, value, gesture, protocol) {
+            if (!interactions[poiId]) {
+                interactions[poiId] = {
+                    'id': poiId,
                     'interactions': []
                 };
             }
 
-            interactions[id].interactions.push({
+            interactions[poiId].interactions.push({
                 filter: filter,
                 value: value || '',
                 gesture  : gesture || 'tap',
@@ -198,7 +226,7 @@
             // then remove the filter
             filters = filters.filter(function removeFilter(element, index) {
                 return element.id !== id;
-            })
+            });
         }
 
         function getXMLExport() {
