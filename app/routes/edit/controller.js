@@ -466,7 +466,7 @@
                 var featureIndex = feature.attr('data-link');
                 $ctrl.currentPoi = featureIndex;
                 selectInteraction(featureIndex);
-
+                
                 EditService.interactions.openInteraction(featureIndex);
 
                 $scope.$apply();
@@ -562,10 +562,16 @@
                 })
         };
 
+        $ctrl.goToInteraction = function() {
+            $ctrl.displayInteractionParameters();
+
+            setTimeout(function() {
+                EditService.interactions.openInteraction($ctrl.currentPoi);
+            }, 300);
+        }
+
         $ctrl.addInteraction = function(poiIndex, filterId) {
             EditService.interactions.addInteraction(poiIndex, filterId);
-            selectInteraction(poiIndex);
-            $scope.$apply();
         }
 
         $ctrl.removeInteraction = function(poiIndex, interactionIndex) {

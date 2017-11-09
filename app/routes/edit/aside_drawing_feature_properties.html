@@ -1,22 +1,29 @@
 
-<label>Propriétés de l'objet {{$ctrl.featureProperties['data-type']}}</label>
+<h4 class="col-xs-12">
+    Propriétés de l'objet {{$ctrl.featureProperties['data-type']}}
+</h4>
+<div class="col-xs-12">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Propriété</th>
+                <th>Valeur</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="property in $ctrl.properties | filter:$ctrl.filterProperty">
+                <td>{{property.name}}</td>
+                <td >
+                    <input type="text" class="form-control"
+                        ng-model="$ctrl.featureProperties[property.name]"
+                        ng-if="! property.isStyle && ! property.isColor"
+                        ng-change="$ctrl.updateProperties()">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Propriété</th>
-            <th>Valeur</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="property in $ctrl.properties | filter:$ctrl.filterProperty">
-            <td>{{property.name}}</td>
-            <td >
-                <input type="text" class="form-control"
-                    ng-model="$ctrl.featureProperties[property.name]"
-                    ng-if="! property.isStyle && ! property.isColor"
-                    ng-change="$ctrl.updateProperties()">
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="col-xs-12">
+    <button ng-click="$ctrl.goToInteraction()" class="btn btn-primary btn-block">Accéder aux interaction de l'objet</button>
+</div>

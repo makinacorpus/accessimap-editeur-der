@@ -189,7 +189,7 @@
             }
 
             interactions[poiId].interactions.push({
-                filter: filter,
+                filter: filter || 'f1',
                 value: value || '',
                 gesture  : gesture || 'tap',
                 protocol : protocol || 'tts'

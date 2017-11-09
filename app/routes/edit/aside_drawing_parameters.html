@@ -93,12 +93,12 @@
             <img src="assets/icons/image.png" width="20px" height="20px"/>
         </button>
     </div>
-
     <div class="form-group" ng-if="!$ctrl.featureProperties"
         ng-include="'scripts/routes/edit/aside_drawing_properties.html'">
     </div>
+</div>
 
-    <div class="form-group" ng-if="$ctrl.featureProperties"
-        ng-include="'scripts/routes/edit/aside_drawing_feature_properties.html'">
-    </div>
+
+<div class="form-group" ng-if="$ctrl.featureProperties"
+    ng-include="'scripts/routes/edit/aside_drawing_feature_properties.html'">
 </div>
