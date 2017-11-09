@@ -190,7 +190,8 @@
         }
 
         $ctrl.exportData          = function() {
-
+            SelectPathService.deselectPath();
+            
             ToasterService.info('Export du dessin en cours...\n' +
                 'Merci de patienter', {timeout: 0, tapToDismiss: false})
             EditService.exportData($ctrl.model)
@@ -419,7 +420,7 @@
         }
 
         $ctrl.resetFeature = function() {
-            SelectPathService.deselectPath()
+            SelectPathService.deselectPath();
             $ctrl.featureProperties = null;
             $ctrl.currentFeature = null;
         }
