@@ -20,7 +20,7 @@
         this.removeFilter         = removeFilter;
         this.getXMLExport         = getXMLExport;
         this.isInteractionHasError= isInteractionHasError;
-
+        
         this.getInteractions = function() {
             return interactions
         }

@@ -35,8 +35,11 @@
     <form>
         <uib-accordion close-others="true" ng-show="$ctrl.showInteractions">
             <uib-accordion-group
-                heading="{{poi.id}}"
+                is-open="$ctrl.interactionOpen[poi.id]"
                 ng-repeat="poi in $ctrl.interactions.getInteractions()">
+                <uib-accordion-heading>
+                    <span class="label" ng-class="{'active': poi.id === 'poi-' + $ctrl.currentPoi}"></span> {{poi.id}} {{$ctrl.interactionIsOpen(poi.id)}}
+                </uib-accordion-heading>
                 <uib-accordion close-others="false">
                     <uib-accordion-group
                         ng-repeat="filter in $ctrl.interactions.getFilters()" class="list-interactions">
