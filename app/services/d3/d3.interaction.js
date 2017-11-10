@@ -20,7 +20,7 @@
         this.removeFilter         = removeFilter;
         this.getXMLExport         = getXMLExport;
         this.isInteractionHasError= isInteractionHasError;
-
+        
         this.getInteractions = function() {
             return interactions
         }
@@ -189,7 +189,7 @@
             }
 
             interactions[poiId].interactions.push({
-                filter: filter,
+                filter: filter || 'f1',
                 value: value || '',
                 gesture  : gesture || 'tap',
                 protocol : protocol || 'tts'

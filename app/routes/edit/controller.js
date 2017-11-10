@@ -114,6 +114,8 @@
 
         $ctrl.isUndoAvailable     = EditService.isUndoAvailable;
 
+        $ctrl.interactionOpen     = {};
+
         $ctrl.initState = function() {
             $ctrl.mapFormat = $location.search().mapFormat
                             ? $location.search().mapFormat
@@ -438,6 +440,13 @@
             EditService.historySave();
         }
 
+        function selectInteraction(poiId) {
+            Object.keys($ctrl.interactionOpen).map(function(key) {
+                $ctrl.interactionOpen[key] = false;
+            });
+            $ctrl.interactionOpen['poi-' + poiId] = true;
+        }
+
         $ctrl.enableDrawingMode = function(mode) {
             EditService.resetState();
 
@@ -453,9 +462,11 @@
                 featureProperties.interactions = EditService.getInteraction(feature);
                 $ctrl.featureProperties = featureProperties;
                 $ctrl.currentFeature = feature;
-
+                
                 var featureIndex = feature.attr('data-link');
-
+                $ctrl.currentPoi = featureIndex;
+                selectInteraction(featureIndex);
+                
                 EditService.interactions.openInteraction(featureIndex);
 
                 $scope.$apply();
@@ -551,9 +562,16 @@
                 })
         };
 
+        $ctrl.goToInteraction = function() {
+            $ctrl.displayInteractionParameters();
+
+            setTimeout(function() {
+                EditService.interactions.openInteraction($ctrl.currentPoi);
+            }, 300);
+        }
+
         $ctrl.addInteraction = function(poiIndex, filterId) {
             EditService.interactions.addInteraction(poiIndex, filterId);
-            // $ctrl.featureProperties.interactions = EditService.getInteraction($ctrl.currentFeature);
         }
 
         $ctrl.removeInteraction = function(poiIndex, interactionIndex) {
