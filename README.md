@@ -1,6 +1,6 @@
 ### Ce projet a déménagé !
 
-### Merci d'aller sur https://gitlab.com/makinacorpus/accessimap/accessimap-lecteur-der
+### Merci d'aller sur https://gitlab.com/makinacorpus/accessimap/accessimap-editeur-der
 
 # Accessimap - Éditeur de dessins en relief
 [![Build Status](https://travis-ci.org/makinacorpus/accessimap-editeur-der.svg?branch=master)](https://travis-ci.org/makinacorpus/accessimap-editeur-der)
